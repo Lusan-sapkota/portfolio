@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='images/favicon-32x32.png') }}">
+  <title>My Portfolio - Coming Soon</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" width="60" height="50">
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+        <div class="hero-content">
+          <!-- Left Side: Text Content -->
+          <div class="hero-text">
+            <h1>Coming Soon</h1>
+            <p>Hey, I am Lusan Sapkota. I sincerely thank you for visiting! My portfolio website is under construction and will be live within 48-72 hours. Stay tuned!</p>
+            <br>
+            <p>For your overview, it will be a single-page website showcasing my skills, projects, and profiles. It will have all the necessary sections to be a complete portfolio.</p>
+            <p>My mail is <a href="mailto:sapkotalusan@gmail.com">sapkotalusan@gmail.com</a></p>
+            <p>Thank you for your patience and understanding.</p>
+          </div>
+      
+          <!-- Right Side: Contact Form -->
+          <div class="hero-form">
+            <form action="mailto:sapkotalusan@gmail.com" method="POST" enctype="text/plain">
+              <h2>Contact Me</h2>
+              <input type="email" name="email" placeholder="Your email" required>
+              <textarea name="message" placeholder="Your message" required></textarea>
+              <button type="submit">Send Message</button>
+            </form>
+          </div>
+        </div>
+      </section>      
+
+    <section class="footer">
+      <p>&copy; 2024 Lusan Sapkota | All Rights Reserved</p>
+    </section>
+  </main>
+</body>
+</html>
