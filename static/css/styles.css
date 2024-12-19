@@ -1,82 +1,177 @@
+/* General Styles */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', Arial, sans-serif;
     margin: 0;
     padding: 0;
-    overflow: hidden;
-  }
-  
-  header {
+    line-height: 1.6;
+    color: #333;
+    background-color: #f9f9f9;
+}
+
+header {
     background-color: #333;
-    color: white;
-    padding: 20px 0;
+    color: #fff;
     text-align: center;
-  }
-  
-  .hero {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 50px 20px;
-  }
-  
-  .hero-content {
+    padding: 15px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+header img {
+    display: inline-block;
+}
+
+.hero {
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.hero-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
     max-width: 1200px;
     width: 100%;
-  }
-  
-  .hero-text {
+}
+
+.hero-text {
     flex: 1;
     min-width: 300px;
     padding: 20px;
-  }
-  
-  .hero-form {
-    flex: 1;
-    min-width: 300px;
-    padding: 20px;
-    border-left: 2px solid #ddd;
-  }
-  
-  .hero h1 {
+}
+
+.hero h1 {
     font-size: 2.5em;
     color: #333;
-  }
-  
-  .hero p {
+    margin-bottom: 10px;
+}
+
+.hero p {
     font-size: 1.1em;
     color: #555;
-  }
-  
-  form {
+    line-height: 1.8;
+}
+
+.hero a {
+    color: #f39c12;
+    text-decoration: none;
+}
+
+.hero a:hover {
+    text-decoration: underline;
+}
+
+.hero-form {
+    flex: 1;
+    min-width: 300px;
+    padding: 20px;
+    border-left: 2px solid #eee;
+}
+
+.hero-form .card {
+    padding: 20px;
+    border: none;
+    border-radius: 10px;
+    background-color: #f7f7f7;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.hero-form h2 {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+}
+
+form {
     display: flex;
     flex-direction: column;
-  }
-  
-  form input,
-  form textarea {
+    gap: 15px;
+}
+
+form input,
+form textarea {
     width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 5px;
+    padding: 12px 15px;
     border: 1px solid #ddd;
-  }
-  
-  form button {
-    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+form input:focus,
+form textarea:focus {
+    border-color: #f39c12;
+    outline: none;
+    box-shadow: 0 0 5px rgba(243, 156, 18, 0.5);
+}
+
+form button {
+    padding: 12px 15px;
     background-color: #333;
-    color: white;
+    color: #fff;
     border: none;
+    border-radius: 5px;
     cursor: pointer;
-  }
-  
-  form button:hover {
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+form button:hover {
     background-color: #f39c12;
-  }  
-  
-  .footer p {
-    margin: 0;
+}
+
+.footer {
+    background-color: #333;
+    color: #fff;
     text-align: center;
-  }
-  
+    padding: 10px 20px;
+    margin-top: 20px;
+}
+
+.footer p {
+    margin: 0;
+    font-size: 0.9em;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .hero {
+        padding: 40px 20px;
+    }
+
+    .hero-content {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .hero-text,
+    .hero-form {
+        min-width: unset;
+        padding: 10px;
+    }
+
+    .hero-form {
+        border-left: none;
+    }
+}
+
+@media (max-width: 480px) {
+    header {
+        padding: 10px 0;
+    }
+
+    .hero h1 {
+        font-size: 2em;
+    }
+
+    .hero p {
+        font-size: 1em;
+    }
+
+    .hero-form h2 {
+        font-size: 1.2em;
+    }
+}
