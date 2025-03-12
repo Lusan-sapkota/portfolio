@@ -698,6 +698,7 @@ span.single-timeline-horizontal.spacial-horizontal-line {width: 88px;}
 }
 .isotope .item {
     position:relative;
+    width: 100%;
     overflow:hidden;
     margin-bottom: 30px;
 
@@ -705,8 +706,8 @@ span.single-timeline-horizontal.spacial-horizontal-line {width: 88px;}
 /*.item img*/
 .isotope .item img{
     width:100%;
-
-    height:100%;
+    height: 250px;
+    object-fit: cover;
     -webkit-transition: .5s;
     -moz-transition: .5s;
     -ms-transition: .5s;
@@ -757,24 +758,6 @@ span.single-timeline-horizontal.spacial-horizontal-line {width: 88px;}
     transform:scale(1);
     top:0;
 }/*.isotope-overlay*/
-
-/*-------------------------------------
-        10. Clients
---------------------------------------*/
-.clients {padding-top: 50px;}
-.clients-area {
-    display: flex;
-    align-items: center;
-    height: 250px;
-}
-.clients-area .item {padding: 0 25px;}
-
-.clients .clients-area .owl-carousel .owl-item img {
-    display: block;
-    width: 100%;
-    height: auto;
-    border-radius:0;
-}
 
 /*-------------------------------------
         11. Contact

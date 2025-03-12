@@ -1,70 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='images/favicon-32x32.png') }}">
-  <title>My Portfolio - Coming Soon</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
-</head>
-<body class="bg-dark text-light">
-  <header class="bg-dark py-3">
-    <div class="container text-center">
-      <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" width="80" height="70">
-    </div>
-  </header>
-
-  <main>
-    <section class="hero py-5">
-      <div class="container">
-        <div class="row align-items-center text-center text-lg-start">
-          <!-- Left Side: Text Content -->
-          <div class="col-lg-6 mb-4">
-            <h1 class="display-4">Coming Soon</h1>
-            <p>Hey, I am Lusan Sapkota. I sincerely thank you for visiting! My portfolio website is under construction and will be live before Jan 1, 2025, sorry for the massive delay. Stay tuned!</p>
-            <p>For your overview, it will be a single-page website showcasing my skills, projects, and profiles. It will have all the necessary sections to be a complete portfolio.</p>
-            <p>My mail is <a href="mailto:sapkotalusan@gmail.com" class="text-warning">sapkotalusan@gmail.com</a></p>
-            <p>Thank you for your patience and understanding.</p>
-          </div>
-
-          <!-- Right Side: Contact Form -->
-          <div class="col-lg-6">
-            <div class="card bg-light text-dark shadow p-4">
-              <h2 class="mb-3 text-center">Contact Me</h2>
-              <form action="https://api.web3forms.com/submit" method="POST">
-                <input type="hidden" name="access_key" value="818bb4e1-1d81-49bf-8416-42591b05370a">
-                <div class="mb-3">
-                  <label for="email" class="form-label">Your Email</label>
-                  <input type="email" class="form-control" id="email" name="email" placeholder="Your email" required>
-                </div>
-                <div class="mb-3">
-                  <label for="country" class="form-label">Country</label>
-                  <input type="text" class="form-control" id="country" name="country" placeholder="Your country" required>
-                </div>
-                <div class="mb-3">
-                  <label for="message" class="form-label">Your Message</label>
-                  <textarea class="form-control" id="message" name="message" rows="4" placeholder="Your message" required></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary w-100">Send Message</button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="bg-dark text-white py-3">
-    <div class="container text-center">
-      <p>&copy; 2024 Lusan Sapkota | All Rights Reserved</p>
-    </div>
-  </footer>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
-=======
 <!doctype html>
 <html class="no-js" lang="en">
 
@@ -75,7 +8,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
 		<!-- Font Family -->
-		<link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&subset=devanagari,latin-ext" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,520,600,700,800,900&subset=devanagari,latin-ext" rel="stylesheet">
 
 		<!-- Title of Site -->
 		<title>Lusan Sapkota</title>
@@ -118,7 +51,7 @@
 			                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
 			                    <i class="fa fa-bars"></i>
 			                </button>
-							<a href="{{ url_for('home') }}" class="navbar-brand">
+							<a href="{{ url_for('index') }}" class="navbar-brand">
 								<img src="{{ url_for('static', filename='assets/logo/logo.png') }}" alt="logo" width="60" height="50">
 							</a>							
 			            </div><!--/.navbar-header-->
@@ -133,7 +66,6 @@
 			                    <li class="smooth-menu"><a href="#experience">experience</a></li>
 			                    <li class="smooth-menu"><a href="#profiles">profile</a></li>
 			                    <li class="smooth-menu"><a href="#portfolio">portfolio</a></li>
-			                    <li class="smooth-menu"><a href="#clients">clients</a></li>
 			                    <li class="smooth-menu"><a href="#contact">contact</a></li>
 			                </ul><!--/.nav -->
 			            </div><!-- /.navbar-collapse -->
@@ -156,7 +88,7 @@
 							<h2>hi <span>,</span> i am <br> Lusan <br> Sapkota <span>.</span>   </h2>
 							<p>Full Stack Software Developer from Nepal &#x1F1F3;&#x1F1F5;.
 							</p>
-							<a href="{{ url_for('static', filename='assets/download/lusan.txt') }}" download>Download Resume</a>
+							<a href="{{ url_for('static', filename='assets/download/Lusan.pdf') }}" download>Download Resume</a>
 							<a href="#contact">Hire Me</a>
 						</div><!--/.header-text-->
 					</div><!--/.col-->
@@ -205,34 +137,34 @@
 								<div class="about-list-icon">
 									<ul>
 										<li>
-											<a href="#">
+											<a href="https://web.facebook.com/lusan.sapkota.1">
 												<i  class="fab fa-facebook" aria-hidden="true"></i>
 											</a>
 										</li><!-- / li -->
 										<li>
-											<a href="#">
+											<a href="https://github.com/Lusan-sapkota">
 												<i  class="fab fa-github" aria-hidden="true"></i>
 											</a>
 											
 										</li><!-- / li -->
 										<li>
-											<a href="#">
+											<a href="https://x.com/LusanSapkota">
 												<i  class="fab fa-twitter" aria-hidden="true"></i>
 											</a>
 											
 										</li><!-- / li -->
 										<li>
-											<a href="#">
+											<a href="https://www.linkedin.com/in/lusan-sapkota-a08194284/">
 												<i  class="fab fa-linkedin" aria-hidden="true"></i>
 											</a>
 										</li><!-- / li -->
 										<li>
-											<a href="#">
+											<a href="https://www.instagram.com/sapkotalusan/">
 												<i  class="fab fa-instagram" aria-hidden="true"></i>
 											</a>
 										</li><!-- / li -->
 										<li>
-											<a href="#">
+											<a href="mailto:sapkotalusan@gmail.com">
 												<i  class="fa fa-envelope" aria-hidden="true"></i>
 											</a>
 										</li><!-- / li -->
@@ -573,8 +505,30 @@
 											<div class="col-sm-4 mb-4">
 												<div class="card text-center shadow-sm framework-card">
 													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--firebase.svg') }}" alt="Firebase Logo" class="logo-icon">
-														<h5 class="card-title mt-3">Firebase</h5>
+														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--oracle.svg') }}" alt="Firebase Logo" class="logo-icon">
+														<h5 class="card-title mt-3">Oracle</h5>
+													</div>
+												</div>
+											</div>
+											<div class="col-sm-4 mb-4">
+												<div class="card text-center shadow-sm framework-card">
+													<div class="card-body">
+														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--digitalocean.svg') }}" alt="Firebase Logo" class="logo-icon">
+														<h5 class="card-title mt-3">Digital Ocean</h5>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row single-skill-content">
+											<!-- Backend as Service -->
+											<div class="section-heading text-center">
+												<h2 class="text-primary">Backend as Service</h2>
+											</div>
+											<div class="col-sm-4 mb-4">
+												<div class="card text-center shadow-sm framework-card">
+													<div class="card-body">
+														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--appwrite.svg') }}" alt="Firebase Logo" class="logo-icon">
+														<h5 class="card-title mt-3">Appwrite</h5>
 													</div>
 												</div>
 											</div>
@@ -673,7 +627,6 @@
 													<div class="card-body">
 														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--rest-api.svg') }}" alt="Rest Api Logo" class="logo-icon">
 														<h5 class="card-title mt-3">Rest Api</h5>
-														git pull origin main --rebase
 													</div>
 												</div>
 											</div>
@@ -1072,12 +1025,12 @@
 							<div class="col-sm-3">
 								<div class="single-profile">
 									<div class="profile-txt">
-										<a href="https://github.com/yourusername" target="_blank"><i class="fab fa-github"></i></a>
+										<a href="https://github.com/Lusan-sapkota" target="_blank"><i class="fab fa-github"></i></a>
 										<div class="profile-icon-name">Github</div>
 									</div>
 									<div class="single-profile-overlay">
 										<div class="profile-txt">
-											<a href="https://github.com/yourusername" target="_blank"><i class="fab fa-github"></i></a>
+											<a href="https://github.com/Lusan-sapkota" target="_blank"><i class="fab fa-github"></i></a>
 											<div class="profile-icon-name">Github</div>
 										</div>
 									</div>
@@ -1088,12 +1041,12 @@
 							<div class="col-sm-3">
 								<div class="single-profile">
 									<div class="profile-txt">
-										<a href="https://www.linkedin.com/in/yourusername" target="_blank"><i class="fab fa-linkedin"></i></a>
+										<a href="https://www.linkedin.com/in/lusan-sapkota-a08194284/" target="_blank"><i class="fab fa-linkedin"></i></a>
 										<div class="profile-icon-name">LinkedIn</div>
 									</div>
 									<div class="single-profile-overlay">
 										<div class="profile-txt">
-											<a href="https://www.linkedin.com/in/yourusername" target="_blank"><i class="fab fa-linkedin"></i></a>
+											<a href="https://www.linkedin.com/in/lusan-sapkota-a08194284/" target="_blank"><i class="fab fa-linkedin"></i></a>
 											<div class="profile-icon-name">LinkedIn</div>
 										</div>
 									</div>
@@ -1104,82 +1057,13 @@
 							<div class="col-sm-3">
 								<div class="single-profile">
 									<div class="profile-txt">
-										<a href="https://www.hackerrank.com/yourusername" target="_blank"><i class="fab fa-hackerrank"></i></a>
+										<a href="https://www.hackerrank.com/profile/sapkotalusan" target="_blank"><i class="fab fa-hackerrank"></i></a>
 										<div class="profile-icon-name">HackerRank</div>
 									</div>
 									<div class="single-profile-overlay">
 										<div class="profile-txt">
-											<a href="https://www.hackerrank.com/yourusername" target="_blank"><i class="fab fa-hackerrank"></i></a>
+											<a href="https://www.hackerrank.com/profile/sapkotalusan" target="_blank"><i class="fab fa-hackerrank"></i></a>
 											<div class="profile-icon-name">HackerRank</div>
-										</div>
-									</div>
-								</div>
-							</div>
-		
-							<!-- Stack Overflow -->
-							<div class="col-sm-3">
-								<div class="single-profile profile-no-border">
-									<div class="profile-txt">
-										<a href="https://stackoverflow.com/users/youruserid" target="_blank"><i class="fab fa-stack-overflow"></i></a>
-										<div class="profile-icon-name">Stack Overflow</div>
-									</div>
-									<div class="single-profile-overlay">
-										<div class="profile-txt">
-											<a href="https://stackoverflow.com/users/youruserid" target="_blank"><i class="fab fa-stack-overflow"></i></a>
-											<div class="profile-icon-name">Stack Overflow</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-		
-						<!-- Profile Border -->
-						<div class="profile-border"></div>
-		
-						<div class="row">
-							<!-- Leetcode -->
-							<div class="col-sm-3">
-								<div class="single-profile">
-									<div class="profile-txt">
-										<a href="https://leetcode.com/yourusername" target="_blank"><i class="fab fa-leanpub"></i></a>
-										<div class="profile-icon-name">Leetcode</div>
-									</div>
-									<div class="single-profile-overlay">
-										<div class="profile-txt">
-											<a href="https://leetcode.com/yourusername" target="_blank"><i class="fab fa-leanpub"></i></a>
-											<div class="profile-icon-name">Leetcode</div>
-										</div>
-									</div>
-								</div>
-							</div>
-		
-							<!-- CodePen (replacing smungMung) -->
-							<div class="col-sm-3">
-								<div class="single-profile">
-									<div class="profile-txt">
-										<a href="https://codepen.io/yourusername" target="_blank"><i class="fab fa-codepen"></i></a>
-										<div class="profile-icon-name">CodePen</div>
-									</div>
-									<div class="single-profile-overlay">
-										<div class="profile-txt">
-											<a href="https://codepen.io/yourusername" target="_blank"><i class="fab fa-codepen"></i></a>
-											<div class="profile-icon-name">CodePen</div>
-										</div>
-									</div>
-								</div>
-							</div>
-		
-							<!-- Medium (replacing squareSpace) -->
-							<div class="col-sm-3">
-								<div class="single-profile">
-									<div class="profile-txt">
-										<a href="https://medium.com/@yourusername" target="_blank"><i class="fab fa-medium"></i></a>
-										<div class="profile-icon-name">Medium</div>
-									</div>
-									<div class="single-profile-overlay">
-										<div class="profile-txt">
-											<a href="https://medium.com/@yourusername" target="_blank"><i class="fab fa-medium"></i></a>
-											<div class="profile-icon-name">Medium</div>
 										</div>
 									</div>
 								</div>
@@ -1189,18 +1073,19 @@
 							<div class="col-sm-3">
 								<div class="single-profile profile-no-border">
 									<div class="profile-txt">
-										<a href="https://www.instagram.com/yourusername" target="_blank"><i class="fab fa-instagram"></i></a>
+										<a href="https://www.instagram.com/sapkotalusan/" target="_blank"><i class="fab fa-instagram"></i></a>
 										<div class="profile-icon-name">Instagram</div>
 									</div>
 									<div class="single-profile-overlay">
 										<div class="profile-txt">
-											<a href="https://www.instagram.com/yourusername" target="_blank"><i class="fab fa-instagram"></i></a>
+											<a href="https://www.instagram.com/sapkotalusan/" target="_blank"><i class="fab fa-instagram"></i></a>
 											<div class="profile-icon-name">Instagram</div>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
+		
 					</div>
 				</div>
 			</div>
@@ -1238,11 +1123,11 @@
 									</div><!-- /.item -->
 								</div><!-- /.col -->
 
-								<div class="col-sm-3">
-									<div class="item">
-										<img src="{{ url_for('static', filename='assets/images/portfolio/p3.png')}}" alt="portfolio image" />
+								<div class="col-sm-3" style="height: 520px;">
+									<div class="item" style="height: 520px;">
+										<img src="{{ url_for('static', filename='assets/images/portfolio/p3.png')}}" alt="portfolio image" style="height: 520px;"/>
 										<div class="isotope-overlay">
-											<a href="#">
+											<a href="https://github.com/Lusan-sapkota/Task-Master" target="_blank">
 												Task Master
 											</a>
 										</div><!-- /.isotope-overlay -->
@@ -1251,22 +1136,21 @@
 
 								<div class="col-sm-4">
 									<div class="item">
-										<img src="{{ url_for('static', filename='assets/images/portfolio/p4.jpg')}}" alt="portfolio image"/>
+										<img src="{{ url_for('static', filename='assets/images/portfolio/p4.png')}}" alt="portfolio image"/>
 										<div class="isotope-overlay">
-											<a href="#">
-												web development
+											<a href="https://github.com/Lusan-sapkota/Jarvis" target="_blank">
+												Jarvis
 											</a>
 										</div><!-- /.isotope-overlay -->
 									</div><!-- /.item -->
 									<div class="item">
-										<img src="{{ url_for('static', filename='assets/images/portfolio/p5.jpg')}}" alt="portfolio image"/>
+										<img src="{{ url_for('static', filename='assets/images/portfolio/p5.png')}}" alt="portfolio image"/>
 										<div class="isotope-overlay">
-											<a href="#">
-												web development
+											<a href="https://github.com/Lusan-sapkota/Chat-History_Master" target="_blank">
+												Chat History Master
 											</a>
 										</div><!-- /.isotope-overlay -->
 									</div><!-- /.item -->
-									Sorry for not adding live projects, i will ask my previous clients for permission and then add them here or will make personal live projects and add them here later ^_^
 								</div><!-- /.col -->
 							</div><!-- /.row -->
 						</div><!--/.isotope-->
@@ -1276,58 +1160,6 @@
 
 		</section><!--/.portfolio-->
 		<!--portfolio end -->
-
-		<!--clients start -->
-		<section id="clients" class="clients">
-			<div class="section-heading text-center">
-				<h2>clients</h2>
-			</div>
-			<div class="clients-area">
-				<div class="container">
-					<div class="owl-carousel owl-theme" id="client">
-						<div class="item">
-							<a href="#">
-								<img src="{{ url_for('static', filename='assets/images/clients/c1.png')}}" alt="brand-image" />
-							</a>
-						</div><!--/.item-->
-						<div class="item">
-							<a href="#">
-								<img src="{{ url_for('static', filename='assets/images/clients/c2.png')}}" alt="brand-image" />
-							</a>
-						</div><!--/.item-->
-						<div class="item">
-							<a href="#">
-								<img src="{{ url_for('static', filename='assets/images/clients/c3.png')}}" alt="brand-image" />
-							</a>
-						</div><!--/.item-->
-						<div class="item">
-							<a href="#">
-								<img src="{{ url_for('static', filename='assets/images/clients/c4.png')}}" alt="brand-image" />
-							</a>
-						</div><!--/.item-->
-						<div class="item">
-							<a href="#">
-								<img src="{{ url_for('static', filename='assets/images/clients/c5.png')}}" alt="brand-image" />
-							</a>
-						</div><!--/.item-->
-						<div class="item">
-							<a href="#">
-								<img src="{{ url_for('static', filename='assets/images/clients/c6.png')}}" alt="brand-image" />
-							</a>
-						</div><!--/.item-->
-						<div class="item">
-							<a href="#">
-								<img src="{{ url_for('static', filename='assets/images/clients/c7.png')}}" alt="brand-image" />
-							</a>
-						</div><!--/.item-->
-					</div><!--/.owl-carousel-->
-				</div><!--/.container-->
-			</div><!--/.clients-area-->
-
-		</section><!--/.clients-->
-
-		</section><!--/.clients-->
-		<!--clients end -->
 
 		<!--contact start -->
 		<section id="contact" class="contact">
@@ -1405,12 +1237,12 @@
 								</div><!--/.contact-adress-->
 								<div class="hm-foot-icon">
 									<ul>
-										<li><a href="#"><i class="fab fa-facebook"></i></a></li><!--/li-->
-										<li><a href="#"><i class="fab fa-github"></i></a></li><!--/li-->
-										<li><a href="#"><i class="fab fa-twitter"></i></a></li><!--/li-->
-										<li><a href="#"><i class="fab fa-linkedin"></i></a></li><!--/li-->
-										<li><a href="#"><i class="fab fa-instagram"></i></a></li><!--/li-->
-										<li><a href="#"><i class="fa fa-envelope" ></i></a></li><!--/li-->
+										<li><a href="https://web.facebook.com/lusan.sapkota.1"><i class="fab fa-facebook"></i></a></li><!--/li-->
+										<li><a href="https://github.com/Lusan-sapkota/"><i class="fab fa-github"></i></a></li><!--/li-->
+										<li><a href="https://x.com/LusanSapkota"><i class="fab fa-twitter"></i></a></li><!--/li-->
+										<li><a href="https://www.linkedin.com/in/lusan-sapkota-a08194284/"><i class="fab fa-linkedin"></i></a></li><!--/li-->
+										<li><a href="https://www.instagram.com/sapkotalusan/"><i class="fab fa-instagram"></i></a></li><!--/li-->
+										<li><a href="mailto:sapkotalusan@gmail.com"><i class="fa fa-envelope" ></i></a></li><!--/li-->
 									</ul><!--/ul-->
 								</div><!--/.hm-foot-icon-->
 							</div><!--/.single-contact-box-->
@@ -1482,4 +1314,3 @@
     </body>
 	
 </html>
->>>>>>> 1805aca (Initial commit)
