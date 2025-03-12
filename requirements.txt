@@ -1,6 +1,2 @@
-<<<<<<< HEAD
 Flask
 gunicorn
-=======
-flask
->>>>>>> 1805aca (Initial commit)
