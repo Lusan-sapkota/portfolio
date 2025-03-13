@@ -1,40 +1,299 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" dir="ltr" itemscope itemtype="http://schema.org/ProfilePage">
 
-	<head>
-		<!-- Meta data -->
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <!-- Essential Meta Tags -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <!-- Primary Meta Tags -->
+    <title>Lusan Sapkota | Full Stack Software Developer from Nepal</title>
+    <meta name="title" content="Lusan Sapkota | Full Stack Software Developer from Nepal">
+    <meta name="description" content="Full Stack Software Developer specializing in Python, JavaScript, React, Django, Flask, and AI/ML technologies. Portfolio showcasing projects, skills, and professional experience.">
+    <meta name="author" content="Lusan Sapkota">
+    <meta name="keywords" content="Lusan Sapkota, Full Stack Developer, Software Developer, Python Developer, JavaScript Developer, Web Developer, Nepal Developer, AI ML Developer, React Developer, Django Developer, Portfolio, Software Engineer, Coding, Programming, Nepali Developer, Tech Professional">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://www.lusansapkota.com.np/">
+    
+    <!-- Language and Geography -->
+    <meta name="language" content="English">
+    <meta name="geo.region" content="NP">
+    <meta name="geo.placename" content="Kathmandu">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.lusansapkota.com.np/">
+    <meta property="og:title" content="Lusan Sapkota | Full Stack Software Developer">
+    <meta property="og:description" content="Full Stack Software Developer specializing in Python, JavaScript, React, Django, Flask, and AI/ML technologies. View my portfolio of projects and professional experience.">
+    <meta property="og:image" content="https://www.lusansapkota.com.np/static/assets/images/profile.jpg">
+    <meta property="og:site_name" content="Lusan Sapkota Portfolio">
+    <meta property="og:locale" content="en_US">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.lusansapkota.com.np/">
+    <meta property="twitter:title" content="Lusan Sapkota | Full Stack Developer">
+    <meta property="twitter:description" content="Full Stack Software Developer from Nepal specializing in Python, JavaScript, and modern web technologies. Check out my projects and skills.">
+    <meta property="twitter:image" content="https://www.lusansapkota.com.np/static/assets/images/profile.jpg">
+    <meta name="twitter:site" content="@LusanSapkota">
+    <meta name="twitter:creator" content="@LusanSapkota">
+    
+    <!-- Mobile App Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Lusan Sapkota">
+    <meta name="application-name" content="Lusan Sapkota">
+    <meta name="theme-color" content="#f39c12">
+    <meta name="msapplication-TileColor" content="#f39c12">
+    <meta name="msapplication-config" content="{{ url_for('static', filename='assets/logo/browserconfig.xml') }}">
+    
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='assets/logo/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='assets/logo/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ url_for('static', filename='assets/logo/android-chrome-192x192.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='assets/logo/favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='assets/logo/site.webmanifest') }}">
+    <link rel="mask-icon" href="{{ url_for('static', filename='assets/logo/safari-pinned-tab.svg') }}" color="#f39c12">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='assets/logo/favicon.ico') }}">
+    
+    <!-- Performance Optimization -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    
+    <!-- SEO Verification Tags -->
+    <meta name="google-site-verification" content="your-google-verification-code">
+    <meta name="yandex-verification" content="your-yandex-verification-code">
+    <meta name="msvalidate.01" content="your-bing-verification-code">
+    
+    <!-- Robots Control -->
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    
+    <!-- Font Family -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,520,600,700,800,900&display=swap&subset=devanagari,latin-ext" rel="stylesheet">
+    
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Lusan Sapkota",
+      "url": "https://www.lusansapkota.com.np",
+      "image": "https://www.lusansapkota.com.np/static/assets/images/profile.jpg",
+      "sameAs": [
+        "https://github.com/Lusan-sapkota",
+        "https://www.linkedin.com/in/lusan-sapkota-a08194284/",
+        "https://twitter.com/LusanSapkota",
+        "https://www.instagram.com/sapkotalusan/",
+        "https://web.facebook.com/lusan.sapkota.1"
+      ],
+      "jobTitle": "Full Stack Software Developer",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "Freelancer"
+      },
+      "alumniOf": [
+        {
+          "@type": "CollegeOrUniversity",
+          "name": "Texas International College",
+          "sameAs": "https://texasedu.edu.np/"
+        }
+      ],
+      "knowsAbout": ["Python", "JavaScript", "React", "Django", "Flask", "AI/ML", "Full Stack Development", "Web Development"],
+      "description": "Full Stack Software Developer from Nepal specializing in Python, JavaScript, and modern web technologies with expertise in AI and ML, particularly in graph-based models and algorithms."
+    }
+    </script>
+    
+    <!-- Website Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "url": "https://www.lusansapkota.com.np/",
+      "name": "Lusan Sapkota - Portfolio",
+      "description": "Professional portfolio of Lusan Sapkota, Full Stack Software Developer from Nepal",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://www.lusansapkota.com.np/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+    
+    <!-- Portfolio Projects Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "itemListElement": [
+        {
+          "@type": "SoftwareSourceCode",
+          "position": 1,
+          "name": "Ambulance Tracking System",
+          "url": "https://github.com/Lusan-sapkota/Ambulance-tracking-system",
+          "programmingLanguage": ["Python", "JavaScript"],
+          "description": "Real-time ambulance tracking system to optimize emergency response"
+        },
+        {
+          "@type": "SoftwareSourceCode",
+          "position": 2,
+          "name": "Face Recognition Based Attendance System",
+          "url": "https://github.com/Lusan-sapkota/Face-Recognition-Based-Attendance-System",
+          "programmingLanguage": ["Python", "OpenCV"],
+          "description": "Automated attendance tracking using facial recognition technology"
+        },
+        {
+          "@type": "SoftwareSourceCode",
+          "position": 3,
+          "name": "Task Master",
+          "url": "https://github.com/Lusan-sapkota/Task-Master",
+          "programmingLanguage": ["JavaScript", "HTML", "CSS"],
+          "description": "Productivity application for task management and organization"
+        },
+        {
+          "@type": "SoftwareSourceCode",
+          "position": 4,
+          "name": "Jarvis",
+          "url": "https://github.com/Lusan-sapkota/Jarvis",
+          "programmingLanguage": ["Python"],
+          "description": "Personal AI assistant with voice recognition capabilities"
+        },
+        {
+          "@type": "SoftwareSourceCode",
+          "position": 5,
+          "name": "Chat History Master",
+          "url": "https://github.com/Lusan-sapkota/Chat-History_Master",
+          "programmingLanguage": ["Python", "JavaScript"],
+          "description": "Tool for analyzing and organizing chat histories from various platforms"
+        }
+      ]
+    }
+    </script>
 
-		<!-- Font Family -->
-		<link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,520,600,700,800,900&subset=devanagari,latin-ext" rel="stylesheet">
+    <!-- Breadcrumb Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.lusansapkota.com.np/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "About",
+          "item": "https://www.lusansapkota.com.np/#about"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Skills",
+          "item": "https://www.lusansapkota.com.np/#skills"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "Portfolio",
+          "item": "https://www.lusansapkota.com.np/#portfolio"
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "name": "Contact",
+          "item": "https://www.lusansapkota.com.np/#contact"
+        }
+      ]
+    }
+    </script>
+    
+    <!-- LocalBusiness Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Lusan Sapkota - Freelance Developer",
+      "image": "https://www.lusansapkota.com.np/static/assets/images/profile.jpg",
+      "telephone": "+977-9848189845",
+      "email": "sapkotalusan@gmail.com",
+      "url": "https://www.lusansapkota.com.np",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "Nepal",
+        "addressLocality": "Kathmandu"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "27.7172",
+        "longitude": "85.3240"
+      },
+      "priceRange": "$$",
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          "opens": "09:00",
+          "closes": "18:00"
+        }
+      ]
+    }
+    </script>
+    
+    <!-- CSS Stylesheets with preloading -->
+    <link rel="preload" href="{{ url_for('static', filename='assets/css/bootstrap.min.css') }}" as="style">
+    <link rel="preload" href="{{ url_for('static', filename='assets/css/font-awesome.min.css') }}" as="style">
+    <link rel="preload" href="{{ url_for('static', filename='assets/css/style.css') }}" as="style">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/flaticon.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/animate.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/owl.carousel.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/owl.theme.default.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/bootsnav.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/responsive.css') }}">
 
-		<!-- Title of Site -->
-		<title>Lusan Sapkota</title>
+    <!-- font-awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    
+    <!-- OpenGraph article data -->
+    <meta property="article:author" content="Lusan Sapkota">
+    <meta property="article:publisher" content="https://www.lusansapkota.com.np">
+    <meta property="article:section" content="Technology">
+    <meta property="article:tag" content="Web Development, Full Stack, Portfolio, Nepal, Developer, Software">
 
-		<!-- Favicon -->
-		<link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='assets/logo/apple-touch-icon.png') }}">
-		<link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='assets/logo/favicon-32x32.png') }}">
-		<link rel="icon" type="image/png" sizes="192x192" href="{{ url_for('static', filename='assets/logo/android-chrome-192x192.png') }}">
-		<link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='assets/logo/favicon-16x16.png') }}">
-		<link rel="manifest" href="{{ url_for('static', filename='assets/logo/site.webmanifest') }}">
+    <!-- Additional SEO tags -->
+    <meta name="rating" content="General">
+    <meta name="revisit-after" content="7 days">
+    <meta name="target" content="all">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta http-equiv="cleartype" content="on">
+    
+    <!-- Accessibility meta tags -->
+    <meta name="format-detection" content="telephone=yes">
+    <meta name="format-detection" content="address=yes">
+    
+    <!-- Prefetch for common resources -->
+    <link rel="prefetch" href="{{ url_for('static', filename='assets/download/Lusan.pdf') }}">
+    <link rel="prefetch" href="{{ url_for('static', filename='assets/images/portfolio/p1.png') }}">
 
-		<!-- CSS Stylesheets -->
-		<link rel="stylesheet" href="{{ url_for('static', filename='assets/css/font-awesome.min.css') }}">
-		<link rel="stylesheet" href="{{ url_for('static', filename='assets/css/flaticon.css') }}">
-		<link rel="stylesheet" href="{{ url_for('static', filename='assets/css/animate.css') }}">
-		<link rel="stylesheet" href="{{ url_for('static', filename='assets/css/owl.carousel.min.css') }}">
-		<link rel="stylesheet" href="{{ url_for('static', filename='assets/css/owl.theme.default.min.css') }}">
-		<link rel="stylesheet" href="{{ url_for('static', filename='assets/css/bootstrap.min.css') }}">
-		<link rel="stylesheet" href="{{ url_for('static', filename='assets/css/bootsnav.css') }}">
-		<link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style.css') }}">
-		<link rel="stylesheet" href="{{ url_for('static', filename='assets/css/responsive.css') }}">
-
-		<!-- font-awesome -->
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
-	</head>
+    <!-- Google Tag Manager -->
+	<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+	new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+	j=d.createElement(s);dl=l!='dataLayer'?'&l='+l:'';j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+	})(window,document,'script','dataLayer','GTM-XXXX');</script>
+    <!-- End Google Tag Manager -->
+</head>
 
 	
 	<body>
@@ -1173,7 +1432,7 @@
 						<div class="col-md-offset-1 col-md-5 col-sm-6">
 							<div class="single-contact-box">
 								<div class="contact-form">
-									<form action="https://api.web3forms.com/submit" method="POST">
+									<form action="https://api.web3forms.com/submit" method="POST" id="contact-form">
 										<input type="hidden" name="access_key" value="818bb4e1-1d81-49bf-8416-42591b05370a">
 										<div class="row">
 											<div class="col-sm-6 col-xs-12">
@@ -1197,11 +1456,17 @@
 										<div class="row">
 											<div class="col-sm-12">
 												<div class="form-group">
-													<textarea class="form-control" rows="8" id="comment" placeholder="Message" name="message" required></textarea>
+													<input type="checkbox" name="botcheck" class="hidden" style="display: none;">
 												</div><!--/.form-group-->
 											</div><!--/.col-->
 										</div><!--/.row-->
-										<input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+										<div class="row">
+											<div class="col-sm-12">
+												<div class="form-group">
+													<textarea class="form-control" rows="8" id="comment" placeholder="Message*" name="message" required></textarea>
+												</div><!--/.form-group-->
+											</div><!--/.col-->
+										</div><!--/.row-->
 										<div class="row">
 											<div class="col-sm-12">
 												<div class="single-contact-btn">
