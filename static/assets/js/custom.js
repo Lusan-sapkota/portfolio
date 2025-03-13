@@ -24,16 +24,71 @@ $(document).ready(function(){
            topSpacing:0
         });
 		
-		//=============
+		 // Enhanced smooth scrolling (replaces old smooth-menu code)
+        $('a[href^="#"]').on('click', function(event) {
+            event.preventDefault();
+            
+            // Get the target section
+            const targetId = $(this).attr('href');
+            if(targetId === '#') return;
+            
+            const targetSection = $(targetId);
+            if(!targetSection.length) return;
+            
+            // Calculate offset for navbar
+            const navbar = $('nav.navbar');
+            const navbarHeight = navbar.length ? navbar.outerHeight() : 0;
+            
+            // Smoothly scroll to target with offset
+            $('html, body').animate({
+                scrollTop: targetSection.offset().top - navbarHeight
+            }, 1200, 'easeInOutExpo');
+            
+            // Close mobile menu if open
+            const navbarCollapse = $('.navbar-collapse');
+            if (navbarCollapse.hasClass('in')) {
+                navbarCollapse.removeClass('in');
+            }
+        });
+        
+        // Active menu handling during scroll
+        $(window).on('scroll', function() {
+            const scrollPosition = $(window).scrollTop();
+            const navbarHeight = $('nav.navbar').outerHeight();
+            
+            $('section').each(function() {
+                const section = $(this);
+                const sectionTop = section.offset().top - navbarHeight - 20;
+                const sectionHeight = section.outerHeight();
+                const sectionId = section.attr('id');
+                
+                if(scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                    $('.navbar-nav li').removeClass('active');
+                    $(`.navbar-nav li a[href="#${sectionId}"]`).parent().addClass('active');
+                }
+            });
+        });
+        
+        // Set 100vh height for sections
+        function setSectionHeights() {
+            const vh = $(window).height();
+            const navbar = $('nav.navbar');
+            const navbarHeight = navbar.length ? navbar.outerHeight() : 0;
+            
+            $('section').each(function() {
+                $(this).css('min-height', vh);
+                
+                // Add extra padding to first section for navbar
+                if($(this).attr('id') === 'welcome-hero') {
+                    $(this).css('padding-top', navbarHeight);
+                }
+            });
+        }
+        
+        // Initialize section heights
+        setSectionHeights();
+        $(window).on('resize', setSectionHeights);
 
-		$('li.smooth-menu a').bind("click", function(event) {
-			event.preventDefault();
-			var anchor = $(this);
-			$('html, body').stop().animate({
-				scrollTop: $(anchor.attr('href')).offset().top - 0
-			}, 1200,'easeInOutExpo');
-		});
-		
 		$('body').scrollspy({
 			target:'.navbar-collapse',
 			offset:0
@@ -107,5 +162,4 @@ $(document).ready(function(){
             $(".header-text a").addClass("animated fadeInDown").css({'opacity':'0'});
         });
 
-});	
-	
+});
