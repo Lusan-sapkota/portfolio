@@ -1,2 +1,6 @@
 Flask
+python-dotenv
+Werkzeug
+Jinja2
+itsdangerous
 gunicorn

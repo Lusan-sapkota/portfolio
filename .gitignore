@@ -3,21 +3,39 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# Virtual environment
+# Virtual environments
 venv/
 .venv/
+env/
+ENV/
+virtualenv/
+.virtualenv/
+.env.bak/
+.venv.bak/
 
-# Jupyter Notebook checkpoints
+# Environment variables
+.env
+
+# Jupyter Notebooks
 .ipynb_checkpoints/
 
-# VS Code settings
+# VS Code
 .vscode/
 
-# IDE and editor-related files
+# PyCharm / IntelliJ
 .idea/
+
+# Type checking & test caches
 .mypy_cache/
 .pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
 
 # Logs and databases
 *.log
 *.sqlite3
+*.db
+
+# macOS system files
+.DS_Store
