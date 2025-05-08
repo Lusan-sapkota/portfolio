@@ -1,0 +1,45 @@
+{% extends 'wiki/base.html' %}
+
+{% block title %}Home - Lusan's Wiki{% endblock %}
+
+{% block content %}
+    <div class="text-center mb-5">
+        <h2>Welcome to Lusan's Knowledge Wiki</h2>
+        <p>Explore a collection of articles, tutorials, and resources to expand your knowledge.</p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <img src="{{ url_for('static', filename='assets/images/featured1.jpg') }}" class="card-img-top" alt="Article 1">
+                <div class="card-body">
+                    <h5 class="card-title">Understanding Python</h5>
+                    <p class="card-text">Learn the basics of Python programming and get started with coding.</p>
+                    <a href="{{ url_for('wiki.article', article_id=1) }}" class="btn btn-primary">Read More</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <img src="{{ url_for('static', filename='assets/images/featured2.jpg') }}" class="card-img-top" alt="Article 2">
+                <div class="card-body">
+                    <h5 class="card-title">Introduction to Web Development</h5>
+                    <p class="card-text">Start your journey in web development with this step-by-step guide.</p>
+                    <a href="{{ url_for('wiki.article', article_id=2) }}" class="btn btn-primary">Read More</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <img src="{{ url_for('static', filename='assets/images/featured3.jpg') }}" class="card-img-top" alt="Article 3">
+                <div class="card-body">
+                    <h5 class="card-title">Machine Learning Basics</h5>
+                    <p class="card-text">Get an introduction to machine learning and its practical applications.</p>
+                    <a href="{{ url_for('wiki.article', article_id=3) }}" class="btn btn-primary">Read More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,22 @@
+/* Wikipedia-inspired styles */
+.wiki-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+.wiki-header {
+    border-bottom: 1px solid #a2a9b1;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+.wiki-search {
+    margin-bottom: 30px;
+}
+.wiki-article-list {
+    list-style-type: none;
+    padding: 0;
+}
+.wiki-article-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid #eaecf0;
+}

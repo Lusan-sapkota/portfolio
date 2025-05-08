@@ -1,10 +1,4 @@
 /*==================================
-* Author        : "ThemeSine"
-* Template Name :  Browny  HTML Template
-* Version       : 1.0
-==================================== */
-
-/*==================================
 font-family: 'Poppins', sans-serif;
 ==================================== */
 
@@ -1263,3 +1257,180 @@ span.single-timeline-horizontal.spacial-horizontal-line {width: 88px;}
 }
 
 /*========================Thank you=================*/
+
+/* Dark Mode Support */
+:root {
+    --background-color: #fff;
+    --background-secondary: #f9fbfd;
+    --text-color: #43485c;
+    --text-secondary: #636a82;
+    --text-muted: #999fb3;
+    --border-color: #e5ebf2;
+    --border-light: #b2c1ce;
+    --header-bg-overlay: rgba(31, 44, 108, .65);
+    --card-bg: #fff;
+    --footer-bg: #fff;
+    --timeline-line: #b2c1ce;
+}
+
+[data-theme='dark'] {
+    --text-color: #f0f0f0;
+    --text-secondary: #cccccc;
+    --text-muted: #aaaaaa;
+    --background-color: #121212;
+    --background-secondary: #1e1e1e;
+    --card-bg: #252525;
+    --border-light: #444444;
+}
+
+/* Apply dark mode styles */
+[data-theme='dark'] body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+[data-theme='dark'] p {
+    color: var(--text-secondary);
+}
+
+[data-theme='dark'] h1, 
+[data-theme='dark'] h2, 
+[data-theme='dark'] h3, 
+[data-theme='dark'] h4, 
+[data-theme='dark'] h5, 
+[data-theme='dark'] h6 {
+    color: var(--text-color);
+}
+
+[data-theme='dark'] .header-text h2,
+[data-theme='dark'] .header-text p,
+[data-theme='dark'] .welcome-hero h3 {
+    color: white;
+}
+
+[data-theme='dark'] nav.navbar.bootsnav {
+    background-color: var(--background-color);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme='dark'] nav.navbar.bootsnav ul.nav > li > a {
+    color: var(--text-color);
+}
+
+[data-theme='dark'] .single-about-txt p,
+[data-theme='dark'] .single-horizontal-timeline p,
+[data-theme='dark'] .main-timeline .description {
+    color: var(--text-muted);
+}
+
+[data-theme='dark'] .experience-time h3, 
+[data-theme='dark'] .timeline-content h5 {
+    color: var(--text-secondary);
+}
+
+[data-theme='dark'] .education,
+[data-theme='dark'] .contact {
+    background: var(--background-secondary);
+}
+
+[data-theme='dark'] .experience,
+[data-theme='dark'] .profiles,
+[data-theme='dark'] .portfolio {
+    border-color: var(--border-color);
+}
+
+[data-theme='dark'] .main-timeline:before {
+    background: var(--timeline-line);
+}
+
+[data-theme='dark'] .card, 
+[data-theme='dark'] .framework-card, 
+[data-theme='dark'] .library-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+}
+
+[data-theme='dark'] .profile-icon-name {
+    color: var(--text-secondary);
+}
+
+[data-theme='dark'] .single-profile {
+    border-right-color: var(--border-light);
+}
+
+[data-theme='dark'] .profile-border {
+    border-bottom-color: var(--border-light);
+}
+
+/* Dark mode for contact form */
+[data-theme='dark'] .contact-form .form-control {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+    color: var(--text-color);
+}
+
+[data-theme='dark'] .footer-copyright {
+    background-color: var(--background-color);
+}
+
+[data-theme='dark'] .timeline-horizontal-border i {
+    color: #f39c12;
+}
+
+[data-theme='dark'] span.single-timeline-horizontal {
+    background: var(--border-light);
+}
+
+[data-theme='dark'] .welcome-hero:before {
+    background: var(--header-bg-overlay);
+}
+
+/* Enhanced styling for error pages */
+.error-logo-container {
+    margin-bottom: 30px;
+    transform: scale(1.5);
+    animation: pulse-logo 2s infinite alternate;
+}
+
+.error-logo {
+    width: 100px;
+    height: auto;
+}
+
+@keyframes pulse-logo {
+    0% {
+        transform: scale(1.5);
+        opacity: 0.9;
+    }
+    100% {
+        transform: scale(1.7);
+        opacity: 1;
+    }
+}
+
+/* Dark mode toggle styling */
+.theme-toggle-btn {
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 15px;
+    transition: all 0.3s ease;
+}
+
+[data-theme='dark'] .theme-toggle-btn {
+    background: #333;
+    color: #f1c40f;
+}
+
+.theme-toggle-btn .fas {
+    font-size: 18px;
+}
+
+/* Smooth transition for theme changes */
+body {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}

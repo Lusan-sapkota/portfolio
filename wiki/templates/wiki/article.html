@@ -1,0 +1,18 @@
+{% extends 'wiki/base.html' %}
+
+{% block title %}{{ article.title }} - Lusan's Wiki{% endblock %}
+
+{% block content %}
+    <div class="article-header mb-4">
+        <h2>{{ article.title }}</h2>
+        <p class="text-muted">Published on {{ article.date }} by {{ article.author }}</p>
+    </div>
+
+    <div class="article-body">
+        <p>{{ article.content }}</p>
+    </div>
+
+    <div class="article-footer mt-5">
+        <a href="{{ url_for('wiki.index') }}" class="btn btn-secondary">Back to Home</a>
+    </div>
+{% endblock %}

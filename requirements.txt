@@ -4,3 +4,11 @@ Werkzeug
 Jinja2
 itsdangerous
 gunicorn
+flask-SQLAlchemy
+psycopg2-binary
+flask-admin
+flask-login
+Flask-JWT-Extended
+PyJWT
+# only for local development (remove it for production)
+livereload

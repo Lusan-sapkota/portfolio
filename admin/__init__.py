@@ -1,13 +1,7 @@
-# admin/__init__.py
-from flask import Blueprint, session, redirect, url_for
-from functools import wraps
+from flask import Blueprint
 
-admin_bp = Blueprint('admin', __name__, template_folder='templates')
+# Define the blueprint and its URL prefix
+admin_bp = Blueprint('admin', __name__, template_folder='templates', url_prefix='/admin')
 
-def admin_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if 'admin' not in session:
-            return redirect(url_for('admin.login'))
-        return f(*args, **kwargs)
-    return decorated_function
+# Import routes to associate them with this blueprint
+from . import routes

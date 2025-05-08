@@ -1,0 +1,67 @@
+{% extends 'git/base.html' %}
+
+{% block title %}Lusan's Projects{% endblock %}
+
+{% block content %}
+<div class="projects-container">
+  <div class="header mb-4">
+    <div class="d-flex justify-content-between align-items-center">
+      <h1>Project Repository</h1>
+      <form action="{{ url_for('git.search') }}" method="get" class="form-inline my-2 my-lg-0">
+        <div class="input-group">
+          <input class="form-control" type="search" placeholder="Search projects" name="q" aria-label="Search">
+          <div class="input-group-append">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="row">
+    {% if projects %}
+      {% for project in projects %}
+        <div class="col-md-6 mb-4">
+          <div class="project-card">
+            {% if project.image_url %}
+              <img src="{{ project.image_url }}" alt="{{ project.title }}" class="img-fluid mb-3">
+            {% endif %}
+
+            <h4>
+              <a href="{{ url_for('git.project', project_id=project.id) }}">{{ project.title }}</a>
+            </h4>
+
+            <p>{{ project.description|truncate(150) }}</p>
+
+            <div class="mb-3">
+              {% if project.technologies %}
+                {% for tech in project.technologies.split(',') %}
+                  <span class="project-tech">{{ tech.strip() }}</span>
+                {% endfor %}
+              {% endif %}
+            </div>
+
+            <div class="d-flex justify-content-between">
+              {% if project.github_url %}
+                <a href="{{ project.github_url }}" target="_blank" class="btn btn-sm btn-dark">
+                  <i class="fab fa-github"></i> View on GitHub
+                </a>
+              {% endif %}
+
+              {% if project.live_url %}
+                <a href="{{ project.live_url }}" target="_blank" class="btn btn-sm btn-primary">
+                  <i class="fas fa-external-link-alt"></i> Live Demo
+                </a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <div class="col-12">
+        <p class="text-center">No projects found. Add some projects through the admin panel.</p>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

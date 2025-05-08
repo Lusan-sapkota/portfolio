@@ -1,0 +1,29 @@
+/* GitHub-inspired styles */
+.projects-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  .project-card {
+    border: 1px solid #e1e4e8;
+    border-radius: 6px;
+    padding: 16px;
+    margin-bottom: 16px;
+    transition: all 0.3s ease;
+  }
+
+  .project-card:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .project-tech {
+    display: inline-block;
+    background-color: #f1f8ff;
+    border-radius: 2em;
+    padding: 0.3em 0.9em;
+    margin: 0 0.5em 0.5em 0;
+    font-size: 12px;
+    font-weight: 600;
+    color: #0366d6;
+  }
