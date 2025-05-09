@@ -1,22 +1,467 @@
 /* Wikipedia-inspired styles */
 .wiki-container {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
     padding: 20px;
 }
+
+/* Remove duplicates and consolidate styles */
+.wiki-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
 .wiki-header {
-    border-bottom: 1px solid #a2a9b1;
+    background-color: var(--background-color, #f8f9fa);
+    border-bottom: 1px solid var(--border-color, #a2a9b1);
     padding-bottom: 20px;
     margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
+
 .wiki-search {
     margin-bottom: 30px;
 }
+
 .wiki-article-list {
     list-style-type: none;
     padding: 0;
 }
+
 .wiki-article-list li {
     padding: 10px 0;
-    border-bottom: 1px solid #eaecf0;
+    border-bottom: 1px solid var(--border-light, #eaecf0);
+}
+
+.wiki-logo {
+    height: 50px;
+    width: auto;
+    transition: transform 0.3s ease;
+}
+
+.wiki-logo:hover {
+    transform: scale(1.05);
+}
+
+/* Fixed sidebar to prevent shifting */
+.wiki-sidebar {
+    background-color: var(--background-secondary, #f8f9fa);
+    border-radius: 8px;
+    padding: 18px;
+    margin-bottom: 25px;
+    border: 1px solid var(--border-color, #e9ecef);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    width: 100%;
+    position: relative;
+}
+
+/* Improved sidebar navigation links */
+.wiki-sidebar .list-group {
+    margin-bottom: 15px;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.wiki-sidebar .list-group-item {
+    padding: 12px 15px;
+    border: none;
+    border-bottom: 1px solid var(--border-light, #e9ecef);
+    margin: 0;
+    background-color: var(--card-bg, #fff);
+    font-weight: 500;
+}
+
+.wiki-sidebar .list-group-item:first-child {
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
+.wiki-sidebar .list-group-item:last-child {
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    border-bottom: none;
+}
+
+/* Enhanced category headers */
+.wiki-category {
+    margin-bottom: 15px;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--border-light, #e9ecef);
+    background: var(--card-bg, #fff);
+}
+
+.wiki-category-header, 
+.wiki-subcategory-header {
+    cursor: pointer;
+    padding: 12px 15px;
+    background-color: var(--background-secondary, #f0f2f5);
+    margin: 0;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s ease;
+    width: 100%;
+    box-sizing: border-box;
+    border-bottom: 1px solid var(--border-light, #e9ecef);
+}
+
+.wiki-category-header {
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
+.wiki-category-header:hover, 
+.wiki-subcategory-header:hover {
+    background-color: var(--border-color, #e9ecef);
+    transform: none;
+}
+
+/* Improved chevron icon with rotation animation */
+.wiki-category-header i, 
+.wiki-subcategory-header i {
+    transition: transform 0.3s ease;
+    color: var(--text-secondary, #636a82);
+    font-size: 12px;
+}
+
+.wiki-category-header[aria-expanded="true"] i, 
+.wiki-subcategory-header[aria-expanded="true"] i {
+    transform: rotate(90deg);
+}
+
+/* Better subcategory styling */
+.wiki-subcategory {
+    margin: 0;
+    width: 100%;
+    border-bottom: 1px solid var(--border-light, #e9ecef);
+}
+
+.wiki-subcategory:last-child {
+    border-bottom: none;
+}
+
+.wiki-subcategory-header {
+    background-color: var(--card-bg, #fff);
+    padding-left: 25px;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+/* Nested list items */
+.wiki-subcategory .list-group-item {
+    padding-left: 35px;
+    font-weight: normal;
+    background-color: var(--background-color, #f8f9fa);
+    font-size: 0.9rem;
+}
+
+/* Smooth collapse animation */
+.collapse, .collapsing {
+    transition: all 0.35s ease;
+}
+
+/* Active state styling */
+.wiki-sidebar .list-group-item.active,
+.wiki-category-header.active,
+.wiki-subcategory-header.active {
+    background-color: rgba(243, 156, 18, 0.1);
+    border-left: 3px solid var(--primary-color, #f39c12);
+    padding-left: 12px;
+    color: var(--primary-color, #f39c12);
+}
+
+/* Dark mode specific overrides for sidebar */
+[data-theme='dark'] .wiki-sidebar {
+    background-color: var(--background-secondary, #2a2a2a);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+[data-theme='dark'] .wiki-category {
+    border-color: var(--border-light, #3a3a3a);
+    background: var(--card-bg, #2a2a2a);
+}
+
+[data-theme='dark'] .wiki-category-header,
+[data-theme='dark'] .wiki-subcategory-header {
+    background-color: var(--card-bg, #2a2a2a);
+    border-color: var(--border-light, #3a3a3a);
+}
+
+[data-theme='dark'] .wiki-subcategory-header {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+[data-theme='dark'] .wiki-subcategory .list-group-item {
+    background-color: var(--background-color, #222);
+}
+
+[data-theme='dark'] .wiki-category-header.active,
+[data-theme='dark'] .wiki-subcategory-header.active,
+[data-theme='dark'] .wiki-sidebar .list-group-item.active {
+    background-color: rgba(243, 156, 18, 0.2);
+}
+
+.wiki-content {
+    background-color: var(--card-bg, #fff);
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    border: 1px solid var(--border-color, #e9ecef);
+}
+
+.wiki-footer {
+    margin-top: auto;
+    background-color: var(--background-color, #f8f9fa);
+    border-top: 1px solid var(--border-color, #e9ecef);
+}
+
+/* Improved toggle button styles with fixed size */
+#wiki-theme-toggle {
+    min-width: 45px;
+    width: 45px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    border: 1px solid var(--border-color, #ced4da);
+    background-color: transparent;
+    color: var(--text-color, #636a82);
+    border-radius: 4px;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+#wiki-theme-toggle:hover {
+    background-color: var(--background-secondary, #e9ecef);
+    color: var(--text-color, #43485c);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transform: none;
+}
+
+/* Fixed icon display issues */
+#wiki-theme-toggle i {
+    font-size: 18px;
+    position: absolute;
+    line-height: 1;
+    display: block;
+    width: 18px;
+    height: 18px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+#wiki-theme-toggle i.fa-sun {
+    opacity: 0;
+}
+
+[data-theme='dark'] #wiki-theme-toggle i.fa-moon {
+    opacity: 0;
+}
+
+[data-theme='dark'] #wiki-theme-toggle i.fa-sun {
+    opacity: 1;
+}
+
+#wiki-theme-toggle:active {
+    transform: translateY(1px);
+}
+
+/* Improved list styles - fixed width to prevent shifts */
+.list-group-item {
+    background-color: var(--card-bg, #fff);
+    border-color: var(--border-light, #e9ecef);
+    color: var(--text-color, #43485c);
+    transition: all 0.2s ease;
+    position: relative;
+    padding-left: 15px;
+    border-left: 0 solid var(--primary-color, #f39c12);
+}
+
+.list-group-item:hover {
+    background-color: var(--background-secondary, #f8f9fa);
+    border-left: 3px solid var(--primary-color, #f39c12);
+    padding-left: 12px;
+}
+
+.list-group-item-action {
+    color: var(--text-color, #43485c);
+    width: 100%;
+}
+
+.list-group-item-action:hover {
+    color: var(--text-color, #43485c);
+    transform: none;
+}
+
+/* Card improvements - standardized yellow buttons */
+.card {
+    background-color: var(--card-bg, #fff);
+    border-color: var(--border-light, #e9ecef);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.card-body {
+    color: var(--text-color, #43485c);
+}
+
+.card-title {
+    color: var(--text-color, #43485c);
+    font-weight: 600;
+}
+
+.card-text {
+    color: var(--text-secondary, #636a82);
+}
+
+/* Standardized button styles with yellow theme */
+.btn-primary, 
+.btn-outline-primary {
+    color: #f39c12 !important;
+    border-color: #f39c12 !important;
+    background-color: transparent !important;
+}
+
+/* Remove hover transform effect for wiki buttons */
+.wiki-content .btn-primary:hover {
+    transform: none !important;
+    box-shadow: none !important;
+    background-color: #e67e22 !important; /* Darker shade on hover instead of animation */
+    color: white !important;
+}
+
+/* Standardize card sizes in wiki */
+.wiki-content .card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.wiki-content .card-body {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.wiki-content .card-text {
+    flex-grow: 1;
+    margin-bottom: 15px;
+}
+
+.wiki-content .card-img-top {
+    height: 180px; /* Fixed height for all card images */
+    object-fit: cover;
+    width: 100%;
+}
+
+/* Fix hover effect for cards in wiki */
+.wiki-content .card:hover {
+    transform: none !important;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1) !important;
+}
+
+/* Fix button width and alignment in cards */
+.wiki-content .card-body .btn-primary {
+    align-self: flex-start;
+    width: auto;
+    padding: 0.375rem 0.75rem;
+}
+
+/* Dark mode specific overrides */
+[data-theme='dark'] .wiki-content {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+[data-theme='dark'] .wiki-header {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+[data-theme='dark'] .list-group-item {
+    background-color: var(--card-bg);
+    border-color: var(--border-light);
+    color: var(--text-color);
+}
+
+[data-theme='dark'] .list-group-item:hover {
+    background-color: var(--background-secondary);
+}
+
+[data-theme='dark'] .card {
+    background-color: var(--card-bg);
+    border-color: var(--border-light);
+}
+
+[data-theme='dark'] .card-title,
+[data-theme='dark'] .card-text,
+[data-theme='dark'] h1, 
+[data-theme='dark'] h2, 
+[data-theme='dark'] h3, 
+[data-theme='dark'] h4, 
+[data-theme='dark'] h5, 
+[data-theme='dark'] h6,
+[data-theme='dark'] p {
+    color: var(--text-color);
+}
+
+[data-theme='dark'] .text-muted {
+    color: var(--text-secondary) !important;
+}
+
+[data-theme='dark'] #wiki-theme-toggle {
+    border-color: var(--border-light);
+    color: var(--text-color);
+}
+
+[data-theme='dark'] #wiki-theme-toggle:hover {
+    background-color: var(--border-light);
+}
+
+/* Button styles consistent in dark mode */
+[data-theme='dark'] .btn-primary {
+    background-color: #f39c12 !important;
+    border-color: #f39c12 !important;
+    color: white !important;
+}
+
+[data-theme='dark'] .btn-outline-primary {
+    color: #f39c12 !important;
+    border-color: #f39c12 !important;
+    background-color: transparent !important;
+}
+
+[data-theme='dark'] .form-control {
+    background-color: var(--card-bg);
+    border-color: var(--border-light);
+    color: var(--text-color);
+}
+
+[data-theme='dark'] .form-control:focus {
+    background-color: var(--background-secondary);
+    color: var(--text-color);
+    border-color: #f39c12;
+}
+
+/* Increase container width for better content display */
+.container {
+    max-width: 1500px !important; /* Overrides Bootstrap's default */
+}
+
+@media (min-width: 1300px) {
+    .container {
+        max-width: 1500px !important;
+    }
 }

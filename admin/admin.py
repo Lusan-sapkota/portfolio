@@ -2,7 +2,7 @@ from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 from flask_login import current_user
 from app import app, db
-from models import User, Project, WikiArticle, Settings
+from models import User, Project, WikiArticle, WikiCategory, Settings
 
 # Create a secure ModelView that checks authentication
 class SecureModelView(ModelView):
@@ -16,4 +16,5 @@ admin = Admin(app, name="Portfolio Admin", template_mode='bootstrap4')
 admin.add_view(SecureModelView(User, db.session))
 admin.add_view(SecureModelView(Project, db.session))
 admin.add_view(SecureModelView(WikiArticle, db.session))
+admin.add_view(SecureModelView(WikiCategory, db.session))  # Add this line
 admin.add_view(SecureModelView(Settings, db.session))

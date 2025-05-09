@@ -250,8 +250,6 @@
 	<link rel="preload" href="{{ url_for('static', filename='assets/css/style.css') }}" as="style">
 	<link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style.css') }}">
 	<link rel="stylesheet" href="{{ url_for('static', filename='assets/css/animate.css') }}">
-	<link rel="stylesheet" href="{{ url_for('static', filename='assets/css/owl.carousel.min.css') }}">
-	<link rel="stylesheet" href="{{ url_for('static', filename='assets/css/owl.theme.default.min.css') }}">
 	<link rel="stylesheet" href="{{ url_for('static', filename='assets/css/responsive.css') }}">
     
     <!-- OpenGraph article data -->
@@ -290,45 +288,41 @@
 		<header class="top-area">
 			<div class="header-area">
 				<!-- Start Navigation -->
-			    <nav class="navbar navbar-default bootsnav navbar-fixed dark no-background">
-
-			        <div class="container">
-
-			            <!-- Start Header Navigation -->
-			            <div class="navbar-header">
-			                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
-			                    <i class="fa fa-bars"></i>
-			                </button>
+				<nav class="navbar navbar-expand-lg navbar-default bootsnav navbar-fixed dark no-background">
+					<div class="container">
+						<!-- Start Header Navigation -->
+						<div class="navbar-header">
+							<button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-menu">
+								<i class="fas fa-bars"></i>
+							</button>
 							<a href="{{ url_for('index') }}" class="navbar-brand">
-								<img src="{{ url_for('static', filename='assets/logo/logo.png') }}" alt="logo" width="60" height="50">
-							</a>							
-			            </div><!--/.navbar-header-->
-			            <!-- End Header Navigation -->
+								<img src="{{ url_for('static', filename='assets/logo/logo.png') }}" alt="logo" width="60" height="50" class="logo-animation">
+							</a>
+						</div><!--/.navbar-header-->
+						<!-- End Header Navigation -->
 
-			            <!-- Collect the nav links, forms, and other content for toggling -->
-			            <div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
-			                <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
-			                <li class=" smooth-menu active"></li>
-			                    <li class="smooth-menu"><a href="#about">About</a></li>
-			                    <li class="smooth-menu"><a href="#education">Education</a></li>
-			                    <li class="smooth-menu"><a href="#skills">Skills</a></li>
-			                    <li class="smooth-menu"><a href="#experience">Experience</a></li>
-			                    <li class="smooth-menu"><a href="#profiles">Profile</a></li>
-			                    <li class="smooth-menu"><a href="#portfolio">Portfolio</a></li>
-			                    <li class="smooth-menu"><a href="#contact">Contact</a></li>
-			                    <!-- Dark Mode Toggle in the navbar -->
-<li class="smooth-menu">
-    <a href="#" id="theme-toggle">
-        <i class="fas fa-moon"></i>
-        <i class="fas fa-sun" style="display:none;"></i>
-        <span class="hidden-xs"> Theme</span>
-    </a>
-</li>
-			                </ul><!--/.nav -->
-			            </div><!-- /.navbar-collapse -->
-			        </div><!--/.container-->
-			    </nav><!--/nav-->
-			    <!-- End Navigation -->
+						<!-- Collect the nav links, forms, and other content for toggling -->
+						<div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
+							<ul class="navbar-nav ms-auto" data-in="fadeInDown" data-out="fadeOutUp">
+								<li class="nav-item"><a class="nav-link smooth-menu" href="#about">About</a></li>
+								<li class="nav-item"><a class="nav-link smooth-menu" href="#education">Education</a></li>
+								<li class="nav-item"><a class="nav-link smooth-menu" href="#skills">Skills</a></li>
+								<li class="nav-item"><a class="nav-link smooth-menu" href="#experience">Experience</a></li>
+								<li class="nav-item"><a class="nav-link smooth-menu" href="#profiles">Profile</a></li>
+								<li class="nav-item"><a class="nav-link smooth-menu" href="#portfolio">Portfolio</a></li>
+								<li class="nav-item"><a class="nav-link smooth-menu" href="#contact">Contact</a></li>
+								<li class="nav-item theme-toggle-wrapper">
+									<a href="#" class="nav-link" id="theme-toggle">
+										<i class="fas fa-moon"></i>
+										<i class="fas fa-sun" style="display:none;"></i>
+										<span class="theme-text">Theme</span>
+									</a>
+								</li>
+							</ul><!--/.nav -->
+						</div><!-- /.navbar-collapse -->
+					</div><!--/.container-->
+				</nav><!--/nav-->
+				<!-- End Navigation -->
 			</div><!--/.header-area-->
 
 		    <div class="clearfix"></div>
@@ -352,6 +346,10 @@
 				</div><!-- /.row-->
 			</div><!-- /.container-->
 
+			<div class="scroll-indicator">
+				<i class="fas fa-chevron-down"></i>
+				<span class="scroll-indicator-text">Scroll</span>
+			</div>
 		</section><!--/.welcome-hero-->
 		<!--welcome-hero end -->
 
@@ -1543,7 +1541,6 @@
 
 		<!-- Local JS -->
 		<script src="{{ url_for('static', filename='assets/js/progressbar.js') }}"></script>
-		<script src="{{ url_for('static', filename='assets/js/owl.carousel.min.js') }}"></script>
 		<script src="{{ url_for('static', filename='assets/js/custom.js') }}"></script>
 			
     </body>

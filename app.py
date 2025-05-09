@@ -6,6 +6,7 @@ import commands
 from flask_login import LoginManager
 from models import User
 from flask_jwt_extended import JWTManager 
+from flask_migrate import Migrate
 
 # Load environment variables
 load_dotenv()
@@ -21,9 +22,16 @@ if os.getenv('SERVER_NAME'):
     app.config['SERVER_NAME'] = os.getenv('SERVER_NAME')  
 
 # Database configuration
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+database_url = os.getenv('DATABASE_URL')
+if database_url:
+    # Fix any potentially escaped characters in the URL
+    database_url = database_url.replace('\\x3a', ':')
+    app.config['SQLALCHEMY_DATABASE_URI'] = database_url
+else:
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///portfolio.db'  # Fallback to SQLite
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
+migrate = Migrate(app, db)
 
 # Setup Flask-Login (can co-exist if other parts of app use it)
 login_manager = LoginManager()

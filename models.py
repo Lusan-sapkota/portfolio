@@ -34,11 +34,43 @@ class Project(db.Model):
     def __repr__(self):
         return f'<Project {self.title}>'
 
+class WikiCategory(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.Text)
+    parent_id = db.Column(db.Integer, db.ForeignKey('wiki_category.id'))
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    # Self-referential relationship for hierarchy
+    subcategories = db.relationship(
+        'WikiCategory', 
+        backref=db.backref('parent', remote_side=[id]),
+        lazy='dynamic'
+    )
+    
+    # Articles in this category
+    articles = db.relationship('WikiArticle', backref='category', lazy='dynamic')
+    
+    def __repr__(self):
+        return f'<WikiCategory {self.name}>'
+    
+    def to_dict(self):
+        """Serializes the object to a dictionary."""
+        return {
+            'id': self.id,
+            'name': self.name,
+            'description': self.description,
+            'parent_id': self.parent_id,
+            'subcategories': [cat.to_dict() for cat in self.subcategories],
+            'articles': [article.to_dict() for article in self.articles]
+        }
+
 class WikiArticle(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200), nullable=False, unique=True)
     content = db.Column(db.Text, nullable=False)
     tags = db.Column(db.String(200))  # Comma-separated tags
+    category_id = db.Column(db.Integer, db.ForeignKey('wiki_category.id'))  # Add this line
     created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
     updated_at = db.Column(db.DateTime, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
 
@@ -50,6 +82,7 @@ class WikiArticle(db.Model):
         return {
             'id': self.id,
             'title': self.title,
+            'category_id': self.category_id,
             # Return a snippet of content for search results
             'content_snippet': (self.content[:150] + '...') if len(self.content) > 150 else self.content,
             'tags': self.tags,

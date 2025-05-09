@@ -10,5 +10,6 @@ flask-admin
 flask-login
 Flask-JWT-Extended
 PyJWT
+flask-migrate
 # only for local development (remove it for production)
 livereload

@@ -10,35 +10,114 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha384-..." crossorigin="anonymous">
 
     <!-- Local CSS -->
-    <link rel="preload" href="{{ url_for('static', filename='assets/css/style.css') }}" as="style">
+    <link rel="preload" href="{{ url_for('wiki.static', filename='css/wiki-style.css') }}" as="style">
     <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/animate.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/owl.carousel.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/owl.theme.default.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/responsive.css') }}">
     <link rel="stylesheet" href="{{ url_for('wiki.static', filename='css/wiki-style.css') }}">
 
     {% block head %}{% endblock %}
 </head>
 <body>
+    <div class="wiki-wrapper">
+        <!-- Wiki Header Section -->
+        <header class="wiki-header">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-center py-3">
+                    <div class="d-flex align-items-center">
+                        <a href="javascript:location.reload();">
+                            <img src="{{ url_for('static', filename='assets/logo/logo.png') }}" alt="Lusan's Wiki Logo" class="wiki-logo me-3" width="50">
+                        </a>
+                        <div>
+                            <h1 class="mb-0">Lusan's Knowledge Wiki</h1>
+                            <p class="text-muted mb-0">A collection of articles, tutorials, and knowledge resources</p>
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <!-- Search Button -->
+                        <form class="d-flex me-3" action="{{ url_for('wiki.search') }}" method="GET">
+                            <div class="input-group">
+                                <input class="form-control" type="search" name="q" placeholder="Search wiki..." aria-label="Search">
+                                <button class="btn btn-outline-primary" type="submit"><i class="fas fa-search"></i></button>
+                            </div>
+                        </form>
+                        <!-- Dark Mode Toggle -->
+                        <button id="wiki-theme-toggle" class="btn btn-outline-secondary">
+                            <i class="fas fa-moon"></i>
+                            <i class="fas fa-sun"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
 
-    <!-- Wiki Header Section -->
-    <header class="wiki-header py-4">
-        <div class="container">
-            <h1>Lusan's Knowledge Wiki</h1>
-            <p>A collection of articles, tutorials, and knowledge resources</p>
+        <div class="container my-4">
+            <div class="row">
+                <!-- Sidebar -->
+                <div class="col-md-3">
+                    <div class="wiki-sidebar">
+                        <div class="list-group mb-4">
+                            <a href="{{ url_for('wiki.index') }}" class="list-group-item list-group-item-action {% if request.path == url_for('wiki.index') %}active{% endif %}">Home</a>
+                            <a href="{{ url_for('wiki.random') }}" class="list-group-item list-group-item-action {% if 'random' in request.path %}active{% endif %}">Random</a>
+                        </div>
+                        
+                        <!-- Categories -->
+                        {% if categories %}
+                            {% for category in categories %}
+                                <div class="wiki-category mb-3">
+                                    <div class="wiki-category-header" data-bs-toggle="collapse" href="#category{{ category.id }}" 
+                                         {% if category.id == active_category %}aria-expanded="true"{% endif %}>
+                                        <i class="fas fa-chevron-right"></i> {{ category.name }}
+                                    </div>
+                                    <div class="collapse {% if category.id == active_category %}show{% endif %}" id="category{{ category.id }}">
+                                        <div class="list-group">
+                                            {% for article in category.articles %}
+                                                <a href="{{ url_for('wiki.article', article_id=article.id) }}" 
+                                                   class="list-group-item list-group-item-action {% if request.path == url_for('wiki.article', article_id=article.id) %}active{% endif %}">
+                                                    {{ article.title }}
+                                                </a>
+                                            {% endfor %}
+                                            
+                                            {% for subcategory in category.subcategories %}
+                                                <div class="wiki-subcategory">
+                                                    <div class="wiki-subcategory-header" data-bs-toggle="collapse" href="#subcategory{{ subcategory.id }}"
+                                                         {% if subcategory.id == active_subcategory %}aria-expanded="true"{% endif %}>
+                                                        <i class="fas fa-chevron-right"></i> {{ subcategory.name }}
+                                                    </div>
+                                                    <div class="collapse {% if subcategory.id == active_subcategory %}show{% endif %}" id="subcategory{{ subcategory.id }}">
+                                                        <div class="list-group">
+                                                            {% for article in subcategory.articles %}
+                                                                <a href="{{ url_for('wiki.article', article_id=article.id) }}" 
+                                                                   class="list-group-item list-group-item-action {% if request.path == url_for('wiki.article', article_id=article.id) %}active{% endif %}">
+                                                                    {{ article.title }}
+                                                                </a>
+                                                            {% endfor %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Main Content -->
+                <div class="col-md-9">
+                    <div class="wiki-content">
+                        {% block content %}{% endblock %}
+                    </div>
+                </div>
+            </div>
         </div>
-    </header>
 
-    <!-- Main Content Section -->
-    <div class="container my-5">
-        {% block content %}{% endblock %}
+        <!-- Footer Section -->
+        <footer class="wiki-footer text-center py-4">
+            <p>&copy; {{ current_year|default(2023) }} Lusan's Wiki. All rights reserved.</p>
+        </footer>
     </div>
-
-    <!-- Footer Section -->
-    <footer class="wiki-footer text-center py-4">
-        <p>&copy; {{ current_year }} Lusan's Wiki. All rights reserved.</p>
-    </footer>
 
     <!-- CDN JS: Bootstrap & jQuery -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
@@ -46,8 +125,9 @@
 
     <!-- Local JS -->
     <script src="{{ url_for('static', filename='assets/js/progressbar.js') }}"></script>
-    <script src="{{ url_for('static', filename='assets/js/owl.carousel.min.js') }}"></script>
+    
     <script src="{{ url_for('static', filename='assets/js/custom.js') }}"></script>
+    <script src="{{ url_for('wiki.static', filename='js/wiki-script.js') }}"></script>
 
     {% block scripts %}{% endblock %}
 </body>

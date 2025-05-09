@@ -391,3 +391,187 @@ $(document).on('click', '.alert', function() {
         document.documentElement.setAttribute('data-theme', 'dark');
     }
 })();
+
+// Add these functions to enhance the navbar functionality
+
+$(document).ready(function() {
+    "use strict";
+
+    // Enhanced Dark Mode Implementation with animation
+    function initializeDarkMode() {
+        const themeToggle = $("#theme-toggle");
+        const moonIcon = themeToggle.find(".fa-moon");
+        const sunIcon = themeToggle.find(".fa-sun");
+        
+        // Check for saved theme preference or respect OS preference
+        const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+        const savedTheme = localStorage.getItem("theme");
+        
+        if (savedTheme === "dark" || (!savedTheme && prefersDarkScheme.matches)) {
+            document.documentElement.setAttribute("data-theme", "dark");
+            moonIcon.hide();
+            sunIcon.show();
+        }
+        
+        // Toggle theme on click with animation
+        themeToggle.on("click", function(e) {
+            e.preventDefault();
+            
+            if (document.documentElement.getAttribute("data-theme") === "dark") {
+                // Switch to light theme
+                document.documentElement.setAttribute("data-theme", "");
+                localStorage.setItem("theme", "light");
+                
+                // Animate icon transition
+                sunIcon.fadeOut(300, function() {
+                    moonIcon.fadeIn(300);
+                });
+                
+            } else {
+                // Switch to dark theme
+                document.documentElement.setAttribute("data-theme", "dark");
+                localStorage.setItem("theme", "dark");
+                
+                // Animate icon transition
+                moonIcon.fadeOut(300, function() {
+                    sunIcon.fadeIn(300);
+                });
+            }
+        });
+    }
+
+    // Initialize dark mode
+    initializeDarkMode();
+    
+    // Enhanced Sticky Navbar with animation
+    function initStickyNavbar() {
+        const navbar = $("nav.navbar");
+        
+        $(window).on("scroll", function() {
+            if ($(this).scrollTop() > 100) {
+                navbar.addClass("sticky-active");
+            } else {
+                navbar.removeClass("sticky-active");
+            }
+        });
+    }
+    
+    // Initialize sticky navbar
+    initStickyNavbar();
+    
+    // Improved Smooth Scrolling
+    $('a.smooth-menu, a[href^="#"]').on('click', function(event) {
+        if (this.hash !== "") {
+            event.preventDefault();
+            
+            // Get the target section
+            const targetId = this.hash;
+            const targetSection = $(targetId);
+            
+            if (!targetSection.length) return;
+            
+            // Calculate offset for navbar
+            const navbar = $('nav.navbar');
+            const navbarHeight = navbar.length ? navbar.outerHeight() : 0;
+            
+            // Smoothly scroll to target with offset - faster animation
+            $('html, body').animate({
+                scrollTop: targetSection.offset().top - navbarHeight
+            }, 800, 'easeInOutExpo');
+            
+            // Close mobile menu if open
+            const navbarCollapse = $('.navbar-collapse');
+            if (navbarCollapse.hasClass('show')) {
+                navbarCollapse.removeClass('show');
+            }
+            
+            // Update active state
+            $('.navbar-nav .nav-item').removeClass('active');
+            $(this).parent('.nav-item').addClass('active');
+        }
+    });
+    
+    // Better Active Section Detection
+    function updateActiveNavItem() {
+        const scrollPosition = $(window).scrollTop();
+        const navbarHeight = $('nav.navbar').outerHeight();
+        
+        // Use a small buffer to avoid multiple active sections
+        const buffer = 5;
+        
+        // Reset active state
+        $('.navbar-nav .nav-item').removeClass('active');
+        
+        // Find the current section and set as active
+        $('section').each(function() {
+            const section = $(this);
+            const sectionTop = section.offset().top - navbarHeight - buffer;
+            const sectionBottom = sectionTop + section.outerHeight();
+            
+            if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+                const sectionId = section.attr('id');
+                $(`.navbar-nav .nav-item a[href="#${sectionId}"]`).parent().addClass('active');
+                return false; // Break the loop once we found the active section
+            }
+        });
+    }
+    
+    // Call the function on page load and scroll
+    updateActiveNavItem();
+    $(window).on('scroll', updateActiveNavItem);
+    
+    // Add scroll indicator to welcome section
+    const welcomeSection = $('#welcome-hero');
+    if (welcomeSection.length) {
+        welcomeSection.append(`
+            <div class="scroll-indicator">
+                <i class="fas fa-chevron-down"></i>
+                <span class="scroll-indicator-text">Scroll</span>
+            </div>
+        `);
+    }
+    
+    // Enhanced animations for page elements
+    function initElementAnimations() {
+        // Animate progress bars when in viewport
+        $('.progress-bar').each(function() {
+            const bar = $(this);
+            
+            const waypoint = new Waypoint({
+                element: bar.get(0),
+                handler: function() {
+                    const value = bar.attr('aria-valuenow');
+                    bar.animate({
+                        width: value + '%'
+                    }, 1000);
+                    this.destroy();
+                },
+                offset: '90%'
+            });
+        });
+        
+        // Animate cards on scroll
+        $('.card').each(function(index) {
+            const card = $(this);
+            
+            const waypoint = new Waypoint({
+                element: card.get(0),
+                handler: function() {
+                    setTimeout(function() {
+                        card.addClass('animated fadeInUp');
+                    }, index * 100); // Stagger animation
+                    this.destroy();
+                },
+                offset: '90%'
+            });
+        });
+    }
+    
+    // Initialize animations
+    // Note: Requires Waypoints library, add if not present
+    if (typeof Waypoint !== 'undefined') {
+        initElementAnimations();
+    }
+    
+    // Continue with rest of your custom.js code...
+});

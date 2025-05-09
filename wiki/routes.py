@@ -1,28 +1,33 @@
-from flask import Blueprint, render_template, request, redirect, url_for, jsonify, current_app # Added current_app
-from models import WikiArticle
+from flask import Blueprint, render_template, request, redirect, url_for, jsonify, current_app
+from models import WikiArticle, WikiCategory  # Add WikiCategory import
 from database import db
 from sqlalchemy import or_
 from . import wiki_bp
+from datetime import datetime
+import random
+
+# Helper function to get all top-level categories
+def get_categories():
+    return WikiCategory.query.filter_by(parent_id=None).all()
 
 @wiki_bp.route('/')
 def index():
-    print(f"DEBUG: Accessing wiki blueprint index route. Attempting to render 'wiki/index.html'") # Updated log
+    print(f"DEBUG: Accessing wiki blueprint index route.")
     articles = WikiArticle.query.order_by(WikiArticle.title).all()
-
-    template_name_to_render = 'wiki/index.html' # Changed
-    jinja_env = current_app.jinja_env
-    try:
-        template_object = jinja_env.get_template(template_name_to_render)
-        print(f"DEBUG: Jinja2 resolved '{template_name_to_render}' to file: {template_object.filename}")
-    except Exception as e:
-        print(f"DEBUG: Error getting template '{template_name_to_render}' from Jinja2 env: {e}")
-
-    return render_template(template_name_to_render, articles=articles) # Changed
+    categories = get_categories()
+    
+    return render_template('wiki/index.html', 
+                          articles=articles, 
+                          categories=categories,
+                          active_category=None,
+                          active_subcategory=None,
+                          current_year=datetime.now().year)
 
 @wiki_bp.route('/search')
 def search():
     query = request.args.get('q', '')
     articles_list = []
+    categories = get_categories()  # Get all top-level categories
 
     if query:
         articles_query = WikiArticle.query.filter(
@@ -38,12 +43,46 @@ def search():
        not request.accept_mimetypes.accept_html:
         return jsonify(articles=articles_list)
 
-    # Also update search.html if it's in wiki/templates
-    return render_template('wiki/search.html', articles=articles_list, query=query) # Assuming search.html is in wiki/templates
+    return render_template('wiki/search.html', 
+                          articles=articles_list, 
+                          query=query,
+                          categories=categories,
+                          current_year=datetime.now().year)
 
 
 @wiki_bp.route('/article/<int:article_id>')
 def article(article_id):
     article = WikiArticle.query.get_or_404(article_id)
-    # Also update article.html if it's in wiki/templates
-    return render_template('wiki/article.html', article=article) # Assuming article.html is in wiki/templates
+    categories = get_categories()  # Get all top-level categories
+    
+    # Determine active category/subcategory
+    active_category = None
+    active_subcategory = None
+    if article.category_id:
+        category = WikiCategory.query.get(article.category_id)
+        if category:
+            if category.parent_id:
+                active_subcategory = category.id
+                active_category = category.parent_id
+            else:
+                active_category = category.id
+    
+    return render_template('wiki/article.html', 
+                          article=article,
+                          categories=categories,
+                          active_category=active_category,
+                          active_subcategory=active_subcategory,
+                          current_year=datetime.now().year)
+
+@wiki_bp.route('/random')
+def random():  # Change from 'random_article' to 'random'
+    """Display a random article from the wiki."""
+    articles = WikiArticle.query.all()
+    if not articles:
+        return render_template('wiki/not_found.html', 
+                              message="No articles available yet.",
+                              categories=get_categories(),
+                              current_year=datetime.now().year)
+    
+    random_article = random.choice(articles)
+    return redirect(url_for('wiki.article', article_id=random_article.id))
