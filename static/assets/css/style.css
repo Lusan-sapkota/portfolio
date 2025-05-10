@@ -249,33 +249,17 @@ nav.navbar.bootsnav.no-background {
 nav.navbar.bootsnav {
     background-color: #fff;
     border-bottom: transparent;
-    box-shadow: 0 3px 15px rgba(0,0,0,.2);
+    box-shadow: 0 3px 15px rgba(0,0,0,.1);
 }
 
-/*.navbar-brand*/
-.navbar-header a.navbar-brand,.navbar-header a.navbar-brand:hover,.navbar-header a.navbar-brand:focus {
-    display: inline-block;
-    color: #f39c12;
-    font-size: 20px;
-    font-weight: 600;
-    padding: 33px 0px 57px;
-    text-transform: uppercase;
-}
-
-/*.navbar-brand*/
-
-/*.nav li*/
+/* Link styling */
 nav.navbar.bootsnav ul.nav > li > a {
-    font-size: 16px;
-    font-weight: 400;
-    text-transform:uppercase;
-    -webkit-transition: 0.3s linear; 
-    -moz-transition: 0.3s linear; 
-    -ms-transition: 0.3s linear; 
-    -o-transition: 0.3s linear; 
-    transition: 0.3s linear;
+    font-size: 15px;
+    font-weight: 500;
+    text-transform: uppercase;
+    padding: 35px 20px;
+    transition: all 0.3s ease;
 }
-nav.navbar.bootsnav ul.nav > li > a {padding: 35px 20px;}
 nav.navbar.bootsnav ul.nav > li > a:hover,nav.navbar.bootsnav ul.nav > li > a:focus,nav.navbar.bootsnav ul.nav > li.active>a{color: #f39c12;}
 
 nav.navbar.bootsnav ul.nav > li.dropdown > a.dropdown-toggle:after {
@@ -1431,4 +1415,84 @@ span.single-timeline-horizontal.spacial-horizontal-line {width: 88px;}
 /* Smooth transition for theme changes */
 body {
     transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Add these animation improvements to your existing file */
+
+/* Smoother navigation */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Navbar shrink animation */
+.navbar-shrink {
+  padding: 0 !important;
+  box-shadow: 0 5px 20px rgba(0,0,0,.1) !important;
+}
+
+/* Improved mobile menu */
+.navbar-collapse {
+  transition: all 0.3s ease;
+}
+
+.show-menu {
+  transition: all 0.3s ease;
+}
+
+/* Fade-in animation for sections */
+section {
+  animation: fadeInSection 1s ease-out;
+}
+
+@keyframes fadeInSection {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Smooth scroll indicator */
+.scroll-indicator {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  color: #fff;
+  animation: bounce 2s infinite;
+}
+
+.scroll-indicator i {
+  font-size: 24px;
+  display: block;
+  margin-bottom: 5px;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-20px);
+  }
+  60% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Theme toggle animation */
+#theme-toggle {
+  overflow: hidden;
+}
+
+#theme-toggle i {
+  transition: all 0.3s ease;
+}
+
+#theme-toggle:hover {
+  background: rgba(0,0,0,0.05);
 }

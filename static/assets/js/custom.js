@@ -573,5 +573,34 @@ $(document).ready(function() {
         initElementAnimations();
     }
     
+    // Enhanced Sticky Navbar
+    $(window).on('scroll', function() {
+      const navbar = $('nav.navbar');
+      
+      if ($(this).scrollTop() > 50) {
+        navbar.addClass('navbar-shrink');
+        // Additional shrink styling
+        navbar.find('.navbar-brand img').css('height', '35px');
+        navbar.find('ul.nav > li > a').css('padding-top', '15px').css('padding-bottom', '15px');
+      } else {
+        navbar.removeClass('navbar-shrink');
+        // Restore original sizing
+        navbar.find('.navbar-brand img').css('height', '');
+        navbar.find('ul.nav > li > a').css('padding-top', '').css('padding-bottom', '');
+      }
+    });
+    
+    // Improved mobile menu toggle
+    $('.navbar-toggle').on('click', function() {
+      // Add smooth animation class
+      setTimeout(function() {
+        if ($('.navbar-collapse').hasClass('in')) {
+          $('.navbar-collapse').addClass('show-menu');
+        } else {
+          $('.navbar-collapse').removeClass('show-menu');
+        }
+      }, 50);
+    });
+    
     // Continue with rest of your custom.js code...
 });

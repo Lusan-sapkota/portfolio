@@ -15,7 +15,10 @@
 }/*max-width:1440px*/
 
 @media screen and (max-width:1199px){
-	nav.navbar.bootsnav ul.nav > li > a { padding: 35px 8px;}
+	nav.navbar.bootsnav ul.nav > li > a { 
+    padding: 20px 8px;
+    font-size: 14px;
+  }
     
     /* Navbar adjustments for medium screens */
     nav.navbar.bootsnav .navbar-nav .nav-link {
@@ -49,9 +52,19 @@
 
 @media screen and (max-width:992px){
 	nav.navbar.bootsnav .navbar-collapse.collapse.in {padding-bottom: 30px;}
-	nav.navbar.bootsnav .navbar-toggle {display: inline-block; float: right;margin-right: 0;margin-top: 21px;}
-	nav.navbar.bootsnav .navbar-brand {float: left!important;}
-	nav.navbar.bootsnav ul.nav > li > a {padding: 15px 0px;border: transparent;}
+	nav.navbar.bootsnav .navbar-toggle {
+    display: inline-block;
+    float: right;
+    margin-right: 10px;
+    margin-top: 12px;
+  }
+	nav.navbar.bootsnav .navbar-brand {
+    float: left !important;
+  }
+	nav.navbar.bootsnav ul.nav > li > a {
+    padding: 10px 0px;
+    border: transparent;
+  }
 }/*max-width:992px*/
 
 @media screen and (max-width:991px){
@@ -87,19 +100,26 @@
     }
     
     .navbar-brand img {
-        height: 40px;
+        height: 35px;
         width: auto;
     }
     
-    /* Mobile menu animation */
+    /* Fixed mobile menu animation */
     .navbar-collapse.collapse.show {
-        animation: slideDown 0.5s ease forwards;
+    display: block !important;
+    animation: slideDown 0.3s ease forwards;
+  }
+  
+  @keyframes slideDown {
+    from { 
+      opacity: 0;
+      transform: translateY(-10px);
     }
-    
-    @keyframes slideDown {
-        from { transform: translateY(-10px); opacity: 0; }
-        to { transform: translateY(0); opacity: 1; }
+    to { 
+      opacity: 1;
+      transform: translateY(0);
     }
+  }
     
     /* Improved mobile experience */
     .single-about-img {max-width: 450px; margin: 0 auto;}
@@ -164,14 +184,83 @@
 }/*max-width:480px*/
 
 @media screen and (max-width: 440px){
-	
-}/*max-width:400px*/
+    /* Navbar height fix for small screens */
+    nav.navbar.bootsnav {
+        padding: 5px 0;
+    }
+    
+    nav.navbar.bootsnav ul.nav > li > a {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+    
+    .navbar-brand img {
+        height: 30px;
+        width: auto;
+    }
+    
+    /* Theme toggle positioning on mobile */
+    .theme-toggle-wrapper {
+        position: absolute;
+        right: 60px;
+        top: 8px;
+    }
+    
+    .theme-text {
+        display: none; /* Hide "Theme" text on very small screens */
+    }
+    
+    /* Fix mobile menu scrolling */
+    .navbar-collapse {
+        max-height: calc(100vh - 60px);
+        overflow-y: auto;
+    }
+}/*max-width:440px*/
 
 @media screen and (max-width:350px){
-
+    /* Extreme mobile optimization */
+    .navbar-brand img {
+        height: 25px;
+    }
+    
+    nav.navbar.bootsnav .navbar-toggle {
+        margin-top: 5px;
+        margin-right: 5px;
+        padding: 8px;
+    }
+    
+    /* Optimize theme toggle placement */
+    .theme-toggle-wrapper {
+        right: 55px;
+        top: 5px;
+    }
 }/*max-width:350px*/
 
-@media screen and  (max-width: 320px){
-	
+@media screen and (max-width: 320px){
+    /* Ultra small screens adjustments */
+    .navbar-brand {
+        max-width: 65%;
+    }
 }/*max-width:320px*/
+
+/* Global navbar height fix for all screen sizes */
+@media screen and (min-width: 1px) {
+    nav.navbar.bootsnav ul.nav > li > a {
+        padding: 15px 20px; /* Reduce from 35px to 15px */
+    }
+    
+    nav.navbar.bootsnav {
+        padding: 0;
+    }
+    
+    /* Fix theme toggle functionality */
+    #theme-toggle {
+        cursor: pointer;
+    }
+    
+    /* Ensure icons are properly sized */
+    #theme-toggle i {
+        font-size: 16px;
+    }
+}
 

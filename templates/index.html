@@ -288,39 +288,52 @@
 		<header class="top-area">
 			<div class="header-area">
 				<!-- Start Navigation -->
-				<nav class="navbar navbar-expand-lg navbar-default bootsnav navbar-fixed dark no-background">
-					<div class="container">
-						<!-- Start Header Navigation -->
-						<div class="navbar-header">
-							<button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-menu">
-								<i class="fas fa-bars"></i>
-							</button>
-							<a href="{{ url_for('index') }}" class="navbar-brand">
-								<img src="{{ url_for('static', filename='assets/logo/logo.png') }}" alt="logo" width="60" height="50" class="logo-animation">
-							</a>
-						</div><!--/.navbar-header-->
-						<!-- End Header Navigation -->
-
-						<!-- Collect the nav links, forms, and other content for toggling -->
-						<div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
-							<ul class="navbar-nav ms-auto" data-in="fadeInDown" data-out="fadeOutUp">
-								<li class="nav-item"><a class="nav-link smooth-menu" href="#about">About</a></li>
-								<li class="nav-item"><a class="nav-link smooth-menu" href="#education">Education</a></li>
-								<li class="nav-item"><a class="nav-link smooth-menu" href="#skills">Skills</a></li>
-								<li class="nav-item"><a class="nav-link smooth-menu" href="#experience">Experience</a></li>
-								<li class="nav-item"><a class="nav-link smooth-menu" href="#profiles">Profile</a></li>
-								<li class="nav-item"><a class="nav-link smooth-menu" href="#portfolio">Portfolio</a></li>
-								<li class="nav-item"><a class="nav-link smooth-menu" href="#contact">Contact</a></li>
-								<li class="nav-item theme-toggle-wrapper">
-									<a href="#" class="nav-link" id="theme-toggle">
-										<i class="fas fa-moon"></i>
-										<i class="fas fa-sun" style="display:none;"></i>
-										<span class="theme-text">Theme</span>
-									</a>
-								</li>
-							</ul><!--/.nav -->
-						</div><!-- /.navbar-collapse -->
-					</div><!--/.container-->
+				<nav class="navbar navbar-default bootsnav">
+				  <div class="container">
+				    <!-- Logo -->
+				    <a href="{{ url_for('index') }}" class="navbar-brand">
+				      <img src="{{ url_for('static', filename='assets/logo/logo.png') }}" alt="logo" width="60" height="40" class="logo-animation">
+				    </a>
+				    
+				    <!-- Mobile Toggle Button -->
+				    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+				      <span class="navbar-toggler-icon"></span>
+				    </button>
+				    
+				    <!-- Navigation Links -->
+				    <div class="collapse navbar-collapse" id="navbarNav">
+				      <ul class="navbar-nav ms-auto">
+				        <li class="nav-item">
+				          <a class="nav-link smooth-menu" href="#about">About</a>
+				        </li>
+				        <li class="nav-item">
+				          <a class="nav-link smooth-menu" href="#education">Education</a>
+				        </li>
+				        <li class="nav-item">
+				          <a class="nav-link smooth-menu" href="#skills">Skills</a>
+				        </li>
+				        <li class="nav-item">
+				          <a class="nav-link smooth-menu" href="#experience">Experience</a>
+				        </li>
+				        <li class="nav-item">
+				          <a class="nav-link smooth-menu" href="#profiles">Profile</a>
+				        </li>
+				        <li class="nav-item">
+				          <a class="nav-link smooth-menu" href="#portfolio">Portfolio</a>
+				        </li>
+				        <li class="nav-item">
+				          <a class="nav-link smooth-menu" href="#contact">Contact</a>
+				        </li>
+				        <li class="nav-item theme-toggle-wrapper">
+				          <a href="#" class="nav-link" id="theme-toggle">
+				            <i class="fas fa-moon"></i>
+				            <i class="fas fa-sun" style="display:none;"></i>
+				            <span class="theme-text">Theme</span>
+				          </a>
+				        </li>
+				      </ul>
+				    </div>
+				  </div>
 				</nav><!--/nav-->
 				<!-- End Navigation -->
 			</div><!--/.header-area-->
@@ -1470,6 +1483,7 @@
 											</div><!--/.col-->
 										</div><!--/.row-->
 									</form>
+									
 									
 								</div><!--/.contact-form-->
 							</div><!--/.single-contact-box-->
