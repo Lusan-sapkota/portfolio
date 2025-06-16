@@ -10,7 +10,7 @@
     <!-- Primary Meta Tags -->
     <title>Lusan Sapkota | Full Stack Software Developer from Nepal</title>
     <meta name="title" content="Lusan Sapkota | Full Stack Software Developer from Nepal">
-    <meta name="description" content="Full Stack Software Developer specializing in Python, JavaScript, React, Django, Flask, and AI/ML technologies. Portfolio showcasing projects, skills, and professional experience.">
+    <meta name="description" content="Full Stack Software Developer specializing in Python, JavaScript, TypeScript, Django, Flask, React, and modern web technologies. Portfolio showcasing projects, skills, and professional experience with a focus on graph algorithms and data analysis.">
     <meta name="author" content="Lusan Sapkota">
     <meta name="keywords" content="Lusan Sapkota, Full Stack Developer, Software Developer, Python Developer, JavaScript Developer, Web Developer, Nepal Developer, AI ML Developer, React Developer, Django Developer, Portfolio, Software Engineer, Coding, Programming, Nepali Developer, Tech Professional">
     
@@ -26,7 +26,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.lusansapkota.com.np/">
     <meta property="og:title" content="Lusan Sapkota | Full Stack Software Developer">
-    <meta property="og:description" content="Full Stack Software Developer specializing in Python, JavaScript, React, Django, Flask, and AI/ML technologies. View my portfolio of projects and professional experience.">
+    <meta property="og:description" content="Full Stack Software Developer specializing in Python, JavaScript, TypeScript, Django, Flask, React, and modern web technologies. View my portfolio of projects and professional experience.">
     <meta property="og:image" content="https://www.lusansapkota.com.np/static/assets/images/profile.jpg">
     <meta property="og:site_name" content="Lusan Sapkota Portfolio">
     <meta property="og:locale" content="en_US">
@@ -35,7 +35,7 @@
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://www.lusansapkota.com.np/">
     <meta property="twitter:title" content="Lusan Sapkota | Full Stack Developer">
-    <meta property="twitter:description" content="Full Stack Software Developer from Nepal specializing in Python, JavaScript, and modern web technologies. Check out my projects and skills.">
+    <meta property="twitter:description" content="Full Stack Software Developer from Nepal specializing in Python, JavaScript, TypeScript, and modern web technologies. Check out my projects and skills.">
     <meta property="twitter:image" content="https://www.lusansapkota.com.np/static/assets/images/profile.jpg">
     <meta name="twitter:site" content="@LusanSapkota">
     <meta name="twitter:creator" content="@LusanSapkota">
@@ -56,8 +56,8 @@
     <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='assets/logo/favicon-16x16.png') }}">
     <link rel="manifest" href="{{ url_for('static', filename='assets/logo/site.webmanifest') }}">
     <link rel="mask-icon" href="{{ url_for('static', filename='assets/logo/safari-pinned-tab.svg') }}" color="#f39c12">
-    <link rel="shortcut icon" href="{{ url_for('static', filename='assets/logo/favicon.ico') }}">
-    
+    <link rel="shortcut icon" href="{{ url_for('static', filename='assets/logo/logo.png') }}">
+
     <!-- Performance Optimization -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -71,6 +71,7 @@
     
     <!-- Font Family -->
     <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,520,600,700,800,900&display=swap&subset=devanagari,latin-ext" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <!-- Schema.org Structured Data -->
     <script type="application/ld+json">
@@ -243,9 +244,13 @@
     </script>
     
 	<!-- CDN CSS: Bootstrap & Font Awesome -->
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-..." crossorigin="anonymous">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha384-..." crossorigin="anonymous">
-
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+	
+	<!-- Font Awesome for Icons -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
+	
 	<!-- Local CSS -->
 	<link rel="preload" href="{{ url_for('static', filename='assets/css/style.css') }}" as="style">
 	<link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style.css') }}">
@@ -288,7 +293,7 @@
 		<header class="top-area">
 			<div class="header-area">
 				<!-- Start Navigation -->
-				<nav class="navbar navbar-default bootsnav">
+				<nav class="navbar navbar-expand-lg navbar-light bootsnav">
 				  <div class="container">
 				    <!-- Logo -->
 				    <a href="{{ url_for('index') }}" class="navbar-brand">
@@ -296,13 +301,25 @@
 				    </a>
 				    
 				    <!-- Mobile Toggle Button -->
-				    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+				    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+				            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 				      <span class="navbar-toggler-icon"></span>
 				    </button>
+				    
+				    <!-- Dark Mode Toggle - Positioned for Mobile -->
+				    <div class="d-lg-none nav-item theme-toggle-wrapper">
+				      <a href="#" id="mobile-theme-toggle" class="nav-link">
+				        <i class="fas fa-moon"></i>
+				        <i class="fas fa-sun" style="display:none;"></i>
+				      </a>
+				    </div>
 				    
 				    <!-- Navigation Links -->
 				    <div class="collapse navbar-collapse" id="navbarNav">
 				      <ul class="navbar-nav ms-auto">
+				        <li class="nav-item">
+				          <a class="nav-link smooth-menu" href="#subdomains">Platforms</a>
+				        </li>
 				        <li class="nav-item">
 				          <a class="nav-link smooth-menu" href="#about">About</a>
 				        </li>
@@ -324,11 +341,10 @@
 				        <li class="nav-item">
 				          <a class="nav-link smooth-menu" href="#contact">Contact</a>
 				        </li>
-				        <li class="nav-item theme-toggle-wrapper">
+				        <li class="nav-item theme-toggle-wrapper d-none d-lg-block">
 				          <a href="#" class="nav-link" id="theme-toggle">
 				            <i class="fas fa-moon"></i>
 				            <i class="fas fa-sun" style="display:none;"></i>
-				            <span class="theme-text">Theme</span>
 				          </a>
 				        </li>
 				      </ul>
@@ -365,6 +381,91 @@
 			</div>
 		</section><!--/.welcome-hero-->
 		<!--welcome-hero end -->
+
+		<!-- Subdomain Navigation Section Start -->
+		<section class="subdomain-nav" id="subdomains">
+			<div class="container">
+				<div class="subdomain-title">
+					<h2>Explore My Digital Ecosystem</h2>
+					<p>Discover specialized platforms designed to showcase different aspects of my work and expertise. Each subdomain offers a unique experience tailored to specific interests and professional needs.</p>
+				</div>
+				
+				<div class="subdomain-grid">
+					{% if subdomains %}
+						{% for key, subdomain in subdomains.items() %}
+						<div class="subdomain-card" data-subdomain="{{ key }}" tabindex="0" role="button" aria-label="Navigate to {{ subdomain.title }}">
+							<div class="subdomain-icon">
+								<i class="{{ subdomain.icon }}"></i>
+							</div>
+							<h3>{{ subdomain.title }}</h3>
+							<p>{{ subdomain.description }}</p>
+							<a href="#" class="subdomain-btn" data-subdomain="{{ key }}">
+								<span>
+									{% if key == 'wiki' %}Explore Wiki
+									{% elif key == 'git' %}View Code
+									{% elif key == 'donation' %}Support Work
+									{% elif key == 'store' %}Visit Store
+									{% else %}Visit {{ subdomain.title }}
+									{% endif %}
+								</span>
+								<i class="fas fa-arrow-right"></i>
+							</a>
+						</div>
+						{% endfor %}
+					{% else %}
+					<!-- Fallback static content if config is not available -->
+					<div class="subdomain-card" onclick="navigateToWiki()" tabindex="0" role="button" aria-label="Navigate to Wiki platform">
+						<div class="subdomain-icon">
+							<i class="fas fa-book-open"></i>
+						</div>
+						<h3>Knowledge Wiki</h3>
+						<p>Comprehensive documentation, tutorials, and technical articles covering web development, AI/ML, and cutting-edge technologies. A curated knowledge base for developers and tech enthusiasts.</p>
+						<a href="#" class="subdomain-btn" onclick="navigateToWiki(); return false;">
+							<span>Explore Wiki</span>
+							<i class="fas fa-arrow-right"></i>
+						</a>
+					</div>
+					
+					<div class="subdomain-card" onclick="navigateToGit()" tabindex="0" role="button" aria-label="Navigate to Git repositories">
+						<div class="subdomain-icon">
+							<i class="fab fa-git-alt"></i>
+						</div>
+						<h3>Code Repository</h3>
+						<p>Browse through my open-source projects, code samples, and collaborative development work. Featuring clean, well-documented code with modern development practices.</p>
+						<a href="#" class="subdomain-btn" onclick="navigateToGit(); return false;">
+							<span>View Code</span>
+							<i class="fas fa-arrow-right"></i>
+						</a>
+					</div>
+					
+					<div class="subdomain-card" onclick="navigateToDonation()" tabindex="0" role="button" aria-label="Navigate to Donation platform">
+						<div class="subdomain-icon">
+							<i class="fas fa-heart"></i>
+						</div>
+						<h3>Support Platform</h3>
+						<p>Support my open-source work and community contributions. Your donations help me create more valuable content, tools, and educational resources for the developer community.</p>
+						<a href="#" class="subdomain-btn" onclick="navigateToDonation(); return false;">
+							<span>Support Work</span>
+							<i class="fas fa-arrow-right"></i>
+						</a>
+					</div>
+					
+					<div class="subdomain-card" onclick="navigateToStore()" tabindex="0" role="button" aria-label="Navigate to Online Store">
+						<div class="subdomain-icon">
+							<i class="fas fa-shopping-cart"></i>
+						</div>
+						<h3>Online Store</h3>
+						<p>Browse and purchase digital products, courses, and exclusive content. Secure payments and instant delivery.</p>
+						<a href="#" class="subdomain-btn" onclick="navigateToStore(); return false;">
+							<span>Visit Store</span>
+							<i class="fas fa-arrow-right"></i>
+						</div>
+					</div>
+					{% endif %}
+				</div>
+			</div>
+		</section>
+		<!-- Subdomain Navigation Section End -->
 
 		<!--about start -->
 		<section id="about" class="about">
@@ -452,908 +553,691 @@
 		
 		<!--education start -->
 		<section id="education" class="education">
-			<div class="section-heading text-center">
-				<h2>education</h2>
-			</div>
 			<div class="container">
-				<div class="education-horizontal-timeline">
+				<div class="section-heading text-center">
+					<h2>Education Journey</h2>
+					<p class="section-subtitle">Academic achievements and learning milestones</p>
+				</div>
+				
+				<div class="education-timeline">
 					<div class="row">
-						<div class="col-sm-4">
-							<div class="single-horizontal-timeline">
-								<div class="experience-time">
-									<h2>2023 - 2027</h2>
-									<h3>Bachelors <span>in </span> Information Technology</h3>
-								</div><!--/.experience-time-->
-								<div class="timeline-horizontal-border">
-									<i class="fa fa-circle" aria-hidden="true"></i>
-									<span class="single-timeline-horizontal"></span>
+						<div class="col-lg-4 col-md-6 mb-4">
+							<div class="education-card card-base">
+								<div class="education-header">
+									<div class="education-year">2023 - 2027</div>
+									<div class="education-degree">
+										<i class="fas fa-graduation-cap"></i>
+										<h3>Bachelor's in IT</h3>
+									</div>
 								</div>
-								<div class="timeline">
-									<div class="timeline-content">
-										<h4 class="title">
-											Texas International College
-										</h4>
-										<h5>GPA -: running 3rd sem</h5>
-										<h5>Sifal, Kathmandu</h5>
-										<p class="description">
-											Lincoln University, in partnership with Texas affiliates, offers the BIT program, a unique blend of theoretical and practical knowledge. This curriculum is designed to equip students with the essential skills needed to thrive in the fast-evolving tech industry.
-										</p>
-									</div><!--/.timeline-content-->
-								</div><!--/.timeline-->
+								<div class="education-content">
+									<h4>Texas International College</h4>
+									<div class="education-details">
+										<span class="location"><i class="fas fa-map-marker-alt"></i> Sifal, Kathmandu</span>
+										<span class="gpa"><i class="fas fa-star"></i> Currently in 3rd Semester</span>
+									</div>
+									<p>Lincoln University partnership program combining theoretical knowledge with practical skills for the evolving tech industry.</p>
+									<div class="education-tags">
+										<span class="edu-tag">Information Technology</span>
+										<span class="edu-tag">Software Development</span>
+									</div>
+								</div>
 							</div>
 						</div>
-						<div class="col-sm-4">
-							<div class="single-horizontal-timeline">
-								<div class="experience-time">
-									<h2>2021 - 2023</h2>
-									<h3> National Examination Board <span>(+2)</span></h3>
-								</div><!--/.experience-time-->
-								<div class="timeline-horizontal-border">
-									<i class="fa fa-circle" aria-hidden="true"></i>
-									<span class="single-timeline-horizontal"></span>
+
+						<div class="col-lg-4 col-md-6 mb-4">
+							<div class="education-card card-base">
+								<div class="education-header">
+									<div class="education-year">2021 - 2023</div>
+									<div class="education-degree">
+										<i class="fas fa-certificate"></i>
+										<h3>Higher Secondary (+2)</h3>
+									</div>
 								</div>
-								<div class="timeline">
-									<div class="timeline-content">
-										<h4 class="title">
-											Mansalu World College
-										</h4>
-										<h5>GPA -: 3.48</h5>
-										<h5>Chuchepati, Kathmandu</h5>
-										<p class="description">
-											I chose Physical Science and Computer Science as my major subjects, aiming to build a robust foundation for a successful career in both disciplines. This program provides comprehensive knowledge, preparing me for diverse opportunities in the fields of technology and science.
-										</p>
-									</div><!--/.timeline-content-->
-								</div><!--/.timeline-->
+								<div class="education-content">
+									<h4>Mansalu World College</h4>
+									<div class="education-details">
+										<span class="location"><i class="fas fa-map-marker-alt"></i> Chuchepati, Kathmandu</span>
+										<span class="gpa"><i class="fas fa-star"></i> GPA: 3.48</span>
+									</div>
+									<p>Physical Science and Computer Science major, building a strong foundation for technology and science career paths.</p>
+									<div class="education-tags">
+										<span class="edu-tag">Physical Science</span>
+										<span class="edu-tag">Computer Science</span>
+									</div>
+								</div>
 							</div>
 						</div>
-						<div class="col-sm-4">
-							<div class="single-horizontal-timeline">
-								<div class="experience-time">
-									<h2>2001</h2>
-									<h3>Secondary Education Examination <span>(SEE)</span></h3>
-								</div><!--/.experience-time-->
-								<div class="timeline-horizontal-border">
-									<i class="fa fa-circle" aria-hidden="true"></i>
-									<span class="single-timeline-horizontal spacial-horizontal-line
-									"></span>
+
+						<div class="col-lg-4 col-md-12 mb-4">
+							<div class="education-card card-base">
+								<div class="education-header">
+									<div class="education-year">2019 - 2021</div>
+									<div class="education-degree">
+										<i class="fas fa-school"></i>
+										<h3>Secondary Education (SEE)</h3>
+									</div>
 								</div>
-								<div class="timeline">
-									<div class="timeline-content">
-										<h4 class="title">
-											Chandikaswori Secondary Boarding School
-										</h4>
-										<h5>GPA -: 3.6</h5>
-										<h5>Gokarneshowr -2, Kathmandu</h5>
-										<p class="description">
-											I opted for Optional Mathematics as a major, recognizing its potential to provide valuable analytical skills and support my future endeavors in both academic and professional contexts.
-										</p>
-									</div><!--/.timeline-content-->
-								</div><!--/.timeline-->
+								<div class="education-content">
+									<h4>Chandikaswori Secondary Boarding School</h4>
+									<div class="education-details">
+										<span class="location"><i class="fas fa-map-marker-alt"></i> Gokarneshowr-2, Kathmandu</span>
+										<span class="gpa"><i class="fas fa-star"></i> GPA: 3.6</span>
+									</div>
+									<p>Optional Mathematics major, developing analytical skills and mathematical foundation for future academic pursuits.</p>
+									<div class="education-tags">
+										<span class="edu-tag">Mathematics</span>
+										<span class="edu-tag">Science</span>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-
 		</section><!--/.education-->
 		<!--education end -->
 
-		<section id="skills" class="skills">
-			<div class="skill-content">
-				<div class="section-heading text-center">
-					<h2>Skills</h2>
+		<!--skills start -->
+		<section id="skills" class="skills-redesigned">
+			<div class="container">
+				<!-- Section Header -->
+				<div class="skills-header">
+					<div class="section-heading text-center">
+						<h2>Technical Skills</h2>
+						<p class="section-subtitle">Expertise across the full development stack</p>
+					</div>
 				</div>
-				<div class="container">
-					<div class="row">
-						<!-- First Column -->
 
-						<div class="col-md-6">
-							<div class="section-heading text-center">
-								<h2>Languages</h2>
-							</div>
-							<div class="single-skill-content">
-								<!-- Python -->
-								<div class="barWrapper">
-									<span class="progressText">
-										<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--python.svg')}}" alt="Python Logo" class="logo-icon-lan"> Python
-									</span>
-									<div class="single-progress-txt">
-										<div class="progress">
-											<div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="10" aria-valuemax="100"></div>
-										</div>
-										<h3>90%</h3>
-									</div>
-								</div>
-								<!-- JavaScript -->
-								<div class="barWrapper">
-									<span class="progressText">
-										<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--javascript.svg')}}" alt="JavaScript Logo" class="logo-icon-lan"> JavaScript
-									</span>
-									<div class="single-progress-txt">
-										<div class="progress">
-											<div class="progress-bar" role="progressbar" aria-valuenow="85" aria-valuemin="10" aria-valuemax="100"></div>
-										</div>
-										<h3>85%</h3>
-									</div>
-								</div>
-								<!-- HTML5 -->
-								<div class="barWrapper">
-									<span class="progressText">
-										<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--html-5.svg')}}" alt="HTML5 Logo" class="logo-icon-lan"> HTML5
-									</span>
-									<div class="single-progress-txt">
-										<div class="progress">
-											<div class="progress-bar" role="progressbar" aria-valuenow="97" aria-valuemin="10" aria-valuemax="100"></div>
-										</div>
-										<h3>97%</h3>
-									</div>
-								</div>
-								<!-- CSS3 Animation -->
-								<div class="barWrapper">
-									<span class="progressText">
-										<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--css-3.svg')}}" alt="CSS3 Logo" class="logo-icon-lan"> CSS3
-									</span>
-									<div class="single-progress-txt">
-										<div class="progress">
-											<div class="progress-bar" role="progressbar" aria-valuenow="85" aria-valuemin="10" aria-valuemax="100"></div>
-										</div>
-										<h3>85%</h3>
-									</div>
-								</div>
-								<!-- MySQL -->
-								<div class="barWrapper">
-									<span class="progressText">
-										<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--mysql-icon.svg')}}" alt="SQL Logo" class="logo-icon-lan"> SQL
-									</span>
-									<div class="single-progress-txt">
-										<div class="progress">
-											<div class="progress-bar" role="progressbar" aria-valuenow="85" aria-valuemin="10" aria-valuemax="100"></div>
-										</div>
-										<h3>85%</h3>
-									</div>
-								</div>
-								<!-- PHP -->
-								<div class="barWrapper">
-									<span class="progressText">
-										<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--php.svg')}}" alt="PHP Logo" class="logo-icon-lan"> PHP
-									</span>
-									<div class="single-progress-txt">
-										<div class="progress">
-											<div class="progress-bar" role="progressbar" aria-valuenow="75" aria-valuemin="10" aria-valuemax="100"></div>
-										</div>
-										<h3>75%</h3>
-									</div>
-								</div>
-							</div>
-							<!-- New Section for Other Tools -->
-						<div class="col-md-12">
-								<div class="section-heading text-center">
-									<h2>Explore my soft skills, tools, and current learning journey.</h2>
-								</div>
-								<div class="button-group row single-skill-content text-center">
-									<!-- Button 2: "What I'm Learning" -->
-									<button class="btn btn-success btn-lg" data-toggle="modal" data-target="#learningModal">
-										I'm Learning
-									</button>
-									<!-- Button 1: "Other Tools I Know" -->
-									<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#otherToolsModal">
-										Other tools
-									</button>
-									<!-- Button 3: "Soft Skills" -->
-									<button class="btn btn-lg custom-soft-skills" data-toggle="modal" data-target="#softSkillsModal">
-										Soft Skills
-									</button>
-
-								</div>
-								<div class="single-skill-content text-center">
-									<h1>Do click on the buttons above to learn more! (●'◡'●)</h1>
-								</div>
-						</div>
+				<!-- Skills Content -->
+				<div class="skills-redesigned-content">
+					
+					<!-- Skills Categories -->
+					<div class="skills-categories-grid">
 						
-						<div class="modal fade" id="softSkillsModal" aria-hidden="true" aria-labelledby="softSkillsModalToggleLabel" tabindex="-1">
-							<div class="modal-dialog modal-dialog-centered">
-								<div class="modal-content">
-									<!-- Modal Header -->
-									<div class="modal-header text-white" style="background-color: #f39c12;">
-										<h1 class="modal-title fs-4" id="softSkillsModalToggleLabel">
-											<i class="bi bi-person-badge"></i> Soft Skills
-										</h1>
-										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						<!-- Programming Languages -->
+						<div class="skill-category-redesigned">
+							<div class="category-header-redesigned">
+								<div class="category-icon-redesigned">
+									<i class="fas fa-code"></i>
+								</div>
+								<h3>Programming Languages</h3>
+							</div>
+							<div class="skills-list-redesigned">
+								<div class="skill-item-redesigned expert-redesigned">
+									<div class="skill-name-redesigned">Python</div>
+									<div class="skill-level-redesigned">Expert</div>
+									<div class="skill-bar-redesigned">
+										<div class="skill-progress-redesigned" data-progress="90"></div>
 									</div>
-									<!-- Modal Body -->
-									<div class="modal-body bg-light">
-										<p class="text-muted mb-4 text-center">
-											Here are the key soft skills that drive my professional success:
-										</p>
-										<div class="row">
-											<div class="col-6">
-												<ul class="list-group">
-													<li class="list-group-item"><i class="bi bi-lightbulb"></i> Problem Solving</li>
-													<li class="list-group-item"><i class="bi bi-brush"></i> Creativity</li>
-													<li class="list-group-item"><i class="bi bi-people"></i> Teamwork</li>
-													<li class="list-group-item"><i class="bi bi-arrow-repeat"></i> Adaptability</li>
-												</ul>
-											</div>
-											<div class="col-6">
-												<ul class="list-group">
-													<li class="list-group-item"><i class="bi bi-chat-dots"></i> Communication</li>
-													<li class="list-group-item"><i class="bi bi-clock-history"></i> Time Management</li>
-													<li class="list-group-item"><i class="bi bi-shield-check"></i> Leadership</li>
-													<li class="list-group-item"><i class="bi bi-hand-thumbs-up"></i> Emotional Intelligence</li>
-												</ul>
-											</div>
-										</div>
+								</div>
+								<div class="skill-item-redesigned advanced-redesigned">
+									<div class="skill-name-redesigned">JavaScript</div>
+									<div class="skill-level-redesigned">Advanced</div>
+									<div class="skill-bar-redesigned">
+										<div class="skill-progress-redesigned" data-progress="85"></div>
 									</div>
-									<!-- Modal Footer -->
-									<div class="modal-footer" style="background-color: #f39c12;">
-										<p class="w-100 mb-0 text-light text-center">Excelling in these skills helps me deliver value effectively!</p>
+								</div>
+								<div class="skill-item-redesigned advanced-redesigned">
+									<div class="skill-name-redesigned">TypeScript</div>
+									<div class="skill-level-redesigned">Advanced</div>
+									<div class="skill-bar-redesigned">
+										<div class="skill-progress-redesigned" data-progress="80"></div>
+									</div>
+								</div>
+								<div class="skill-item-redesigned expert-redesigned">
+									<div class="skill-name-redesigned">HTML5/CSS3</div>
+									<div class="skill-level-redesigned">Expert</div>
+									<div class="skill-bar-redesigned">
+										<div class="skill-progress-redesigned" data-progress="95"></div>
+									</div>
+								</div>
+								<div class="skill-item-redesigned intermediate-redesigned">
+									<div class="skill-name-redesigned">Java</div>
+									<div class="skill-level-redesigned">Intermediate</div>
+									<div class="skill-bar-redesigned">
+										<div class="skill-progress-redesigned" data-progress="70"></div>
 									</div>
 								</div>
 							</div>
 						</div>
-						
 
-						<!-- Modal for Other Tools -->
-						<div class="modal fade" id="otherToolsModal" tabindex="-1" role="dialog" aria-labelledby="otherToolsModalLabel" aria-hidden="true">
-							<div class="modal-dialog" role="document">
-								<div class="modal-content">
-									<div class="modal-header bg-primary">
-										<h5 class="modal-title" id="otherToolsModalLabel">Other Tools I Know</h5>
-										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-											<span aria-hidden="true">&times;</span>
-										</button>
+						<!-- Frontend Technologies -->
+						<div class="skill-category-redesigned">
+							<div class="category-header-redesigned">
+								<div class="category-icon-redesigned">
+									<i class="fas fa-paint-brush"></i>
+								</div>
+								<h3>Frontend Development</h3>
+							</div>
+							<div class="skills-list-redesigned">
+								<div class="skill-item-redesigned advanced-redesigned">
+									<div class="skill-name-redesigned">React</div>
+									<div class="skill-level-redesigned">Advanced</div>
+									<div class="skill-bar-redesigned">
+										<div class="skill-progress-redesigned" data-progress="80"></div>
 									</div>
-									<div class="modal-body">
-										<div class="row single-skill-content">
-											<!-- Version Control -->
-											<div class="section-heading text-center">
-												<h2 class="text-primary">Version Control</h2>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--git-icon.svg') }}" alt="Git Logo" class="logo-icon">
-														<h5 class="card-title mt-3">Git</h5>
-													</div>
-												</div>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--github.svg') }}" alt="GitHub Logo" class="logo-icon">
-														<h5 class="card-title mt-3">GitHub</h5>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row single-skill-content">
-										
-											<!-- Designing Tools -->
-											<div class="section-heading text-center">
-												<h2 class="text-primary">Designing Tools</h2>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--figma.svg') }}" alt="Figma Logo" class="logo-icon">
-														<h5 class="card-title mt-3">Figma</h5>
-													</div>
-												</div>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--sketch.svg') }}" alt="Sketch Logo" class="logo-icon">
-														<h5 class="card-title mt-3">Sketch</h5>
-													</div>
-												</div>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--canva.svg') }}" alt="Canva Logo" class="logo-icon">
-														<h5 class="card-title mt-3">Canva</h5>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row single-skill-content">
-											<!-- Cloud Services -->
-											<div class="section-heading text-center">
-												<h2 class="text-primary">Cloud Services</h2>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--aws.svg') }}" alt="AWS Logo" class="logo-icon">
-														<h5 class="card-title mt-3">AWS</h5>
-													</div>
-												</div>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--oracle.svg') }}" alt="Firebase Logo" class="logo-icon">
-														<h5 class="card-title mt-3">Oracle</h5>
-													</div>
-												</div>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--digitalocean.svg') }}" alt="Firebase Logo" class="logo-icon">
-														<h5 class="card-title mt-3">Digital Ocean</h5>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row single-skill-content">
-											<!-- Backend as Service -->
-											<div class="section-heading text-center">
-												<h2 class="text-primary">Backend as Service</h2>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--appwrite.svg') }}" alt="Firebase Logo" class="logo-icon">
-														<h5 class="card-title mt-3">Appwrite</h5>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row single-skill-content">
-											<!-- Containers and CI/CD -->
-											<div class="section-heading text-center">
-												<h2 class="text-primary">Containers and CI/CD</h2>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--docker-icon.svg') }}" alt="Docker Logo" class="logo-icon">
-														<h5 class="card-title mt-3">Docker</h5>
-													</div>
-												</div>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--jenkins.svg') }}" alt="Jenkins Logo" class="logo-icon">
-														<h5 class="card-title mt-3">Jenkins</h5>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row single-skill-content">
-											<!-- Database Tools -->
-											<div class="section-heading text-center">
-												<h2 class="text-primary">Database Tools</h2>
-											</div>
-
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--postgresql.svg') }}" alt="PostgreSQL Logo" class="logo-icon">
-														<h5 class="card-title mt-3">PostgreSQL</h5>
-													</div>
-												</div>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--mysql-icon.svg') }}" alt="MySQL Logo" class="logo-icon">
-														<h5 class="card-title mt-3">MySQL</h5>
-													</div>
-												</div>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--mongodb.svg') }}" alt="MongoDB Logo" class="logo-icon">
-														<h5 class="card-title mt-3">MongoDB</h5>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row single-skill-content">
-											<!-- Database Tools -->
-											<div class="section-heading text-center">
-												<h2 class="text-primary">Web Development Tools</h2>
-											</div>
-
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--wordpress.svg') }}" alt="WordPress Logo" class="logo-icon">
-														<h5 class="card-title mt-3">WordPress</h5>
-													</div>
-												</div>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--shopify.svg') }}" alt="Shopify Logo" class="logo-icon">
-														<h5 class="card-title mt-3">Shopify</h5>
-													</div>
-												</div>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--wix.svg') }}" alt="Wix Logo" class="logo-icon">
-														<h5 class="card-title mt-3">Wix</h5>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row single-skill-content">
-											<!-- Miscellaneous -->
-											<div class="section-heading text-center">
-												<h2 class="text-primary">API Tools & Integration</h2>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--rest-api.svg') }}" alt="Rest Api Logo" class="logo-icon">
-														<h5 class="card-title mt-3">Rest Api</h5>
-													</div>
-												</div>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--swagger.svg') }}" alt="GraphQL Logo" class="logo-icon">
-														<h5 class="card-title mt-3">Swagger</h5>
-													</div>
-												</div>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--axios.svg') }}" alt="Axios Logo" class="logo-icon">
-														<h5 class="card-title mt-3">Axios</h5>
-													</div>
-												</div>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--postman.svg') }}" alt="Postman Logo" class="logo-icon">
-														<h5 class="card-title mt-3">Postman</h5>
-													</div>
-												</div>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--graphql.svg') }}" alt="GraphQL Logo" class="logo-icon">
-														<h5 class="card-title mt-3">GraphQL</h5>
-													</div>
-												</div>
-											</div>
-										</div>
-										
+								</div>
+								<div class="skill-item-redesigned advanced-redesigned">
+									<div class="skill-name-redesigned">React Native</div>
+									<div class="skill-level-redesigned">Advanced</div>
+									<div class="skill-bar-redesigned">
+										<div class="skill-progress-redesigned" data-progress="75"></div>
 									</div>
-									<div class="modal-footer bg-primary ">
-										<p class="w-100 mb-0 text-light text-center">Excelling in these tools helps me deliver my value effectively! You can Check Out <span data-toggle="modal" data-target="#learningModal" style="color: black;">What I'm Currently Learning as well</span></p>
+								</div>
+								<div class="skill-item-redesigned intermediate-redesigned">
+									<div class="skill-name-redesigned">Ionic</div>
+									<div class="skill-level-redesigned">Intermediate</div>
+									<div class="skill-bar-redesigned">
+										<div class="skill-progress-redesigned" data-progress="70"></div>
+									</div>
+								</div>
+								<div class="skill-item-redesigned expert-redesigned">
+									<div class="skill-name-redesigned">Bootstrap/Tailwind</div>
+									<div class="skill-level-redesigned">Expert</div>
+									<div class="skill-bar-redesigned">
+										<div class="skill-progress-redesigned" data-progress="90"></div>
+									</div>
+								</div>
+								<div class="skill-item-redesigned intermediate-redesigned">
+									<div class="skill-name-redesigned">Vue.js</div>
+									<div class="skill-level-redesigned">Intermediate</div>
+									<div class="skill-bar-redesigned">
+										<div class="skill-progress-redesigned" data-progress="65"></div>
 									</div>
 								</div>
 							</div>
 						</div>
-						
-						<!-- Modal for Learning -->
-						<div class="modal fade" id="learningModal" tabindex="-1" role="dialog" aria-labelledby="learningModalLabel" aria-hidden="true">
-							<div class="modal-dialog" role="document">
-								<div class="modal-content">
-									<div class="modal-header bg-success">
-										<h5 class="modal-title" id="learningModalLabel">What I'm Currently Learning</h5>
-										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-											<span aria-hidden="true">&times;</span>
-										</button>
-									</div>
-									<div class="modal-body">
-										<div class="row single-skill-content">
-											<!-- Version Control -->
-											<div class="section-heading text-center">
-												<h2 class="text-success">Languages</h2>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--typescript.svg') }}" alt="TypeScript Logo" class="logo-icon">
-														<h5 class="card-title mt-3">TypeScript</h5>
-													</div>
-												</div>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--csharp.svg') }}" alt="C# Logo" class="logo-icon">
-														<h5 class="card-title mt-3">C#</h5>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row single-skill-content">
-											<div class="section-heading text-center">
-												<h2 class="text-success">Framework</h2>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--dotnet.svg') }}" alt=".net Logo" class="logo-icon">
-														<h5 class="card-title mt-3">.net</h5>
-													</div>
-												</div>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--expressjs.svg') }}" alt="Expressjs Logo" class="logo-icon">
-														<h5 class="card-title mt-3">Express.js</h5>
-													</div>
-												</div>
-											</div>
-											
-										</div>
-										<div class="row single-skill-content">
-											<div class="section-heading text-center">
-												<h2 class="text-success">Library</h2>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--keras.svg') }}" alt="Figma Logo" class="logo-icon">
-														<h5 class="card-title mt-3">Keras</h5>
-													</div>
-												</div>
-											</div>
-											
-										</div>
 
+						<!-- Backend Technologies -->
+						<div class="skill-category-redesigned">
+							<div class="category-header-redesigned">
+								<div class="category-icon-redesigned">
+									<i class="fas fa-server"></i>
+								</div>
+								<h3>Backend Development</h3>
+							</div>
+							<div class="skills-list-redesigned">
+								<div class="skill-item-redesigned expert-redesigned">
+									<div class="skill-name-redesigned">Flask</div>
+									<div class="skill-level-redesigned">Expert</div>
+									<div class="skill-bar-redesigned">
+										<div class="skill-progress-redesigned" data-progress="90"></div>
 									</div>
-									<div class="modal-footer bg-success ">
-										<p class="w-100 mb-0 text-dark text-center" style="color: black;">I have the ability to learn multiple technologies and a passion for exploring new onesヾ(⌐■_■)ノ♪! You can Check Out <span data-toggle="modal" data-target="#otherToolsModal" style="color: blue;">What I already know as well</span></p>
+								</div>
+								<div class="skill-item-redesigned advanced-redesigned">
+									<div class="skill-name-redesigned">Django</div>
+									<div class="skill-level-redesigned">Advanced</div>
+									<div class="skill-bar-redesigned">
+										<div class="skill-progress-redesigned" data-progress="85"></div>
+									</div>
+								</div>
+								<div class="skill-item-redesigned intermediate-redesigned">
+									<div class="skill-name-redesigned">FastAPI</div>
+									<div class="skill-level-redesigned">Intermediate</div>
+									<div class="skill-bar-redesigned">
+										<div class="skill-progress-redesigned" data-progress="75"></div>
+									</div>
+								</div>
+								<div class="skill-item-redesigned intermediate-redesigned">
+									<div class="skill-name-redesigned">Node.js</div>
+									<div class="skill-level-redesigned">Intermediate</div>
+									<div class="skill-bar-redesigned">
+										<div class="skill-progress-redesigned" data-progress="75"></div>
+									</div>
+								</div>
+								<div class="skill-item-redesigned intermediate-redesigned">
+									<div class="skill-name-redesigned">Express.js</div>
+									<div class="skill-level-redesigned">Intermediate</div>
+									<div class="skill-bar-redesigned">
+										<div class="skill-progress-redesigned" data-progress="75"></div>
 									</div>
 								</div>
 							</div>
 						</div>
+
+						<!-- Database & DevOps -->
+						<div class="skill-category-redesigned">
+							<div class="category-header-redesigned">
+								<div class="category-icon-redesigned">
+									<i class="fas fa-database"></i>
+								</div>
+								<h3>Database & DevOps</h3>
+							</div>
+							<div class="skills-list-redesigned">
+								<div class="skill-item-redesigned advanced-redesigned">
+									<div class="skill-name-redesigned">MySQL</div>
+									<div class="skill-level-redesigned">Advanced</div>
+									<div class="skill-bar-redesigned">
+										<div class="skill-progress-redesigned" data-progress="85"></div>
+									</div>
+								</div>
+								<div class="skill-item-redesigned intermediate-redesigned">
+									<div class="skill-name-redesigned">PostgreSQL</div>
+									<div class="skill-level-redesigned">Intermediate</div>
+									<div class="skill-bar-redesigned">
+										<div class="skill-progress-redesigned" data-progress="70"></div>
+									</div>
+								</div>
+								<div class="skill-item-redesigned intermediate-redesigned">
+									<div class="skill-name-redesigned">Docker</div>
+									<div class="skill-level-redesigned">Intermediate</div>
+									<div class="skill-bar-redesigned">
+										<div class="skill-progress-redesigned" data-progress="80"></div>
+									</div>
+								</div>
+								<div class="skill-item-redesigned advanced-redesigned">
+									<div class="skill-name-redesigned">Git</div>
+									<div class="skill-level-redesigned">Advanced</div>
+									<div class="skill-bar-redesigned">
+										<div class="skill-progress-redesigned" data-progress="85"></div>
+									</div>
+								</div>
+								<div class="skill-item-redesigned intermediate-redesigned">
+									<div class="skill-name-redesigned">AWS</div>
+									<div class="skill-level-redesigned">Intermediate</div>
+									<div class="skill-bar-redesigned">
+										<div class="skill-progress-redesigned" data-progress="75"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- AI/ML & Data Science -->
+						<div class="skill-category-redesigned">
+							<div class="category-header-redesigned">
+								<div class="category-icon-redesigned">
+									<i class="fas fa-brain"></i>
+								</div>
+								<h3>AI/ML & Data Science</h3>
+							</div>
+							<div class="skills-list-redesigned">
+								<div class="skill-item-redesigned advanced-redesigned">
+									<div class="skill-name-redesigned">TensorFlow</div>
+									<div class="skill-level-redesigned">Advanced</div>
+									<div class="skill-bar-redesigned">
+										<div class="skill-progress-redesigned" data-progress="75"></div>
+									</div>
+								</div>
+								<div class="skill-item-redesigned expert-redesigned">
+									<div class="skill-name-redesigned">NumPy & Pandas</div>
+									<div class="skill-level-redesigned">Expert</div>
+									<div class="skill-bar-redesigned">
+										<div class="skill-progress-redesigned" data-progress="85"></div>
+									</div>
+								</div>
+								<div class="skill-item-redesigned advanced-redesigned">
+									<div class="skill-name-redesigned">Scikit-learn</div>
+									<div class="skill-level-redesigned">Advanced</div>
+									<div class="skill-bar-redesigned">
+										<div class="skill-progress-redesigned" data-progress="80"></div>
+									</div>
+								</div>
+								<div class="skill-item-redesigned intermediate-redesigned">
+									<div class="skill-name-redesigned">OpenCV</div>
+									<div class="skill-level-redesigned">Intermediate</div>
+									<div class="skill-bar-redesigned">
+										<div class="skill-progress-redesigned" data-progress="70"></div>
+									</div>
+								</div>
+								<div class="skill-item-redesigned intermediate-redesigned">
+									<div class="skill-name-redesigned">XGBoost</div>
+									<div class="skill-level-redesigned">Intermediate</div>
+									<div class="skill-bar-redesigned">
+										<div class="skill-progress-redesigned" data-progress="70"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- Tools & Operating Systems -->
+						<div class="skill-category-redesigned">
+							<div class="category-header-redesigned">
+								<div class="category-icon-redesigned">
+									<i class="fas fa-tools"></i>
+								</div>
+								<h3>Tools & OS</h3>
+							</div>
+							<div class="skills-list-redesigned">
+								<div class="skill-item-redesigned advanced-redesigned">
+									<div class="skill-name-redesigned">Linux</div>
+									<div class="skill-level-redesigned">Advanced</div>
+									<div class="skill-bar-redesigned">
+										<div class="skill-progress-redesigned" data-progress="90"></div>
+									</div>
+								</div>
+								<div class="skill-item-redesigned advanced-redesigned">
+									<div class="skill-name-redesigned">VS Code</div>
+									<div class="skill-level-redesigned">Advanced</div>
+									<div class="skill-bar-redesigned">
+										<div class="skill-progress-redesigned" data-progress="88"></div>
+									</div>
+								</div>
+								<div class="skill-item-redesigned advanced-redesigned">
+									<div class="skill-name-redesigned">Postman</div>
+									<div class="skill-level-redesigned">Advanced</div>
+									<div class="skill-bar-redesigned">
+										<div class="skill-progress-redesigned" data-progress="82"></div>
+									</div>
+								</div>
+								<div class="skill-item-redesigned intermediate-redesigned">
+									<div class="skill-name-redesigned">Figma</div>
+									<div class="skill-level-redesigned">Intermediate</div>
+									<div class="skill-bar-redesigned">
+										<div class="skill-progress-redesigned" data-progress="65"></div>
+									</div>
+								</div>
+								<div class="skill-item-redesigned advanced-redesigned">
+									<div class="skill-name-redesigned">CLI</div>
+									<div class="skill-level-redesigned">Advanced</div>
+									<div class="skill-bar-redesigned">
+										<div class="skill-progress-redesigned" data-progress="85"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+					<!-- Familiar Tools & Concepts -->
+					<div class="familiar-tools-redesigned">
+						<div class="tools-header-redesigned">
+							<h4>Familiar Tools & Concepts</h4>
+							<p>Additional technologies and methodologies I work with regularly</p>
 						</div>
 						
-						<!-- Second Column -->
-						<div class="row">
-							<!-- Frameworks Section -->
-							<div class="col-md-6">
-								<div class="section-heading text-center">
-									<h2 class="text-primary">Frameworks</h2>
+						<div class="tools-grid-redesigned">
+							
+							<!-- Development Tools -->
+							<div class="tools-category-redesigned">
+								<div class="tools-category-header-redesigned">
+									<i class="fas fa-wrench"></i>
+									<h5>Development Tools</h5>
 								</div>
-								<div class="row single-skill-content">
-									<!-- Framework Cards -->
-									<div class="col-sm-6 mb-4">
-										<div class="card text-center shadow-sm framework-card">
-											<div class="card-body">
-												<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--capacitor-js.svg') }}" alt="Angular Logo" class="logo-icon">
-												<h5 class="card-title mt-3">Capacitor</h5>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-6 mb-4">
-										<div class="card text-center shadow-sm framework-card">
-											<div class="card-body">
-												<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--ionic-icon.svg') }}" alt="Ionic Logo" class="logo-icon">
-												<h5 class="card-title mt-3">Ionic Framework</h5>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-6 mb-4">
-										<div class="card text-center shadow-sm framework-card">
-											<div class="card-body">
-												<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--django-icon.svg') }}" alt="Django Logo" class="logo-icon">
-												<h5 class="card-title mt-3">Django</h5>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-6 mb-4">
-										<div class="card text-center shadow-sm framework-card">
-											<div class="card-body">
-												<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--flask.svg') }}" alt="Flask Logo" class="logo-icon">
-												<h5 class="card-title mt-3">Flask</h5>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-6 mb-4">
-										<div class="card text-center shadow-sm framework-card">
-											<div class="card-body">
-												<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--fastapi.svg') }}" alt="FastAPI Logo" class="logo-icon">
-												<h5 class="card-title mt-3">FastAPI</h5>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-6 mb-4">
-										<div class="card text-center shadow-sm framework-card">
-											<div class="card-body">
-												<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--redis.svg') }}" alt="Redis Logo" class="logo-icon">
-												<h5 class="card-title mt-3">Redis</h5>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-6 mb-4">
-										<div class="card text-center shadow-sm framework-card">
-											<div class="card-body">
-												<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--bootstrap.svg') }}" alt="Bootstrap Logo" class="logo-icon">
-												<h5 class="card-title mt-3">Bootstrap 5</h5>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-6 mb-4">
-										<div class="card text-center shadow-sm framework-card">
-											<div class="card-body">
-												<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--tailwindcss-icon.svg') }}" alt="Tailwind Logo" class="logo-icon">
-												<h5 class="card-title mt-3">Tailwind CSS</h5>
-											</div>
-										</div>
-									</div>
+								<div class="tools-list-redesigned">
+									<span class="tool-tag-redesigned">Visual Studio Code</span>
+									<span class="tool-tag-redesigned">PyCharm</span>
+									<span class="tool-tag-redesigned">Sublime Text</span>
+									<span class="tool-tag-redesigned">Jupyter Notebook</span>
+									<span class="tool-tag-redesigned">Vim</span>
+									<span class="tool-tag-redesigned">Nano</span>
 								</div>
 							</div>
-						
-							<!-- Libraries Section -->
-							<div class="col-md-6">
-								<div class="section-heading text-center">
-									<h2 class="text-success">Libraries</h2>
+
+							<!-- Version Control -->
+							<div class="tools-category-redesigned">
+								<div class="tools-category-header-redesigned">
+									<i class="fab fa-git-alt"></i>
+									<h5>Version Control</h5>
 								</div>
-								<div class="row single-skill-content">
-									<!-- Library Cards -->
-									<div class="col-sm-6 mb-4">
-										<div class="card text-center shadow-sm library-card">
-											<div class="card-body">
-												<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--numpy.svg') }}" alt="NumPy Logo" class="logo-icon">
-												<h5 class="card-title mt-3">NumPy</h5>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-6 mb-4">
-										<div class="card text-center shadow-sm library-card">
-											<div class="card-body">
-												<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--pandas-icon.svg') }}" alt="Pandas Logo" class="logo-icon">
-												<h5 class="card-title mt-3">Pandas</h5>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-6 mb-4">
-										<div class="card text-center shadow-sm library-card">
-											<div class="card-body">
-												<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--scikitlearn.svg') }}" alt="Scikit-learn Logo" class="logo-icon">
-												<h5 class="card-title mt-3">Scikit-learn</h5>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-6 mb-4">
-										<div class="card text-center shadow-sm library-card">
-											<div class="card-body">
-												<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--tensorflow.svg') }}" alt="TensorFlow Logo" class="logo-icon">
-												<h5 class="card-title mt-3">TensorFlow</h5>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-6 mb-4">
-										<div class="card text-center shadow-sm library-card">
-											<div class="card-body">
-												<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--chartjs.svg') }}" alt="Chart.js Logo" class="logo-icon">
-												<h5 class="card-title mt-3">Chart.js</h5>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-6 mb-4">
-										<div class="card text-center shadow-sm library-card">
-											<div class="card-body">
-												<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--matplotlib.svg') }}" alt="Matplotlib Logo" class="logo-icon">
-												<h5 class="card-title mt-3">Matplotlib</h5>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-6 mb-4">
-										<div class="card text-center shadow-sm library-card">
-											<div class="card-body">
-												<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--pytorch.svg') }}" alt="PyTorch Logo" class="logo-icon">
-												<h5 class="card-title mt-3">PyTorch</h5>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-6 mb-4">
-										<div class="card text-center shadow-sm library-card">
-											<div class="card-body">
-												<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--sqlalchemy.svg') }}" alt="SQLAlchemy Logo" class="logo-icon">
-												<h5 class="card-title mt-3">SQLAlchemy</h5>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-6 mb-4">
-										<div class="card text-center shadow-sm library-card">
-											<div class="card-body">
-												<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--react.svg') }}" alt="React Logo" class="logo-icon">
-												<h5 class="card-title mt-3">React.js</h5>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-6 mb-4">
-										<div class="card text-center shadow-sm library-card">
-											<div class="card-body"></div>
-												<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--jquery.svg') }}" alt="jQuery UI Logo" class="logo-icon">
-												<h5 class="card-title mt-3">jQuery UI</h5>
-											</div>
-										</div>
-									</div>
+								<div class="tools-list-redesigned">
+									<span class="tool-tag-redesigned">Git</span>
+									<span class="tool-tag-redesigned">GitHub</span>
+									<span class="tool-tag-redesigned">GitLab</span>
+									<span class="tool-tag-redesigned">Bitbucket</span>
+									<span class="tool-tag-redesigned">Git Flow</span>
 								</div>
-								<h1 class="text-center">I can do more try me once!😁</h1>
 							</div>
-						</div>						
+
+							<!-- Testing & Debugging -->
+							<div class="tools-category-redesigned">
+								<div class="tools-category-header-redesigned">
+									<i class="fas fa-bug"></i>
+									<h5>Testing & Debugging</h5>
+								</div>
+								<div class="tools-list-redesigned">
+									<span class="tool-tag-redesigned">Unit Testing</span>
+									<span class="tool-tag-redesigned">Pytest</span>
+									<span class="tool-tag-redesigned">Jest</span>
+									<span class="tool-tag-redesigned">Postman</span>
+									<span class="tool-tag-redesigned">Chrome DevTools</span>
+								</div>
+							</div>
+
+							<!-- Package Managers -->
+							<div class="tools-category-redesigned">
+								<div class="tools-category-header-redesigned">
+									<i class="fas fa-cube"></i>
+									<h5>Package Managers</h5>
+								</div>
+								<div class="tools-list-redesigned">
+									<span class="tool-tag-redesigned">npm</span>
+									<span class="tool-tag-redesigned">pip</span>
+									<span class="tool-tag-redesigned">yarn</span>
+									<span class="tool-tag-redesigned">conda</span>
+									<span class="tool-tag-redesigned">pipenv</span>
+								</div>
+							</div>
+
+							<!-- Design & UI/UX -->
+							<div class="tools-category-redesigned">
+								<div class="tools-category-header-redesigned">
+									<i class="fas fa-palette"></i>
+									<h5>Design & UI/UX</h5>
+								</div>
+								<div class="tools-list-redesigned">
+									<span class="tool-tag-redesigned">Figma</span>
+									<span class="tool-tag-redesigned">Adobe XD</span>
+									<span class="tool-tag-redesigned">Canva</span>
+									<span class="tool-tag-redesigned">Material Design</span>
+									<span class="tool-tag-redesigned">Bootstrap</span>
+								</div>
+							</div>
+
+							<!-- Operating Systems -->
+							<div class="tools-category-redesigned">
+								<div class="tools-category-header-redesigned">
+									<i class="fas fa-desktop"></i>
+									<h5>Operating Systems</h5>
+								</div>
+								<div class="tools-list-redesigned">
+									<span class="tool-tag-redesigned">Ubuntu</span>
+									<span class="tool-tag-redesigned">CentOS</span>
+									<span class="tool-tag-redesigned">Windows</span>
+									<span class="tool-tag-redesigned">macOS</span>
+									<span class="tool-tag-redesigned">Debian</span>
+								</div>
+							</div>
+
+							<!-- Cloud Platforms -->
+							<div class="tools-category-redesigned">
+								<div class="tools-category-header-redesigned">
+									<i class="fas fa-cloud"></i>
+									<h5>Cloud Platforms</h5>
+								</div>
+								<div class="tools-list-redesigned">
+									<span class="tool-tag-redesigned">AWS</span>
+									<span class="tool-tag-redesigned">Google Cloud</span>
+									<span class="tool-tag-redesigned">Heroku</span>
+									<span class="tool-tag-redesigned">DigitalOcean</span>
+									<span class="tool-tag-redesigned">Vercel</span>
+								</div>
+							</div>
+
+							<!-- Development Concepts -->
+							<div class="tools-category-redesigned">
+								<div class="tools-category-header-redesigned">
+									<i class="fas fa-lightbulb"></i>
+									<h5>Development Concepts</h5>
+								</div>
+								<div class="tools-list-redesigned">
+									<span class="tool-tag-redesigned">RESTful APIs</span>
+									<span class="tool-tag-redesigned">MVC Architecture</span>
+									<span class="tool-tag-redesigned">Agile Development</span>
+									<span class="tool-tag-redesigned">Responsive Design</span>
+									<span class="tool-tag-redesigned">Object-Oriented Programming</span>
+								</div>
+							</div>
+
+						</div>
+
+						<!-- Call to Action -->
+						<div class="tools-cta-redesigned">
+							<h5>Ready to Collaborate?</h5>
+							<p>Let's discuss how these tools and skills can benefit your next project</p>
+							<a href="#contact" class="tools-cta-button-redesigned">
+								<i class="fas fa-handshake"></i>
+								Start Conversation
+							</a>
+						</div>
 					</div>
 				</div>
 			</div>
-		</section>
-		
-		
+		</section><!--/.skills-->
+		<!--skills end -->
 
 		<!--experience start -->
 		<section id="experience" class="experience">
-			<div class="section-heading text-center">
-				<h2>experience</h2>
-			</div>
 			<div class="container">
-				<div class="experience-content">
-						<div class="main-timeline">
-							<ul>
-								<li>
-									<div class="single-timeline-box fix">
-										<div class="row">
-											<div class="col-md-5">
-												<div class="experience-time text-right">
-													<h2>2024 - Present</h2>
-													<h3>Student & Freelancer</h3>
-												</div><!--/.experience-time-->
-											</div><!--/.col-->
-											<div class="col-md-offset-1 col-md-5">
-												<div class="timeline">
-													<div class="timeline-content">
-														<h4 class="title">
-															<span><i class="fa fa-circle" aria-hidden="true"></i></span>
-															Experiencing the technology
-														</h4>
-														<h5>mostly remote</h5>
-														<p class="description">
-															Still Learning but better than before. In terms of freelancing i am still majorly focusing on local projects i.e with clients in the same country. 
-														</p>
-													</div><!--/.timeline-content-->
-												</div><!--/.timeline-->
-											</div><!--/.col-->
+				<div class="section-heading text-center">
+					<h2>Professional Journey</h2>
+					<p class="section-subtitle">Building expertise through learning and practice</p>
+				</div>
+				
+				<div class="experience-timeline">
+					<div class="row justify-content-center">
+						<div class="col-lg-8">
+							<!-- Current Phase -->
+							<div class="timeline-item card-base">
+								<div class="timeline-content">
+									<div class="timeline-header">
+										<h3>Full Stack Developer & Student</h3>
+										<span class="timeline-date">2025 - Present</span>
+									</div>
+									<div class="timeline-location">
+										<i class="fas fa-map-marker-alt"></i>
+										Remote & Nepal
+									</div>
+									<div class="timeline-description">
+										<p>Advancing my skills in modern web technologies while working on diverse freelance projects. Specializing in Python web frameworks, JavaScript development, and exploring AI/ML applications in web development.</p>
+										<div class="timeline-skills">
+											<span class="skill-tag">Django</span>
+											<span class="skill-tag">React</span>
+											<span class="skill-tag">FastAPI</span>
+											<span class="skill-tag">Docker</span>
+											<span class="skill-tag">AWS</span>
 										</div>
-									</div><!--/.single-timeline-box-->
-								</li>
+									</div>
+								</div>
+							</div>
 
-								<li>
-									<div class="single-timeline-box fix">
-										<div class="row">
-											<div class="col-md-offset-1 col-md-5 experience-time-responsive">
-												<div class="experience-time">
-													<h2>
-														<span><i class="fa fa-circle" aria-hidden="true"></i></span>
-														2022 - 2024
-													</h2>
-													<h3>Student & Freelancer</h3>
-												</div><!--/.experience-time-->
-											</div><!--/.col-->
-											<div class="col-md-5">
-												<div class="timeline">
-													<div class="timeline-content text-right">
-														<h4 class="title">
-															Learning the latest technologies
-														</h4>
-														<h5>totaly remote</h5>
-														<p class="description">
-															At this time and phase i was learning the latest technologies with studies side by side. First 1 year of 2022 and three months of 2023 was gone is flash and with 2023 year i started major freelancing. I used to do local projects.
-														</p>
-													</div><!--/.timeline-content-->
-												</div><!--/.timeline-->
-											</div><!--/.col-->
-											<div class="col-md-offset-1 col-md-5 experience-time-main">
-												<div class="experience-time">
-													<h2>
-														<span><i class="fa fa-circle" aria-hidden="true"></i></span>
-														2022 - 2024
-													</h2>
-													<h3>Student & Freelancer</h3>
-												</div><!--/.experience-time-->
-											</div><!--/.col-->
+							<!-- Learning Phase -->
+							<div class="timeline-item card-base">
+								<div class="timeline-content">
+									<div class="timeline-header">
+										<h3>Student & Emerging Developer</h3>
+										<span class="timeline-date">2022 - 2024</span>
+									</div>
+									<div class="timeline-location">
+										<i class="fas fa-map-marker-alt"></i>
+										Remote Learning & Local Projects
+									</div>
+									<div class="timeline-description">
+										<p>Intensive learning phase focusing on modern web technologies while completing academic studies. Built foundation in full-stack development and started taking on local freelance projects.</p>
+										<div class="timeline-achievements">
+											<div class="achievement">
+												<i class="fas fa-check-circle"></i>
+												<span>Mastered Python web frameworks</span>
+											</div>
+											<div class="achievement">
+												<i class="fas fa-check-circle"></i>
+												<span>Completed multiple client projects</span>
+											</div>
+											<div class="achievement">
+												<i class="fas fa-check-circle"></i>
+												<span>Built responsive web applications</span>
+											</div>
 										</div>
-									</div><!--/.single-timeline-box-->
-								</li>
-							</ul>
-						</div><!--.main-timeline-->
-					</div><!--.experience-content-->
-
-					<div class="container text-center mt-5">
-						<p></p>
-							"I know this will not be enough experience to impress you, but try me, and you will see the results yourself."
-						</p>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
-			</div>
+				</div>
 
+				<div class="experience-cta text-center">
+					<div class="cta-content">
+						<h4>Ready to Create Something Amazing?</h4>
+						<p>"My journey is just beginning, but my passion and dedication to excellence will exceed your expectations."</p>
+						<a href="#contact" class="btn btn-primary">Let's Work Together</a>
+					</div>
+				</div>
+			</div>
 		</section><!--/.experience-->
 		<!--experience end -->
 
 		<!--profiles start -->
 		<section id="profiles" class="profiles">
-			<div class="profiles-details">
+			<div class="container">
 				<div class="section-heading text-center">
-					<h2>Profiles</h2>
+					<h2>Connect With Me</h2>
+					<p class="section-subtitle">Find me across various platforms</p>
 				</div>
-				<div class="container">
-					<div class="profiles-content">
-						<div class="row">
-							<!-- Github -->
-							<div class="col-sm-3">
-								<div class="single-profile">
-									<div class="profile-txt">
-										<a href="https://github.com/Lusan-sapkota" target="_blank"><i class="fab fa-github"></i></a>
-										<div class="profile-icon-name">Github</div>
-									</div>
-									<div class="single-profile-overlay">
-										<div class="profile-txt">
-											<a href="https://github.com/Lusan-sapkota" target="_blank"><i class="fab fa-github"></i></a>
-											<div class="profile-icon-name">Github</div>
-										</div>
-									</div>
+				
+				<div class="profiles-grid">
+					<div class="row justify-content-center">
+						<!-- Github -->
+						<div class="col-lg-3 col-md-6 mb-4">
+							<div class="profile-card card-base">
+								<div class="profile-icon">
+									<i class="fab fa-github"></i>
 								</div>
-							</div>
-		
-							<!-- LinkedIn -->
-							<div class="col-sm-3">
-								<div class="single-profile">
-									<div class="profile-txt">
-										<a href="https://www.linkedin.com/in/lusan-sapkota-a08194284/" target="_blank"><i class="fab fa-linkedin"></i></a>
-										<div class="profile-icon-name">LinkedIn</div>
-									</div>
-									<div class="single-profile-overlay">
-										<div class="profile-txt">
-											<a href="https://www.linkedin.com/in/lusan-sapkota-a08194284/" target="_blank"><i class="fab fa-linkedin"></i></a>
-											<div class="profile-icon-name">LinkedIn</div>
-										</div>
-									</div>
-								</div>
-							</div>
-		
-							<!-- HackerRank -->
-							<div class="col-sm-3">
-								<div class="single-profile">
-									<div class="profile-txt">
-										<a href="https://www.hackerrank.com/profile/sapkotalusan" target="_blank"><i class="fab fa-hackerrank"></i></a>
-										<div class="profile-icon-name">HackerRank</div>
-									</div>
-									<div class="single-profile-overlay">
-										<div class="profile-txt">
-											<a href="https://www.hackerrank.com/profile/sapkotalusan" target="_blank"><i class="fab fa-hackerrank"></i></a>
-											<div class="profile-icon-name">HackerRank</div>
-										</div>
-									</div>
-								</div>
-							</div>
-		
-							<!-- Instagram -->
-							<div class="col-sm-3">
-								<div class="single-profile profile-no-border">
-									<div class="profile-txt">
-										<a href="https://www.instagram.com/sapkotalusan/" target="_blank"><i class="fab fa-instagram"></i></a>
-										<div class="profile-icon-name">Instagram</div>
-									</div>
-									<div class="single-profile-overlay">
-										<div class="profile-txt">
-											<a href="https://www.instagram.com/sapkotalusan/" target="_blank"><i class="fab fa-instagram"></i></a>
-											<div class="profile-icon-name">Instagram</div>
-										</div>
-									</div>
+								<div class="profile-content">
+									<h4>GitHub</h4>
+									<p>Open source projects & code repositories</p>
+									<a href="https://github.com/Lusan-sapkota" target="_blank" class="profile-link">
+										View Profile <i class="fas fa-external-link-alt"></i>
+									</a>
 								</div>
 							</div>
 						</div>
-		
+
+						<!-- LinkedIn -->
+						<div class="col-lg-3 col-md-6 mb-4">
+							<div class="profile-card card-base">
+								<div class="profile-icon">
+									<i class="fab fa-linkedin"></i>
+								</div>
+								<div class="profile-content">
+									<h4>LinkedIn</h4>
+									<p>Professional network & career updates</p>
+									<a href="https://www.linkedin.com/in/lusan-sapkota-a08194284/" target="_blank" class="profile-link">
+										Connect <i class="fas fa-external-link-alt"></i>
+									</a>
+								</div>
+							</div>
+						</div>
+
+						<!-- HackerRank -->
+						<div class="col-lg-3 col-md-6 mb-4">
+							<div class="profile-card card-base">
+								<div class="profile-icon">
+									<i class="fab fa-hackerrank"></i>
+								</div>
+								<div class="profile-content">
+									<h4>HackerRank</h4>
+									<p>Coding challenges & algorithm solutions</p>
+									<a href="https://www.hackerrank.com/profile/sapkotalusan" target="_blank" class="profile-link">
+										View Solutions <i class="fas fa-external-link-alt"></i>
+									</a>
+								</div>
+							</div>
+						</div>
+
+						<!-- Instagram -->
+						<div class="col-lg-3 col-md-6 mb-4">
+							<div class="profile-card card-base">
+								<div class="profile-icon">
+									<i class="fab fa-instagram"></i>
+								</div>
+								<div class="profile-content">
+									<h4>Instagram</h4>
+									<p>Behind the scenes & personal moments</p>
+									<a href="https://www.instagram.com/sapkotalusan/" target="_blank" class="profile-link">
+										Follow <i class="fas fa-external-link-alt"></i>
+									</a>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -1363,69 +1247,195 @@
 
 		<!--portfolio start -->
 		<section id="portfolio" class="portfolio">
-			<div class="portfolio-details">
+			<div class="container">
 				<div class="section-heading text-center">
 					<h2>portfolio</h2>
+					<p>Showcasing innovative projects that demonstrate expertise in full-stack development, AI/ML, and modern web technologies</p>
 				</div>
-				<div class="container">
-					<div class="portfolio-content">
-						<div class="isotope">
-							<div class="row">
-
-								<div class="col-sm-5">
-									<div class="item">
-										<img src="{{ url_for('static', filename='assets/images/portfolio/p1.png')}}" alt="portfolio image"/>
-										<div class="isotope-overlay">
-											<a href="https://github.com/Lusan-sapkota/Ambulance-tracking-system" target="_blank">
-												Ambulance Tracking System
-											</a>
-										</div><!-- /.isotope-overlay -->
-									</div><!-- /.item -->
-									<div class="item">
-										<img src="{{ url_for('static', filename='assets/images/portfolio/p2.png')}}" alt="portfolio image"/>
-										<div class="isotope-overlay">
-											<a href="https://github.com/Lusan-sapkota/Face-Recognition-Based-Attendance-System" target="_blank">
-												Face Recognition Based Attendance System
-											</a>
-										</div><!-- /.isotope-overlay -->
-									</div><!-- /.item -->
-								</div><!-- /.col -->
-
-								<div class="col-sm-3" style="height: 520px;">
-									<div class="item" style="height: 520px;">
-										<img src="{{ url_for('static', filename='assets/images/portfolio/p3.png')}}" alt="portfolio image" style="height: 520px;"/>
-										<div class="isotope-overlay">
-											<a href="https://github.com/Lusan-sapkota/Task-Master" target="_blank">
-												Task Master
-											</a>
-										</div><!-- /.isotope-overlay -->
-									</div><!-- /.item -->
-								</div><!-- /.col -->
-
-								<div class="col-sm-4">
-									<div class="item">
-										<img src="{{ url_for('static', filename='assets/images/portfolio/p4.png')}}" alt="portfolio image"/>
-										<div class="isotope-overlay">
-											<a href="https://github.com/Lusan-sapkota/Jarvis" target="_blank">
-												Jarvis
-											</a>
-										</div><!-- /.isotope-overlay -->
-									</div><!-- /.item -->
-									<div class="item">
-										<img src="{{ url_for('static', filename='assets/images/portfolio/p5.png')}}" alt="portfolio image"/>
-										<div class="isotope-overlay">
-											<a href="https://github.com/Lusan-sapkota/Chat-History_Master" target="_blank">
-												Chat History Master
-											</a>
-										</div><!-- /.isotope-overlay -->
-									</div><!-- /.item -->
-								</div><!-- /.col -->
-							</div><!-- /.row -->
-						</div><!--/.isotope-->
-					</div><!--/.gallery-content-->
-				</div><!--/.container-->
-			</div><!--/.portfolio-details-->
-
+				
+				<div class="portfolio-content">
+					<!-- Portfolio Filter (optional) -->
+					<div class="portfolio-filter text-center mb-5">
+						<button class="filter-btn active" data-filter="all">All Projects</button>
+						<button class="filter-btn" data-filter="web">Web Apps</button>
+						<button class="filter-btn" data-filter="ai">AI/ML</button>
+						<button class="filter-btn" data-filter="mobile">Mobile</button>
+					</div>
+					
+					<!-- Portfolio Grid -->
+					<div class="portfolio-grid card-grid">
+						<!-- Project 1: Ambulance Tracking System -->
+						<div class="portfolio-item card-base" data-category="web">
+							<div class="portfolio-image">
+								<img src="{{ url_for('static', filename='assets/images/portfolio/p1.png')}}" alt="Ambulance Tracking System" />
+								<div class="portfolio-overlay">
+									<div class="portfolio-links">
+										<a href="https://github.com/Lusan-sapkota/Ambulance-tracking-system" target="_blank" class="btn-portfolio btn-github">
+											<i class="fab fa-github"></i>
+										</a>
+										<a href="#" class="btn-portfolio btn-preview">
+											<i class="fas fa-external-link-alt"></i>
+										</a>
+									</div>
+								</div>
+							</div>
+							<div class="portfolio-content">
+								<h3 class="portfolio-title">Ambulance Tracking System</h3>
+								<p class="portfolio-description">Real-time ambulance tracking system with GPS integration, optimizing emergency response times and resource allocation.</p>
+								<div class="portfolio-tech">
+									<span class="tech-tag">Python</span>
+									<span class="tech-tag">Flask</span>
+									<span class="tech-tag">JavaScript</span>
+									<span class="tech-tag">GPS API</span>
+								</div>
+							</div>
+						</div>
+						
+						<!-- Project 2: Face Recognition Attendance -->
+						<div class="portfolio-item card-base" data-category="ai">
+							<div class="portfolio-image">
+								<img src="{{ url_for('static', filename='assets/images/portfolio/p2.png')}}" alt="Face Recognition Attendance System" />
+								<div class="portfolio-overlay">
+									<div class="portfolio-links">
+										<a href="https://github.com/Lusan-sapkota/Face-Recognition-Based-Attendance-System" target="_blank" class="btn-portfolio btn-github">
+											<i class="fab fa-github"></i>
+										</a>
+										<a href="#" class="btn-portfolio btn-preview">
+											<i class="fas fa-external-link-alt"></i>
+										</a>
+									</div>
+								</div>
+							</div>
+							<div class="portfolio-content">
+								<h3 class="portfolio-title">Face Recognition Attendance</h3>
+								<p class="portfolio-description">AI-powered attendance system using computer vision and machine learning for automated student/employee tracking.</p>
+								<div class="portfolio-tech">
+									<span class="tech-tag">Python</span>
+									<span class="tech-tag">OpenCV</span>
+									<span class="tech-tag">Machine Learning</span>
+									<span class="tech-tag">Computer Vision</span>
+								</div>
+							</div>
+						</div>
+						
+						<!-- Project 3: Task Master -->
+						<div class="portfolio-item card-base" data-category="web">
+							<div class="portfolio-image">
+								<img src="{{ url_for('static', filename='assets/images/portfolio/p3.png')}}" alt="Task Master Application" />
+								<div class="portfolio-overlay">
+									<div class="portfolio-links">
+										<a href="https://github.com/Lusan-sapkota/Task-Master" target="_blank" class="btn-portfolio btn-github">
+											<i class="fab fa-github"></i>
+										</a>
+										<a href="#" class="btn-portfolio btn-preview">
+											<i class="fas fa-external-link-alt"></i>
+										</a>
+									</div>
+								</div>
+							</div>
+							<div class="portfolio-content">
+								<h3 class="portfolio-title">Task Master</h3>
+								<p class="portfolio-description">Comprehensive task management application with team collaboration features, real-time updates, and productivity analytics.</p>
+								<div class="portfolio-tech">
+									<span class="tech-tag">React</span>
+									<span class="tech-tag">Node.js</span>
+									<span class="tech-tag">MongoDB</span>
+									<span class="tech-tag">Socket.io</span>
+								</div>
+							</div>
+						</div>
+						
+						<!-- Project 4: Jarvis AI Assistant -->
+						<div class="portfolio-item card-base" data-category="ai">
+							<div class="portfolio-image">
+								<img src="{{ url_for('static', filename='assets/images/portfolio/p4.png')}}" alt="Jarvis AI Assistant" />
+								<div class="portfolio-overlay">
+									<div class="portfolio-links">
+										<a href="https://github.com/Lusan-sapkota/Jarvis" target="_blank" class="btn-portfolio btn-github">
+											<i class="fab fa-github"></i>
+										</a>
+										<a href="#" class="btn-portfolio btn-preview">
+											<i class="fas fa-external-link-alt"></i>
+										</a>
+									</div>
+								</div>
+							</div>
+							<div class="portfolio-content">
+								<h3 class="portfolio-title">Jarvis AI Assistant</h3>
+								<p class="portfolio-description">Intelligent voice-activated assistant with natural language processing, automation capabilities, and smart home integration.</p>
+								<div class="portfolio-tech">
+									<span class="tech-tag">Python</span>
+									<span class="tech-tag">NLP</span>
+									<span class="tech-tag">Speech Recognition</span>
+									<span class="tech-tag">AI/ML</span>
+								</div>
+							</div>
+						</div>
+						
+						<!-- Project 5: Chat History Master -->
+						<div class="portfolio-item card-base" data-category="web">
+							<div class="portfolio-image">
+								<img src="{{ url_for('static', filename='assets/images/portfolio/p5.png')}}" alt="Chat History Master" />
+								<div class="portfolio-overlay">
+									<div class="portfolio-links">
+										<a href="https://github.com/Lusan-sapkota/Chat-History_Master" target="_blank" class="btn-portfolio btn-github">
+											<i class="fab fa-github"></i>
+										</a>
+										<a href="#" class="btn-portfolio btn-preview">
+											<i class="fas fa-external-link-alt"></i>
+										</a>
+									</div>
+								</div>
+							</div>
+							<div class="portfolio-content">
+								<h3 class="portfolio-title">Chat History Master</h3>
+								<p class="portfolio-description">Advanced chat management system with search, backup, and analytics features for multiple messaging platforms.</p>
+								<div class="portfolio-tech">
+									<span class="tech-tag">Django</span>
+									<span class="tech-tag">PostgreSQL</span>
+									<span class="tech-tag">Redis</span>
+									<span class="tech-tag">API Integration</span>
+								</div>
+							</div>
+						</div>
+						
+						<!-- Project 6: Portfolio Website -->
+						<div class="portfolio-item card-base" data-category="web">
+							<div class="portfolio-image">
+								<img src="{{ url_for('static', filename='assets/images/portfolio/portfolio-site.jpg')}}" alt="Portfolio Website" />
+								<div class="portfolio-overlay">
+									<div class="portfolio-links">
+										<a href="https://github.com/Lusan-sapkota/portfolio" target="_blank" class="btn-portfolio btn-github">
+											<i class="fab fa-github"></i>
+										</a>
+										<a href="#" class="btn-portfolio btn-preview">
+											<i class="fas fa-external-link-alt"></i>
+										</a>
+									</div>
+								</div>
+							</div>
+							<div class="portfolio-content">
+								<h3 class="portfolio-title">Modern Portfolio Website</h3>
+								<p class="portfolio-description">Responsive developer portfolio with modern design, subdomain architecture, and integrated project showcase.</p>
+								<div class="portfolio-tech">
+									<span class="tech-tag">Flask</span>
+									<span class="tech-tag">JavaScript</span>
+									<span class="tech-tag">CSS3</span>
+									<span class="tech-tag">Bootstrap</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<!-- View More Button -->
+					<div class="text-center mt-5">
+						<a href="https://github.com/Lusan-sapkota" target="_blank" class="btn btn-primary btn-lg">
+							<i class="fab fa-github me-2"></i>
+							View All Projects on GitHub
+						</a>
+					</div>
+				</div>
+			</div>
 		</section><!--/.portfolio-->
 		<!--portfolio end -->
 
@@ -1443,12 +1453,12 @@
 									<form action="https://api.web3forms.com/submit" method="POST" id="contact-form">
 										<input type="hidden" name="access_key" value="818bb4e1-1d81-49bf-8416-42591b05370a">
 										<div class="row">
-											<div class="col-sm-6 col-xs-12">
+											<div class="col-sm-12">
 												<div class="form-group">
 													<input type="text" class="form-control" id="name" placeholder="Name*" name="name" required>
 												</div><!--/.form-group-->
 											</div><!--/.col-->
-											<div class="col-sm-6 col-xs-12">
+											<div class="col-sm-12">
 												<div class="form-group">
 													<input type="email" class="form-control" id="email" placeholder="Email*" name="email" required>
 												</div><!--/.form-group-->
@@ -1474,7 +1484,7 @@
 													<textarea class="form-control" rows="8" id="comment" placeholder="Message*" name="message" required></textarea>
 												</div><!--/.form-group-->
 											</div><!--/.col-->
-																				</div><!--/.row-->
+																														</div><!--/.row-->
 										<div class="row">
 											<div class="col-sm-12">
 												<div class="single-contact-btn">
@@ -1529,33 +1539,195 @@
 		</section><!--/.contact-->
 		<!--contact end -->
 
-		<!--footer-copyright start-->
-		<footer id="footer-copyright" class="footer-copyright">
-			<div class="container">
-				<div class="hm-footer-copyright text-center">
-					<p>
-						&copy; copyright lusan sapkota. <a href="https://www.lusansapkota.com.np/">lusansapkota.com.np</a>
-					</p><!--/p-->
-				</div><!--/.text-center-->
-			</div><!--/.container-->
+		<!-- Enhanced Footer Section -->
+		<footer class="footer">
+  <div class="container">
+    <div class="footer-content">
+      
+      <!-- Logo & Brand Section -->
+      <div class="footer-section">
+        <div class="footer-logo">
+          <img src="{{ url_for('static', filename='assets/logo/logo.png') }}" alt="Lusan Sapkota Logo">
+          <div class="footer-brand-text">Lusan Sapkota</div>
+          <div class="footer-tagline">Full-Stack Developer & Digital Innovation Enthusiast</div>
+        </div>
+      </div>
+      
+      <!-- Quick Links Grid -->
+      <div class="footer-links">
+        
+        <!-- Navigation Links -->
+        <div class="footer-column">
+          <h4>Navigation</h4>
+          <ul>
+            <li><a href="#subdomains"><i class="fas fa-chevron-right"></i>Platforms</a></li>
+            <li><a href="#about"><i class="fas fa-chevron-right"></i>About Me</a></li>
+            <li><a href="#education"><i class="fas fa-chevron-right"></i>Education</a></li>
+            <li><a href="#skills"><i class="fas fa-chevron-right"></i>Skills</a></li>
+            <li><a href="#experience"><i class="fas fa-chevron-right"></i>Experience</a></li>
+            <li><a href="#portfolio"><i class="fas fa-chevron-right"></i>Portfolio</a></li>
+          </ul>
+        </div>
+        
+        <!-- Platform Links -->
+        <div class="footer-column">
+          <h4>Platforms</h4>
+          <ul>
+            <li><a href="https://wiki.lusansapkota.com.np" target="_blank"><i class="fas fa-book"></i>Wiki Platform</a></li>
+            <li><a href="https://git.lusansapkota.com.np" target="_blank"><i class="fab fa-git-alt"></i>Git Repository</a></li>
+            <li><a href="https://donation.lusansapkota.com.np" target="_blank"><i class="fas fa-heart"></i>Donation Hub</a></li>
+            <li><a href="https://store.lusansapkota.com.np" target="_blank"><i class="fas fa-store"></i>Online Store</a></li>
+            <li><a href="/blog" target="_blank"><i class="fas fa-blog"></i>Blog</a></li>
+            <li><a href="/resume" target="_blank"><i class="fas fa-file-pdf"></i>Resume/CV</a></li>
+          </ul>
+        </div>
+        
+        <!-- Contact Information Section -->
+        <div class="footer-column">
+          <div class="footer-contact-section">
+            <h4>Contact Info</h4>
+            <ul class="contact-info-list">
+              
+              <!-- Email Section with Both Emails -->
+              <li class="contact-info-item">
 
-			<div id="scroll-Top">
-				<div class="return-to-top">
-					<i class="fa fa-angle-up " id="scroll-top" ></i>
-				</div>
-				
-			</div><!--/.scroll-Top-->
-			
-        </footer><!--/.footer-copyright-->
-		<!--footer-copyright end-->
+                <div class="contact-details">
+				  <div class="contact-icon">
+                  	<i class="fas fa-envelope"></i>
+					<span class="contact-label">Email</span>
+                  </div>
+                  <div class="contact-value">
+                    <div class="email-list">
+					  <div class="email-item email-primary">
+                        <a href="mailto:sapkotalusan@gmail.com">sapkotalusan@gmail.com</a>
+                      </div>
+                      <div class="email-item email-secondary">
+                        <a href="mailto:contact@lusansapkota.com.np">contact@lusansapkota.com.np</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              
+              <!-- Phone Section -->
+              <li class="contact-info-item">
+                <div class="contact-details">
+				  <div class="contact-icon">
+                  	<i class="fas fa-phone"></i>
+					<span class="contact-label">Phone</span>
+                  </div>
+                  <div class="contact-value">
+                    <a href="tel:+977-9848189845">+977-9848189845</a>
+                  </div>
+                </div>
+              </li>
+              
+              <!-- Location Section -->
+              <li class="contact-info-item">
+                <div class="contact-details">
+				<div class="contact-icon">
+                  <i class="fas fa-map-marker-alt"></i>
+				    <span class="contact-label">Location</span>
+                </div>
+                  <div class="contact-value">
+                    Kathmandu, Nepal<br>
+                    <small style="opacity: 0.8;">Available for Remote Work</small>
+                  </div>
+                </div>
+              </li>
+              
+            </ul>
+          </div>
+        </div>
+        
+        <!-- Quick Actions -->
+        <div class="footer-column">
+          <h4>Quick Actions</h4>
+          <ul>
+            <li><a href="#contact"><i class="fas fa-paper-plane"></i>Send Message</a></li>
+            <li><a href="tel:+977-9848189845"><i class="fas fa-phone-alt"></i>Call Now</a></li>
+            <li><a href="https://calendly.com/lusansapkota" target="_blank"><i class="fas fa-calendar"></i>Schedule Meeting</a></li>
+            <li><a href="/hire-me"><i class="fas fa-handshake"></i>Hire Me</a></li>
+            <li><a href="/privacy"><i class="fas fa-shield-alt"></i>Privacy Policy</a></li>
+          </ul>
+        </div>
+        
+      </div>
+      
+      <!-- Social Media -->
+      <div class="footer-social">
+        <h4>Connect With Me</h4>
+        <div class="social-links">
+          <a href="https://github.com/lusansapkota" target="_blank" class="social-link" title="GitHub">
+            <i class="fab fa-github"></i>
+          </a>
+          <a href="https://linkedin.com/in/lusansapkota" target="_blank" class="social-link" title="LinkedIn">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+          <a href="https://twitter.com/lusansapkota" target="_blank" class="social-link" title="Twitter">
+            <i class="fab fa-twitter"></i>
+          </a>
+          <a href="https://instagram.com/lusansapkota" target="_blank" class="social-link" title="Instagram">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="https://youtube.com/@lusansapkota" target="_blank" class="social-link" title="YouTube">
+            <i class="fab fa-youtube"></i>
+          </a>
+          <a href="https://discord.gg/lusansapkota" target="_blank" class="social-link" title="Discord">
+            <i class="fab fa-discord"></i>
+          </a>
+        </div>
+      </div>
+      
+      <!-- Newsletter Signup -->
+      <div class="footer-newsletter">
+        <h4>Stay Updated</h4>
+        <p>Subscribe to get the latest updates on my projects and tutorials</p>
+        <form class="newsletter-form" id="newsletter-form">
+          <input type="email" placeholder="Enter your email address" required>
+          <button type="submit" class="newsletter-btn">Subscribe</button>
+        </form>
+      </div>
+      
+    </div>
+  </div>
+  
+  <!-- Copyright Section -->
+  <div class="footer-copyright">
+    <div class="container">
+      <div class="footer-copyright-content"></div>
+        <p>&copy; {{ current_year }}  <a href="https://lusansapkota.com.np">Lusan Sapkota</a>. All rights reserved. | Crafted with <i class="fas fa-heart" style="color: #e74c3c;"></i> in Nepal</p>
+        <div class="footer-back-top">
+          <span class="back-to-top-text">Back to Top</span>
+          <a href="#welcome-hero" class="back-to-top-footer smooth-menu">
+            <i class="fas fa-chevron-up"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+		<!--footer end-->
 
 		<!-- CDN JS: Bootstrap & jQuery -->
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
 
 		<!-- Local JS -->
 		<script src="{{ url_for('static', filename='assets/js/progressbar.js') }}"></script>
 		<script src="{{ url_for('static', filename='assets/js/custom.js') }}"></script>
+		
+		<!-- Portfolio JavaScript -->
+		<script src="{{ url_for('static', filename='assets/js/simple-portfolio.js') }}"></script>
+		
+		<!-- Subdomain Configuration for JavaScript -->
+		<script>
+			{% if subdomains %}
+			window.subdomainConfig = {{ subdomains | tojson }};
+			{% else %}
+			window.subdomainConfig = {};
+			{% endif %}
+		</script>
 			
     </body>
 	

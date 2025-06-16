@@ -1,111 +1,117 @@
 $(document).ready(function(){
     "use strict";
 
-    // Dark Mode Implementation
+    // Initialize all components
+    initializeDarkMode();
+    initializeScrollEffects();
+    initializeSmoothScrolling();
+    initializeProgressBars();
+    initializeOwlCarousel(); // FIXED: Separated owl carousel initialization
+    initializeContactForm();
+    initializeAnimations();
+
+    // FIXED: Dark Mode Implementation
     function initializeDarkMode() {
-        // Check for saved theme preference or use preferred color scheme
         const currentTheme = localStorage.getItem('theme') || 
             (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
         
-        // Apply the theme
-        if (currentTheme === 'dark') {
-            document.documentElement.setAttribute('data-theme', 'dark');
-            $('.fa-moon').hide();
-            $('.fa-sun').show();
-        } else {
-            document.documentElement.setAttribute('data-theme', 'light');
-            $('.fa-sun').hide();
-            $('.fa-moon').show();
-        }
+        // Apply the theme immediately
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        
+        // Update toggle icons
+        updateThemeIcons(currentTheme);
         
         // Set up theme toggle functionality
-        $('#theme-toggle').on('click', function(e) {
+        $('#theme-toggle, #mobile-theme-toggle').on('click', function(e) {
             e.preventDefault();
             
-            // Toggle theme
-            if (document.documentElement.getAttribute('data-theme') === 'dark') {
-                document.documentElement.setAttribute('data-theme', 'light');
-                localStorage.setItem('theme', 'light');
-                $('.fa-sun').hide();
-                $('.fa-moon').show();
-            } else {
-                document.documentElement.setAttribute('data-theme', 'dark');
-                localStorage.setItem('theme', 'dark');
-                $('.fa-moon').hide();
-                $('.fa-sun').show();
-            }
+            const current = document.documentElement.getAttribute('data-theme') || 'light';
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            
+            // Add transition class
+            document.body.classList.add('theme-transitioning');
+            
+            // Apply new theme
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            // Update icons
+            updateThemeIcons(newTheme);
+            
+            // Remove transition class
+            setTimeout(() => {
+                document.body.classList.remove('theme-transitioning');
+            }, 300);
         });
     }
 
-    // Initialize dark mode
-    initializeDarkMode();
+    function updateThemeIcons(theme) {
+        const moonIcons = $('.fa-moon');
+        const sunIcons = $('.fa-sun');
+        
+        if (theme === 'dark') {
+            moonIcons.hide();
+            sunIcons.show();
+        } else {
+            sunIcons.hide();
+            moonIcons.show();
+        }
+    }
 
     // 1. Scroll To Top 
-        $(window).on('scroll',function () {
+    function initializeScrollEffects() {
+        $(window).on('scroll', function () {
             if ($(this).scrollTop() > 600) {
                 $('.return-to-top').fadeIn();
             } else {
                 $('.return-to-top').fadeOut();
             }
         });
-        $('.return-to-top').on('click',function(){
-                $('html, body').animate({
+        
+        $('.return-to-top').on('click', function(){
+            $('html, body').animate({
                 scrollTop: 0
             }, 1500);
             return false;
         });
-    
-    
-    
+    }
+
     // 2. Smooth Scroll spy
-        
-        $('.header-area').sticky({
-           topSpacing:0
-        });
-        
-        // IMPROVED: Enhanced smooth scrolling with faster animation
+    function initializeSmoothScrolling() {
         $('.smooth-menu a, a.smooth-menu, a[href^="#"]').on('click', function(event) {
             if(this.hash !== "") {
                 event.preventDefault();
                 
-                // Get the target section
                 const targetId = this.hash;
                 const targetSection = $(targetId);
                 if(!targetSection.length) return;
                 
-                // Calculate offset for navbar
                 const navbar = $('nav.navbar');
                 const navbarHeight = navbar.length ? navbar.outerHeight() : 0;
                 
-                // Smoothly scroll to target with offset - faster animation (800ms instead of 1200ms)
                 $('html, body').animate({
                     scrollTop: targetSection.offset().top - navbarHeight
                 }, 800, 'easeInOutExpo');
                 
                 // Close mobile menu if open
                 const navbarCollapse = $('.navbar-collapse');
-                if (navbarCollapse.hasClass('in')) {
-                    navbarCollapse.removeClass('in');
+                if (navbarCollapse.hasClass('show')) {
+                    navbarCollapse.removeClass('show');
                 }
                 
-                // Update active state manually
                 $('.navbar-nav li').removeClass('active');
                 $(`a[href="${targetId}"]`).parent('li').addClass('active');
             }
         });
         
-        // IMPROVED: Better active section detection with more precision
+        // Better active section detection
         $(window).on('scroll', function() {
             const scrollPosition = $(this).scrollTop();
             const navbarHeight = $('nav.navbar').outerHeight();
-            
-            // Use a small buffer to avoid multiple active sections
             const buffer = 5;
             
-            // Reset active state
             $('.navbar-nav li').removeClass('active');
             
-            // Find the current section and set as active
             $('section').each(function() {
                 const section = $(this);
                 const sectionTop = section.offset().top - navbarHeight - buffer;
@@ -114,107 +120,100 @@ $(document).ready(function(){
                 if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
                     const sectionId = section.attr('id');
                     $(`.navbar-nav li a[href="#${sectionId}"]`).parent().addClass('active');
-                    return false; // Break the loop once we found the active section
+                    return false;
                 }
             });
         });
+    }
 
-        // Remove the conflicting scrollspy initialization
-        // $('body').scrollspy({
-        //	target:'.navbar-collapse',
-        //	offset:0
-        // });
+    // 3. FIXED: Progress-bar with Intersection Observer
+    function initializeProgressBars() {
+        const progressBars = $(".progress-bar");
 
-    // 3. Progress-bar
-    
-        var dataToggleTooTip = $('[data-toggle="tooltip"]');
-        var progressBar = $(".progress-bar");
-        if (progressBar.length) {
-            progressBar.appear(function () {
-                dataToggleTooTip.tooltip({
-                    trigger: 'manual'
-                }).tooltip('show');
-                progressBar.each(function () {
-                    var each_bar_width = $(this).attr('aria-valuenow');
-                    $(this).width(each_bar_width + '%');
-                });
-            });
-        }
-    
-    // 4. owl carousel
-    
-        // i. client (carousel)
-        
-            $('#client').owlCarousel({
-                items:7,
-                loop:true,
-                smartSpeed: 1000,
-                autoplay:true,
-                dots:false,
-                autoplayHoverPause:true,
-                responsive:{
-                        0:{
-                            items:2
-                        },
-                        415:{
-                            items:2
-                        },
-                        600:{
-                            items:4
-
-                        },
-                        1199:{
-                            items:4
-                        },
-                        1200:{
-                            items:7
+        if (progressBars.length) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const $bar = $(entry.target);
+                        const percentage = $bar.attr('aria-valuenow') || $bar.attr('data-percentage');
+                        
+                        if (percentage) {
+                            // Animate the progress bar
+                            $bar.css({
+                                width: percentage + '%'
+                            });
+                            
+                            // Add animation class
+                            $bar.addClass('animated');
                         }
+                        
+                        observer.unobserve(entry.target);
                     }
                 });
-                
-                
-                $('.play').on('click',function(){
-                    owl.trigger('play.owl.autoplay',[1000])
-                })
-                $('.stop').on('click',function(){
-                    owl.trigger('stop.owl.autoplay')
-                })
+            }, {
+                threshold: 0.1
+            });
+            
+            progressBars.each(function() {
+                $(this).css('width', '0%');
+                observer.observe(this);
+            });
+        }
+    }
 
+    // 4. FIXED: Owl Carousel with proper error handling
+    function initializeOwlCarousel() {
+        // Check if Owl Carousel is loaded
+        if (typeof $.fn.owlCarousel === 'function') {
+            const $clientCarousel = $('#client');
+            
+            if ($clientCarousel.length) {
+                $clientCarousel.owlCarousel({
+                    items: 7,
+                    loop: true,
+                    smartSpeed: 1000,
+                    autoplay: true,
+                    dots: false,
+                    autoplayHoverPause: true,
+                    responsive: {
+                        0: { items: 2 },
+                        415: { items: 2 },
+                        600: { items: 4 },
+                        1199: { items: 4 },
+                        1200: { items: 7 }
+                    }
+                });
+            }
+        } else {
+            console.warn('Owl Carousel is not loaded. Please include the Owl Carousel script.');
+        }
+    }
 
-    // 5. welcome animation support
-
-        $(window).load(function(){
-            $(".header-text h2,.header-text p").removeClass("animated fadeInUp").css({'opacity':'0'});
-            $(".header-text a").removeClass("animated fadeInDown").css({'opacity':'0'});
-        });
-
-        $(window).load(function(){
-            $(".header-text h2,.header-text p").addClass("animated fadeInUp").css({'opacity':'0'});
-            $(".header-text a").addClass("animated fadeInDown").css({'opacity':'0'});
-        });
-
-    // Form validation and submission handling
-    $(document).ready(function() {
+    // 5. FIXED: Contact Form with enhanced validation
+    function initializeContactForm() {
         const contactForm = $('form#contact-form');
+        if (!contactForm.length) return;
+        
         const submitButton = contactForm.find('button[type="submit"]');
         const originalButtonText = submitButton.text();
         
-        // Initialize form status container with better styling
+        // Initialize form status container
         if($('#form-status').length === 0) {
             contactForm.after('<div id="form-status" class="mt-3" style="display:none;"></div>');
         }
         const formStatus = $('#form-status');
         
-        // Clear previous validation on input focus
+        // Clear validation on input focus
         contactForm.find('input, textarea').on('focus', function() {
             $(this).removeClass('is-invalid');
             $(this).siblings('.invalid-feedback').remove();
         });
         
+        // Enhanced form submission
         contactForm.on('submit', function(e) {
             e.preventDefault();
             
-            // Remove any previous validation messages
+            // Clear previous validation
             contactForm.find('.invalid-feedback').remove();
             contactForm.find('.is-invalid').removeClass('is-invalid');
             formStatus.html('').hide();
@@ -223,7 +222,6 @@ $(document).ready(function(){
             let isValid = true;
             const requiredFields = contactForm.find('input[required], textarea[required]');
             
-            // Check each required field
             requiredFields.each(function() {
                 const field = $(this);
                 const fieldValue = field.val().trim();
@@ -231,12 +229,11 @@ $(document).ready(function(){
                 if(!fieldValue) {
                     isValid = false;
                     field.addClass('is-invalid');
-                    // Insert feedback directly after the input
                     $('<div class="invalid-feedback">This field is required</div>').insertAfter(field);
                 }
             });
             
-            // Validate email format with more comprehensive regex
+            // Email validation
             const emailInput = contactForm.find('input[type="email"]');
             if(emailInput.length && emailInput.val().trim()) {
                 const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -248,28 +245,15 @@ $(document).ready(function(){
             }
             
             if(!isValid) {
-                // Show validation summary with close button
-                formStatus.html('<div class="alert alert-danger">' +
-                    '<i class="fa fa-exclamation-circle"></i> Please fix the highlighted errors' +
-                    '<button type="button" class="close-alert">&times;</button></div>').fadeIn();
-                
-                // Auto-dismiss after 8 seconds
-                startDismissTimer(formStatus);
-                
-                // Scroll to the first error
-                $('html, body').animate({
-                    scrollTop: contactForm.find('.is-invalid').first().offset().top - 100
-                }, 500);
+                showFormMessage('danger', 'Please fix the highlighted errors');
                 return false;
             }
             
-            // Update button state and show loading indicator
+            // Submit form
             submitButton.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Sending...');
             
-            // Prepare form data correctly
             const formData = new FormData(contactForm[0]);
             
-            // Submit form via AJAX with proper FormData
             $.ajax({
                 url: contactForm.attr('action'),
                 type: 'POST',
@@ -277,330 +261,262 @@ $(document).ready(function(){
                 processData: false,
                 contentType: false,
                 success: function(response) {
-                    // Success message with animation and close button
-                    formStatus.html('<div class="alert alert-success">' + 
-                        '<i class="fa fa-check-circle"></i> ' +
-                        'Thank you! Your message has been sent successfully.' +
-                        '<button type="button" class="close-alert">&times;</button></div>')
-                        .hide().fadeIn();
-                    
-                    // Auto-dismiss after 6 seconds
-                    startDismissTimer(formStatus);
-                    
-                    // Reset form
+                    showFormMessage('success', 'Thank you! Your message has been sent successfully.');
                     contactForm[0].reset();
                     
-                    // Reset button after delay
                     setTimeout(function() {
                         submitButton.prop('disabled', false).text(originalButtonText);
                     }, 2000);
                 },
                 error: function(xhr, status, error) {
-                    // Detailed error message with close button
                     let errorMessage = 'Sorry, there was a problem sending your message.';
                     
                     if(xhr.responseJSON && xhr.responseJSON.message) {
                         errorMessage += ' Error: ' + xhr.responseJSON.message;
                     }
                     
-                    formStatus.html('<div class="alert alert-danger">' +
-                        '<i class="fa fa-times-circle"></i> ' + errorMessage + 
-                        '<button type="button" class="close-alert">&times;</button></div>').fadeIn();
-                    
-                    // Auto-dismiss after 8 seconds
-                    startDismissTimer(formStatus);
-                    
-                    // Reset button
+                    showFormMessage('danger', errorMessage);
                     submitButton.prop('disabled', false).text(originalButtonText);
                 }
             });
         });
         
-        // Additional visual feedback - highlight fields while typing
-        contactForm.find('input, textarea').on('input', function() {
-            const field = $(this);
-            if(field.val().trim()) {
-                field.addClass('is-valid').removeClass('is-invalid');
-            } else if(field.prop('required')) {
-                field.removeClass('is-valid');
-            }
+        function showFormMessage(type, message) {
+            const iconClass = type === 'success' ? 'fa-check-circle' : 'fa-times-circle';
+            formStatus.html(`
+                <div class="alert alert-${type}">
+                    <i class="fa ${iconClass}"></i> ${message}
+                    <button type="button" class="close-alert">&times;</button>
+                </div>
+            `).fadeIn();
+            
+            startDismissTimer(formStatus);
+        }
+    }
+
+    // 6. Initialize animations
+    function initializeAnimations() {
+        // Add page transition class
+        $('body').addClass('page-transition');
+        
+        setTimeout(() => {
+            $('body').addClass('loaded');
+        }, 100);
+        
+        // Initialize scroll animations
+        const animationObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-on-scroll');
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        $('.card-base, .section-heading, .portfolio-item').each(function() {
+            animationObserver.observe(this);
         });
+    }
+
+    // Skills Section Enhanced Functionality
+    // Counter Animation for Stats
+    function animateCounters() {
+        $('.stat-number').each(function() {
+            const $this = $(this);
+            const countTo = parseInt($this.attr('data-count'));
+            
+            $({ countNum: 0 }).animate({
+                countNum: countTo
+            }, {
+                duration: 2000,
+                easing: 'swing',
+                step: function() {
+                    $this.text(Math.floor(this.countNum));
+                },
+                complete: function() {
+                    $this.text(this.countNum);
+                }
+            });
+        });
+    }
+    
+    // Skills Tab Switching
+    $('.skill-tab').on('click', function() {
+        const category = $(this).data('category');
+        
+        // Update active tab
+        $('.skill-tab').removeClass('active');
+        $(this).addClass('active');
+        
+        // Update active content
+        $('.skill-category-content').removeClass('active');
+        $('#' + category).addClass('active');
+        
+        // Animate progress bars after content is shown
+        setTimeout(() => {
+            animateProgressBars();
+        }, 100);
     });
     
-    // 6. Handle theme based on system changes
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
-        if (!localStorage.getItem('theme')) {
-            // Only auto-switch if user hasn't manually set a preference
-            if (e.matches) {
-                document.documentElement.setAttribute('data-theme', 'dark');
-                $('.fa-moon').hide();
-                $('.fa-sun').show();
-            } else {
-                document.documentElement.setAttribute('data-theme', 'light');
-                $('.fa-sun').hide();
-                $('.fa-moon').show();
+    // Progress Bar Animation
+    function animateProgressBars() {
+        $('.skill-progress-bar').each(function() {
+            const width = $(this).data('width');
+            $(this).css('width', '0%').animate({
+                width: width + '%'
+            }, 1500);
+        });
+    }
+    
+    // Intersection Observer for Skills Section
+    const skillsObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // Animate counters
+                animateCounters();
+                
+                // Animate progress bars
+                setTimeout(() => {
+                    animateProgressBars();
+                }, 500);
+                
+                // Add animation classes to skill cards
+                $('.skill-card').each(function(index) {
+                    setTimeout(() => {
+                        $(this).addClass('animate-in');
+                    }, index * 100);
+                });
+                
+                skillsObserver.unobserve(entry.target);
             }
-        }
+        });
+    }, {
+        threshold: 0.2
     });
+    
+    // Observe skills section
+    const skillsSection = document.querySelector('#skills');
+    if (skillsSection) {
+        skillsObserver.observe(skillsSection);
+    }
+    
+    // Skill Card Hover Effects
+    $('.skill-card').on('mouseenter', function() {
+        $(this).find('.skill-progress-bar').addClass('pulse');
+    }).on('mouseleave', function() {
+        $(this).find('.skill-progress-bar').removeClass('pulse');
+    });
+    
+    // Initialize progress bars for default active tab
+    setTimeout(() => {
+        animateProgressBars();
+    }, 1000);
 });
 
-// Function to start auto-dismiss timer
+// Add pulse animation CSS dynamically
+const pulseCSS = `
+.skill-progress-bar.pulse::after {
+    animation: shimmer 1s infinite;
+}
+`;
+
+const style = document.createElement('style');
+style.textContent = pulseCSS;
+document.head.appendChild(style);
+
+// Handle system theme changes
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+    if (!localStorage.getItem('theme')) {
+        const newTheme = e.matches ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        updateThemeIcons(newTheme);
+    }
+});
+
+// Utility functions
 function startDismissTimer(element) {
     const dismissTimeout = setTimeout(function() {
         element.fadeOut(500);
-    }, 6000); // 6 seconds before auto-dismiss
+    }, 6000);
     
-    // Store the timeout ID on the element so we can cancel if user manually closes
     element.data('dismissTimeout', dismissTimeout);
 }
 
 // Handle close button click for alerts
 $(document).on('click', '.close-alert', function() {
-    // Find the parent alert
     const alert = $(this).closest('.alert').parent();
-    
-    // Clear any existing timeout to prevent duplicated fadeouts
     const timeout = alert.data('dismissTimeout');
+    
     if (timeout) {
         clearTimeout(timeout);
     }
     
-    // Fade out the alert
     alert.fadeOut(500);
-    
-    // Prevent event bubbling
     return false;
 });
 
-// Handle validation summary dismiss in case it has one
-$(document).on('click', '.alert', function() {
-    const alert = $(this);
-    const timeout = alert.data('dismissTimeout');
-    if (timeout) {
-        clearTimeout(timeout);
-    }
-    alert.fadeOut(500);
-});
-
-// Initialize dark mode on page load (outside document ready for faster execution)
+// Initialize theme before page renders
 (function() {
-    // Set theme before page renders to prevent flashing
     const currentTheme = localStorage.getItem('theme') || 
         (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    if (currentTheme === 'dark') {
-        document.documentElement.setAttribute('data-theme', 'dark');
-    }
+    document.documentElement.setAttribute('data-theme', currentTheme);
 })();
 
-// Add these functions to enhance the navbar functionality
-
+// Newsletter Form Handler
 $(document).ready(function() {
-    "use strict";
+    $('#newsletter-form').on('submit', function(e) {
+        e.preventDefault();
+        
+        const email = $(this).find('input[type="email"]').val();
+        const button = $(this).find('.newsletter-btn');
+        const originalText = button.text();
+        
+        // Basic email validation
+        if (!email || !email.includes('@')) {
+            alert('Please enter a valid email address');
+            return;
+        }
+        
+        // Show loading state
+        button.text('Subscribing...').prop('disabled', true);
+        
+        // Simulate API call (replace with your actual newsletter service)
+        setTimeout(() => {
+            button.text('Subscribed!').css('background', '#27ae60');
+            $(this).find('input[type="email"]').val('');
+            
+            setTimeout(() => {
+                button.text(originalText).prop('disabled', false).css('background', '');
+            }, 3000);
+        }, 1500);
+    });
+});
 
-    // Enhanced Dark Mode Implementation with animation
-    function initializeDarkMode() {
-        const themeToggle = $("#theme-toggle");
-        const moonIcon = themeToggle.find(".fa-moon");
-        const sunIcon = themeToggle.find(".fa-sun");
-        
-        // Check for saved theme preference or respect OS preference
-        const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
-        const savedTheme = localStorage.getItem("theme");
-        
-        if (savedTheme === "dark" || (!savedTheme && prefersDarkScheme.matches)) {
-            document.documentElement.setAttribute("data-theme", "dark");
-            moonIcon.hide();
-            sunIcon.show();
-        }
-        
-        // Toggle theme on click with animation
-        themeToggle.on("click", function(e) {
-            e.preventDefault();
-            
-            if (document.documentElement.getAttribute("data-theme") === "dark") {
-                // Switch to light theme
-                document.documentElement.setAttribute("data-theme", "");
-                localStorage.setItem("theme", "light");
-                
-                // Animate icon transition
-                sunIcon.fadeOut(300, function() {
-                    moonIcon.fadeIn(300);
-                });
-                
-            } else {
-                // Switch to dark theme
-                document.documentElement.setAttribute("data-theme", "dark");
-                localStorage.setItem("theme", "dark");
-                
-                // Animate icon transition
-                moonIcon.fadeOut(300, function() {
-                    sunIcon.fadeIn(300);
-                });
-            }
-        });
-    }
-
-    // Initialize dark mode
-    initializeDarkMode();
+// Skills Redesigned Animation
+$(document).ready(function() {
     
-    // Enhanced Sticky Navbar with animation
-    function initStickyNavbar() {
-        const navbar = $("nav.navbar");
-        
-        $(window).on("scroll", function() {
-            if ($(this).scrollTop() > 100) {
-                navbar.addClass("sticky-active");
-            } else {
-                navbar.removeClass("sticky-active");
-            }
+    // Animate progress bars when skills section comes into view
+    function animateSkillBars() {
+        $('.skill-progress-redesigned').each(function() {
+            const progress = $(this).data('progress');
+            $(this).css('width', progress + '%');
         });
     }
     
-    // Initialize sticky navbar
-    initStickyNavbar();
-    
-    // Improved Smooth Scrolling
-    $('a.smooth-menu, a[href^="#"]').on('click', function(event) {
-        if (this.hash !== "") {
-            event.preventDefault();
-            
-            // Get the target section
-            const targetId = this.hash;
-            const targetSection = $(targetId);
-            
-            if (!targetSection.length) return;
-            
-            // Calculate offset for navbar
-            const navbar = $('nav.navbar');
-            const navbarHeight = navbar.length ? navbar.outerHeight() : 0;
-            
-            // Smoothly scroll to target with offset - faster animation
-            $('html, body').animate({
-                scrollTop: targetSection.offset().top - navbarHeight
-            }, 800, 'easeInOutExpo');
-            
-            // Close mobile menu if open
-            const navbarCollapse = $('.navbar-collapse');
-            if (navbarCollapse.hasClass('show')) {
-                navbarCollapse.removeClass('show');
+    // Intersection Observer for skills section
+    const skillsObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                setTimeout(animateSkillBars, 300);
+                skillsObserver.unobserve(entry.target);
             }
-            
-            // Update active state
-            $('.navbar-nav .nav-item').removeClass('active');
-            $(this).parent('.nav-item').addClass('active');
-        }
+        });
+    }, {
+        threshold: 0.2
     });
     
-    // Better Active Section Detection
-    function updateActiveNavItem() {
-        const scrollPosition = $(window).scrollTop();
-        const navbarHeight = $('nav.navbar').outerHeight();
-        
-        // Use a small buffer to avoid multiple active sections
-        const buffer = 5;
-        
-        // Reset active state
-        $('.navbar-nav .nav-item').removeClass('active');
-        
-        // Find the current section and set as active
-        $('section').each(function() {
-            const section = $(this);
-            const sectionTop = section.offset().top - navbarHeight - buffer;
-            const sectionBottom = sectionTop + section.outerHeight();
-            
-            if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
-                const sectionId = section.attr('id');
-                $(`.navbar-nav .nav-item a[href="#${sectionId}"]`).parent().addClass('active');
-                return false; // Break the loop once we found the active section
-            }
-        });
+    // Observe skills section
+    const skillsSection = document.querySelector('.skills-redesigned');
+    if (skillsSection) {
+        skillsObserver.observe(skillsSection);
     }
-    
-    // Call the function on page load and scroll
-    updateActiveNavItem();
-    $(window).on('scroll', updateActiveNavItem);
-    
-    // Add scroll indicator to welcome section
-    const welcomeSection = $('#welcome-hero');
-    if (welcomeSection.length) {
-        welcomeSection.append(`
-            <div class="scroll-indicator">
-                <i class="fas fa-chevron-down"></i>
-                <span class="scroll-indicator-text">Scroll</span>
-            </div>
-        `);
-    }
-    
-    // Enhanced animations for page elements
-    function initElementAnimations() {
-        // Animate progress bars when in viewport
-        $('.progress-bar').each(function() {
-            const bar = $(this);
-            
-            const waypoint = new Waypoint({
-                element: bar.get(0),
-                handler: function() {
-                    const value = bar.attr('aria-valuenow');
-                    bar.animate({
-                        width: value + '%'
-                    }, 1000);
-                    this.destroy();
-                },
-                offset: '90%'
-            });
-        });
-        
-        // Animate cards on scroll
-        $('.card').each(function(index) {
-            const card = $(this);
-            
-            const waypoint = new Waypoint({
-                element: card.get(0),
-                handler: function() {
-                    setTimeout(function() {
-                        card.addClass('animated fadeInUp');
-                    }, index * 100); // Stagger animation
-                    this.destroy();
-                },
-                offset: '90%'
-            });
-        });
-    }
-    
-    // Initialize animations
-    // Note: Requires Waypoints library, add if not present
-    if (typeof Waypoint !== 'undefined') {
-        initElementAnimations();
-    }
-    
-    // Enhanced Sticky Navbar
-    $(window).on('scroll', function() {
-      const navbar = $('nav.navbar');
-      
-      if ($(this).scrollTop() > 50) {
-        navbar.addClass('navbar-shrink');
-        // Additional shrink styling
-        navbar.find('.navbar-brand img').css('height', '35px');
-        navbar.find('ul.nav > li > a').css('padding-top', '15px').css('padding-bottom', '15px');
-      } else {
-        navbar.removeClass('navbar-shrink');
-        // Restore original sizing
-        navbar.find('.navbar-brand img').css('height', '');
-        navbar.find('ul.nav > li > a').css('padding-top', '').css('padding-bottom', '');
-      }
-    });
-    
-    // Improved mobile menu toggle
-    $('.navbar-toggle').on('click', function() {
-      // Add smooth animation class
-      setTimeout(function() {
-        if ($('.navbar-collapse').hasClass('in')) {
-          $('.navbar-collapse').addClass('show-menu');
-        } else {
-          $('.navbar-collapse').removeClass('show-menu');
-        }
-      }, 50);
-    });
-    
-    // Continue with rest of your custom.js code...
 });

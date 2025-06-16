@@ -1,0 +1,165 @@
+{% extends "error_base.html" %}
+
+{% block error_title %}403 - Forbidden{% endblock %}
+{% block error_description %}Access forbidden to this page on Lusan Sapkota's portfolio website.{% endblock %}
+
+{% block error_specific_styles %}
+/* 403 Specific Animation */
+.error-illustration {
+    position: relative;
+    height: 120px;
+    margin: 20px auto;
+}
+
+.lock-icon {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 60px;
+    color: #f39c12;
+    animation: pulse-lock 2s infinite alternate;
+}
+
+.shield-icon {
+    position: absolute;
+    left: calc(50% - 60px);
+    top: calc(50% - 15px);
+    font-size: 30px;
+    color: #e74c3c;
+    animation: shake-shield 4s infinite;
+    opacity: 0.7;
+}
+
+.key-icon {
+    position: absolute;
+    right: calc(50% - 60px);
+    top: calc(50% + 10px);
+    font-size: 25px;
+    color: #3498db;
+    animation: float-key 3s infinite alternate;
+    opacity: 0.8;
+    transform-origin: center;
+}
+
+@keyframes pulse-lock {
+    0% { transform: translate(-50%, -50%) scale(1); }
+    100% { transform: translate(-50%, -50%) scale(1.1); }
+}
+
+@keyframes shake-shield {
+    0%, 100% { transform: rotate(0deg); }
+    10%, 30%, 50%, 70%, 90% { transform: rotate(-5deg); }
+    20%, 40%, 60%, 80% { transform: rotate(5deg); }
+}
+
+@keyframes float-key {
+    0% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(10deg); }
+    100% { transform: translateY(0) rotate(0deg); }
+}
+
+.access-denied {
+    display: inline-block;
+    margin-top: 20px;
+    background: rgba(231, 76, 60, 0.1);
+    padding: 12px 20px;
+    border-radius: 5px;
+    border-left: 4px solid #e74c3c;
+    text-align: left;
+    font-family: monospace;
+    font-size: 0.9rem;
+    color: #e74c3c;
+}
+
+[data-theme="dark"] .access-denied {
+    background: rgba(231, 76, 60, 0.2);
+}
+
+.authentication-options {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+}
+
+.auth-option {
+    background: rgba(243, 156, 18, 0.05);
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: var(--text-primary);
+    border: 1px solid rgba(243, 156, 18, 0.1);
+    flex: 1;
+    min-width: 150px;
+    max-width: 200px;
+}
+
+.auth-option:hover {
+    background: rgba(243, 156, 18, 0.1);
+    transform: translateY(-3px);
+    color: var(--text-primary);
+}
+
+.auth-icon {
+    font-size: 1.5rem;
+    color: #f39c12;
+    margin-bottom: 10px;
+}
+
+.auth-name {
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+{% endblock %}
+
+{% block error_code %}<span>4</span><span>0</span><span>3</span>{% endblock %}
+{% block error_heading %}Access Forbidden{% endblock %}
+
+{% block error_illustration %}
+<div class="error-illustration">
+    <i class="fas fa-lock lock-icon"></i>
+    <i class="fas fa-shield-alt shield-icon"></i>
+    <i class="fas fa-key key-icon"></i>
+</div>
+{% endblock %}
+
+{% block error_message %}
+You don't have permission to access this page. This area might require special authentication or authorization.
+{% endblock %}
+
+{% block additional_content %}
+<div class="access-denied">
+    403 Forbidden: Insufficient permissions to access this resource
+</div>
+
+<div class="authentication-options">
+    <a href="{{ url_for('index') }}" class="auth-option">
+        <div class="auth-icon">
+            <i class="fas fa-home"></i>
+        </div>
+        <div class="auth-name">Return Home</div>
+    </a>
+    <a href="{{ url_for('index') }}#contact" class="auth-option">
+        <div class="auth-icon">
+            <i class="fas fa-paper-plane"></i>
+        </div>
+        <div class="auth-name">Contact Admin</div>
+    </a>
+    <a href="mailto:sapkotalusan@gmail.com" class="auth-option">
+        <div class="auth-icon">
+            <i class="fas fa-envelope"></i>
+        </div>
+        <div class="auth-name">Email Support</div>
+    </a>
+</div>
+{% endblock %}
+
+{% block additional_actions %}
+<a href="javascript:history.back()" class="secondary-btn">
+    <i class="fa fa-arrow-left"></i> Go Back
+</a>
+{% endblock %}

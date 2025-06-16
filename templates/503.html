@@ -1,0 +1,183 @@
+{% extends "error_base.html" %}
+
+{% block error_title %}503 - Service Unavailable{% endblock %}
+{% block error_description %}The server is currently unable to handle your request due to maintenance or overload on Lusan Sapkota's portfolio website.{% endblock %}
+
+{% block error_specific_styles %}
+/* 503 Specific Animation */
+.error-illustration {
+    position: relative;
+    height: 150px;
+    margin: 30px auto;
+    width: 100%;
+    max-width: 300px;
+}
+
+.server-icon {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: clamp(40px, 8vw, 60px);
+    color: #e74c3c;
+    animation: pulse-server 2s infinite alternate;
+}
+
+.tool-icon {
+    position: absolute;
+    left: calc(50% + 30px);
+    top: calc(50% - 30px);
+    font-size: clamp(24px, 5vw, 36px);
+    color: #f39c12;
+    animation: rotate-tools 3s infinite linear;
+    transform-origin: center;
+}
+
+@keyframes pulse-server {
+    0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.8; }
+}
+
+@keyframes rotate-tools {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.maintenance-timer {
+    background: rgba(52, 152, 219, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-top: 2rem;
+    text-align: center;
+    border: 1px solid rgba(52, 152, 219, 0.2);
+    transition: all 0.3s ease;
+}
+
+.maintenance-timer:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(52, 152, 219, 0.1);
+}
+
+.maintenance-timer h3 {
+    font-size: clamp(1.1rem, 3vw, 1.3rem);
+    margin-bottom: 1rem;
+    color: #3498db;
+}
+
+.timer-display {
+    font-family: 'Courier New', monospace;
+    font-size: clamp(1.2rem, 4vw, 1.8rem);
+    color: #3498db;
+    margin: 15px 0;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    background: rgba(52, 152, 219, 0.08);
+    border-radius: 8px;
+    padding: 10px;
+    display: inline-block;
+}
+
+.maintenance-progress {
+    height: 8px;
+    background: rgba(52, 152, 219, 0.2);
+    border-radius: 4px;
+    margin: 15px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.maintenance-bar {
+    height: 100%;
+    width: 30%;
+    background: linear-gradient(90deg, #3498db, #2980b9);
+    border-radius: 4px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    animation: progress-animation 60s linear forwards;
+}
+
+@keyframes progress-animation {
+    0% { width: 0%; }
+    100% { width: 100%; }
+}
+
+.small {
+    font-size: 0.9rem;
+}
+
+@media (max-width: 600px) {
+    .error-illustration {
+        height: 120px;
+        margin: 20px auto;
+    }
+    
+    .maintenance-timer {
+        padding: 1rem;
+    }
+    
+    .timer-display {
+        padding: 8px;
+        margin: 10px 0;
+    }
+    
+    .maintenance-progress {
+        height: 6px;
+    }
+}
+{% endblock %}
+
+{% block error_code %}<span>5</span><span>0</span><span>3</span>{% endblock %}
+{% block error_heading %}Service Unavailable{% endblock %}
+
+{% block error_illustration %}
+<div class="error-illustration">
+    <i class="fas fa-server server-icon"></i>
+    <i class="fas fa-wrench tool-icon"></i>
+</div>
+{% endblock %}
+
+{% block error_message %}
+My server is temporarily unavailable due to maintenance or high traffic. Please try again later.
+{% endblock %}
+
+{% block additional_content %}
+<div class="maintenance-timer">
+    <h3><i class="fas fa-clock"></i> Estimated Time to Completion</h3>
+    <div class="timer-display" id="maintenance-timer">00:10:00</div>
+    <div class="maintenance-progress">
+        <div class="maintenance-bar"></div>
+    </div>
+    <p class="small text-muted">We're working as quickly as possible to restore service.</p>
+</div>
+{% endblock %}
+
+{% block additional_actions %}
+<a href="javascript:window.location.reload()" class="secondary-btn">
+    <i class="fa fa-sync-alt"></i> Check Again
+</a>
+{% endblock %}
+
+{% block page_scripts %}
+// Countdown timer for maintenance
+const timerElement = document.getElementById('maintenance-timer');
+let timeRemaining = 10 * 60; // 10 minutes in seconds
+
+const timerInterval = setInterval(function() {
+    timeRemaining--;
+    
+    if (timeRemaining <= 0) {
+        clearInterval(timerInterval);
+        window.location.reload();
+    }
+    
+    const minutes = Math.floor(timeRemaining / 60);
+    const seconds = timeRemaining % 60;
+    
+    timerElement.textContent = 
+        (minutes < 10 ? '0' : '') + minutes + ':' + 
+        (seconds < 10 ? '0' : '') + seconds + ':00';
+    
+}, 1000);
+{% endblock %}

@@ -1,0 +1,223 @@
+{% extends "error_base.html" %}
+
+{% block error_title %}429 - Too Many Requests{% endblock %}
+{% block error_description %}Too many requests have been made to Lusan Sapkota's portfolio website. Please try again later.{% endblock %}
+
+{% block error_specific_styles %}
+/* 429 Specific Animation */
+.error-illustration {
+    position: relative;
+    height: 120px;
+    margin: 20px auto;
+}
+
+.hourglass-icon {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 60px;
+    color: #f39c12;
+    animation: flip-hourglass 2s infinite;
+    transform-origin: center;
+}
+
+.speed-icon {
+    position: absolute;
+    left: calc(50% - 60px);
+    top: calc(50% - 15px);
+    font-size: 30px;
+    color: #e74c3c;
+    animation: pulse-speed 1.5s infinite alternate;
+}
+
+@keyframes flip-hourglass {
+    0%, 80% { transform: translate(-50%, -50%) rotate(0deg); }
+    90%, 100% { transform: translate(-50%, -50%) rotate(180deg); }
+}
+
+@keyframes pulse-speed {
+    0% { transform: scale(1); opacity: 0.7; }
+    100% { transform: scale(1.2); opacity: 1; }
+}
+
+.rate-limit-info {
+    margin: 30px auto;
+    max-width: 400px;
+    background: rgba(243, 156, 18, 0.05);
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid rgba(243, 156, 18, 0.1);
+}
+
+[data-theme="dark"] .rate-limit-info {
+    background: rgba(243, 156, 18, 0.03);
+}
+
+.rate-limit-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(243, 156, 18, 0.1);
+}
+
+.rate-limit-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.rate-icon {
+    color: #f39c12;
+}
+
+.rate-limit-details {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.rate-limit-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(243, 156, 18, 0.05);
+    font-size: 0.95rem;
+}
+
+.rate-limit-item:last-child {
+    border-bottom: none;
+}
+
+.rate-limit-label {
+    color: var(--text-secondary);
+}
+
+.rate-limit-value {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.countdown-timer {
+    background: rgba(243, 156, 18, 0.1);
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 15px;
+    text-align: center;
+}
+
+.countdown-timer p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.countdown-value {
+    font-weight: 700;
+    color: #f39c12;
+    font-size: 1.2rem;
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 8px;
+    background-color: rgba(243, 156, 18, 0.1);
+    border-radius: 4px;
+    margin-top: 8px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: var(--gradient-primary);
+    border-radius: 4px;
+    width: 100%;
+    animation: countdown-progress 60s linear forwards;
+}
+
+@keyframes countdown-progress {
+    0% { width: 100%; }
+    100% { width: 0%; }
+}
+{% endblock %}
+
+{% block error_code %}<span>4</span><span>2</span><span>9</span>{% endblock %}
+{% block error_heading %}Too Many Requests{% endblock %}
+
+{% block error_illustration %}
+<div class="error-illustration">
+    <i class="fas fa-hourglass-half hourglass-icon"></i>
+    <i class="fas fa-tachometer-alt speed-icon"></i>
+</div>
+{% endblock %}
+
+{% block error_message %}
+You've made too many requests in a short period. Please wait a moment before trying again.
+{% endblock %}
+
+{% block additional_content %}
+<div class="rate-limit-info">
+    <div class="rate-limit-header">
+        <h3 class="rate-limit-title"><i class="fas fa-chart-line rate-icon"></i> Rate Limit Information</h3>
+    </div>
+    <ul class="rate-limit-details">
+        <li class="rate-limit-item">
+            <span class="rate-limit-label">Limit</span>
+            <span class="rate-limit-value">100 requests</span>
+        </li>
+        <li class="rate-limit-item">
+            <span class="rate-limit-label">Period</span>
+            <span class="rate-limit-value">60 minutes</span>
+        </li>
+        <li class="rate-limit-item">
+            <span class="rate-limit-label">Your Usage</span>
+            <span class="rate-limit-value">100/100</span>
+        </li>
+    </ul>
+    <div class="countdown-timer">
+        <p>Rate limit will reset in</p>
+        <div class="countdown-value"><span id="countdown-minutes">59</span>:<span id="countdown-seconds">59</span></div>
+        <div class="progress-bar-container">
+            <div class="progress-bar"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block additional_actions %}
+<a href="{{ url_for('index') }}" class="secondary-btn">
+    <i class="fa fa-home"></i> Return Home
+</a>
+{% endblock %}
+
+{% block page_scripts %}
+// Countdown timer
+let minutes = 59;
+let seconds = 59;
+const minutesElement = document.getElementById('countdown-minutes');
+const secondsElement = document.getElementById('countdown-seconds');
+
+const countdownInterval = setInterval(function() {
+    seconds--;
+    
+    if (seconds < 0) {
+        seconds = 59;
+        minutes--;
+    }
+    
+    if (minutes < 0) {
+        clearInterval(countdownInterval);
+        location.reload();
+        return;
+    }
+    
+    minutesElement.textContent = minutes.toString().padStart(2, '0');
+    secondsElement.textContent = seconds.toString().padStart(2, '0');
+}, 1000);
+{% endblock %}

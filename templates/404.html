@@ -1,372 +1,150 @@
-<!doctype html>
-<html class="no-js" lang="en">
-<head>
-    <!-- Essential Meta Tags -->
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+{% extends "error_base.html" %}
+
+{% block error_title %}404 - Page Not Found{% endblock %}
+{% block error_description %}The page you're looking for cannot be found on Lusan Sapkota's portfolio website.{% endblock %}
+
+{% block error_specific_styles %}
+/* 404 Specific Animation */
+.error-illustration {
+    position: relative;
+    height: 150px;
+    margin: 30px auto;
+    width: 100%;
+    max-width: 300px;
+}
+
+.search-icon {
+    position: absolute;
+    left: calc(50% - 20px);
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: clamp(40px, 8vw, 60px);
+    color: #3498db;
+    animation: search-move 3s infinite alternate;
+}
+
+.question-icon {
+    position: absolute;
+    left: calc(50% + 25px);
+    top: calc(50% - 15px);
+    font-size: clamp(30px, 6vw, 45px);
+    color: #e74c3c;
+    opacity: 0;
+    animation: question-appear 3s infinite;
+}
+
+@keyframes search-move {
+    0%, 100% { transform: translate(-50%, -50%) rotate(-20deg); }
+    50% { transform: translate(-50%, -50%) rotate(20deg); }
+}
+
+@keyframes question-appear {
+    0%, 30%, 80%, 100% { opacity: 0; transform: scale(0.5); }
+    40%, 70% { opacity: 1; transform: scale(1); }
+}
+
+.sitemap-suggestion {
+    background: rgba(52, 152, 219, 0.08);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-top: 2rem;
+    text-align: left;
+    border: 1px solid rgba(52, 152, 219, 0.15);
+    transition: all 0.3s ease;
+}
+
+.sitemap-suggestion:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(52, 152, 219, 0.1);
+}
+
+.sitemap-suggestion h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: clamp(1.1rem, 3vw, 1.3rem);
+    margin-bottom: 1rem;
+    color: #3498db;
+}
+
+.links-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    list-style: none;
+}
+
+.links-list li {
+    transition: all 0.2s ease;
+}
+
+.links-list li:hover {
+    transform: translateX(5px);
+}
+
+.links-list a {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: var(--text-color);
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
+    padding: 0.5rem 0;
+}
+
+.links-list a:hover {
+    color: #3498db;
+}
+
+.links-list i {
+    color: #3498db;
+    font-size: 0.9em;
+}
+
+@media (max-width: 600px) {
+    .error-illustration {
+        height: 120px;
+    }
     
-    <title>404 - Page Not Found | Lusan Sapkota</title>
-    <meta name="description" content="The page you're looking for could not be found on Lusan Sapkota's portfolio website.">
+    .sitemap-suggestion {
+        padding: 1rem;
+    }
     
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/bootsnav.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/responsive.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    .links-list {
+        grid-template-columns: 1fr;
+    }
+}
+{% endblock %}
 
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="{{ url_for('static', filename='assets/logo/favicon.ico') }}">
-    
-    <!-- Dark Mode Support -->
-    <script>
-        // Check for saved theme preference or use preferred color scheme
-        const currentTheme = localStorage.getItem('theme') || 
-            (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        if (currentTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
-    </script>
-    
-    <style>
-        /* Enhanced Error Page Styles */
-        .error-page-container {
-            position: relative;
-            min-height: 80vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 0 20px;
-        }
-        
-        .error-logo-container {
-            margin-bottom: 30px;
-            position: relative;
-            display: inline-block;
-        }
-        
-        .error-logo {
-            width: 120px;
-            height: auto;
-            position: relative;
-            z-index: 2;
-        }
-        
-        .logo-glow {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 150px;
-            height: 150px;
-            background: radial-gradient(circle, rgba(243, 156, 18, 0.4) 0%, rgba(243, 156, 18, 0) 70%);
-            border-radius: 50%;
-            z-index: 1;
-            animation: pulse-glow 2s infinite alternate;
-        }
-        
-        @keyframes pulse-glow {
-            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
-            100% { transform: translate(-50%, -50%) scale(1.3); opacity: 0.1; }
-        }
-        
-        .error-code {
-            font-size: 8rem;
-            font-weight: 900;
-            color: var(--text-color);
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 15px rgba(0, 0, 0, 0.1);
-            position: relative;
-            display: inline-block;
-        }
-        
-        .error-code span {
-            display: inline-block;
-            color: #f39c12;
-            animation: bounce 2s infinite alternate;
-        }
-        
-        .error-code span:nth-child(1) {
-            animation-delay: 0s;
-        }
-        .error-code span:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-        .error-code span:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-        
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        
-        .error-message {
-            font-size: 1.5rem;
-            color: var(--text-secondary);
-            margin-bottom: 30px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        .return-home-btn {
-            display: inline-block;
-            background: #f39c12;
-            color: white;
-            padding: 12px 30px;
-            border-radius: 30px;
-            font-size: 1.2rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            text-decoration: none;
-            box-shadow: 0 5px 15px rgba(243, 156, 18, 0.3);
-            transition: all 0.3s ease;
-            border: 2px solid #f39c12;
-            margin-top: 20px;
-        }
-        
-        .return-home-btn:hover {
-            background: #e67e22;
-            color: white;
-            box-shadow: 0 5px 20px rgba(243, 156, 18, 0.5);
-            padding: 10px;
-        }
-        
-        .return-home-btn i {
-            margin-right: 8px;
-        }
-        
-        /* Dark Mode Toggle Improvements */
-        .theme-toggle-container {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-        }
-        
-        .theme-toggle {
-            position: relative;
-            width: 60px;
-            height: 30px;
-            border-radius: 15px;
-            background: #f0f0f0;
-            cursor: pointer;
-            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-            transition: background 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 5px;
-        }
-        
-        [data-theme='dark'] .theme-toggle {
-            background: #333;
-        }
-        
-        .theme-toggle::after {
-            content: '';
-            position: absolute;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: #f39c12;
-            left: 3px;
-            transition: transform 0.3s ease, background 0.3s ease;
-        }
-        
-        [data-theme='dark'] .theme-toggle::after {
-            transform: translateX(30px);
-            background: #f1c40f;
-        }
-        
-        .theme-toggle .fa-sun {
-            color: #f1c40f;
-            font-size: 14px;
-            z-index: 1;
-        }
-        
-        .theme-toggle .fa-moon {
-            color: #555;
-            font-size: 14px;
-            z-index: 1;
-        }
-        
-        [data-theme='dark'] .theme-toggle .fa-sun {
-            color: #f1c40f;
-        }
-        
-        [data-theme='dark'] .theme-toggle .fa-moon {
-            color: #aaa;
-        }
-        
-        /* Footer Styles */
-        .error-footer {
-            margin-top: 50px;
-            padding: 20px 0;
-            background-color: var(--background-color);
-            border-top: 1px solid var(--border-light);
-        }
-        
-        /* Back arrow animation */
-        .back-arrow {
-            display: inline-block;
-            margin-right: 5px;
-            animation: left-right 1s infinite alternate ease-in-out;
-        }
-        
-        @keyframes left-right {
-            0% { transform: translateX(-3px); }
-            100% { transform: translateX(3px); }
-        }
-        
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .error-code {
-                font-size: 6rem;
-            }
-            
-            .error-message {
-                font-size: 1.2rem;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .error-code {
-                font-size: 4rem;
-            }
-            
-            .error-message {
-                font-size: 1rem;
-            }
-            
-            .theme-toggle-container {
-                top: 10px;
-                right: 10px;
-            }
-        }
-        
-        /* Header Container with Logo */
-        .header-container {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 20px;
-            z-index: 1000;
-            background-color: rgba(var(--background-color-rgb), 0.8);
-            backdrop-filter: blur(8px);
-        }
+{% block error_code %}<span>4</span><span>0</span><span>4</span>{% endblock %}
+{% block error_heading %}Page Not Found{% endblock %}
 
-        .header-logo {
-            position: relative;
-            display: inline-block;
-        }
+{% block error_illustration %}
+<div class="error-illustration">
+    <i class="fas fa-search search-icon"></i>
+    <i class="fas fa-question-circle question-icon"></i>
+</div>
+{% endblock %}
 
-        .header-logo-img {
-            width: 40px;
-            height: auto;
-            position: relative;
-            z-index: 2;
-        }
+{% block error_message %}
+The page you're looking for doesn't exist or has been moved.
+{% endblock %}
 
-        .header-logo .logo-glow {
-            width: 60px;
-            height: 60px;
-        }
-    </style>
-</head>
-<body>
-    <!-- Theme Toggle and Header Logo -->
-    <div class="header-container">
-        <div class="header-logo">
-            <div class="logo-glow"></div>
-            <img src="{{ url_for('static', filename='assets/logo/logo.png') }}" alt="Lusan Sapkota Logo" class="header-logo-img">
-        </div>
-        <div class="theme-toggle-container">
-            <div class="theme-toggle" id="theme-toggle" role="button" aria-label="Toggle dark mode">
-                <i class="fas fa-sun"></i>
-                <i class="fas fa-moon"></i>
-            </div>
-        </div>
-    </div>
+{% block additional_content %}
+<div class="sitemap-suggestion">
+    <h3><i class="fas fa-sitemap"></i> Available Pages</h3>
+    <ul class="links-list">
+        <li><a href="{{ url_for('index') }}"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="{{ url_for('index') }}#about"><i class="fas fa-user"></i> About</a></li>
+        <li><a href="{{ url_for('index') }}#skills"><i class="fas fa-code"></i> Skills</a></li>
+        <li><a href="{{ url_for('index') }}#projects"><i class="fas fa-project-diagram"></i> Projects</a></li>
+        <li><a href="{{ url_for('index') }}#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+    </ul>
+</div>
+{% endblock %}
 
-    <!-- Error Content Start -->
-    <div class="error-page-container">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12 text-center">
-                    <!-- Animated Error Code -->
-                    <div class="error-code">
-                        <span>4</span><span>0</span><span>4</span>
-                    </div>
-                    
-                    <!-- Error Message -->
-                    <h2 class="error-message">The page you're looking for doesn't exist or has been moved.</h2>
-                    
-                    <!-- Return Home Button -->
-                    <a href="{{ url_for('index') }}" class="return-home-btn">
-                        <span class="back-arrow"><i class="fa fa-arrow-left"></i></span> Return to Homepage
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Error Content End -->
-
-    <!-- Footer Start -->
-    <footer class="error-footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="text-center">
-                        <p>&copy; copyright lusan sapkota. <a href="https://www.lusansapkota.com.np/">lusansapkota.com.np</a></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
-    <!-- Footer End -->
-
-    <!-- JavaScript Libraries -->
-    <script src="{{ url_for('static', filename='assets/js/jquery.js') }}"></script>
-    <script src="{{ url_for('static', filename='assets/js/bootstrap.min.js') }}"></script>
-    
-    <!-- Dark Mode Script -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Get theme toggle element
-            const themeToggle = document.getElementById('theme-toggle');
-            
-            // Apply current theme on page load
-            const currentTheme = localStorage.getItem('theme') || 
-                (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-            
-            document.documentElement.setAttribute('data-theme', currentTheme);
-            
-            // Add click event
-            themeToggle.addEventListener('click', function() {
-                // Toggle theme
-                if (document.documentElement.getAttribute('data-theme') === 'dark') {
-                    document.documentElement.setAttribute('data-theme', 'light');
-                    localStorage.setItem('theme', 'light');
-                } else {
-                    document.documentElement.setAttribute('data-theme', 'dark');
-                    localStorage.setItem('theme', 'dark');
-                }
-            });
-            
-            // Listen for system theme changes
-            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
-                if (!localStorage.getItem('theme')) {
-                    // Only auto-switch if user hasn't manually set a preference
-                    document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
-                }
-            });
-        });
-    </script>
-</body>
-</html>
+{% block additional_actions %}
+<a href="javascript:history.back()" class="secondary-btn">
+    <i class="fa fa-arrow-left"></i> Go Back
+</a>
+{% endblock %}

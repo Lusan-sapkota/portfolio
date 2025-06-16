@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, jsonify 
+from flask import Flask, render_template, jsonify, abort
 from dotenv import load_dotenv
 from database import db
 import commands
@@ -7,6 +7,8 @@ from flask_login import LoginManager
 from models import User
 from flask_jwt_extended import JWTManager 
 from flask_migrate import Migrate
+from config import SUBDOMAINS, THEME_CONFIG, SEO_CONFIG, CONTACT_INFO, FEATURES
+from datetime import datetime
 
 # Load environment variables
 load_dotenv()
@@ -72,16 +74,83 @@ from models import *
 # Main routes
 @app.route('/')
 def index():
-    return render_template('index.html')
+    # Pass configuration data to template
+    template_data = {
+        'subdomains': {k: v for k, v in SUBDOMAINS.items() if v.get('enabled', True)},
+        'theme_config': THEME_CONFIG,
+        'seo_config': SEO_CONFIG,
+        'contact_info': CONTACT_INFO,
+        'features': FEATURES
+    }
+    return render_template('index.html', **template_data, current_year=datetime.now().year)
+
+@app.route('/privacy')
+def privacy():
+    """Privacy Policy page"""
+    return render_template('privacy.html')
+
+@app.route('/simulate-error/<int:code>')
+def simulate_error(code):
+    """
+    Route to simulate various HTTP error codes for testing
+    Accessible only in development mode
+    """
+    if not app.debug:
+        abort(404)  # Only allow in debug mode
+        
+    valid_codes = [400, 401, 403, 404, 418, 429, 500, 502, 503]
+    
+    if code in valid_codes:
+        abort(code)
+    else:
+        return f"<h1>Invalid error code</h1><p>Please use one of these: {', '.join(map(str, valid_codes))}</p>"
 
 # Error handlers
+@app.errorhandler(400)
+def bad_request(e):
+    return render_template('400.html', current_year=datetime.now().year), 400
+
+@app.errorhandler(401)
+def unauthorized(e):
+    return render_template('401.html', current_year=datetime.now().year), 401
+
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template('404.html'), 404
+    return render_template('404.html', current_year=datetime.now().year), 404
+
+@app.errorhandler(429)
+def too_many_requests(e):
+    return render_template('429.html', current_year=datetime.now().year), 429
 
 @app.errorhandler(500)
-def server_error(e):
-    return render_template('500.html'), 500
+def internal_server_error(e):
+    return render_template('500.html', current_year=datetime.now().year), 500
+
+@app.errorhandler(502)
+def bad_gateway(e):
+    return render_template('502.html', current_year=datetime.now().year, current_time=datetime.now().strftime('%H:%M:%S')), 502
+
+@app.errorhandler(503)
+def service_unavailable(e):
+    return render_template('503.html', current_year=datetime.now().year), 503
+
+@app.errorhandler(403)
+def forbidden(e):
+    return render_template('403.html', current_year=datetime.now().year), 403
+
+@app.errorhandler(418)
+def im_a_teapot(e):
+    return render_template('418.html', current_year=datetime.now().year), 418
+
+# Add this new handler for general exceptions
+@app.errorhandler(Exception)
+def handle_exception(e):
+    # Pass exception to default error handler if debug mode is on
+    if app.debug:
+        return e
+    
+    # Otherwise handle the error gracefully
+    return render_template('500.html', current_year=datetime.now().year), 500
 
 commands.register_commands(app)
 
