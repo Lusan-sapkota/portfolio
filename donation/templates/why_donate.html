@@ -1,0 +1,510 @@
+{% extends "base.html" %}
+
+{% block title %}Why Support {{ project.title }}?{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('donation.static', filename='css/donation-style.css') }}">
+<style>
+    .why-hero {
+        background: var(--gradient-hero);
+        color: white;
+        padding: 100px 0 60px;
+    }
+    
+    .project-overview {
+        background: var(--card-bg);
+        border-radius: 15px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: var(--shadow-sm);
+    }
+    
+    .benefit-card {
+        background: var(--card-bg);
+        border-radius: 15px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: var(--shadow-sm);
+        border-left: 4px solid var(--primary-color);
+        transition: var(--transition);
+    }
+    
+    .benefit-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-md);
+    }
+    
+    .benefit-icon {
+        font-size: 2.5rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+    }
+    
+    .benefit-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: var(--text-color);
+    }
+    
+    .benefit-description {
+        color: var(--text-secondary);
+        line-height: 1.6;
+    }
+    
+    .impact-section {
+        background: var(--light-gray);
+        padding: 60px 0;
+        margin: 60px 0;
+    }
+    
+    .impact-item {
+        background: var(--card-bg);
+        border-radius: 15px;
+        padding: 2rem;
+        text-align: center;
+        box-shadow: var(--shadow-sm);
+        height: 100%;
+    }
+    
+    .impact-number {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        margin-bottom: 0.5rem;
+    }
+    
+    .donation-levels {
+        background: var(--card-bg);
+        border-radius: 15px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: var(--shadow-sm);
+    }
+    
+    .level-item {
+        padding: 1.5rem;
+        border-radius: 10px;
+        margin-bottom: 1rem;
+        border: 2px solid var(--border-color);
+        transition: var(--transition);
+    }
+    
+    .level-item:hover {
+        border-color: var(--primary-color);
+        background: var(--accent-yellow);
+    }
+    
+    .level-amount {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--primary-color);
+        margin-bottom: 0.5rem;
+    }
+    
+    .level-description {
+        color: var(--text-secondary);
+        line-height: 1.6;
+    }
+    
+    .urgency-banner {
+        background: linear-gradient(135deg, var(--warning-color), var(--primary-color));
+        color: white;
+        padding: 2rem;
+        border-radius: 15px;
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    
+    .urgency-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+    
+    .cta-section {
+        text-align: center;
+        padding: 60px 0;
+    }
+    
+    .cta-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-top: 2rem;
+    }
+    
+    .btn-donate-large {
+        background: var(--gradient-primary);
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        border-radius: 25px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        text-decoration: none;
+        transition: var(--transition);
+    }
+    
+    .btn-donate-large:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+        color: white;
+        text-decoration: none;
+    }
+    
+    .btn-secondary-large {
+        background: transparent;
+        color: var(--primary-color);
+        border: 2px solid var(--primary-color);
+        padding: 15px 30px;
+        border-radius: 25px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        text-decoration: none;
+        transition: var(--transition);
+    }
+    
+    .btn-secondary-large:hover {
+        background: var(--primary-color);
+        color: white;
+        text-decoration: none;
+    }
+    
+    @media (max-width: 768px) {
+        .why-hero {
+            padding: 60px 0 40px;
+        }
+        
+        .project-overview,
+        .benefit-card,
+        .donation-levels {
+            padding: 1.5rem;
+        }
+        
+        .cta-buttons {
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .btn-donate-large,
+        .btn-secondary-large {
+            width: 100%;
+            max-width: 300px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="why-hero">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="display-4 fw-bold mb-3">Why Support {{ project.title }}?</h1>
+                <p class="lead">
+                    Your donation will directly impact the development and success of this important project. 
+                    Here's exactly how your contribution makes a difference.
+                </p>
+            </div>
+            <div class="col-lg-4 text-center">
+                {% if project.image_url %}
+                <img src="{{ project.image_url }}" alt="{{ project.title }}" 
+                     class="img-fluid rounded" style="max-height: 200px;">
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Project Overview -->
+<section class="py-5">
+    <div class="container">
+        <div class="project-overview">
+            <h2 class="mb-4">Project Overview</h2>
+            <div class="project-description">
+                {{ project.description|safe }}
+            </div>
+        </div>
+        
+        <!-- Urgency Banner -->
+        <div class="urgency-banner">
+            <h3 class="urgency-title">
+                <i class="fas fa-clock"></i> Your Support is Needed Now
+            </h3>
+            <p class="mb-0">
+                This project is actively being developed and your contribution will 
+                directly accelerate its progress and impact.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Benefits of Supporting -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Why Your Support Matters</h2>
+        <div class="row">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3 class="benefit-title">Accelerate Development</h3>
+                    <p class="benefit-description">
+                        Your donation allows us to dedicate more time to development, 
+                        implement new features faster, and deliver updates more frequently.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="benefit-title">Grow the Community</h3>
+                    <p class="benefit-description">
+                        Funding helps us create better documentation, tutorials, and 
+                        support resources that benefit the entire developer community.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="benefit-title">Ensure Sustainability</h3>
+                    <p class="benefit-description">
+                        Regular donations help maintain servers, tools, and resources 
+                        needed to keep the project running reliably long-term.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3 class="benefit-title">Educational Impact</h3>
+                    <p class="benefit-description">
+                        Your support helps us create learning materials and resources 
+                        that teach others how to use and contribute to the project.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3 class="benefit-title">Global Accessibility</h3>
+                    <p class="benefit-description">
+                        Donations help us make the project available in multiple languages 
+                        and accessible to developers worldwide.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3 class="benefit-title">Open Source Values</h3>
+                    <p class="benefit-description">
+                        Supporting this project promotes open source development and 
+                        helps keep valuable tools free and accessible for everyone.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Impact Potential -->
+<section class="impact-section">
+    <div class="container">
+        <h2 class="text-center mb-5">Potential Impact</h2>
+        <div class="row">
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="impact-item">
+                    <div class="impact-number">1000+</div>
+                    <h4>Developers Helped</h4>
+                    <p>Estimated number of developers who will benefit from this project</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="impact-item">
+                    <div class="impact-number">50+</div>
+                    <h4>Hours Saved</h4>
+                    <p>Average time saved per developer using this tool or resource</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="impact-item">
+                    <div class="impact-number">24/7</div>
+                    <h4>Availability</h4>
+                    <p>Continuous availability thanks to proper hosting and maintenance</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="impact-item">
+                    <div class="impact-number">100%</div>
+                    <h4>Open Source</h4>
+                    <p>Completely free and open for everyone to use and contribute</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Donation Levels -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">How Different Amounts Help</h2>
+        <div class="donation-levels">
+            <div class="level-item">
+                <div class="level-amount">$10</div>
+                <div class="level-description">
+                    Covers hosting costs for one month, ensuring the project stays online and accessible.
+                </div>
+            </div>
+            
+            <div class="level-item">
+                <div class="level-amount">$25</div>
+                <div class="level-description">
+                    Funds development tools and services that improve code quality and testing capabilities.
+                </div>
+            </div>
+            
+            <div class="level-item">
+                <div class="level-amount">$50</div>
+                <div class="level-description">
+                    Supports creation of comprehensive documentation and tutorial content for new users.
+                </div>
+            </div>
+            
+            <div class="level-item">
+                <div class="level-amount">$100+</div>
+                <div class="level-description">
+                    Enables major feature development and helps us dedicate significant time to the project.
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="cta-section">
+    <div class="container">
+        <h2 class="mb-4">Ready to Make a Difference?</h2>
+        <p class="lead mb-4">
+            Join other supporters who believe in the power of open source technology. 
+            Your contribution, no matter the size, helps build a better future for developers everywhere.
+        </p>
+        
+        <div class="cta-buttons">
+            <a href="{{ url_for('donation.project_detail', project_id=project.id) }}" class="btn-donate-large">
+                <i class="fas fa-heart"></i> Donate Now
+            </a>
+            <a href="{{ url_for('donation.index') }}" class="btn-secondary-large">
+                <i class="fas fa-arrow-left"></i> View All Projects
+            </a>
+        </div>
+        
+        <div class="mt-4">
+            <p class="text-muted">
+                <i class="fas fa-shield-alt"></i> Secure payment processing • 
+                <i class="fas fa-envelope"></i> Instant confirmation email • 
+                <i class="fas fa-heart"></i> 100% goes to the project
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Similar Projects -->
+{% if similar_projects %}
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">Other Projects You Might Like</h2>
+        <div class="row">
+            {% for similar_project in similar_projects %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="impact-item">
+                    <h4>{{ similar_project.title }}</h4>
+                    <p>{{ similar_project.short_description or similar_project.description[:100] + '...' }}</p>
+                    <a href="{{ url_for('donation.why_donate', project_id=similar_project.id) }}" 
+                       class="btn btn-outline-primary btn-sm">
+                        Learn More
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+    
+    // Animate impact numbers
+    const impactNumbers = document.querySelectorAll('.impact-number');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const target = entry.target;
+                const text = target.textContent;
+                const numbers = text.match(/\d+/g);
+                
+                if (numbers) {
+                    const finalNumber = parseInt(numbers[0]);
+                    animateNumber(target, 0, finalNumber, text);
+                }
+                
+                observer.unobserve(target);
+            }
+        });
+    });
+    
+    impactNumbers.forEach(num => observer.observe(num));
+    
+    function animateNumber(element, start, end, originalText) {
+        const duration = 2000;
+        const increment = end / (duration / 16);
+        let current = start;
+        
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= end) {
+                element.textContent = originalText;
+                clearInterval(timer);
+            } else {
+                const displayValue = Math.floor(current);
+                element.textContent = originalText.replace(/\d+/, displayValue);
+            }
+        }, 16);
+    }
+</script>
+{% endblock %}

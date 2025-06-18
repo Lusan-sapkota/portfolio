@@ -1,45 +1,477 @@
 {% extends 'wiki/base.html' %}
 
-{% block title %}Home - Lusan's Wiki{% endblock %}
+{% block title %}Lusan's Knowledge Hub - Discover, Learn, Grow{% endblock %}
+
+{% block head %}
+<style>
+    /* Additional custom styles for the enhanced design */
+    .floating-elements {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        overflow: hidden;
+    }
+    
+    .floating-element {
+        position: absolute;
+        opacity: 0.1;
+        animation: float 15s infinite ease-in-out;
+    }
+    
+    @keyframes float {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        25% { transform: translateY(-20px) rotate(5deg); }
+        50% { transform: translateY(-10px) rotate(-5deg); }
+        75% { transform: translateY(-15px) rotate(3deg); }
+    }
+    
+    .knowledge-card {
+        background: linear-gradient(135deg, rgba(241, 196, 15, 0.05) 0%, rgba(243, 156, 18, 0.1) 100%);
+        border: 2px solid var(--border-color);
+        border-radius: 2rem;
+        padding: 2.5rem;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+    
+    .knowledge-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(241, 196, 15, 0.1), transparent);
+        transition: 0.8s;
+    }
+    
+    .knowledge-card:hover::before {
+        left: 100%;
+    }
+    
+    .interactive-stats {
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(15px);
+        border-radius: 2rem;
+        padding: 2rem;
+        border: 2px solid rgba(241, 196, 15, 0.2);
+        transition: all 0.3s ease;
+    }
+    
+    .interactive-stats:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(241, 196, 15, 0.2);
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-    <div class="text-center mb-5">
-        <h2>Welcome to Lusan's Knowledge Wiki</h2>
-        <p>Explore a collection of articles, tutorials, and resources to expand your knowledge.</p>
+<!-- Enhanced Hero Section -->
+<div class="wiki-hero">
+    <div class="floating-elements">
+        <i class="fas fa-lightbulb floating-element" style="top: 10%; left: 15%; font-size: 4rem; animation-delay: -2s;"></i>
+        <i class="fas fa-graduation-cap floating-element" style="top: 60%; right: 20%; font-size: 3rem; animation-delay: -8s;"></i>
+        <i class="fas fa-rocket floating-element" style="top: 30%; right: 10%; font-size: 2.5rem; animation-delay: -5s;"></i>
+        <i class="fas fa-brain floating-element" style="bottom: 20%; left: 10%; font-size: 3.5rem; animation-delay: -12s;"></i>
+        <i class="fas fa-atom floating-element" style="top: 20%; right: 30%; font-size: 2rem; animation-delay: -15s;"></i>
     </div>
-
-    <div class="row">
-        <div class="col-md-4 mb-4">
-            <div class="card">
-                <img src="{{ url_for('static', filename='assets/images/featured1.jpg') }}" class="card-img-top" alt="Article 1">
-                <div class="card-body">
-                    <h5 class="card-title">Understanding Python</h5>
-                    <p class="card-text">Learn the basics of Python programming and get started with coding.</p>
-                    <a href="{{ url_for('wiki.article', article_id=1) }}" class="btn btn-primary">Read More</a>
+    
+    <div class="hero-content">
+        <div class="hero-badge animate__animated animate__fadeInDown animate__delay-1s">
+            <i class="fas fa-star"></i>
+            Knowledge Universe
+        </div>
+        
+        <h1 class="hero-title animate__animated animate__fadeInUp animate__delay-1s">
+            <span class="gradient-text">Lusan's</span><br>
+            <span class="highlight">Knowledge Hub</span>
+        </h1>
+        
+        <p class="hero-subtitle animate__animated animate__fadeInUp animate__delay-2s">
+            🚀 Embark on a journey through curated insights, cutting-edge tutorials, and transformative ideas. 
+            From code to creativity, explore the intersection of technology and human potential.
+        </p>
+        
+        <!-- Enhanced Quick Actions -->
+        <div class="hero-actions animate__animated animate__fadeInUp animate__delay-3s">
+            <a href="{{ url_for('wiki.search') }}" class="btn btn-primary btn-lg hero-btn">
+                <i class="fas fa-search"></i>
+                <span>Explore Knowledge</span>
+                <div class="btn-ripple"></div>
+            </a>
+            <a href="{{ url_for('wiki.random') }}" class="btn btn-outline-light btn-lg hero-btn">
+                <i class="fas fa-dice"></i>
+                <span>Surprise Me</span>
+                <div class="btn-ripple"></div>
+            </a>
+            <a href="#featured-content" class="btn btn-ghost btn-lg hero-btn">
+                <i class="fas fa-arrow-down"></i>
+                <span>Dive In</span>
+            </a>
+        </div>
+        
+        <!-- Interactive Stats Grid -->
+        <div class="stats-grid animate__animated animate__fadeInUp animate__delay-4s">
+            <div class="stat-card interactive-stats">
+                <div class="stat-icon">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number" data-count="{{ articles|length }}">0</div>
+                    <div class="stat-label">Knowledge Articles</div>
                 </div>
             </div>
-        </div>
-
-        <div class="col-md-4 mb-4">
-            <div class="card">
-                <img src="{{ url_for('static', filename='assets/images/featured2.jpg') }}" class="card-img-top" alt="Article 2">
-                <div class="card-body">
-                    <h5 class="card-title">Introduction to Web Development</h5>
-                    <p class="card-text">Start your journey in web development with this step-by-step guide.</p>
-                    <a href="{{ url_for('wiki.article', article_id=2) }}" class="btn btn-primary">Read More</a>
+            <div class="stat-card interactive-stats">
+                <div class="stat-icon">
+                    <i class="fas fa-layer-group"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number" data-count="{{ categories|length }}">0</div>
+                    <div class="stat-label">Topic Categories</div>
                 </div>
             </div>
-        </div>
-
-        <div class="col-md-4 mb-4">
-            <div class="card">
-                <img src="{{ url_for('static', filename='assets/images/featured3.jpg') }}" class="card-img-top" alt="Article 3">
-                <div class="card-body">
-                    <h5 class="card-title">Machine Learning Basics</h5>
-                    <p class="card-text">Get an introduction to machine learning and its practical applications.</p>
-                    <a href="{{ url_for('wiki.article', article_id=3) }}" class="btn btn-primary">Read More</a>
+            <div class="stat-card interactive-stats">
+                <div class="stat-icon">
+                    <i class="fas fa-fire"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number" data-count="1337">0</div>
+                    <div class="stat-label">Ideas Sparked</div>
+                </div>
+            </div>
+            <div class="stat-card interactive-stats">
+                <div class="stat-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number" data-count="42">0</div>
+                    <div class="stat-label">Eureka Moments</div>
                 </div>
             </div>
         </div>
     </div>
+    
+    <!-- Scroll Indicator -->
+    <div class="scroll-indicator animate__animated animate__bounce animate__infinite">
+        <i class="fas fa-chevron-down"></i>
+    </div>
+</div>
+
+<!-- Main Content Container -->
+<div class="wiki-container" id="featured-content">
+    {% if articles %}
+    <!-- Featured Knowledge Section -->
+    <section class="section featured-articles">
+        <div class="section-header">
+            <h2 class="section-title">
+                <i class="fas fa-gem"></i>
+                Featured Knowledge Gems
+            </h2>
+            <p class="section-description">
+                ✨ Handpicked articles that represent the essence of learning and discovery
+            </p>
+        </div>
+        
+        <div class="knowledge-showcase">
+            {% for article in articles[:3] %}
+            <article class="knowledge-card featured-card animate__animated animate__fadeInUp" style="animation-delay: {{ loop.index * 0.2 }}s;">
+                <div class="card-ribbon">
+                    <span>Featured</span>
+                </div>
+                
+                {% if article.category %}
+                <div class="knowledge-category">
+                    <i class="fas fa-tag"></i>
+                    {{ article.category.name }}
+                </div>
+                {% endif %}
+                
+                <div class="knowledge-content">
+                    <h3 class="knowledge-title">{{ article.title }}</h3>
+                    <p class="knowledge-excerpt">
+                        {{ article.get_excerpt(200) }}
+                    </p>
+                    
+                    <div class="knowledge-meta">
+                        <div class="meta-item">
+                            <i class="fas fa-calendar"></i>
+                            <span>{{ article.created_at.strftime('%b %d, %Y') if article.created_at else 'Recently' }}</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-clock"></i>
+                            <span>{{ (article.content|length / 200)|round|int or 3 }} min read</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="knowledge-action">
+                    <a href="{{ url_for('wiki.article', article_id=article.id) }}" class="btn btn-knowledge">
+                        <span>Explore This</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+        
+        {% if articles|length > 3 %}
+        <div class="explore-more">
+            <a href="{{ url_for('wiki.search') }}" class="btn btn-explore-all">
+                <i class="fas fa-compass"></i>
+                <span>Explore All {{ articles|length }} Articles</span>
+                <i class="fas fa-infinity"></i>
+            </a>
+        </div>
+        {% endif %}
+    </section>
+    {% endif %}
+
+    {% if categories %}
+    <!-- Knowledge Domains Section -->
+    <section class="section knowledge-domains">
+        <div class="section-header">
+            <h2 class="section-title">
+                <i class="fas fa-sitemap"></i>
+                Knowledge Domains
+            </h2>
+            <p class="section-description">
+                🌟 Navigate through carefully curated categories of wisdom and expertise
+            </p>
+        </div>
+        
+        <div class="domains-grid">
+            {% for category in categories %}
+            <div class="domain-card animate__animated animate__fadeInUp" style="animation-delay: {{ loop.index * 0.15 }}s;">
+                <div class="domain-icon">
+                    {% set icons = ['fas fa-code', 'fas fa-brain', 'fas fa-rocket', 'fas fa-lightbulb', 'fas fa-cogs', 'fas fa-database'] %}
+                    <i class="{{ icons[loop.index0 % icons|length] }}"></i>
+                </div>
+                
+                <div class="domain-content">
+                    <h3 class="domain-name">{{ category.name }}</h3>
+                    <p class="domain-description">
+                        {{ category.description or 'Dive deep into this fascinating domain of knowledge' }}
+                    </p>
+                    
+                    <div class="domain-stats">
+                        <div class="stat-badge">
+                            <i class="fas fa-file-text"></i>
+                            <span>{{ category.article_count }} articles</span>
+                        </div>
+                        {% if category.subcategories %}
+                        <div class="stat-badge">
+                            <i class="fas fa-folder-tree"></i>
+                            <span>{{ category.subcategories|length }} subtopics</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="domain-action">
+                    <a href="{{ url_for('wiki.search', category=category.name) }}" class="btn btn-domain">
+                        <span>Enter Domain</span>
+                        <i class="fas fa-portal-enter"></i>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Learning Pathways Section -->
+    <section class="section learning-pathways">
+        <div class="section-header">
+            <h2 class="section-title">
+                <i class="fas fa-route"></i>
+                Your Learning Journey
+            </h2>
+            <p class="section-description">
+                🎯 Choose your adventure and start learning at your own pace
+            </p>
+        </div>
+        
+        <div class="pathways-grid">
+            <div class="pathway-card beginner">
+                <div class="pathway-icon">
+                    <i class="fas fa-seedling"></i>
+                </div>
+                <h3 class="pathway-title">Beginner Explorer</h3>
+                <p class="pathway-description">
+                    Start your journey with foundational concepts and gentle introductions to complex topics.
+                </p>
+                <div class="pathway-features">
+                    <div class="feature">✓ Step-by-step guides</div>
+                    <div class="feature">✓ Basic concepts</div>
+                    <div class="feature">✓ Practical examples</div>
+                </div>
+                <a href="{{ url_for('wiki.search', level='beginner') }}" class="btn btn-pathway">
+                    Start Exploring
+                    <i class="fas fa-play"></i>
+                </a>
+            </div>
+            
+            <div class="pathway-card intermediate">
+                <div class="pathway-icon">
+                    <i class="fas fa-mountain"></i>
+                </div>
+                <h3 class="pathway-title">Knowledge Seeker</h3>
+                <p class="pathway-description">
+                    Dive deeper into advanced topics and challenge yourself with complex problems.
+                </p>
+                <div class="pathway-features">
+                    <div class="feature">✓ Advanced techniques</div>
+                    <div class="feature">✓ Real-world projects</div>
+                    <div class="feature">✓ Best practices</div>
+                </div>
+                <a href="{{ url_for('wiki.search', level='intermediate') }}" class="btn btn-pathway">
+                    Level Up
+                    <i class="fas fa-arrow-up"></i>
+                </a>
+            </div>
+            
+            <div class="pathway-card expert">
+                <div class="pathway-icon">
+                    <i class="fas fa-crown"></i>
+                </div>
+                <h3 class="pathway-title">Master Craftsperson</h3>
+                <p class="pathway-description">
+                    Explore cutting-edge concepts and contribute to the frontiers of knowledge.
+                </p>
+                <div class="pathway-features">
+                    <div class="feature">✓ Cutting-edge research</div>
+                    <div class="feature">✓ Expert insights</div>
+                    <div class="feature">✓ Industry secrets</div>
+                </div>
+                <a href="{{ url_for('wiki.search', level='expert') }}" class="btn btn-pathway">
+                    Master It
+                    <i class="fas fa-trophy"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    {% if articles %}
+    <!-- Knowledge Timeline Section -->
+    <section class="section knowledge-timeline">
+        <div class="section-header">
+            <h2 class="section-title">
+                <i class="fas fa-history"></i>
+                Recent Discoveries
+            </h2>
+            <p class="section-description">
+                📚 Follow the latest additions to our knowledge base
+            </p>
+        </div>
+        
+        <div class="timeline-container">
+            {% set sorted_articles = articles|sort(attribute='updated_at', reverse=true) %}
+            {% for article in sorted_articles[:5] %}
+            <div class="timeline-item animate__animated animate__fadeInLeft" style="animation-delay: {{ loop.index * 0.2 }}s;">
+                <div class="timeline-marker">
+                    <i class="fas fa-star"></i>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-badge">
+                        {% if loop.index == 1 %}
+                            <span class="badge-new">Latest</span>
+                        {% elif loop.index <= 3 %}
+                            <span class="badge-recent">Recent</span>
+                        {% endif %}
+                    </div>
+                    
+                    <h4 class="timeline-title">
+                        <a href="{{ url_for('wiki.article', article_id=article.id) }}">{{ article.title }}</a>
+                    </h4>
+                    
+                    <p class="timeline-description">
+                        {{ article.summary or (article.content[:150] + '...' if article.content and article.content|length > 150 else (article.content or 'A new discovery awaits...')) }}
+                    </p>
+                    
+                    <div class="timeline-meta">
+                        <span class="timeline-date">
+                            <i class="fas fa-clock"></i>
+                            {{ article.updated_at.strftime('%b %d, %Y') if article.updated_at else (article.created_at.strftime('%b %d, %Y') if article.created_at else 'Recently') }}
+                        </span>
+                        {% if article.category %}
+                        <span class="timeline-category">
+                            <i class="fas fa-tag"></i>
+                            {{ article.category.name }}
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="timeline-footer">
+            <a href="{{ url_for('wiki.search', sort='recent') }}" class="btn btn-timeline">
+                <i class="fas fa-history"></i>
+                View All Updates
+            </a>
+        </div>
+    </section>
+    {% endif %}
+</div>
+
+<!-- Enhanced JavaScript for Interactivity -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Animated counter for stats
+    const stats = document.querySelectorAll('.stat-number[data-count]');
+    
+    stats.forEach(stat => {
+        const target = parseInt(stat.getAttribute('data-count'));
+        let current = 0;
+        const increment = target / 100;
+        
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+                current = target;
+                clearInterval(timer);
+            }
+            stat.textContent = Math.floor(current);
+        }, 20);
+    });
+    
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+    
+    // Add intersection observer for animations
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate__fadeInUp');
+            }
+        });
+    }, observerOptions);
+    
+    // Observe elements for animation
+    document.querySelectorAll('.knowledge-card, .domain-card, .pathway-card, .timeline-item').forEach(el => {
+        observer.observe(el);
+    });
+});
+</script>
 {% endblock %}

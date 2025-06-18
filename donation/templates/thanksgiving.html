@@ -1,0 +1,441 @@
+{% extends "base.html" %}
+
+{% block title %}Thanksgiving - Our Supporters{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('donation.static', filename='css/donation-style.css') }}">
+<style>
+    .thanksgiving-hero {
+        background: var(--gradient-hero);
+        color: white;
+        padding: 100px 0 60px;
+        text-align: center;
+    }
+    
+    .thanksgiving-hero h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+    
+    .thanksgiving-hero p {
+        font-size: 1.3rem;
+        opacity: 0.9;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    
+    .supporter-card {
+        background: var(--card-bg);
+        border-radius: 15px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: var(--shadow-sm);
+        border-left: 4px solid var(--primary-color);
+        transition: var(--transition);
+    }
+    
+    .supporter-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-md);
+    }
+    
+    .supporter-name {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: var(--primary-color);
+        margin-bottom: 0.5rem;
+    }
+    
+    .supporter-amount {
+        font-size: 1rem;
+        color: var(--success-color);
+        font-weight: 500;
+        margin-bottom: 1rem;
+    }
+    
+    .supporter-message {
+        color: var(--text-secondary);
+        font-style: italic;
+        line-height: 1.6;
+    }
+    
+    .stats-section {
+        background: var(--light-gray);
+        padding: 60px 0;
+        margin: 60px 0;
+    }
+    
+    .stat-card {
+        background: var(--card-bg);
+        border-radius: 15px;
+        padding: 2rem;
+        text-align: center;
+        box-shadow: var(--shadow-sm);
+        transition: var(--transition);
+    }
+    
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-md);
+    }
+    
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        margin-bottom: 0.5rem;
+    }
+    
+    .stat-label {
+        color: var(--text-secondary);
+        font-weight: 500;
+    }
+    
+    .gratitude-section {
+        padding: 60px 0;
+        text-align: center;
+    }
+    
+    .gratitude-message {
+        max-width: 800px;
+        margin: 0 auto;
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: var(--text-color);
+    }
+    
+    .impact-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-top: 3rem;
+    }
+    
+    .impact-item {
+        background: var(--card-bg);
+        border-radius: 15px;
+        padding: 2rem;
+        text-align: center;
+        box-shadow: var(--shadow-sm);
+    }
+    
+    .impact-icon {
+        font-size: 3rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+    }
+    
+    .impact-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: var(--text-color);
+    }
+    
+    .impact-description {
+        color: var(--text-secondary);
+        line-height: 1.6;
+    }
+    
+    .milestone-timeline {
+        position: relative;
+        padding: 2rem 0;
+    }
+    
+    .milestone-item {
+        position: relative;
+        padding: 1.5rem 0;
+        border-left: 2px solid var(--primary-color);
+        margin-left: 1rem;
+        padding-left: 2rem;
+    }
+    
+    .milestone-item::before {
+        content: '';
+        position: absolute;
+        left: -8px;
+        top: 2rem;
+        width: 14px;
+        height: 14px;
+        background: var(--primary-color);
+        border-radius: 50%;
+    }
+    
+    .milestone-date {
+        color: var(--primary-color);
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+    
+    .milestone-title {
+        font-weight: 600;
+        margin: 0.5rem 0;
+        color: var(--text-color);
+    }
+    
+    .milestone-description {
+        color: var(--text-secondary);
+        line-height: 1.6;
+    }
+    
+    @media (max-width: 768px) {
+        .thanksgiving-hero h1 {
+            font-size: 2rem;
+        }
+        
+        .thanksgiving-hero p {
+            font-size: 1.1rem;
+        }
+        
+        .supporter-card {
+            padding: 1.5rem;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+        }
+        
+        .impact-grid {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="thanksgiving-hero">
+    <div class="container">
+        <h1><i class="fas fa-heart"></i> Thank You!</h1>
+        <p>
+            To all our amazing supporters who believe in open source innovation 
+            and help us build technology that makes a difference.
+        </p>
+    </div>
+</section>
+
+<!-- Statistics Section -->
+<section class="stats-section">
+    <div class="container">
+        <h2 class="text-center mb-5">Our Impact Together</h2>
+        <div class="row">
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stat-card">
+                    <div class="stat-number">${{ total_raised or 0 }}</div>
+                    <div class="stat-label">Total Raised</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stat-card">
+                    <div class="stat-number">{{ total_supporters or 0 }}</div>
+                    <div class="stat-label">Supporters</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stat-card">
+                    <div class="stat-number">{{ total_projects or 0 }}</div>
+                    <div class="stat-label">Projects Funded</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stat-card">
+                    <div class="stat-number">{{ countries or 0 }}</div>
+                    <div class="stat-label">Countries</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Gratitude Message -->
+<section class="gratitude-section">
+    <div class="container">
+        <h2 class="mb-4">From Our Hearts</h2>
+        <div class="gratitude-message">
+            <p>
+                Every donation, no matter the size, represents someone who believes in the power of 
+                open source technology to create positive change. Your support doesn't just fund 
+                our projects—it fuels innovation, education, and community building around the world.
+            </p>
+            <p>
+                Thanks to your generosity, we've been able to develop tools that help other developers, 
+                create educational resources for students in developing countries, and build systems 
+                that can save lives. You are part of something bigger than code—you're part of a 
+                movement toward accessible, inclusive technology.
+            </p>
+            <p>
+                <strong>Thank you for believing in our mission and making this journey possible.</strong>
+            </p>
+        </div>
+        
+        <!-- Impact Areas -->
+        <div class="impact-grid">
+            <div class="impact-item">
+                <div class="impact-icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                <h3 class="impact-title">Open Source Development</h3>
+                <p class="impact-description">
+                    Creating tools and libraries that benefit the entire developer community, 
+                    with focus on accessibility and ease of use.
+                </p>
+            </div>
+            
+            <div class="impact-item">
+                <div class="impact-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h3 class="impact-title">Education & Learning</h3>
+                <p class="impact-description">
+                    Providing free educational resources and tutorials to help aspiring 
+                    developers learn programming and modern technologies.
+                </p>
+            </div>
+            
+            <div class="impact-item">
+                <div class="impact-icon">
+                    <i class="fas fa-heart-pulse"></i>
+                </div>
+                <h3 class="impact-title">Social Impact</h3>
+                <p class="impact-description">
+                    Building technology solutions that address real-world problems and 
+                    improve lives, especially in underserved communities.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Recent Supporters -->
+{% if recent_supporters %}
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Recent Supporters</h2>
+        <div class="row">
+            {% for donation in recent_supporters %}
+            <div class="col-lg-6 mb-3">
+                <div class="supporter-card">
+                    <div class="supporter-name">
+                        {{ donation.donor_name if not donation.is_anonymous else 'Anonymous Supporter' }}
+                    </div>
+                    <div class="supporter-amount">
+                        Donated ${{ "%.2f"|format(donation.amount) }} to {{ donation.project.title }}
+                    </div>
+                    {% if donation.message %}
+                    <div class="supporter-message">
+                        "{{ donation.message }}"
+                    </div>
+                    {% endif %}
+                    <small class="text-muted">{{ donation.created_at.strftime('%B %d, %Y') }}</small>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Milestones Timeline -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">Our Journey Together</h2>
+        <div class="milestone-timeline">
+            <div class="milestone-item">
+                <div class="milestone-date">January 2025</div>
+                <h4 class="milestone-title">Platform Launch</h4>
+                <p class="milestone-description">
+                    Launched our donation platform to support open source development and 
+                    community building initiatives.
+                </p>
+            </div>
+            
+            <div class="milestone-item">
+                <div class="milestone-date">March 2025</div>
+                <h4 class="milestone-title">First $1,000 Raised</h4>
+                <p class="milestone-description">
+                    Reached our first major milestone with incredible support from the 
+                    developer community worldwide.
+                </p>
+            </div>
+            
+            <div class="milestone-item">
+                <div class="milestone-date">June 2025</div>
+                <h4 class="milestone-title">Global Community</h4>
+                <p class="milestone-description">
+                    Now supporting projects that impact developers across multiple countries 
+                    and diverse technology stacks.
+                </p>
+            </div>
+            
+            <div class="milestone-item">
+                <div class="milestone-date">Coming Soon</div>
+                <h4 class="milestone-title">Next Chapter</h4>
+                <p class="milestone-description">
+                    Expanding our impact with new educational initiatives and larger 
+                    community-driven projects.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="py-5">
+    <div class="container text-center">
+        <h2 class="mb-4">Join Our Mission</h2>
+        <p class="lead mb-4">
+            Ready to be part of our story? Your support can help us reach even more 
+            developers and create greater impact.
+        </p>
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+            <a href="{{ url_for('donation.index') }}" class="btn btn-primary btn-lg">
+                <i class="fas fa-heart"></i> Support a Project
+            </a>
+            <a href="{{ url_for('donation.highlights') }}" class="btn btn-outline-primary btn-lg">
+                <i class="fas fa-star"></i> View Highlights
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Animate numbers when they come into view
+    const stats = document.querySelectorAll('.stat-number');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const target = entry.target;
+                const finalValue = target.textContent.replace(/[^0-9]/g, '');
+                
+                if (finalValue) {
+                    animateNumber(target, 0, parseInt(finalValue), 2000);
+                }
+                
+                observer.unobserve(target);
+            }
+        });
+    });
+    
+    stats.forEach(stat => observer.observe(stat));
+    
+    function animateNumber(element, start, end, duration) {
+        const increment = end / (duration / 16);
+        let current = start;
+        
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= end) {
+                element.textContent = element.textContent.includes('$') ? `$${end}` : end;
+                clearInterval(timer);
+            } else {
+                const displayValue = Math.floor(current);
+                element.textContent = element.textContent.includes('$') ? `$${displayValue}` : displayValue;
+            }
+        }, 16);
+    }
+</script>
+{% endblock %}

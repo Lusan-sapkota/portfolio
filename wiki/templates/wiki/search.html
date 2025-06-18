@@ -1,26 +1,175 @@
 {% extends 'wiki/base.html' %}
 
-{% block title %}Search Results - Lusan's Wiki{% endblock %}
+{% block title %}{% if query %}Search Results for "{{ query }}"{% else %}Search{% endif %} - Lusan's Wiki{% endblock %}
 
 {% block content %}
-    <h2>Search Results for "{{ search_query }}"</h2>
+<div class="search-hero">
+    <div class="hero-content">
+        <h1 class="hero-title">
+            <i class="fas fa-search"></i>
+            Search Knowledge Base
+        </h1>
+        <p class="hero-subtitle">Find articles, tutorials, and resources from our extensive collection</p>
+        
+        <!-- Enhanced Search Form -->
+        <div class="search-form">
+            <form action="{{ url_for('wiki.search') }}" method="GET" id="searchForm">
+                <div class="search-input-group">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" class="search-input" name="q" value="{{ query or '' }}" 
+                           placeholder="Search for articles, topics, or keywords..." aria-label="Search">
+                    <input type="hidden" name="sort" value="{{ sort_by or 'relevance' }}" id="hiddenSort">
+                    <button type="submit">
+                        Search
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
-    {% if articles %}
-        <div class="row">
-            {% for article in articles %}
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="{{ url_for('static', filename='assets/images/{{ article.image }}') }}" class="card-img-top" alt="{{ article.title }}">
+<div class="wiki-container">
+    <div class="wiki-main-content">
+    {% if query %}
+        <!-- Search Results Header -->
+        <div class="search-results-header">
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                <div class="mb-2">
+                    <h2>Search Results for "{{ query }}"</h2>
+                    <p>Found {{ articles|length }} result{{ 's' if articles|length != 1 else '' }}</p>
+                </div>
+                <div class="search-filters mb-2">
+                    <select class="form-select" id="sortResults" onchange="applySorting()">
+                        <option value="relevance" {{ 'selected' if sort_by == 'relevance' else '' }}>Sort by Relevance</option>
+                        <option value="date" {{ 'selected' if sort_by == 'date' else '' }}>Sort by Date</option>
+                        <option value="title" {{ 'selected' if sort_by == 'title' else '' }}>Sort by Title</option>
+                        <option value="views" {{ 'selected' if sort_by == 'views' else '' }}>Sort by Views</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        {% if articles %}
+            <!-- Search Results -->
+            <div class="search-results">
+                {% for article in articles %}
+                <div class="search-result-item">
+                    <div class="result-content">
+                        <div class="result-header">
+                            <h3 class="result-title">
+                                <a href="{{ url_for('wiki.article', article_id=article.id) }}">{{ article.title }}</a>
+                            </h3>
+                            {% if article.category %}
+                            <span class="category-badge">{{ article.category.name }}</span>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="result-snippet">
+                            <p>{{ article.excerpt or 'No preview available' }}</p>
+                        </div>
+                        
+                        <div class="result-meta">
+                            <span class="meta-item">
+                                <i class="fas fa-calendar"></i>
+                                {{ article.created_at_formatted or 'Unknown date' }}
+                            </span>
+                            {% if article.views %}
+                            <span class="meta-item">
+                                <i class="fas fa-eye"></i>
+                                {{ article.views }} views
+                            </span>
+                            {% endif %}
+                            {% if article.tags %}
+                            <span class="meta-item">
+                                <i class="fas fa-tags"></i>
+                                {{ article.tags }}
+                            </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="result-action">
+                        <a href="{{ url_for('wiki.article', article_id=article.id) }}" class="btn-custom-wiki">
+                            Read Article <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <!-- No Results -->
+            <div class="no-results">
+                <div class="text-center">
+                    <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                    <h3>No results found</h3>
+                    <p class="text-muted">We couldn't find any articles matching "{{ query }}"</p>
+                    
+                    <div class="search-suggestions">
+                        <h5>Try these suggestions:</h5>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check"></i> Check your spelling</li>
+                            <li><i class="fas fa-check"></i> Use different keywords</li>
+                            <li><i class="fas fa-check"></i> Try more general terms</li>
+                            <li><i class="fas fa-check"></i> Browse categories in the sidebar</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <a href="{{ url_for('wiki.index') }}" class="btn btn-primary">
+                            <i class="fas fa-home"></i> Back to Home
+                        </a>
+                        <a href="{{ url_for('wiki.random') }}" class="btn btn-outline-primary">
+                            <i class="fas fa-random"></i> Random Article
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% else %}
+        <!-- No Query - Show Popular Articles -->
+        <div class="search-suggestions-page">
+            <h2><i class="fas fa-lightbulb"></i> Popular Articles</h2>
+            <p class="text-muted">Start exploring with these popular articles</p>
+            
+            {% if articles %}
+            <div class="row">
+                {% for article in articles[:6] %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="article-card">
                         <div class="card-body">
                             <h5 class="card-title">{{ article.title }}</h5>
-                            <p class="card-text">{{ article.description }}</p>
-                            <a href="{{ url_for('wiki.article', article_id=article.id) }}" class="btn btn-primary">Read More</a>
+                            <p class="card-text">{{ article.excerpt or 'No preview available' }}</p>
+                            <div class="card-meta">
+                                {% if article.category %}
+                                <span class="category-tag">{{ article.category.name }}</span>
+                                {% endif %}
+                                {% if article.views %}
+                                <span class="views-count"><i class="fas fa-eye"></i> {{ article.views }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <a href="{{ url_for('wiki.article', article_id=article.id) }}" class="btn btn-primary btn-sm">
+                                Read Article
+                            </a>
                         </div>
                     </div>
                 </div>
-            {% endfor %}
+                {% endfor %}
+            </div>
+            {% endif %}
         </div>
-    {% else %}
-        <p>No results found for "{{ search_query }}".</p>
     {% endif %}
+</div>
+
+<script>
+function applySorting() {
+    const sortSelect = document.getElementById('sortResults');
+    const hiddenSort = document.getElementById('hiddenSort');
+    const searchForm = document.getElementById('searchForm');
+    
+    hiddenSort.value = sortSelect.value;
+    searchForm.submit();
+}
+</script>
 {% endblock %}

@@ -1,62 +1,53 @@
+// Define globally accessible functions
+function updateThemeIcons(theme) {
+    const moonIcons = document.querySelectorAll('.fa-moon');
+    const sunIcons = document.querySelectorAll('.fa-sun');
+    
+    moonIcons.forEach(icon => icon.classList.toggle('d-none', theme === 'dark'));
+    sunIcons.forEach(icon => icon.classList.toggle('d-none', theme === 'light'));
+}
+
 $(document).ready(function(){
     "use strict";
 
-    // Initialize all components
-    initializeDarkMode();
-    initializeScrollEffects();
-    initializeSmoothScrolling();
-    initializeProgressBars();
-    initializeOwlCarousel(); // FIXED: Separated owl carousel initialization
-    initializeContactForm();
-    initializeAnimations();
+        // Initialize all components
+        initializeDarkMode();
+        initializeScrollEffects();
+        initializeSmoothScrolling();
+        initializeProgressBars();
+        initializeOwlCarousel();
+        initializeContactForm();
+        initializeAnimations();
 
-    // FIXED: Dark Mode Implementation
-    function initializeDarkMode() {
-        const currentTheme = localStorage.getItem('theme') || 
-            (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        
-        // Apply the theme immediately
-        document.documentElement.setAttribute('data-theme', currentTheme);
-        
-        // Update toggle icons
-        updateThemeIcons(currentTheme);
-        
-        // Set up theme toggle functionality
-        $('#theme-toggle, #mobile-theme-toggle').on('click', function(e) {
-            e.preventDefault();
+        // FIXED: Dark Mode Implementation
+        function initializeDarkMode() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
             
-            const current = document.documentElement.getAttribute('data-theme') || 'light';
-            const newTheme = current === 'dark' ? 'light' : 'dark';
-            
-            // Add transition class
-            document.body.classList.add('theme-transitioning');
-            
-            // Apply new theme
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            
-            // Update icons
-            updateThemeIcons(newTheme);
-            
-            // Remove transition class
-            setTimeout(() => {
-                document.body.classList.remove('theme-transitioning');
-            }, 300);
-        });
-    }
-
-    function updateThemeIcons(theme) {
-        const moonIcons = $('.fa-moon');
-        const sunIcons = $('.fa-sun');
-        
-        if (theme === 'dark') {
-            moonIcons.hide();
-            sunIcons.show();
-        } else {
-            sunIcons.hide();
-            moonIcons.show();
+            // Set up theme toggle functionality
+            $('#theme-toggle, #mobile-theme-toggle').on('click', function(e) {
+                e.preventDefault();
+                
+                const current = document.documentElement.getAttribute('data-theme');
+                const newTheme = current === 'dark' ? 'light' : 'dark';
+                
+                // Add transition class
+                document.body.classList.add('theme-transitioning');
+                
+                // Apply new theme
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                
+                // Update icons
+                updateThemeIcons(newTheme);
+                
+                // Remove transition class
+                setTimeout(() => {
+                    document.body.classList.remove('theme-transitioning');
+                }, 300);
+            });
         }
-    }
+
+        // ... rest of your existing code remains unchanged ...
 
     // 1. Scroll To Top 
     function initializeScrollEffects() {
@@ -104,26 +95,43 @@ $(document).ready(function(){
             }
         });
         
-        // Better active section detection
+        // Better active section detection with improved logic
         $(window).on('scroll', function() {
             const scrollPosition = $(this).scrollTop();
-            const navbarHeight = $('nav.navbar').outerHeight();
-            const buffer = 5;
+            const windowHeight = $(window).height();
+            const navbarHeight = $('nav.navbar').outerHeight() || 70;
             
-            $('.navbar-nav li').removeClass('active');
+            let activeSection = null;
             
-            $('section').each(function() {
+            $('section[id]').each(function() {
                 const section = $(this);
-                const sectionTop = section.offset().top - navbarHeight - buffer;
+                const sectionTop = section.offset().top - navbarHeight - 50;
                 const sectionBottom = sectionTop + section.outerHeight();
+                const sectionId = section.attr('id');
                 
+                // Check if section is in viewport
                 if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
-                    const sectionId = section.attr('id');
-                    $(`.navbar-nav li a[href="#${sectionId}"]`).parent().addClass('active');
-                    return false;
+                    activeSection = sectionId;
+                }
+                
+                // Special case for last section
+                if (scrollPosition + windowHeight >= $(document).height() - 100) {
+                    activeSection = $('section[id]:last').attr('id');
                 }
             });
+            
+            // Update navbar active state
+            if (activeSection) {
+                $('.navbar-nav li').removeClass('active');
+                $(`.navbar-nav li a[href="#${activeSection}"]`).parent().addClass('active');
+            }
         });
+        
+        // Initial active section check on page load
+        setTimeout(() => {
+            $(window).trigger('scroll');
+        }, 100);
+
     }
 
     // 3. FIXED: Progress-bar with Intersection Observer

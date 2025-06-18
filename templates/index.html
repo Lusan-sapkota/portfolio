@@ -283,7 +283,33 @@
 	<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 	new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 	j=d.createElement(s);dl=l!='dataLayer'?'&l='+l:'';j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-	})(window,document,'script','dataLayer','GTM-XXXX');</script>
+	})(window,document,'script','dataLayer','GTM-XXXX');
+	
+	    (function() {
+        const currentTheme = localStorage.getItem('theme') || 
+            (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        
+        // Ensure icons are reset on initial load
+        document.addEventListener('DOMContentLoaded', function() {
+            const moonIcons = document.querySelectorAll('.fa-moon');
+            const sunIcons = document.querySelectorAll('.fa-sun');
+            
+            moonIcons.forEach(icon => icon.classList.toggle('d-none', currentTheme === 'dark'));
+            sunIcons.forEach(icon => icon.classList.toggle('d-none', currentTheme === 'light'));
+        });
+    })();
+
+    // Handle system theme changes
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+        if (!localStorage.getItem('theme')) {
+            const newTheme = e.matches ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            updateThemeIcons(newTheme);
+        }
+    });
+	</script>
+
     <!-- End Google Tag Manager -->
 </head>
 
@@ -305,14 +331,6 @@
 				            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 				      <span class="navbar-toggler-icon"></span>
 				    </button>
-				    
-				    <!-- Dark Mode Toggle - Positioned for Mobile -->
-				    <div class="d-lg-none nav-item theme-toggle-wrapper">
-				      <a href="#" id="mobile-theme-toggle" class="nav-link">
-				        <i class="fas fa-moon"></i>
-				        <i class="fas fa-sun" style="display:none;"></i>
-				      </a>
-				    </div>
 				    
 				    <!-- Navigation Links -->
 				    <div class="collapse navbar-collapse" id="navbarNav">
@@ -341,11 +359,11 @@
 				        <li class="nav-item">
 				          <a class="nav-link smooth-menu" href="#contact">Contact</a>
 				        </li>
-				        <li class="nav-item theme-toggle-wrapper d-none d-lg-block">
-				          <a href="#" class="nav-link" id="theme-toggle">
+				        <li class="nav-item theme-toggle-wrapper">
+				          <button type="button" class="btn btn-link nav-link theme-toggle" id="theme-toggle">
 				            <i class="fas fa-moon"></i>
-				            <i class="fas fa-sun" style="display:none;"></i>
-				          </a>
+				            <i class="fas fa-sun"></i>
+				          </button>
 				        </li>
 				      </ul>
 				    </div>
@@ -447,9 +465,8 @@
 						<a href="#" class="subdomain-btn" onclick="navigateToDonation(); return false;">
 							<span>Support Work</span>
 							<i class="fas fa-arrow-right"></i>
-						</a>
+						</div>
 					</div>
-					
 					<div class="subdomain-card" onclick="navigateToStore()" tabindex="0" role="button" aria-label="Navigate to Online Store">
 						<div class="subdomain-icon">
 							<i class="fas fa-shopping-cart"></i>
@@ -1521,7 +1538,7 @@
 									</div>
 								</div><!--/.contact-adress-->
 								<div class="hm-foot-icon">
-									<ul>
+																		<ul>
 										<li><a href="https://web.facebook.com/lusan.sapkota.1"><i class="fab fa-facebook"></i></a></li><!--/li-->
 										<li><a href="https://github.com/Lusan-sapkota/"><i class="fab fa-github"></i></a></li><!--/li-->
 										<li><a href="https://x.com/LusanSapkota"><i class="fab fa-twitter"></i></a></li><!--/li-->
@@ -1683,10 +1700,13 @@
       <div class="footer-newsletter">
         <h4>Stay Updated</h4>
         <p>Subscribe to get the latest updates on my projects and tutorials</p>
-        <form class="newsletter-form" id="newsletter-form">
-          <input type="email" placeholder="Enter your email address" required>
+        <form class="newsletter-form" id="newsletter-form" action="/newsletter/subscribe" method="POST">
+          <div class="form-group">
+            <input type="email" name="email" placeholder="Enter your email address" required>
+          </div>
           <button type="submit" class="newsletter-btn">Subscribe</button>
         </form>
+        <div id="newsletter-message" style="margin-top: 10px; display: none;"></div>
       </div>
       
     </div>
@@ -1711,14 +1731,9 @@
 
 		<!-- CDN JS: Bootstrap & jQuery -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
-
-		<!-- Local JS -->
-		<script src="{{ url_for('static', filename='assets/js/progressbar.js') }}"></script>
 		<script src="{{ url_for('static', filename='assets/js/custom.js') }}"></script>
-		
-		<!-- Portfolio JavaScript -->
-		<script src="{{ url_for('static', filename='assets/js/simple-portfolio.js') }}"></script>
 		
 		<!-- Subdomain Configuration for JavaScript -->
 		<script>
@@ -1727,6 +1742,61 @@
 			{% else %}
 			window.subdomainConfig = {};
 			{% endif %}
+		</script>
+		
+		<!-- Newsletter Form Handler -->
+		<script>
+		$(document).ready(function() {
+			$('#newsletter-form').on('submit', function(e) {
+				e.preventDefault();
+				
+				const form = $(this);
+				const submitBtn = form.find('.newsletter-btn');
+				const messageDiv = $('#newsletter-message');
+				const originalText = submitBtn.text();
+				
+				// Show loading state
+				submitBtn.text('Subscribing...').prop('disabled', true);
+				messageDiv.hide();
+				
+				// Get form data
+				const formData = new FormData(this);
+				
+				// Submit form
+				$.ajax({
+					url: form.attr('action'),
+					type: 'POST',
+					data: formData,
+					processData: false,
+					contentType: false,
+					success: function(response) {
+						messageDiv.removeClass('alert-danger').addClass('alert alert-' + 
+							(response.status === 'error' ? 'danger' : 
+							 response.status === 'info' ? 'info' : 'success'))
+							.text(response.message)
+							.show();
+						
+						if (response.status === 'success') {
+							form[0].reset();
+						}
+					},
+					error: function() {
+						messageDiv.removeClass('alert-success alert-info')
+							.addClass('alert alert-danger')
+							.text('An error occurred. Please try again.')
+							.show();
+					},
+					complete: function() {
+						submitBtn.text(originalText).prop('disabled', false);
+						
+						// Auto-hide message after 5 seconds
+						setTimeout(function() {
+							messageDiv.fadeOut();
+						}, 5000);
+					}
+				});
+			});
+		});
 		</script>
 			
     </body>

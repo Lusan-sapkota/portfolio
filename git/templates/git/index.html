@@ -1,67 +1,366 @@
 {% extends 'git/base.html' %}
 
-{% block title %}Lusan's Projects{% endblock %}
+{% block title %}Lusan's Projects - Repository{% endblock %}
 
 {% block content %}
-<div class="projects-container">
-  <div class="header mb-4">
-    <div class="d-flex justify-content-between align-items-center">
-      <h1>Project Repository</h1>
-      <form action="{{ url_for('git.search') }}" method="get" class="form-inline my-2 my-lg-0">
-        <div class="input-group">
-          <input class="form-control" type="search" placeholder="Search projects" name="q" aria-label="Search">
-          <div class="input-group-append">
-            <button class="btn btn-outline-success" type="submit">Search</button>
-          </div>
-        </div>
-      </form>
+<div class="projects-hero">
+  <div class="hero-content">
+    <h1 class="hero-title">
+      <i class="fas fa-code"></i>
+      Project Repository
+    </h1>
+    <p class="hero-subtitle">Explore my collection of open-source projects and commercial solutions</p>
+    
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <i class="fas fa-project-diagram"></i>
+        <div class="stat-number">{{ projects|length }}</div>
+        <div class="stat-label">Total Projects</div>
+      </div>
+      <div class="stat-card">
+        <i class="fab fa-github"></i>
+        <div class="stat-number">{{ projects|selectattr('is_opensource')|list|length }}</div>
+        <div class="stat-label">Open Source</div>
+      </div>
+      <div class="stat-card">
+        <i class="fas fa-star"></i>
+        <div class="stat-number">{{ projects|sum(attribute='stars') }}</div>
+        <div class="stat-label">Total Stars</div>
+      </div>
+      <div class="stat-card">
+        <i class="fas fa-briefcase"></i>
+        <div class="stat-number">{{ projects|rejectattr('is_opensource')|list|length }}</div>
+        <div class="stat-label">Commercial</div>
+      </div>
     </div>
   </div>
+</div>
 
-  <div class="row">
-    {% if projects %}
-      {% for project in projects %}
-        <div class="col-md-6 mb-4">
-          <div class="project-card">
+<div class="projects-container">
+  <!-- Navigation and Filters -->
+  <div class="projects-nav">
+    <div class="nav-header">
+      <div class="nav-controls">
+        <button class="nav-toggle" id="navToggle">
+          <i class="fas fa-bars"></i>
+          <span>Filters</span>
+        </button>
+        
+        <!-- Search Bar -->
+        <div class="search-container">
+          <div class="search-input-group">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" id="searchInput" class="search-input" placeholder="Search projects..." value="{{ search_query }}">
+            <button class="search-clear" id="searchClear">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+        
+        <!-- View Toggle -->
+        <div class="view-toggle">
+          <button class="view-btn active" data-view="grid">
+            <i class="fas fa-th-large"></i>
+          </button>
+          <button class="view-btn" data-view="list">
+            <i class="fas fa-list"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Filter Sidebar -->
+    <div class="filter-sidebar" id="filterSidebar">
+      <div class="filter-section">
+        <h3><i class="fas fa-layer-group"></i> Categories</h3>
+        <div class="filter-group">
+          <div class="filter-item {{ 'active' if not current_category }}">
+            <input type="radio" name="category" value="" id="cat-all" {{ 'checked' if not current_category }}>
+            <label for="cat-all">
+              <i class="fas fa-globe"></i>
+              All Projects
+              <span class="count">({{ projects|length }})</span>
+            </label>
+          </div>
+          {% for category in categories %}
+          <div class="filter-item {{ 'active' if current_category == category.id }}">
+            <input type="radio" name="category" value="{{ category.id }}" id="cat-{{ category.id }}" {{ 'checked' if current_category == category.id }}>
+            <label for="cat-{{ category.id }}">
+              <i class="{{ category.icon or 'fas fa-folder' }}"></i>
+              {{ category.name }}
+              <span class="count">({{ category.projects.count() }})</span>
+            </label>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      
+      <div class="filter-section">
+        <h3><i class="fas fa-code-branch"></i> Project Type</h3>
+        <div class="filter-group">
+          <div class="filter-item {{ 'active' if not current_type }}">
+            <input type="radio" name="type" value="" id="type-all" {{ 'checked' if not current_type }}>
+            <label for="type-all">
+              <i class="fas fa-globe"></i>
+              All Types
+            </label>
+          </div>
+          <div class="filter-item {{ 'active' if current_type == 'opensource' }}">
+            <input type="radio" name="type" value="opensource" id="type-opensource" {{ 'checked' if current_type == 'opensource' }}>
+            <label for="type-opensource">
+              <i class="fab fa-osi"></i>
+              Open Source
+              <span class="badge opensource">Free</span>
+            </label>
+          </div>
+          <div class="filter-item {{ 'active' if current_type == 'commercial' }}">
+            <input type="radio" name="type" value="commercial" id="type-commercial" {{ 'checked' if current_type == 'commercial' }}>
+            <label for="type-commercial">
+              <i class="fas fa-briefcase"></i>
+              Commercial
+              <span class="badge commercial">Pro</span>
+            </label>
+          </div>
+        </div>
+      </div>
+      
+      <div class="filter-section">
+        <h3><i class="fas fa-tasks"></i> Status</h3>
+        <div class="filter-group">
+          <div class="filter-item {{ 'active' if not current_status }}">
+            <input type="radio" name="status" value="" id="status-all" {{ 'checked' if not current_status }}>
+            <label for="status-all">
+              <i class="fas fa-globe"></i>
+              All Status
+            </label>
+          </div>
+          <div class="filter-item {{ 'active' if current_status == 'completed' }}">
+            <input type="radio" name="status" value="completed" id="status-completed" {{ 'checked' if current_status == 'completed' }}>
+            <label for="status-completed">
+              <i class="fas fa-check-circle"></i>
+              Completed
+            </label>
+          </div>
+          <div class="filter-item {{ 'active' if current_status == 'in-progress' }}">
+            <input type="radio" name="status" value="in-progress" id="status-progress" {{ 'checked' if current_status == 'in-progress' }}>
+            <label for="status-progress">
+              <i class="fas fa-spinner"></i>
+              In Progress
+            </label>
+          </div>
+          <div class="filter-item {{ 'active' if current_status == 'maintenance' }}">
+            <input type="radio" name="status" value="maintenance" id="status-maintenance" {{ 'checked' if current_status == 'maintenance' }}>
+            <label for="status-maintenance">
+              <i class="fas fa-tools"></i>
+              Maintenance
+            </label>
+          </div>
+        </div>
+      </div>
+      
+      <div class="filter-section">
+        <button class="filter-reset" id="filterReset">
+          <i class="fas fa-undo"></i>
+          Reset Filters
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Projects Grid -->
+  <div class="projects-content">
+    <div class="projects-header">
+      <div class="results-info">
+        <span id="resultsCount">{{ projects|length }}</span> projects found
+        {% if current_category or current_type or current_status or search_query %}
+        <div class="active-filters">
+          {% if current_category %}
+          <span class="filter-tag">
+            Category: {{ categories|selectattr('id', 'equalto', current_category)|first|attr('name') }}
+            <i class="fas fa-times" data-filter="category"></i>
+          </span>
+          {% endif %}
+          {% if current_type %}
+          <span class="filter-tag">
+            Type: {{ current_type|title }}
+            <i class="fas fa-times" data-filter="type"></i>
+          </span>
+          {% endif %}
+          {% if current_status %}
+          <span class="filter-tag">
+            Status: {{ current_status|title }}
+            <i class="fas fa-times" data-filter="status"></i>
+          </span>
+          {% endif %}
+          {% if search_query %}
+          <span class="filter-tag">
+            Search: "{{ search_query }}"
+            <i class="fas fa-times" data-filter="search"></i>
+          </span>
+          {% endif %}
+        </div>
+        {% endif %}
+      </div>
+      
+      <div class="sort-controls">
+        <select id="sortBy" class="sort-select">
+          <option value="featured">Featured First</option>
+          <option value="newest">Newest First</option>
+          <option value="oldest">Oldest First</option>
+          <option value="stars">Most Stars</option>
+          <option value="name">Alphabetical</option>
+        </select>
+      </div>
+    </div>
+    
+    <div class="projects-grid" id="projectsGrid">
+      {% if projects %}
+        {% for project in projects %}
+        <div class="project-card {{ 'featured' if project.is_featured }}" data-project-id="{{ project.id }}">
+          
+          <div class="project-header">
             {% if project.image_url %}
-              <img src="{{ project.image_url }}" alt="{{ project.title }}" class="img-fluid mb-3">
+            <div class="project-image">
+              <img src="{{ project.image_url }}" alt="{{ project.title }}" loading="lazy">
+              <div class="project-overlay">
+                <div class="project-actions">
+                  {% if project.github_url %}
+                  <a href="{{ project.github_url }}" target="_blank" class="action-btn" title="View Source">
+                    <i class="fab fa-github"></i>
+                  </a>
+                  {% endif %}
+                  {% if project.live_url %}
+                  <a href="{{ project.live_url }}" target="_blank" class="action-btn" title="Live Demo">
+                    <i class="fas fa-external-link-alt"></i>
+                  </a>
+                  {% endif %}
+                  <a href="{{ url_for('git.project', project_id=project.id) }}" class="action-btn" title="View Details">
+                    <i class="fas fa-info-circle"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
             {% endif %}
-
-            <h4>
+          </div>
+          
+          <div class="project-content">
+            <div class="project-meta">
+              {% if project.category %}
+              <span class="project-category" style="background-color: {{ project.category.color or 'var(--primary-yellow)' }};">
+                <i class="{{ project.category.icon or 'fas fa-folder' }}"></i>
+                {{ project.category.name }}
+              </span>
+              {% endif %}
+              
+              {% if project.is_featured %}
+              <div class="featured-badge">
+                <i class="fas fa-star"></i>
+                Featured
+              </div>
+              {% endif %}
+              
+              <div class="project-status">
+                <span class="status-badge status-{{ project.status }}">
+                  {% if project.status == 'completed' %}
+                    <i class="fas fa-check-circle"></i>
+                  {% elif project.status == 'in-progress' %}
+                    <i class="fas fa-spinner fa-spin"></i>
+                  {% else %}
+                    <i class="fas fa-tools"></i>
+                  {% endif %}
+                  {{ project.status|title }}
+                </span>
+              </div>
+            </div>
+            
+            <h3 class="project-title">
               <a href="{{ url_for('git.project', project_id=project.id) }}">{{ project.title }}</a>
-            </h4>
-
-            <p>{{ project.description|truncate(150) }}</p>
-
-            <div class="mb-3">
+            </h3>
+            
+            <p class="project-description">{{ project.description|truncate(120) }}</p>
+            
+            <div class="project-technologies">
               {% if project.technologies %}
-                {% for tech in project.technologies.split(',') %}
-                  <span class="project-tech">{{ tech.strip() }}</span>
+                {% for tech in project.technologies.split(',')[:4] %}
+                  <span class="tech-tag">{{ tech.strip() }}</span>
                 {% endfor %}
+                {% if project.technologies.split(',')|length > 4 %}
+                  <span class="tech-more">+{{ project.technologies.split(',')|length - 4 }} more</span>
+                {% endif %}
               {% endif %}
             </div>
-
-            <div class="d-flex justify-content-between">
-              {% if project.github_url %}
-                <a href="{{ project.github_url }}" target="_blank" class="btn btn-sm btn-dark">
-                  <i class="fab fa-github"></i> View on GitHub
+            
+            <div class="project-footer">
+              <div class="project-stats">
+                {% if project.is_opensource %}
+                <div class="stat-item">
+                  <i class="fab fa-osi"></i>
+                  <span>Open Source</span>
+                </div>
+                {% else %}
+                <div class="stat-item">
+                  <i class="fas fa-briefcase"></i>
+                  <span>Commercial</span>
+                </div>
+                {% endif %}
+                
+                {% if project.stars > 0 %}
+                <div class="stat-item">
+                  <i class="fas fa-star"></i>
+                  <span>{{ project.stars }}</span>
+                </div>
+                {% endif %}
+                
+                {% if project.forks and project.forks > 0 %}
+                <div class="stat-item">
+                  <i class="fas fa-code-branch"></i>
+                  <span>{{ project.forks }}</span>
+                </div>
+                {% endif %}
+              </div>
+              
+              <div class="project-links">
+                {% if project.github_url %}
+                <a href="{{ project.github_url }}" target="_blank" class="btn btn-sm btn-outline">
+                  <i class="fab fa-github"></i>
+                  Code
                 </a>
-              {% endif %}
-
-              {% if project.live_url %}
+                {% endif %}
+                
+                {% if project.live_url %}
                 <a href="{{ project.live_url }}" target="_blank" class="btn btn-sm btn-primary">
-                  <i class="fas fa-external-link-alt"></i> Live Demo
+                  <i class="fas fa-external-link-alt"></i>
+                  Demo
                 </a>
-              {% endif %}
+                {% endif %}
+              </div>
             </div>
           </div>
         </div>
-      {% endfor %}
-    {% else %}
-      <div class="col-12">
-        <p class="text-center">No projects found. Add some projects through the admin panel.</p>
+        {% endfor %}
+      {% else %}
+        <div class="no-projects">
+          <div class="no-projects-icon">
+            <i class="fas fa-search"></i>
+          </div>
+          <h3>No projects found</h3>
+          <p>Try adjusting your filters or search terms.</p>
+          <button class="btn btn-primary" id="clearFilters">
+            <i class="fas fa-undo"></i>
+            Clear All Filters
+          </button>
+        </div>
+      {% endif %}
+    </div>
+    
+    <!-- Loading State -->
+    <div class="loading-state" id="loadingState" style="display: none;">
+      <div class="loading-spinner">
+        <i class="fas fa-spinner fa-spin"></i>
       </div>
-    {% endif %}
+      <p>Loading projects...</p>
+    </div>
   </div>
 </div>
 {% endblock %}

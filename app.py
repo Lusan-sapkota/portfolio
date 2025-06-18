@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, jsonify, abort
+from flask import Flask, render_template, jsonify, abort, request
 from dotenv import load_dotenv
 from database import db
 import commands
@@ -9,6 +9,8 @@ from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
 from config import SUBDOMAINS, THEME_CONFIG, SEO_CONFIG, CONTACT_INFO, FEATURES
 from datetime import datetime
+from github_service import github_service
+import traceback
 
 # Load environment variables
 load_dotenv()
@@ -35,6 +37,9 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 migrate = Migrate(app, db)
 
+# Initialize GitHub service with caching
+github_service.init_cache(app)
+
 # Setup Flask-Login (can co-exist if other parts of app use it)
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -52,6 +57,7 @@ print(f"debug_mode value: {debug_mode}")
 from admin import admin_bp
 from wiki import wiki_bp
 from git import git_bp
+from donation import donation_bp
 
 # Register blueprints
 app.register_blueprint(admin_bp) # url_prefix is set in admin_bp definition
@@ -60,13 +66,15 @@ server_name_env = os.getenv('SERVER_NAME')
 print(f"DEBUG: SERVER_NAME environment variable is: '{server_name_env}'") # Crucial check
 
 if server_name_env:
-    print("DEBUG: Registering wiki and git with subdomains.")
+    print("DEBUG: Registering wiki, git, and donation with subdomains.")
     app.register_blueprint(wiki_bp, subdomain='wiki')
     app.register_blueprint(git_bp, subdomain='git')
+    app.register_blueprint(donation_bp, subdomain='donation')
 else:
-    print("DEBUG: Registering wiki and git with URL prefixes for local development.")
+    print("DEBUG: Registering wiki, git, and donation with URL prefixes for local development.")
     app.register_blueprint(wiki_bp, url_prefix='/wiki')
     app.register_blueprint(git_bp, url_prefix='/git')
+    app.register_blueprint(donation_bp, url_prefix='/donation')
 
 # Import models here (after db initialization)
 from models import *
@@ -83,6 +91,69 @@ def index():
         'features': FEATURES
     }
     return render_template('index.html', **template_data, current_year=datetime.now().year)
+
+@app.route('/newsletter/subscribe', methods=['POST'])
+def newsletter_subscribe():
+    """Handle newsletter subscription from the main site"""
+    try:
+        from models import NewsletterSubscriber
+        from email_service import email_service
+        
+        email = request.form.get('email', '').strip().lower()
+        interests = request.form.get('interests', '').strip()
+        
+        if not email:
+            return jsonify({'status': 'error', 'message': 'Please provide a valid email address.'})
+        
+        # Check if already subscribed
+        existing = NewsletterSubscriber.query.filter_by(email=email).first()
+        if existing:
+            if existing.is_active:
+                return jsonify({'status': 'info', 'message': 'You are already subscribed to our newsletter.'})
+            else:
+                existing.is_active = True
+                existing.interests = interests or existing.interests
+                db.session.commit()
+                return jsonify({'status': 'success', 'message': 'Your newsletter subscription has been reactivated.'})
+        else:
+            subscriber = NewsletterSubscriber(
+                email=email,
+                interests=interests or 'General Updates'
+            )
+            db.session.add(subscriber)
+            db.session.commit()
+              # Send welcome email
+            try:
+                welcome_subject = "Welcome to Lusan's Newsletter!"
+                welcome_message = f"""
+Hello!
+
+Thank you for subscribing to my newsletter. You'll now receive updates about:
+- New projects and open source contributions
+- Technical tutorials and insights
+- Development tips and best practices
+- Community events and opportunities
+
+I'm excited to share my journey with you!
+
+Best regards,
+Lusan Sapkota
+Full Stack Developer
+"""
+                
+                email_service.send_email(
+                    [email], 
+                    welcome_subject, 
+                    welcome_message
+                )
+            except Exception as e:
+                print(f"Failed to send welcome email: {e}")
+            
+            return jsonify({'status': 'success', 'message': 'Thank you for subscribing! Check your email for confirmation.'})
+        
+    except Exception as e:
+        print(f"Newsletter subscription error: {e}")
+        return jsonify({'status': 'error', 'message': 'An error occurred while subscribing. Please try again.'})
 
 @app.route('/privacy')
 def privacy():
@@ -145,11 +216,25 @@ def im_a_teapot(e):
 # Add this new handler for general exceptions
 @app.errorhandler(Exception)
 def handle_exception(e):
-    # Pass exception to default error handler if debug mode is on
-    if app.debug:
+    """Handle all unhandled exceptions"""
+    # Log the exception for debugging
+    app.logger.error(f'Unhandled exception: {str(e)}', exc_info=True)
+    
+    # Pass through HTTP exceptions to their specific handlers
+    if hasattr(e, 'code'):
         return e
     
-    # Otherwise handle the error gracefully
+    # For development, show the actual error
+    if app.debug:
+        # Return a simple HTML response with error details
+        return f"""
+        <h1>Unhandled Exception</h1>
+        <h2>{type(e).__name__}: {str(e)}</h2>
+        <pre>{traceback.format_exc()}</pre>
+        <a href="{url_for('index')}">Return to Home</a>
+        """, 500
+    
+    # For production, show generic 500 error
     return render_template('500.html', current_year=datetime.now().year), 500
 
 commands.register_commands(app)

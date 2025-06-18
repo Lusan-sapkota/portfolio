@@ -1,0 +1,369 @@
+{% extends "base.html" %}
+
+{% block title %}{{ project.title }} - Donation{% endblock %}
+
+{% block extra_css %}
+<style>
+    .project-hero {
+        background: linear-gradient(135deg, #ffd700 0%, #f39c12 50%, #e67e22 100%);
+        color: white;
+        padding: 80px 0 60px;
+    }
+    
+    .project-image {
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        max-height: 300px;
+        object-fit: cover;
+        width: 100%;
+    }
+    
+    .donation-form {
+        background: var(--card-bg);
+        border-radius: 15px;
+        box-shadow: var(--shadow-lg);
+        padding: 30px;
+        position: sticky;
+        top: 100px;
+        border: 1px solid var(--border-color);
+    }
+    
+    .donation-form h3 {
+        color: var(--text-color);
+    }
+    
+    .donation-form .form-control {
+        background: var(--card-bg);
+        border-color: var(--border-color);
+        color: var(--text-color);
+    }
+    
+    .donation-form .form-control:focus {
+        background: var(--card-bg);
+        border-color: var(--primary-color);
+        color: var(--text-color);
+        box-shadow: 0 0 0 0.2rem rgba(243, 156, 18, 0.25);
+    }
+    
+    .donation-form .form-control::placeholder {
+        color: var(--text-secondary);
+    }
+    
+    .amount-btn {
+        border: 2px solid #667eea;
+        background: white;
+        color: #667eea;
+        padding: 10px 20px;
+        border-radius: 25px;
+        margin: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .amount-btn:hover,
+    .amount-btn.active {
+        background: #667eea;
+        color: white;
+    }
+    
+    .form-control {
+        border-radius: 10px;
+        border: 2px solid #e9ecef;
+        padding: 12px 15px;
+    }
+    
+    .form-control:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    }
+    
+    .btn-donate {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        border-radius: 25px;
+        padding: 15px 30px;
+        font-weight: 600;
+        color: white;
+        width: 100%;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-donate:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        color: white;
+    }
+    
+    .progress-circle {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+    
+    .progress-circle::before {
+        content: '';
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: var(--card-bg);
+        position: absolute;
+    }
+    
+    .progress-text {
+        position: relative;
+        z-index: 1;
+        font-weight: 600;
+        color: var(--text-color);
+    }
+    
+    .donation-item {
+        background: var(--light-gray);
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 15px;
+        border-left: 4px solid var(--primary-color);
+        border: 1px solid var(--border-color);
+    }
+    
+    .external-links a {
+        display: inline-block;
+        margin-right: 15px;
+        padding: 10px 20px;
+        background: #f8f9fa;
+        border-radius: 25px;
+        text-decoration: none;
+        color: #667eea;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .external-links a:hover {
+        background: #667eea;
+        color: white;
+        transform: translateY(-2px);
+    }
+    
+    @media (max-width: 768px) {
+        .donation-form {
+            position: static;
+            margin-top: 30px;
+        }
+        
+        .progress-circle {
+            width: 100px;
+            height: 100px;
+        }
+        
+        .progress-circle::before {
+            width: 70px;
+            height: 70px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Project Hero -->
+<section class="project-hero">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="display-4 fw-bold mb-3">{{ project.title }}</h1>
+                <p class="lead">{{ project.short_description or project.description[:200] + '...' }}</p>
+                
+                <div class="external-links mt-4">
+                    {% if project.github_url %}
+                    <a href="{{ project.github_url }}" target="_blank">
+                        <i class="fab fa-github"></i> View Code
+                    </a>
+                    {% endif %}
+                    {% if project.demo_url %}
+                    <a href="{{ project.demo_url }}" target="_blank">
+                        <i class="fas fa-external-link-alt"></i> Live Demo
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-4 text-center">
+                <div class="progress-circle mx-auto" style="background: conic-gradient(#4CAF50 {{ project.get_progress_percentage() * 3.6 }}deg, #f0f0f0 0deg);">
+                    <div class="progress-text">
+                        {{ "%.0f"|format(project.get_progress_percentage()) }}%<br>
+                        <small>Funded</small>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <h4>${{ "%.0f"|format(project.current_amount) }}</h4>
+                    <p class="mb-0">Total Collected</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Main Content -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <!-- Project Details -->
+            <div class="col-lg-8">
+                {% if project.image_url %}
+                <img src="{{ project.image_url }}" alt="{{ project.title }}" class="project-image mb-4">
+                {% endif %}
+                
+                <div class="project-description">
+                    <h3>About This Project</h3>
+                    <div class="mb-4">
+                        {{ project.description|safe }}
+                    </div>
+                </div>
+                
+                <!-- Recent Donations -->
+                {% if donations %}
+                <div class="mt-5">
+                    <h3>Recent Supporters</h3>
+                    {% for donation in donations[:10] %}
+                    <div class="donation-item">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <strong>{{ donation.donor_name if not donation.is_anonymous else 'Anonymous Supporter' }}</strong>
+                                <p class="mb-1 text-muted">Donated ${{ "%.2f"|format(donation.amount) }}</p>
+                                {% if donation.message %}
+                                <p class="mb-0 text-muted">"{{ donation.message }}"</p>
+                                {% endif %}
+                            </div>
+                            <small class="text-muted">{{ donation.created_at.strftime('%B %d, %Y') }}</small>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            
+            <!-- Donation Form -->
+            <div class="col-lg-4">
+                <div class="donation-form">
+                    <h4 class="mb-4">Support This Project</h4>
+                    
+                    <form action="{{ url_for('donation.make_donation', project_id=project.id) }}" method="POST" id="donationForm">
+                        <!-- Amount Selection -->
+                        <div class="mb-3">
+                            <label class="form-label">Choose Amount</label>
+                            <div class="amount-buttons">
+                                <button type="button" class="amount-btn" data-amount="10">$10</button>
+                                <button type="button" class="amount-btn" data-amount="25">$25</button>
+                                <button type="button" class="amount-btn" data-amount="50">$50</button>
+                                <button type="button" class="amount-btn" data-amount="100">$100</button>
+                            </div>
+                            <input type="number" class="form-control mt-3" name="amount" id="customAmount" 
+                                   placeholder="Enter custom amount" min="1" step="0.01" required>
+                        </div>
+                        
+                        <!-- Donor Information -->
+                        <div class="mb-3">
+                            <label class="form-label">Your Name</label>
+                            <input type="text" class="form-control" name="donor_name" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Email Address</label>
+                            <input type="email" class="form-control" name="donor_email" required>
+                        </div>
+                        
+                        <!-- Message -->
+                        <div class="mb-3">
+                            <label class="form-label">Message (Optional)</label>
+                            <textarea class="form-control" name="message" rows="3" 
+                                    placeholder="Leave a message of support..."></textarea>
+                        </div>
+                        
+                        <!-- Anonymous Option -->
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" name="is_anonymous" id="anonymous">
+                            <label class="form-check-label" for="anonymous">
+                                Donate anonymously
+                            </label>
+                        </div>
+                        
+                        <!-- Payment Method -->
+                        <div class="mb-4">
+                            <label class="form-label">Payment Method</label>
+                            <select class="form-control" name="payment_method">
+                                <option value="paypal">PayPal</option>
+                                <option value="stripe">Credit Card</option>
+                                <option value="crypto">Cryptocurrency</option>
+                            </select>
+                        </div>
+                        
+                        <button type="submit" class="btn-donate">
+                            <i class="fas fa-heart"></i> Donate Now
+                        </button>
+                        
+                        <p class="text-center text-muted mt-3 small">
+                            Secure payment processing. You'll receive a confirmation email.
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Flash Messages -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div class="position-fixed top-0 end-0 p-3" style="z-index: 11; margin-top: 80px;">
+    {% for category, message in messages %}
+    <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Amount button selection
+    document.querySelectorAll('.amount-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            // Remove active class from all buttons
+            document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('active'));
+            // Add active class to clicked button
+            this.classList.add('active');
+            // Set the amount in the input field
+            document.getElementById('customAmount').value = this.dataset.amount;
+        });
+    });
+    
+    // Custom amount input
+    document.getElementById('customAmount').addEventListener('input', function() {
+        // Remove active class from all buttons when typing custom amount
+        document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('active'));
+    });
+    
+    // Form validation
+    document.getElementById('donationForm').addEventListener('submit', function(e) {
+        const amount = parseFloat(document.getElementById('customAmount').value);
+        if (!amount || amount < 1) {
+            e.preventDefault();
+            alert('Please enter a valid donation amount of at least $1.');
+            return false;
+        }
+    });
+    
+    // Auto-hide flash messages
+    setTimeout(function() {
+        document.querySelectorAll('.alert').forEach(function(alert) {
+            alert.style.transition = 'opacity 0.5s';
+            alert.style.opacity = '0';
+            setTimeout(() => alert.remove(), 500);
+        });
+    }, 5000);
+</script>
+{% endblock %}

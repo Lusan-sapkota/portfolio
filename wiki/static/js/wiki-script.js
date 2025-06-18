@@ -1,41 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Dark mode toggle
-    const themeToggle = document.getElementById('wiki-theme-toggle');
-    
-    if (themeToggle) {
-        const moonIcon = themeToggle.querySelector('.fa-moon');
-        const sunIcon = themeToggle.querySelector('.fa-sun');
-        
-        // Check for saved theme preference from main site
-        const currentTheme = localStorage.getItem('theme') || 
-            (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        
-        // Apply theme based on main site preference
-        if (currentTheme === 'dark') {
-            document.documentElement.setAttribute('data-theme', 'dark');
-            moonIcon.classList.add('d-none');
-            sunIcon.classList.remove('d-none');
-        }
-        
-        // Toggle dark mode using the main site's approach
-        themeToggle.addEventListener('click', function() {
-            const isDarkMode = document.documentElement.getAttribute('data-theme') === 'dark';
-            
-            // Toggle theme
-            if (isDarkMode) {
-                document.documentElement.setAttribute('data-theme', 'light');
-                localStorage.setItem('theme', 'light');
-                sunIcon.classList.add('d-none');
-                moonIcon.classList.remove('d-none');
-            } else {
-                document.documentElement.setAttribute('data-theme', 'dark');
-                localStorage.setItem('theme', 'dark');
-                moonIcon.classList.add('d-none');
-                sunIcon.classList.remove('d-none');
-            }
-        });
-    }
-    
     // Category collapse icons
     document.querySelectorAll('.wiki-category-header, .wiki-subcategory-header').forEach(header => {
         const icon = header.querySelector('i.fas');
@@ -74,3 +37,132 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+// Function to set active navigation state
+function setActiveNavigation() {
+    const currentPath = window.location.pathname;
+    const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+    
+    // Remove active class from all nav links
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+    });
+    
+    // Add active class based on current page
+    if (currentPath.includes('/wiki')) {
+        if (currentPath.includes('/search')) {
+            // Search page
+            const searchLink = document.querySelector('a[href*="search"]');
+            if (searchLink) searchLink.classList.add('active');
+        } else if (currentPath.includes('/random')) {
+            // Random page
+            const randomLink = document.querySelector('a[href*="random"]');
+            if (randomLink) randomLink.classList.add('active');
+        } else {
+            // Wiki home or article page
+            const wikiLink = document.querySelector('a[href*="wiki.index"]');
+            if (wikiLink) wikiLink.classList.add('active');
+        }
+    }
+}
+
+// Functions for random page interactions
+function bookmarkArticle(articleId) {
+    // Add to bookmarks (could integrate with localStorage or backend)
+    const bookmarks = JSON.parse(localStorage.getItem('wiki-bookmarks') || '[]');
+    if (!bookmarks.includes(articleId)) {
+        bookmarks.push(articleId);
+        localStorage.setItem('wiki-bookmarks', JSON.stringify(bookmarks));
+        showNotification('Article bookmarked!', 'success');
+    } else {
+        showNotification('Article already bookmarked!', 'info');
+    }
+}
+
+function shareArticle(articleId, title) {
+    // Share functionality
+    if (navigator.share) {
+        navigator.share({
+            title: title,
+            url: window.location.origin + `/wiki/article/${articleId}`
+        });
+    } else {
+        // Fallback: copy to clipboard
+        const url = window.location.origin + `/wiki/article/${articleId}`;
+        navigator.clipboard.writeText(url).then(() => {
+            showNotification('Article link copied to clipboard!', 'success');
+        });
+    }
+}
+
+function showNotification(message, type = 'info') {
+    // Simple notification system
+    const notification = document.createElement('div');
+    notification.className = `alert alert-${type} notification`;
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+        max-width: 300px;
+        border-radius: 12px;
+        opacity: 0;
+        transition: all 0.3s ease;
+    `;
+    notification.textContent = message;
+    
+    document.body.appendChild(notification);
+    
+    // Fade in
+    setTimeout(() => {
+        notification.style.opacity = '1';
+        notification.style.transform = 'translateY(0)';
+    }, 100);
+    
+    // Fade out and remove
+    setTimeout(() => {
+        notification.style.opacity = '0';
+        notification.style.transform = 'translateY(-20px)';
+        setTimeout(() => notification.remove(), 300);
+    }, 3000);
+}
+
+function shareArticle() {
+    if (navigator.share) {
+        navigator.share({
+            title: '{{ article.title|e }}',
+            text: '{{ article.get_excerpt(100)|e }}',
+            url: window.location.href
+        });
+    } else {
+        copyLink();
+    }
+}
+
+function shareOnTwitter() {
+    const text = encodeURIComponent('{{ article.title|e }} - {{ article.get_excerpt(100)|e }}');
+    const url = encodeURIComponent(window.location.href);
+    window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank');
+}
+
+function shareOnFacebook() {
+    const url = encodeURIComponent(window.location.href);
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+}
+
+function shareOnLinkedIn() {
+    const url = encodeURIComponent(window.location.href);
+    const title = encodeURIComponent('{{ article.title|e }}');
+    const summary = encodeURIComponent('{{ article.get_excerpt(100)|e }}');
+    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}&title=${title}&summary=${summary}`, '_blank');
+}
+
+function copyLink() {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+        alert('Link copied to clipboard!');
+    });
+}
+
+function bookmarkArticle() {
+    alert('Bookmark feature coming soon!');
+}

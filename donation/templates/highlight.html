@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block title %}Project Highlights - Donation{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('donation.static', filename='css/donation-style.css') }}">
+<style>
+    .hero-section {
+        background: var(--gradient-hero);
+        color: white;
+        padding: 100px 0 60px;
+        text-align: center;
+    }
+    
+    .card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        transition: var(--transition);
+    }
+    
+    .card-body {
+        color: var(--text-color);
+    }
+    
+    .card-title {
+        color: var(--text-color);
+    }
+    
+    .card-text {
+        color: var(--text-secondary, #666);
+    }
+    
+    .bg-light {
+        background-color: var(--light-gray) !important;
+    }
+    
+    [data-theme="dark"] .bg-light {
+        background-color: var(--light-gray) !important;
+    }
+    
+    .learn-more-btn {
+        background: var(--gradient-primary);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 25px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-block;
+        transition: var(--transition);
+        margin-top: 15px;
+    }
+    
+    .learn-more-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+        color: white;
+        text-decoration: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="hero-section">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold mb-3">Project Highlights</h1>
+        <p class="lead">Celebrating our successful projects and community achievements</p>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Featured Success Stories</h2>
+        <div class="row">
+            {% for project in featured_projects %}
+            <div class="col-lg-6 mb-4">
+                <div class="card h-100 shadow-sm">
+                    {% if project.image_url %}
+                    <img src="{{ project.image_url }}" class="card-img-top" alt="{{ project.title }}" style="height: 200px; object-fit: cover;">
+                    {% endif %}
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{ project.title }}</h5>
+                        <p class="card-text flex-grow-1">{{ project.description[:150] }}...</p>
+                        <div class="mt-auto">
+                            <a href="{{ url_for('donation.project_detail', project_id=project.id) }}" class="learn-more-btn">
+                                Learn More
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% if completed_projects %}
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">Completed Projects</h2>
+        <div class="row">
+            {% for project in completed_projects %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100 border-success">
+                    <div class="card-header bg-success text-white">
+                        <i class="fas fa-check-circle"></i> Fully Funded
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <h6 class="card-title">{{ project.title }}</h6>
+                        <p class="card-text small flex-grow-1">{{ project.short_description or project.description[:100] }}...</p>
+                        <div class="mt-auto">
+                            <a href="{{ url_for('donation.project_detail', project_id=project.id) }}" class="learn-more-btn">
+                                Learn More
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}
