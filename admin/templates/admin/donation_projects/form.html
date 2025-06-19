@@ -1,0 +1,227 @@
+{% extends "admin/base.html" %}
+
+{% block title %}{{ 'Edit' if project else 'New' }} Donation Project - Admin{% endblock %}
+
+{% block content %}
+<div class="admin-content">
+    <div class="admin-header">
+        <div class="admin-header-left">
+            <h1 class="admin-title">
+                <i class="fas fa-heart"></i>
+                {{ 'Edit' if project else 'New' }} Donation Project
+            </h1>
+            <p class="admin-subtitle">{{ 'Update' if project else 'Create' }} donation project details</p>
+        </div>
+        <div class="admin-header-right">
+            <a href="{{ url_for('admin.donation_projects') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Projects
+            </a>
+        </div>
+    </div>
+
+    <div class="admin-form-container">
+        <form method="POST" action="{{ url_for('admin.donation_project_update', project_id=project.id) if project else url_for('admin.donation_project_create') }}" class="admin-form" id="projectForm">
+            <div class="form-row">
+                <div class="form-group col-12">
+                    <label for="title" class="required">Project Title</label>
+                    <input type="text" class="form-control" id="title" name="title" 
+                           value="{{ project.title if project else '' }}" required>
+                    <small class="form-text text-muted">The main title of your donation project</small>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-12">
+                    <label for="short_description">Short Description</label>
+                    <input type="text" class="form-control" id="short_description" name="short_description" 
+                           value="{{ project.short_description if project else '' }}" maxlength="500">
+                    <small class="form-text text-muted">Brief description for cards and previews (max 500 characters)</small>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-12">
+                    <label for="description" class="required">Full Description</label>
+                    <textarea class="form-control" id="description" name="description" rows="6" required>{{ project.description if project else '' }}</textarea>
+                    <small class="form-text text-muted">Detailed description of the project and why people should donate</small>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="goal_amount">Goal Amount ($)</label>
+                    <input type="number" class="form-control" id="goal_amount" name="goal_amount" 
+                           value="{{ project.goal_amount if project else 0 }}" step="0.01" min="0">
+                    <small class="form-text text-muted">Target amount to raise for this project</small>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="current_amount">Current Amount ($)</label>
+                    <input type="number" class="form-control" id="current_amount" name="current_amount" 
+                           value="{{ project.current_amount if project else 0 }}" step="0.01" min="0" readonly>
+                    <small class="form-text text-muted">Amount raised so far (automatically calculated)</small>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="image_url">Project Image URL</label>
+                    <input type="url" class="form-control" id="image_url" name="image_url" 
+                           value="{{ project.image_url if project else '' }}">
+                    <small class="form-text text-muted">URL to project image or screenshot</small>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="github_url">GitHub URL</label>
+                    <input type="url" class="form-control" id="github_url" name="github_url" 
+                           value="{{ project.github_url if project else '' }}">
+                    <small class="form-text text-muted">Link to project repository</small>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="demo_url">Demo URL</label>
+                    <input type="url" class="form-control" id="demo_url" name="demo_url" 
+                           value="{{ project.demo_url if project else '' }}">
+                    <small class="form-text text-muted">Link to live demo or preview</small>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="is_active" name="is_active" 
+                               {{ 'checked' if not project or project.is_active else '' }}>
+                        <label class="custom-control-label" for="is_active">Active</label>
+                    </div>
+                    <small class="form-text text-muted">Whether this project accepts donations</small>
+                </div>
+                <div class="form-group col-md-6">
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="is_featured" name="is_featured" 
+                               {{ 'checked' if project and project.is_featured else '' }}>
+                        <label class="custom-control-label" for="is_featured">Featured</label>
+                    </div>
+                    <small class="form-text text-muted">Show in featured projects section</small>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i>
+                    {{ 'Update' if project else 'Create' }} Project
+                </button>
+                <a href="{{ url_for('admin.donation_projects') }}" class="btn btn-secondary">
+                    <i class="fas fa-times"></i>
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+
+    {% if project %}
+    <div class="admin-info-cards mt-4">
+        <div class="info-card">
+            <div class="info-card-header">
+                <h5><i class="fas fa-chart-line"></i> Project Statistics</h5>
+            </div>
+            <div class="info-card-body">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value">${{ "%.2f"|format(project.current_amount) }}</div>
+                        <div class="stat-label">Raised</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">${{ "%.2f"|format(project.goal_amount) }}</div>
+                        <div class="stat-label">Goal</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">{{ "%.1f"|format(project.get_progress_percentage()) }}%</div>
+                        <div class="stat-label">Progress</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">{{ project.donations.count() }}</div>
+                        <div class="stat-label">Donations</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Form submission handling
+    const form = document.getElementById('projectForm');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            
+            // Show loading state
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+            submitBtn.disabled = true;
+            
+            // Submit form
+            const formData = new FormData(form);
+            
+            fetch(form.action, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (response.redirected) {
+                    window.location.href = response.url;
+                    return;
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data && data.success) {
+                    showNotification(data.message, 'success');
+                    setTimeout(() => {
+                        window.location.href = '{{ url_for("admin.donation_projects") }}';
+                    }, 1500);
+                } else if (data && data.message) {
+                    showNotification(data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showNotification('An error occurred while saving', 'error');
+            })
+            .finally(() => {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            });
+        });
+    }
+    
+    // Image preview functionality
+    const imageInput = document.getElementById('image_url');
+    if (imageInput) {
+        imageInput.addEventListener('blur', function() {
+            const url = this.value;
+            if (url) {
+                // Create or update image preview
+                let preview = document.getElementById('image_preview');
+                if (!preview) {
+                    preview = document.createElement('img');
+                    preview.id = 'image_preview';
+                    preview.style.maxWidth = '200px';
+                    preview.style.marginTop = '10px';
+                    preview.style.borderRadius = '8px';
+                    this.parentNode.appendChild(preview);
+                }
+                preview.src = url;
+                preview.style.display = 'block';
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,275 @@
+{% extends "admin/base.html" %}
+
+{% block title %}{% if skill %}Edit Skill{% else %}Add Skill{% endif %}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0">
+                    <i class="fas fa-code"></i>
+                    {% if skill %}Edit Skill: {{ skill.name }}{% else %}Add New Skill{% endif %}
+                </h4>
+            </div>
+            <div class="card-body">
+                <form method="POST" id="skillForm">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Skill Name <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="name" name="name" 
+                                       value="{{ skill.name if skill else '' }}" required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="category" class="form-label">Category</label>
+                                <select class="form-select" id="category" name="category">
+                                    <option value="">Select category...</option>
+                                    <option value="programming" {% if skill and skill.category == 'programming' %}selected{% endif %}>Programming</option>
+                                    <option value="frontend" {% if skill and skill.category == 'frontend' %}selected{% endif %}>Frontend</option>
+                                    <option value="backend" {% if skill and skill.category == 'backend' %}selected{% endif %}>Backend</option>
+                                    <option value="database" {% if skill and skill.category == 'database' %}selected{% endif %}>Database</option>
+                                    <option value="devops" {% if skill and skill.category == 'devops' %}selected{% endif %}>DevOps</option>
+                                    <option value="tools" {% if skill and skill.category == 'tools' %}selected{% endif %}>Tools</option>
+                                    <option value="other" {% if skill and skill.category == 'other' %}selected{% endif %}>Other</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" name="description" rows="3" 
+                                  placeholder="Brief description of your experience with this skill...">{{ skill.description if skill else '' }}</textarea>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="proficiency" class="form-label">
+                                    Proficiency Level 
+                                    <span class="text-muted">(<span id="proficiencyValue">{{ skill.proficiency if skill else 50 }}</span>%)</span>
+                                </label>
+                                <input type="range" class="form-range" id="proficiency" name="proficiency" 
+                                       min="0" max="100" value="{{ skill.proficiency if skill else 50 }}">
+                                <div class="d-flex justify-content-between">
+                                    <small class="text-muted">Beginner</small>
+                                    <small class="text-muted">Intermediate</small>
+                                    <small class="text-muted">Expert</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="years_experience" class="form-label">Years of Experience</label>
+                                <input type="number" class="form-control" id="years_experience" name="years_experience" 
+                                       value="{{ skill.years_experience if skill else '' }}" 
+                                       min="0" max="50" step="0.5" placeholder="e.g., 2.5">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="icon" class="form-label">Icon</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i id="iconPreview" class="{{ skill.icon if skill else 'fas fa-code' }}"></i>
+                                    </span>
+                                    <input type="text" class="form-control" id="icon" name="icon" 
+                                           value="{{ skill.icon if skill else '' }}"
+                                           placeholder="fab fa-python">
+                                </div>
+                                <small class="form-text text-muted">
+                                    FontAwesome icon class (e.g., fab fa-python, fab fa-js-square)
+                                </small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="sort_order" class="form-label">Sort Order</label>
+                                <input type="number" class="form-control" id="sort_order" name="sort_order" 
+                                       value="{{ skill.sort_order if skill else 0 }}" 
+                                       min="0" placeholder="0">
+                                <small class="form-text text-muted">Lower numbers appear first</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="is_featured" name="is_featured" 
+                               {% if skill and skill.is_featured %}checked{% endif %}>
+                        <label class="form-check-label" for="is_featured">
+                            Featured Skill
+                        </label>
+                        <small class="form-text text-muted d-block">Featured skills are highlighted on the homepage</small>
+                    </div>
+
+                    <!-- Skill Preview -->
+                    <div class="mb-3">
+                        <label class="form-label">Preview</label>
+                        <div class="card" style="max-width: 300px;">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-2">
+                                    <i id="previewIcon" class="{{ skill.icon if skill else 'fas fa-code' }} me-2" style="font-size: 1.5rem;"></i>
+                                    <h6 class="card-title mb-0" id="previewName">{{ skill.name if skill else 'Skill Name' }}</h6>
+                                </div>
+                                <span class="badge bg-secondary mb-2" id="previewCategory">{{ skill.category.title() if skill and skill.category else 'Category' }}</span>
+                                <div class="mb-2">
+                                    <small class="text-muted">Proficiency:</small>
+                                    <div class="progress" style="height: 6px;">
+                                        <div class="progress-bar" id="previewProgressBar" role="progressbar" 
+                                             style="width: {{ skill.proficiency if skill else 50 }}%"></div>
+                                    </div>
+                                    <small class="text-muted" id="previewProficiency">{{ skill.proficiency if skill else 50 }}%</small>
+                                </div>
+                                <p class="card-text small text-muted" id="previewDescription">
+                                    {{ skill.description[:50] if skill and skill.description else 'Skill description...' }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ url_for('admin.skills') }}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Back to Skills
+                            </a>
+                            <div>
+                                {% if skill %}
+                                <button type="button" class="btn btn-outline-danger me-2" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                                {% endif %}
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save"></i> 
+                                    {% if skill %}Update Skill{% else %}Create Skill{% endif %}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if skill %}
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Skill</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete the skill "{{ skill.name }}"?</p>
+                <p class="text-danger"><strong>This action cannot be undone.</strong></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form method="POST" action="{{ url_for('admin.skills_delete', id=skill.id) }}" style="display: inline;">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+    // Update proficiency display
+    $('#proficiency').on('input', function() {
+        const value = this.value;
+        $('#proficiencyValue').text(value);
+        updatePreview();
+    });
+    
+    // Update icon preview
+    $('#icon').on('input', function() {
+        const iconClass = this.value || 'fas fa-code';
+        $('#iconPreview').attr('class', iconClass);
+        updatePreview();
+    });
+    
+    // Update preview when inputs change
+    $('#name, #category, #description').on('input', updatePreview);
+    
+    function updatePreview() {
+        const name = $('#name').val() || 'Skill Name';
+        const category = $('#category').val() || 'category';
+        const description = $('#description').val() || 'Skill description...';
+        const proficiency = $('#proficiency').val();
+        const icon = $('#icon').val() || 'fas fa-code';
+        
+        $('#previewName').text(name);
+        $('#previewCategory').text(category.charAt(0).toUpperCase() + category.slice(1));
+        $('#previewDescription').text(description.substring(0, 50) + (description.length > 50 ? '...' : ''));
+        $('#previewProficiency').text(proficiency + '%');
+        $('#previewProgressBar').css('width', proficiency + '%');
+        $('#previewIcon').attr('class', icon + ' me-2');
+        
+        // Hide category badge if no category selected
+        if (!$('#category').val()) {
+            $('#previewCategory').hide();
+        } else {
+            $('#previewCategory').show();
+        }
+    }
+    
+    // Initial preview update
+    updatePreview();
+    
+    // Form submission with AJAX
+    $('#skillForm').on('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        const isEdit = {{ 'true' if skill else 'false' }};
+        const url = isEdit ? window.location.href : '{{ url_for("admin.skills_create") }}';
+        
+        // Convert FormData to regular object for JSON
+        const data = {};
+        formData.forEach((value, key) => {
+            if (key === 'is_featured') {
+                data[key] = $('#' + key).is(':checked');
+            } else if (key === 'proficiency' || key === 'years_experience' || key === 'sort_order') {
+                data[key] = value ? parseFloat(value) : null;
+            } else {
+                data[key] = value;
+            }
+        });
+        
+        $.ajax({
+            url: url,
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            data: JSON.stringify(data),
+            success: function(response) {
+                if (response.status === 'success') {
+                    window.location.href = '{{ url_for("admin.skills") }}';
+                } else {
+                    alert(response.message || 'Error saving skill');
+                }
+            },
+            error: function(xhr) {
+                let message = 'Error saving skill';
+                if (xhr.responseJSON && xhr.responseJSON.message) {
+                    message = xhr.responseJSON.message;
+                }
+                alert(message);
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

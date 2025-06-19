@@ -10,96 +10,171 @@ logger = logging.getLogger(__name__)
 @donation_bp.route('/')
 def index():
     """Main donation page showing all active projects"""
-    featured_projects = DonationProject.query.filter_by(is_active=True, is_featured=True).all()
-    all_projects = DonationProject.query.filter_by(is_active=True).all()
+    from models import SeoSettings, PersonalInfo, SocialLink
     
-    # Get recent donations for activity feed
-    recent_donations = Donation.query.filter_by(status='completed')\
-                                   .order_by(Donation.created_at.desc())\
-                                   .limit(10).all()
+    # Get donation projects (we can use regular projects for donations too)
+    try:
+        # Check if we have DonationProject model, otherwise use Project
+        featured_projects = DonationProject.query.filter_by(is_active=True, is_featured=True).all()
+        all_projects = DonationProject.query.filter_by(is_active=True).all()
+        
+        # Get recent donations for activity feed
+        recent_donations = Donation.query.filter_by(status='completed')\
+                                       .order_by(Donation.created_at.desc())\
+                                       .limit(10).all()
+    except:
+        # Fallback to regular projects if DonationProject doesn't exist
+        from models import Project
+        featured_projects = Project.query.filter_by(is_featured=True).all()
+        all_projects = Project.query.all()
+        recent_donations = []
+    
+    # Get CMS data
+    seo = SeoSettings.query.filter_by(page_name='donation').first() or SeoSettings.query.first()
+    personal = PersonalInfo.query.first()
+    social_links = SocialLink.query.all()
     
     return render_template('donation.html', 
                          featured_projects=featured_projects,
                          all_projects=all_projects,
                          recent_donations=recent_donations,
+                         seo_settings=seo,
+                         personal_info=personal,
+                         social_links=social_links,
                          current_year=datetime.now().year)
 
 @donation_bp.route('/project/<int:project_id>')
 def project_detail(project_id):
     """Detailed view of a specific donation project"""
-    project = DonationProject.query.get_or_404(project_id)
+    from models import SeoSettings, PersonalInfo
     
-    # Get recent donations for this project
-    donations = Donation.query.filter_by(project_id=project_id, status='completed')\
-                             .order_by(Donation.created_at.desc())\
-                             .limit(20).all()
+    try:
+        project = DonationProject.query.get_or_404(project_id)
+        
+        # Get recent donations for this project
+        donations = Donation.query.filter_by(project_id=project_id, status='completed')\
+                                 .order_by(Donation.created_at.desc())\
+                                 .limit(20).all()
+    except:
+        # Fallback to regular projects
+        from models import Project
+        project = Project.query.get_or_404(project_id)
+        donations = []
+    
+    # Get CMS data
+    seo = SeoSettings.query.filter_by(page_name='donation').first() or SeoSettings.query.first()
+    personal = PersonalInfo.query.first()
     
     return render_template('project_detail.html', 
                          project=project,
                          donations=donations,
+                         seo=seo,
+                         personal=personal,
                          current_year=datetime.now().year)
 
-@donation_bp.route('/donate/<int:project_id>', methods=['POST'])
-def make_donation(project_id):
-    """Process a donation to a specific project"""
-    try:
-        project = DonationProject.query.get_or_404(project_id)
-        
-        # Get form data
-        donor_name = request.form.get('donor_name', '').strip()
-        donor_email = request.form.get('donor_email', '').strip()
-        amount = float(request.form.get('amount', 0))
-        message = request.form.get('message', '').strip()
-        is_anonymous = request.form.get('is_anonymous') == 'on'
-        payment_method = request.form.get('payment_method', 'paypal')
-        
-        # Validate input
-        if not donor_name or not donor_email or amount <= 0:
-            flash('Please fill in all required fields with valid values.', 'error')
-            return redirect(url_for('donation.project_detail', project_id=project_id))
-        
-        # Create donation record
-        donation = Donation(
-            project_id=project_id,
-            donor_name=donor_name,
-            donor_email=donor_email,
-            amount=amount,
-            message=message,
-            is_anonymous=is_anonymous,
-            payment_method=payment_method,
-            status='pending'
-        )
-        
-        db.session.add(donation)
-        db.session.commit()
-        
-        # In a real implementation, you would integrate with payment processors here
-        # For now, we'll simulate a successful payment
-        donation.status = 'completed'
-        donation.payment_id = f"sim_{datetime.now().timestamp()}"
-        
-        # Update project total
-        project.current_amount += amount
-        db.session.commit()
-        
-        # Send confirmation email
+@donation_bp.route('/donate/<int:project_id>', methods=['GET', 'POST'])
+def donate(project_id):
+    """Handle donation submission for a specific project"""
+    from models import SeoSettings, PersonalInfo, SocialLink
+    
+    project = DonationProject.query.get_or_404(project_id)
+    
+    if request.method == 'POST':
         try:
-            email_service.send_donation_confirmation(
-                donor_email, donor_name, project.title, amount
+            # Get form data
+            donor_name = request.form.get('donor_name', '').strip()
+            donor_email = request.form.get('donor_email', '').strip()
+            amount = float(request.form.get('amount', 0))
+            message = request.form.get('message', '').strip()
+            is_anonymous = bool(request.form.get('is_anonymous'))
+            payment_method = request.form.get('payment_method', 'manual')
+            
+            # Validate required fields
+            if not donor_name or not donor_email or amount <= 0:
+                if request.is_json:
+                    return jsonify({'success': False, 'message': 'Please fill in all required fields'}), 400
+                flash('Please fill in all required fields', 'error')
+                return redirect(url_for('donation.donate', project_id=project_id))
+            
+            # Create donation record
+            donation = Donation(
+                project_id=project_id,
+                donor_name=donor_name,
+                donor_email=donor_email,
+                amount=amount,
+                message=message,
+                is_anonymous=is_anonymous,
+                payment_method=payment_method,
+                status='pending'  # Start as pending, admin can mark as completed
             )
+            
+            db.session.add(donation)
+            db.session.commit()
+            
+            # Send thank you email
+            try:
+                if email_service:
+                    email_service.send_donation_thank_you(
+                        donor_email, 
+                        donor_name, 
+                        amount, 
+                        project.title
+                    )
+            except Exception as e:
+                logger.error(f"Failed to send thank you email: {e}")
+            
+            if request.is_json:
+                return jsonify({
+                    'success': True, 
+                    'message': 'Thank you for your donation! Your contribution is being processed.',
+                    'donation_id': donation.id
+                })
+            
+            flash('Thank you for your donation! Your contribution is being processed.', 'success')
+            return redirect(url_for('donation.donation_success', donation_id=donation.id))
+            
+        except ValueError:
+            if request.is_json:
+                return jsonify({'success': False, 'message': 'Invalid amount entered'}), 400
+            flash('Please enter a valid donation amount', 'error')
+            return redirect(url_for('donation.donate', project_id=project_id))
         except Exception as e:
-            logger.error(f"Failed to send confirmation email: {e}")
-        
-        flash(f'Thank you for your donation of ${amount:.2f} to {project.title}!', 'success')
-        return redirect(url_for('donation.project_detail', project_id=project_id))
-        
-    except ValueError:
-        flash('Invalid donation amount.', 'error')
-        return redirect(url_for('donation.project_detail', project_id=project_id))
-    except Exception as e:
-        logger.error(f"Donation processing error: {e}")
-        flash('An error occurred while processing your donation. Please try again.', 'error')
-        return redirect(url_for('donation.project_detail', project_id=project_id))
+            logger.error(f"Donation error: {e}")
+            db.session.rollback()
+            if request.is_json:
+                return jsonify({'success': False, 'message': 'An error occurred while processing your donation'}), 500
+            flash('An error occurred while processing your donation. Please try again.', 'error')
+            return redirect(url_for('donation.donate', project_id=project_id))
+    
+    # GET request - show donation form
+    seo = SeoSettings.query.filter_by(page_name='donation').first() or SeoSettings.query.first()
+    personal = PersonalInfo.query.first()
+    social_links = SocialLink.query.all()
+    
+    return render_template('project_detail.html',
+                         project=project,
+                         seo_settings=seo,
+                         personal_info=personal,
+                         social_links=social_links,
+                         current_year=datetime.now().year)
+
+@donation_bp.route('/success/<int:donation_id>')
+def donation_success(donation_id):
+    """Thank you page after successful donation"""
+    from models import SeoSettings, PersonalInfo, SocialLink
+    
+    donation = Donation.query.get_or_404(donation_id)
+    
+    seo = SeoSettings.query.filter_by(page_name='donation').first() or SeoSettings.query.first()
+    personal = PersonalInfo.query.first()
+    social_links = SocialLink.query.all()
+    
+    return render_template('donation_success.html',
+                         donation=donation,
+                         seo_settings=seo,
+                         personal_info=personal,
+                         social_links=social_links,
+                         current_year=datetime.now().year)
 
 @donation_bp.route('/subscribe', methods=['POST'])
 def subscribe_newsletter():
@@ -110,6 +185,8 @@ def subscribe_newsletter():
         interests = request.form.get('interests', '').strip()
         
         if not email:
+            if request.is_json or 'application/json' in request.headers.get('Accept', ''):
+                return jsonify({'success': False, 'status': 'error', 'message': 'Please provide a valid email address.'})
             flash('Please provide a valid email address.', 'error')
             return redirect(url_for('donation.index'))
         
@@ -117,12 +194,16 @@ def subscribe_newsletter():
         existing = NewsletterSubscriber.query.filter_by(email=email).first()
         if existing:
             if existing.is_active:
-                flash('You are already subscribed to our newsletter.', 'info')
+                if request.is_json or 'application/json' in request.headers.get('Accept', ''):
+                    return jsonify({'success': False, 'status': 'info', 'message': 'You are already subscribed to our newsletter.'})
+                flash('You are already subscribed to my newsletter.', 'info')
             else:
                 existing.is_active = True
                 existing.name = name or existing.name
                 existing.interests = interests or existing.interests
                 db.session.commit()
+                if request.is_json or 'application/json' in request.headers.get('Accept', ''):
+                    return jsonify({'success': True, 'status': 'success', 'message': 'Your newsletter subscription has been reactivated.'})
                 flash('Your newsletter subscription has been reactivated.', 'success')
         else:
             subscriber = NewsletterSubscriber(
@@ -132,12 +213,26 @@ def subscribe_newsletter():
             )
             db.session.add(subscriber)
             db.session.commit()
-            flash('Thank you for subscribing to our newsletter!', 'success')
+            
+            # Send welcome email
+            try:
+                if email_service:
+                    email_service.send_newsletter_welcome(email, name or 'Subscriber')
+            except Exception as e:
+                logger.error(f"Failed to send welcome email: {e}")
+            
+            if request.is_json or 'application/json' in request.headers.get('Accept', ''):
+                return jsonify({'success': True, 'status': 'success', 'message': 'Thank you for subscribing to our newsletter!'})
+            flash('Thank you for subscribing to my newsletter!', 'success')
         
+        if request.is_json or 'application/json' in request.headers.get('Accept', ''):
+            return jsonify({'success': True, 'status': 'success', 'message': 'Newsletter subscription updated successfully.'})
         return redirect(url_for('donation.index'))
         
     except Exception as e:
         logger.error(f"Newsletter subscription error: {e}")
+        if request.is_json or 'application/json' in request.headers.get('Accept', ''):
+            return jsonify({'success': False, 'status': 'error', 'message': 'An error occurred while subscribing. Please try again.'})
         flash('An error occurred while subscribing. Please try again.', 'error')
         return redirect(url_for('donation.index'))
 
@@ -200,4 +295,56 @@ def why_donate(project_id):
                          project=project,
                          current_year=datetime.now().year)
 
-# ...existing routes continue...
+@donation_bp.route('/api/donate', methods=['POST'])
+def api_donate():
+    """API endpoint for donation submission"""
+    try:
+        data = request.get_json()
+        
+        # Validate required fields
+        required_fields = ['project_id', 'donor_name', 'donor_email', 'amount']
+        for field in required_fields:
+            if not data.get(field):
+                return jsonify({'success': False, 'message': f'Missing required field: {field}'}), 400
+        
+        project = DonationProject.query.get(data['project_id'])
+        if not project or not project.is_active:
+            return jsonify({'success': False, 'message': 'Project not found or inactive'}), 404
+        
+        # Create donation record
+        donation = Donation(
+            project_id=data['project_id'],
+            donor_name=data['donor_name'],
+            donor_email=data['donor_email'],
+            amount=float(data['amount']),
+            message=data.get('message', ''),
+            is_anonymous=data.get('is_anonymous', False),
+            payment_method=data.get('payment_method', 'api'),
+            status='pending'
+        )
+        
+        db.session.add(donation)
+        db.session.commit()
+        
+        # Send thank you email
+        try:
+            if email_service:
+                email_service.send_donation_thank_you(
+                    donation.donor_email, 
+                    donation.donor_name, 
+                    donation.amount, 
+                    project.title
+                )
+        except Exception as e:
+            logger.error(f"Failed to send thank you email: {e}")
+        
+        return jsonify({
+            'success': True,
+            'message': 'Donation submitted successfully',
+            'donation_id': donation.id
+        })
+        
+    except Exception as e:
+        logger.error(f"API donation error: {e}")
+        db.session.rollback()
+        return jsonify({'success': False, 'message': 'An error occurred while processing your donation'}), 500

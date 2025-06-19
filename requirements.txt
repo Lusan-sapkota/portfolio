@@ -13,6 +13,7 @@ PyJWT
 flask-migrate
 requests
 Flask-Caching
+Flask-Limiter
 redis
 # only for local development (remove it for production)
 livereload

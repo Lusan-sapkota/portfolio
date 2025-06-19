@@ -1,0 +1,182 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}{{ 'Edit Testimonial' if testimonial else 'Add Testimonial' }}{% endblock %}
+
+{% block content %}
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">{{ 'Edit Testimonial' if testimonial else 'Add Testimonial' }}</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="{{ url_for('admin.dashboard') }}">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('admin.testimonials') }}">Testimonials</a></li>
+                    <li class="breadcrumb-item active">{{ 'Edit' if testimonial else 'Add' }}</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="container-fluid">
+        <form id="testimonial-form" onsubmit="saveTestimonial(event)">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Testimonial Details</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="name">Name *</label>
+                                        <input type="text" id="name" name="name" class="form-control" value="{{ testimonial.name if testimonial else '' }}" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="title">Title/Role</label>
+                                        <input type="text" id="title" name="title" class="form-control" value="{{ testimonial.title if testimonial else '' }}" placeholder="e.g., CEO, Client, Colleague">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="company">Company/Organization</label>
+                                        <input type="text" id="company" name="company" class="form-control" value="{{ testimonial.company if testimonial else '' }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="avatar_url">Avatar URL</label>
+                                        <input type="url" id="avatar_url" name="avatar_url" class="form-control" value="{{ testimonial.avatar_url if testimonial else '' }}" placeholder="https://...">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="content">Testimonial *</label>
+                                <textarea id="content" name="content" class="form-control" rows="5" required>{{ testimonial.content if testimonial else '' }}</textarea>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="rating">Rating (1-5)</label>
+                                        <input type="number" id="rating" name="rating" class="form-control" min="1" max="5" value="{{ testimonial.rating if testimonial else 5 }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="project_id">Related Project</label>
+                                        <select id="project_id" name="project_id" class="form-control">
+                                            <option value="">None</option>
+                                            {% for project in projects %}
+                                            <option value="{{ project.id }}" {% if testimonial and testimonial.project_id == project.id %}selected{% endif %}>{{ project.title }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="is_featured" name="is_featured" {% if testimonial and testimonial.is_featured %}checked{% endif %}>
+                                    <label class="custom-control-label" for="is_featured">Feature this testimonial</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <!-- Actions -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Actions</h3>
+                        </div>
+                        <div class="card-body">
+                            <button type="submit" class="btn btn-primary btn-block">
+                                <i class="fas fa-save"></i> {{ 'Update Testimonial' if testimonial else 'Save Testimonial' }}
+                            </button>
+                            <a href="{{ url_for('admin.testimonials') }}" class="btn btn-secondary btn-block">
+                                <i class="fas fa-arrow-left"></i> Back to Testimonials
+                            </a>
+                            {% if testimonial %}
+                            <hr>
+                            <button type="button" class="btn btn-danger btn-block" onclick="deleteTestimonial()">
+                                <i class="fas fa-trash"></i> Delete Testimonial
+                            </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+function saveTestimonial(event) {
+    event.preventDefault();
+    const form = event.target;
+    const formData = new FormData(form);
+    const data = {};
+    for (let [key, value] of formData.entries()) {
+        if (key === 'is_featured') {
+            data[key] = form.querySelector(`[name="${key}"]`).checked;
+        } else {
+            data[key] = value;
+        }
+    }
+    const url = '{{ url_for('admin.testimonials_edit', id=testimonial.id) if testimonial else url_for('admin.testimonials_create') }}';
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showNotification(data.message, 'success');
+            {% if not testimonial %}
+            setTimeout(() => {
+                window.location.href = '{{ url_for('admin.testimonials') }}';
+            }, 1500);
+            {% endif %}
+        } else {
+            showNotification('Error: ' + data.message, 'error');
+        }
+    })
+    .catch(error => {
+        showNotification('Error saving testimonial', 'error');
+    });
+}
+{% if testimonial %}
+function deleteTestimonial() {
+    if (confirm('Delete this testimonial? This action cannot be undone.')) {
+        fetch('{{ url_for('admin.testimonials_delete', id=testimonial.id) }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showNotification('Testimonial deleted successfully', 'success');
+                window.location.href = '{{ url_for('admin.testimonials') }}';
+            } else {
+                showNotification('Error: ' + data.message, 'error');
+            }
+        })
+        .catch(error => {
+            showNotification('Error deleting testimonial', 'error');
+        });
+    }
+}
+{% endif %}
+</script>
+{% endblock %}

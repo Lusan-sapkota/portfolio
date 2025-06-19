@@ -1,0 +1,248 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<!-- Dashboard Stats -->
+<div class="row mb-4">
+    <div class="col-xl-2 col-md-4">
+        <div class="stat-card stat-primary">
+            <div class="stat-number">{{ stats.projects }}</div>
+            <div class="stat-label">Projects</div>
+        </div>
+    </div>
+    <div class="col-xl-2 col-md-4">
+        <div class="stat-card stat-success">
+            <div class="stat-number">{{ stats.categories }}</div>
+            <div class="stat-label">Categories</div>
+        </div>
+    </div>
+    <div class="col-xl-2 col-md-4">
+        <div class="stat-card stat-info">
+            <div class="stat-number">{{ stats.skills }}</div>
+            <div class="stat-label">Skills</div>
+        </div>
+    </div>
+    <div class="col-xl-2 col-md-4">
+        <div class="stat-card stat-warning">
+            <div class="stat-number">{{ stats.newsletter_subscribers }}</div>
+            <div class="stat-label">Subscribers</div>
+        </div>
+    </div>
+    <div class="col-xl-2 col-md-4">
+        <div class="stat-card stat-danger">
+            <div class="stat-number">{{ stats.donation_projects }}</div>
+            <div class="stat-label">Donations</div>
+        </div>
+    </div>
+    <div class="col-xl-2 col-md-4">
+        <div class="stat-card stat-secondary">
+            <div class="stat-number">${{ "%.0f"|format(stats.total_donations) }}</div>
+            <div class="stat-label">Raised</div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Quick Actions -->
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-bolt"></i> Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('admin.projects_create') }}" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Add New Project
+                    </a>
+                    <a href="{{ url_for('admin.donation_project_new') }}" class="btn btn-outline-danger">
+                        <i class="fas fa-heart"></i> Add Donation Project
+                    </a>
+                    <a href="{{ url_for('admin.skills_create') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-code"></i> Add New Skill
+                    </a>
+                    <a href="{{ url_for('admin.categories_create') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-tags"></i> Add Category
+                    </a>
+                    <a href="{{ url_for('admin.seo_create') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-search"></i> Add SEO Settings
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-chart-bar"></i> System Overview</h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <small class="text-muted">Contact Forms</small>
+                        <small class="text-muted">{{ stats.contact_submissions }}</small>
+                    </div>
+                    <div class="progress" style="height: 6px;">
+                        <div class="progress-bar bg-info" style="width: {{ (stats.contact_submissions / 50 * 100) if stats.contact_submissions < 50 else 100 }}%"></div>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <small class="text-muted">Newsletter Subscribers</small>
+                        <small class="text-muted">{{ stats.newsletter_subscribers }}</small>
+                    </div>
+                    <div class="progress" style="height: 6px;">
+                        <div class="progress-bar bg-success" style="width: {{ (stats.newsletter_subscribers / 100 * 100) if stats.newsletter_subscribers < 100 else 100 }}%"></div>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <small class="text-muted">Published Projects</small>
+                        <small class="text-muted">{{ stats.projects }}</small>
+                    </div>
+                    <div class="progress" style="height: 6px;">
+                        <div class="progress-bar bg-primary" style="width: {{ (stats.projects / 20 * 100) if stats.projects < 20 else 100 }}%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="col-lg-8">
+        <div class="row">
+            <!-- Recent Contacts -->
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0"><i class="fas fa-envelope"></i> Recent Contacts</h5>
+                        <a href="{{ url_for('admin.contacts') }}" class="btn btn-sm btn-outline-primary">View All</a>
+                    </div>
+                    <div class="card-body">
+                        {% if stats.recent_contacts %}
+                        <div class="list-group list-group-flush">
+                            {% for contact in stats.recent_contacts %}
+                            <div class="list-group-item px-0 py-2 border-0">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <h6 class="mb-1">{{ contact.name }}</h6>
+                                        <p class="mb-1 small text-muted">{{ contact.subject or 'No subject' }}</p>
+                                        <small class="text-muted">{{ contact.submitted_at.strftime('%m/%d %H:%M') }}</small>
+                                    </div>
+                                    {% if not contact.is_replied %}
+                                    <span class="badge bg-warning">New</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <p class="text-muted text-center py-3">No recent contacts</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Subscribers -->
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0"><i class="fas fa-users"></i> Recent Subscribers</h5>
+                        <a href="{{ url_for('admin.newsletter') }}" class="btn btn-sm btn-outline-primary">View All</a>
+                    </div>
+                    <div class="card-body">
+                        {% if stats.recent_subscribers %}
+                        <div class="list-group list-group-flush">
+                            {% for subscriber in stats.recent_subscribers %}
+                            <div class="list-group-item px-0 py-2 border-0">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-1">{{ subscriber.name or subscriber.email.split('@')[0] }}</h6>
+                                        <small class="text-muted">{{ subscriber.email }}</small>
+                                    </div>
+                                    <small class="text-muted">{{ subscriber.subscribed_at.strftime('%m/%d') }}</small>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <p class="text-muted text-center py-3">No recent subscribers</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Management Tools -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-tools"></i> Management Tools</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6><i class="fas fa-project-diagram"></i> Content Management</h6>
+                        <ul class="list-unstyled">
+                            <li><a href="{{ url_for('admin.projects') }}" class="text-decoration-none">Projects ({{ stats.projects }})</a></li>
+                            <li><a href="{{ url_for('admin.categories') }}" class="text-decoration-none">Categories ({{ stats.categories }})</a></li>
+                            <li><a href="{{ url_for('admin.skills') }}" class="text-decoration-none">Skills ({{ stats.skills }})</a></li>
+                            <li><a href="{{ url_for('admin.seo_settings') }}" class="text-decoration-none">SEO Settings</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6><i class="fas fa-envelope"></i> Communications</h6>
+                        <ul class="list-unstyled">
+                            <li><a href="{{ url_for('admin.contacts') }}" class="text-decoration-none">Contact Forms ({{ stats.contact_submissions }})</a></li>
+                            <li><a href="{{ url_for('admin.newsletter') }}" class="text-decoration-none">Newsletter ({{ stats.newsletter_subscribers }})</a></li>
+                            <li><a href="{{ url_for('admin.export_newsletter') }}" class="text-decoration-none">Export Subscribers</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Site Preview -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="fas fa-eye"></i> Site Preview</h5>
+                <a href="/" target="_blank" class="btn btn-sm btn-primary">
+                    <i class="fas fa-external-link-alt"></i> View Live Site
+                </a>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <i class="fas fa-home fa-2x text-primary mb-2"></i>
+                            <h6>Homepage</h6>
+                            <p class="small text-muted">Showcase of featured projects and skills</p>
+                            <a href="/" target="_blank" class="btn btn-sm btn-outline-primary">Preview</a>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <i class="fas fa-project-diagram fa-2x text-success mb-2"></i>
+                            <h6>Portfolio</h6>
+                            <p class="small text-muted">All projects organized by categories</p>
+                            <a href="/git" target="_blank" class="btn btn-sm btn-outline-success">Preview</a>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <i class="fas fa-book fa-2x text-info mb-2"></i>
+                            <h6>Knowledge Base</h6>
+                            <p class="small text-muted">Wiki articles and documentation</p>
+                            <a href="/wiki" target="_blank" class="btn btn-sm btn-outline-info">Preview</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -7,15 +7,25 @@ from flask_login import LoginManager
 from models import User
 from flask_jwt_extended import JWTManager 
 from flask_migrate import Migrate
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 from config import SUBDOMAINS, THEME_CONFIG, SEO_CONFIG, CONTACT_INFO, FEATURES
 from datetime import datetime
 from github_service import github_service
 import traceback
+import re
 
 # Load environment variables
 load_dotenv()
 
 app = Flask(__name__)
+
+# Configure rate limiting
+limiter = Limiter(
+    key_func=get_remote_address,
+    app=app,
+    default_limits=["1000 per hour"]
+)
 
 # Configure app
 app.secret_key = os.getenv('SECRET_KEY') # Used by Flask-Login, can also be JWT_SECRET_KEY
@@ -82,34 +92,108 @@ from models import *
 # Main routes
 @app.route('/')
 def index():
-    # Pass configuration data to template
-    template_data = {
-        'subdomains': {k: v for k, v in SUBDOMAINS.items() if v.get('enabled', True)},
-        'theme_config': THEME_CONFIG,
-        'seo_config': SEO_CONFIG,
-        'contact_info': CONTACT_INFO,
-        'features': FEATURES
-    }
-    return render_template('index.html', **template_data, current_year=datetime.now().year)
+    try:
+        # Fetch portfolio data from database
+        from models import (Project, ProjectCategory, SeoSettings, PersonalInfo, 
+                          SocialLink, Skill, Experience, Education, Testimonial)
+        
+        # Get featured projects and all categories
+        featured_projects = Project.query.filter_by(is_featured=True).order_by(Project.created_at.desc()).limit(6).all()
+        all_projects = Project.query.order_by(Project.created_at.desc()).all()
+        project_categories = ProjectCategory.query.all()
+        
+        # If no featured projects, use the first 6 projects
+        if not featured_projects:
+            featured_projects = all_projects[:6]
+        
+        # Get CMS data
+        seo = SeoSettings.query.filter_by(page_name='home').first() or SeoSettings.query.first()
+        personal = PersonalInfo.query.first()
+        social_links = SocialLink.query.filter_by(is_active=True).order_by(SocialLink.sort_order).all()
+        skills = Skill.query.filter_by(is_featured=True).order_by(Skill.sort_order).all()
+        experience = Experience.query.order_by(Experience.start_date.desc()).limit(3).all()
+        education = Education.query.order_by(Education.start_date.desc()).limit(3).all()
+        testimonials = Testimonial.query.filter_by(is_featured=True).limit(6).all()
+        
+        # Pass configuration data to template
+        template_data = {
+            'subdomains': {k: v for k, v in SUBDOMAINS.items() if v.get('enabled', True)},
+            'theme_config': THEME_CONFIG,
+            'seo_config': SEO_CONFIG,
+            'contact_info': CONTACT_INFO,
+            'features': FEATURES,
+            'portfolio_projects': featured_projects,
+            'project_categories': project_categories,
+            # CMS data
+            'seo': seo,
+            'personal': personal,
+            'social_links': social_links,
+            'skills': skills,
+            'experience': experience,
+            'education': education,
+            'testimonials': testimonials
+        }
+        return render_template('index.html', **template_data, current_year=datetime.now().year)
+    except Exception as e:
+        print(f"Error loading portfolio data: {e}")
+        # Fallback to template without portfolio data
+        template_data = {
+            'subdomains': {k: v for k, v in SUBDOMAINS.items() if v.get('enabled', True)},
+            'theme_config': THEME_CONFIG,
+            'seo_config': SEO_CONFIG,
+            'contact_info': CONTACT_INFO,
+            'features': FEATURES,
+            'portfolio_projects': [],
+            'project_categories': []
+        }
+        return render_template('index.html', **template_data, current_year=datetime.now().year)
 
 @app.route('/newsletter/subscribe', methods=['POST'])
+@limiter.limit("5 per minute")  # Rate limit: 5 submissions per minute per IP
 def newsletter_subscribe():
-    """Handle newsletter subscription from the main site"""
+    """Handle newsletter subscription from the main site with bot protection"""
     try:
         from models import NewsletterSubscriber
         from email_service import email_service
         
+        # Get form data
         email = request.form.get('email', '').strip().lower()
         interests = request.form.get('interests', '').strip()
         
+        # Basic bot verification - check for honeypot field
+        honeypot = request.form.get('website', '')  # Honeypot field
+        if honeypot:
+            # Bot detected - pretend success but don't actually subscribe
+            return jsonify({'status': 'success', 'message': 'Thank you for subscribing!'})
+        
+        # Enhanced validation
         if not email:
             return jsonify({'status': 'error', 'message': 'Please provide a valid email address.'})
+        
+        # Email validation regex
+        email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+        if not re.match(email_pattern, email):
+            return jsonify({'status': 'error', 'message': 'Please provide a valid email address.'})
+        
+        # Check for suspicious patterns (very basic)
+        suspicious_patterns = [
+            r'test@test\.com',
+            r'admin@',
+            r'noreply@',
+            r'@mailinator\.',
+            r'@10minutemail\.',
+            r'@guerrillamail\.'
+        ]
+        
+        for pattern in suspicious_patterns:
+            if re.search(pattern, email, re.IGNORECASE):
+                return jsonify({'status': 'error', 'message': 'Please use a valid personal email address.'})
         
         # Check if already subscribed
         existing = NewsletterSubscriber.query.filter_by(email=email).first()
         if existing:
             if existing.is_active:
-                return jsonify({'status': 'info', 'message': 'You are already subscribed to our newsletter.'})
+                return jsonify({'status': 'info', 'message': 'You are already subscribed to my newsletter.'})
             else:
                 existing.is_active = True
                 existing.interests = interests or existing.interests
@@ -122,23 +206,43 @@ def newsletter_subscribe():
             )
             db.session.add(subscriber)
             db.session.commit()
-              # Send welcome email
+            
+            # Send welcome email
             try:
-                welcome_subject = "Welcome to Lusan's Newsletter!"
+                welcome_subject = "🌟 Welcome to Lusan's Newsletter!"
                 welcome_message = f"""
-Hello!
+Dear {email.split('@')[0].capitalize()},
 
-Thank you for subscribing to my newsletter. You'll now receive updates about:
-- New projects and open source contributions
-- Technical tutorials and insights
-- Development tips and best practices
-- Community events and opportunities
+Thanks a lot for signing up — I truly appreciate it!
 
-I'm excited to share my journey with you!
+This newsletter is my little corner of the web where I share what I’ve been working on, what I’m learning, and anything I think might be helpful or interesting to fellow developers like you.
 
-Best regards,
-Lusan Sapkota
-Full Stack Developer
+Here’s a quick peek at what you can expect:
+
+🔥 Behind-the-Scenes Project Updates
+Get a first look at my latest builds, experiments, and open-source work.
+
+🧠 Practical Tutorials & Dev Notes
+I’ll share what I’ve learned — patterns, tips, and real-world lessons that have helped me improve as a developer.
+
+💡 Workflow & Productivity Tips
+Occasionally, I’ll drop a few things that have made coding or managing projects smoother for me.
+
+🌱 A Growing Developer Community
+You’ll be part of a small but growing space where devs help each other grow — no noise, just value.
+
+🎁 Extra Stuff (When I Can)
+From snippets to articles, case studies, or templates — if I build something useful, you’ll get it here first.
+
+That’s it — nothing fancy, no pressure. Just useful, honest content for devs who love to build.
+
+If you ever want to say hi, ask something, or share what you’re working on, feel free to reply — I read every message.
+
+Talk soon,
+Lusan
+Just a developer, trying to build good things.
+
+https://lusansapkota.com.np
 """
                 
                 email_service.send_email(
@@ -153,6 +257,8 @@ Full Stack Developer
         
     except Exception as e:
         print(f"Newsletter subscription error: {e}")
+        if "rate limit exceeded" in str(e).lower():
+            return jsonify({'status': 'error', 'message': 'Too many requests. Please try again in a few minutes.'})
         return jsonify({'status': 'error', 'message': 'An error occurred while subscribing. Please try again.'})
 
 @app.route('/privacy')
@@ -236,6 +342,174 @@ def handle_exception(e):
     
     # For production, show generic 500 error
     return render_template('500.html', current_year=datetime.now().year), 500
+
+@app.route('/contact/submit', methods=['POST'])
+@limiter.limit("3 per minute")  # Rate limit: 3 contact form submissions per minute per IP
+def contact_submit():
+    """Handle contact form submission with auto-reply"""
+    try:
+        from models import ContactSubmission
+        from email_service import email_service
+        
+        # Get form data
+        name = request.form.get('name', '').strip()
+        email = request.form.get('email', '').strip().lower()
+        subject = request.form.get('subject', '').strip()
+        message = request.form.get('message', '').strip()
+        
+        # Bot verification - check for honeypot field
+        honeypot = request.form.get('botcheck', '')
+        if honeypot:
+            # Bot detected - pretend success but don't actually process
+            return jsonify({'status': 'success', 'message': 'Thank you for your message. I will get back to you soon!'})
+        
+        # Enhanced validation
+        if not name or len(name) < 2:
+            return jsonify({'status': 'error', 'message': 'Please provide a valid name.'})
+        
+        if not email:
+            return jsonify({'status': 'error', 'message': 'Please provide a valid email address.'})
+        
+        if not message or len(message) < 10:
+            return jsonify({'status': 'error', 'message': 'Please provide a message with at least 10 characters.'})
+        
+        # Email validation regex
+        email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+        if not re.match(email_pattern, email):
+            return jsonify({'status': 'error', 'message': 'Please provide a valid email address.'})
+        
+        # Check for suspicious patterns and spam
+        suspicious_patterns = [
+            r'viagra|cialis|pharmacy|casino|lottery|winner|congratulations',
+            r'crypto|bitcoin|investment|loan|mortgage',
+            r'click here|visit now|act now|limited time',
+            r'free money|make money|earn \$|guaranteed'
+        ]
+        
+        is_spam = False
+        combined_text = f"{name} {email} {subject} {message}".lower()
+        
+        for pattern in suspicious_patterns:
+            if re.search(pattern, combined_text, re.IGNORECASE):
+                is_spam = True
+                break
+        
+        # Get client info
+        ip_address = request.environ.get('HTTP_X_FORWARDED_FOR', request.remote_addr)
+        user_agent = request.headers.get('User-Agent', '')
+        
+        # Save to database
+        contact_submission = ContactSubmission(
+            name=name,
+            email=email,
+            subject=subject or 'Contact Form Submission',
+            message=message,
+            ip_address=ip_address,
+            user_agent=user_agent,
+            is_spam=is_spam
+        )
+        
+        db.session.add(contact_submission)
+        db.session.commit()
+        
+        # Send emails only if not spam
+        if not is_spam:
+            try:
+                # Send notification to admin
+                email_service.send_contact_notification(name, email, subject, message)
+                
+                # Send auto-reply to user
+                email_service.send_contact_auto_reply(name, email, subject)
+                
+                # Mark as replied
+                contact_submission.is_replied = True
+                contact_submission.replied_at = datetime.now()
+                db.session.commit()
+                
+            except Exception as e:
+                print(f"Failed to send contact emails: {e}")
+        
+        return jsonify({
+            'status': 'success', 
+            'message': 'Thank you for your message! I will get back to you within 24-48 hours.'
+        })
+        
+    except Exception as e:
+        print(f"Contact form submission error: {e}")
+        if "rate limit exceeded" in str(e).lower():
+            return jsonify({'status': 'error', 'message': 'Too many requests. Please try again in a few minutes.'})
+        return jsonify({'status': 'error', 'message': 'An error occurred while sending your message. Please try again.'})
+
+@app.route('/newsletter/unsubscribe')
+def newsletter_unsubscribe_page():
+    """Newsletter unsubscribe page"""
+    return render_template('unsubscribe.html', current_year=datetime.now().year)
+
+@app.route('/newsletter/unsubscribe/<token>')
+def newsletter_unsubscribe_token(token):
+    """Handle newsletter unsubscribe via token"""
+    try:
+        from models import NewsletterSubscriber
+        
+        # Decode the token (simple base64 for now, could use JWT for more security)
+        import base64
+        try:
+            email = base64.b64decode(token.encode()).decode()
+        except:
+            return render_template('unsubscribe.html', 
+                                 error="Invalid unsubscribe link", 
+                                 current_year=datetime.now().year)
+        
+        # Find and deactivate subscriber
+        subscriber = NewsletterSubscriber.query.filter_by(email=email).first()
+        if subscriber:
+            subscriber.is_active = False
+            db.session.commit()
+            return render_template('unsubscribe.html', 
+                                 success=f"You have been successfully unsubscribed from the newsletter.", 
+                                 current_year=datetime.now().year)
+        else:
+            return render_template('unsubscribe.html', 
+                                 error="Email not found in our subscription list", 
+                                 current_year=datetime.now().year)
+            
+    except Exception as e:
+        print(f"Unsubscribe error: {e}")
+        return render_template('unsubscribe.html', 
+                             error="An error occurred. Please try again.", 
+                             current_year=datetime.now().year)
+
+@app.route('/newsletter/unsubscribe/confirm', methods=['POST'])
+def newsletter_unsubscribe_confirm():
+    """Handle newsletter unsubscribe form submission"""
+    try:
+        from models import NewsletterSubscriber
+        
+        email = request.form.get('email', '').strip().lower()
+        
+        if not email:
+            return render_template('unsubscribe.html', 
+                                 error="Please provide a valid email address", 
+                                 current_year=datetime.now().year)
+        
+        # Find and deactivate subscriber
+        subscriber = NewsletterSubscriber.query.filter_by(email=email).first()
+        if subscriber:
+            subscriber.is_active = False
+            db.session.commit()
+            return render_template('unsubscribe.html', 
+                                 success=f"You have been successfully unsubscribed from the newsletter.", 
+                                 current_year=datetime.now().year)
+        else:
+            return render_template('unsubscribe.html', 
+                                 error="Email not found in our subscription list", 
+                                 current_year=datetime.now().year)
+            
+    except Exception as e:
+        print(f"Unsubscribe confirmation error: {e}")
+        return render_template('unsubscribe.html', 
+                             error="An error occurred. Please try again.", 
+                             current_year=datetime.now().year)
 
 commands.register_commands(app)
 

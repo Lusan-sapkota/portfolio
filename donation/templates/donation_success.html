@@ -1,0 +1,335 @@
+{% extends "base.html" %}
+
+{% block title %}Thank You for Your Donation! - {{ seo_settings.site_title if seo_settings else 'Donation Platform' }}{% endblock %}
+
+{% block meta_description %}Thank you for supporting our open source projects. Your contribution makes a real difference in advancing technology for everyone.{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('donation.static', filename='css/donation-style.css') }}">
+<style>
+    .success-section {
+        background: var(--gradient-hero);
+        color: white;
+        padding: 100px 0 60px;
+        text-align: center;
+    }
+    
+    .success-icon {
+        font-size: 4rem;
+        color: #4CAF50;
+        margin-bottom: 20px;
+    }
+    
+    .success-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+    
+    .success-subtitle {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        max-width: 600px;
+        margin: 0 auto 30px;
+    }
+    
+    .donation-summary {
+        background: var(--card-bg);
+        border-radius: 15px;
+        padding: 30px;
+        margin: 30px 0;
+        border: 1px solid var(--border-color);
+        box-shadow: var(--shadow);
+    }
+    
+    .donation-amount {
+        font-size: 3rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        margin-bottom: 10px;
+    }
+    
+    .project-info {
+        background: var(--light-gray);
+        border-radius: 10px;
+        padding: 20px;
+        margin: 20px 0;
+    }
+    
+    .next-steps {
+        background: var(--card-bg);
+        border-radius: 15px;
+        padding: 30px;
+        margin: 30px 0;
+        border: 1px solid var(--border-color);
+    }
+    
+    .step-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        padding: 15px;
+        border-radius: 8px;
+        background: var(--light-gray);
+    }
+    
+    .step-icon {
+        font-size: 1.5rem;
+        color: var(--primary-color);
+        margin-right: 15px;
+        width: 30px;
+        text-align: center;
+    }
+    
+    .btn-primary {
+        background: var(--gradient-primary);
+        border: none;
+        padding: 12px 30px;
+        border-radius: 25px;
+        color: white;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-block;
+        transition: var(--transition);
+        margin: 10px;
+    }
+    
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+        color: white;
+        text-decoration: none;
+    }
+    
+    .btn-outline {
+        background: transparent;
+        color: var(--primary-color);
+        border: 2px solid var(--primary-color);
+        padding: 12px 30px;
+        border-radius: 25px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-block;
+        transition: var(--transition);
+        margin: 10px;
+    }
+    
+    .btn-outline:hover {
+        background: var(--primary-color);
+        color: white;
+        transform: translateY(-2px);
+        text-decoration: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Success Section -->
+<section class="success-section">
+    <div class="container">
+        <div class="success-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <h1 class="success-title">Thank You for Your Donation!</h1>
+        <p class="success-subtitle">
+            Your generous contribution will help make amazing projects a reality. 
+            Together, we're building the future of technology!
+        </p>
+    </div>
+</section>
+
+<!-- Donation Summary -->
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="donation-summary text-center">
+                    <h2>Donation Summary</h2>
+                    <div class="donation-amount">${{ "%.2f"|format(donation.amount) }}</div>
+                    <p class="text-muted">Donation ID: #{{ donation.id }}</p>
+                    
+                    <div class="project-info">
+                        <h4>{{ donation.project.title }}</h4>
+                        <p>{{ donation.project.short_description or donation.project.description[:200] + '...' }}</p>
+                        
+                        {% if donation.project.github_url %}
+                        <a href="{{ donation.project.github_url }}" target="_blank" class="btn-outline">
+                            <i class="fab fa-github"></i> View Project
+                        </a>
+                        {% endif %}
+                    </div>
+                    
+                    {% if donation.message %}
+                    <div class="mt-4">
+                        <h5>Your Message:</h5>
+                        <blockquote class="blockquote">
+                            <p>"{{ donation.message }}"</p>
+                        </blockquote>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Next Steps -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="next-steps">
+                    <h3 class="text-center mb-4">What Happens Next?</h3>
+                    
+                    <div class="step-item">
+                        <div class="step-icon">
+                            <i class="fas fa-credit-card"></i>
+                        </div>
+                        <div>
+                            <strong>Processing:</strong> Your donation is being processed and will be confirmed shortly.
+                        </div>
+                    </div>
+                    
+                    <div class="step-item">
+                        <div class="step-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div>
+                            <strong>Confirmation:</strong> You'll receive an email confirmation once the payment is processed.
+                        </div>
+                    </div>
+                    
+                    <div class="step-item">
+                        <div class="step-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div>
+                            <strong>Progress Updates:</strong> Track the project's progress and see how your contribution helps.
+                        </div>
+                    </div>
+                    
+                    <div class="step-item">
+                        <div class="step-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <div>
+                            <strong>Recognition:</strong> Your support will be acknowledged (unless you chose to remain anonymous).
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Action Buttons -->
+<section class="py-5">
+    <div class="container text-center">
+        <h3 class="mb-4">Continue Supporting Innovation</h3>
+        <p class="mb-4">Explore more projects and ways to get involved in the open source community.</p>
+        
+        <a href="{{ url_for('donation.index') }}" class="btn-primary">
+            <i class="fas fa-heart"></i> View More Projects
+        </a>
+        <a href="{{ url_for('index') }}" class="btn-outline">
+            <i class="fas fa-home"></i> Back to Portfolio
+        </a>
+        {% if personal_info and personal_info.github_url %}
+        <a href="{{ personal_info.github_url }}" target="_blank" class="btn-outline">
+            <i class="fab fa-github"></i> Follow on GitHub
+        </a>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Newsletter Signup -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="text-center mb-4">
+                    <h3>Stay Updated</h3>
+                    <p>Get notified about new projects and progress updates</p>
+                </div>
+                
+                <form action="{{ url_for('donation.subscribe_newsletter') }}" method="POST" class="newsletter-form">
+                    <div class="form-group">
+                        <input type="email" name="email" class="form-control" placeholder="Your Email Address" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="interests" class="form-control" placeholder="Interests (e.g., Web Development, AI, Mobile Apps)">
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Subscribe to Newsletter</button>
+                    </div>
+                    <div id="newsletter-message" style="margin-top: 15px; display: none;"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Newsletter form handling
+    const newsletterForm = document.querySelector('.newsletter-form');
+    if (newsletterForm) {
+        newsletterForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const messageDiv = document.getElementById('newsletter-message');
+            const originalText = submitBtn.textContent;
+            
+            // Show loading state
+            submitBtn.textContent = 'Subscribing...';
+            submitBtn.disabled = true;
+            messageDiv.style.display = 'none';
+            
+            // Submit form
+            fetch(this.action, {
+                method: 'POST',
+                body: new FormData(this),
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                const alertType = data.status === 'error' ? 'danger' : 
+                                data.status === 'info' ? 'info' : 'success';
+                
+                messageDiv.className = `alert alert-${alertType}`;
+                messageDiv.textContent = data.message;
+                messageDiv.style.display = 'block';
+                
+                if (data.status === 'success') {
+                    this.reset();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                messageDiv.className = 'alert alert-danger';
+                messageDiv.textContent = 'An error occurred. Please try again.';
+                messageDiv.style.display = 'block';
+            })
+            .finally(() => {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+                
+                // Auto-hide message after 5 seconds
+                setTimeout(() => {
+                    messageDiv.style.opacity = '0';
+                    setTimeout(() => {
+                        messageDiv.style.display = 'none';
+                        messageDiv.style.opacity = '1';
+                    }, 300);
+                }, 5000);
+            });
+        });
+    }
+});
+</script>
+{% endblock %}

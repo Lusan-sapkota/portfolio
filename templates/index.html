@@ -8,14 +8,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     
     <!-- Primary Meta Tags -->
-    <title>Lusan Sapkota | Full Stack Software Developer from Nepal</title>
-    <meta name="title" content="Lusan Sapkota | Full Stack Software Developer from Nepal">
-    <meta name="description" content="Full Stack Software Developer specializing in Python, JavaScript, TypeScript, Django, Flask, React, and modern web technologies. Portfolio showcasing projects, skills, and professional experience with a focus on graph algorithms and data analysis.">
-    <meta name="author" content="Lusan Sapkota">
-    <meta name="keywords" content="Lusan Sapkota, Full Stack Developer, Software Developer, Python Developer, JavaScript Developer, Web Developer, Nepal Developer, AI ML Developer, React Developer, Django Developer, Portfolio, Software Engineer, Coding, Programming, Nepali Developer, Tech Professional">
+    <title>{{ seo.title if seo else 'Lusan Sapkota | Full Stack Software Developer from Nepal' }}</title>
+    <meta name="title" content="{{ seo.title if seo else 'Lusan Sapkota | Full Stack Software Developer from Nepal' }}">
+    <meta name="description" content="{{ seo.description if seo else 'Full Stack Software Developer specializing in Python, JavaScript, TypeScript, Django, Flask, React, and modern web technologies. Portfolio showcasing projects, skills, and professional experience with a focus on graph algorithms and data analysis.' }}">
+    <meta name="author" content="{{ personal.full_name if personal else 'Lusan Sapkota' }}">
+    <meta name="keywords" content="{{ seo.keywords if seo else 'Lusan Sapkota, Full Stack Developer, Software Developer, Python Developer, JavaScript Developer, Web Developer, Nepal Developer, AI ML Developer, React Developer, Django Developer, Portfolio, Software Engineer, Coding, Programming, Nepali Developer, Tech Professional' }}">
     
     <!-- Canonical URL -->
-    <link rel="canonical" href="https://www.lusansapkota.com.np/">
+    <link rel="canonical" href="{{ seo.canonical_url if seo and seo.canonical_url else 'https://www.lusansapkota.com.np/' }}">
     
     <!-- Language and Geography -->
     <meta name="language" content="English">
@@ -24,19 +24,19 @@
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://www.lusansapkota.com.np/">
-    <meta property="og:title" content="Lusan Sapkota | Full Stack Software Developer">
-    <meta property="og:description" content="Full Stack Software Developer specializing in Python, JavaScript, TypeScript, Django, Flask, React, and modern web technologies. View my portfolio of projects and professional experience.">
-    <meta property="og:image" content="https://www.lusansapkota.com.np/static/assets/images/profile.jpg">
+    <meta property="og:url" content="{{ seo.og_url if seo and seo.og_url else 'https://www.lusansapkota.com.np/' }}">
+    <meta property="og:title" content="{{ seo.og_title if seo and seo.og_title else seo.title if seo else 'Lusan Sapkota | Full Stack Software Developer' }}">
+    <meta property="og:description" content="{{ seo.og_description if seo and seo.og_description else seo.description if seo else 'Full Stack Software Developer specializing in Python, JavaScript, TypeScript, Django, Flask, React, and modern web technologies. View my portfolio of projects and professional experience.' }}">
+    <meta property="og:image" content="{{ seo.og_image if seo and seo.og_image else url_for('static', filename='assets/images/profile.jpg') }}">
     <meta property="og:site_name" content="Lusan Sapkota Portfolio">
     <meta property="og:locale" content="en_US">
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://www.lusansapkota.com.np/">
-    <meta property="twitter:title" content="Lusan Sapkota | Full Stack Developer">
-    <meta property="twitter:description" content="Full Stack Software Developer from Nepal specializing in Python, JavaScript, TypeScript, and modern web technologies. Check out my projects and skills.">
-    <meta property="twitter:image" content="https://www.lusansapkota.com.np/static/assets/images/profile.jpg">
+    <meta property="twitter:url" content="{{ seo.twitter_url if seo and seo.twitter_url else 'https://www.lusansapkota.com.np/' }}">
+    <meta property="twitter:title" content="{{ seo.twitter_title if seo and seo.twitter_title else seo.title if seo else 'Lusan Sapkota | Full Stack Developer' }}">
+    <meta property="twitter:description" content="{{ seo.twitter_description if seo and seo.twitter_description else seo.description if seo else 'Full Stack Software Developer from Nepal specializing in Python, JavaScript, TypeScript, and modern web technologies. Check out my projects and skills.' }}">
+    <meta property="twitter:image" content="{{ seo.twitter_image if seo and seo.twitter_image else url_for('static', filename='assets/images/profile.jpg') }}">
     <meta name="twitter:site" content="@LusanSapkota">
     <meta name="twitter:creator" content="@LusanSapkota">
     
@@ -49,14 +49,12 @@
     <meta name="msapplication-TileColor" content="#f39c12">
     <meta name="msapplication-config" content="{{ url_for('static', filename='assets/logo/browserconfig.xml') }}">
     
-    <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='assets/logo/apple-touch-icon.png') }}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='assets/logo/favicon-32x32.png') }}">
-    <link rel="icon" type="image/png" sizes="192x192" href="{{ url_for('static', filename='assets/logo/android-chrome-192x192.png') }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='assets/logo/favicon-16x16.png') }}">
-    <link rel="manifest" href="{{ url_for('static', filename='assets/logo/site.webmanifest') }}">
-    <link rel="mask-icon" href="{{ url_for('static', filename='assets/logo/safari-pinned-tab.svg') }}" color="#f39c12">
-    <link rel="shortcut icon" href="{{ url_for('static', filename='assets/logo/logo.png') }}">
+	<!-- Universal favicon -->
+	<link rel="icon" type="image/png" href="{{ url_for('static', filename='assets/logo/logo.png') }}" sizes="any">
+
+	<!-- For Apple devices -->
+	<link rel="apple-touch-icon" href="{{ url_for('static', filename='assets/logo/logo.png') }}">
+
 
     <!-- Performance Optimization -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -245,8 +243,6 @@
     
 	<!-- CDN CSS: Bootstrap & Font Awesome -->
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 	
 	<!-- Font Awesome for Icons -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
@@ -254,8 +250,8 @@
 	<!-- Local CSS -->
 	<link rel="preload" href="{{ url_for('static', filename='assets/css/style.css') }}" as="style">
 	<link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style.css') }}">
-	<link rel="stylesheet" href="{{ url_for('static', filename='assets/css/animate.css') }}">
-	<link rel="stylesheet" href="{{ url_for('static', filename='assets/css/responsive.css') }}">
+ 
+ 
     
     <!-- OpenGraph article data -->
     <meta property="article:author" content="Lusan Sapkota">
@@ -279,38 +275,49 @@
     <link rel="prefetch" href="{{ url_for('static', filename='assets/download/Lusan.pdf') }}">
     <link rel="prefetch" href="{{ url_for('static', filename='assets/images/portfolio/p1.png') }}">
 
-    <!-- Google Tag Manager -->
-	<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-	new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-	j=d.createElement(s);dl=l!='dataLayer'?'&l='+l:'';j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-	})(window,document,'script','dataLayer','GTM-XXXX');
-	
-	    (function() {
-        const currentTheme = localStorage.getItem('theme') || 
-            (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        document.documentElement.setAttribute('data-theme', currentTheme);
-        
-        // Ensure icons are reset on initial load
-        document.addEventListener('DOMContentLoaded', function() {
-            const moonIcons = document.querySelectorAll('.fa-moon');
-            const sunIcons = document.querySelectorAll('.fa-sun');
-            
-            moonIcons.forEach(icon => icon.classList.toggle('d-none', currentTheme === 'dark'));
-            sunIcons.forEach(icon => icon.classList.toggle('d-none', currentTheme === 'light'));
-        });
-    })();
+    <!-- Google Tag Manager and toggle -->
+	<script>
+	(function(w, d, s, l, i) {
+		// Google Tag Manager setup
+		w[l] = w[l] || [];
+		w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+		var f = d.getElementsByTagName(s)[0],
+			j = d.createElement(s),
+			dl = l !== 'dataLayer' ? '&l=' + l : '';
+		j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+		f.parentNode.insertBefore(j, f);
+	})(window, document, 'script', 'dataLayer', 'GTM-XXXX');
 
-    // Handle system theme changes
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
-        if (!localStorage.getItem('theme')) {
-            const newTheme = e.matches ? 'dark' : 'light';
-            document.documentElement.setAttribute('data-theme', newTheme);
-            updateThemeIcons(newTheme);
-        }
-    });
+	// Theme setup and icon toggle
+	(function() {
+		const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+		const currentTheme = localStorage.getItem('theme') || (prefersDark.matches ? 'dark' : 'light');
+		document.documentElement.setAttribute('data-theme', currentTheme);
+
+		function updateThemeIcons(theme) {
+			const moonIcons = document.querySelectorAll('.fa-moon');
+			const sunIcons = document.querySelectorAll('.fa-sun');
+			moonIcons.forEach(icon => icon.classList.toggle('d-none', theme === 'dark'));
+			sunIcons.forEach(icon => icon.classList.toggle('d-none', theme === 'light'));
+		}
+
+		document.addEventListener('DOMContentLoaded', function() {
+			updateThemeIcons(currentTheme);
+		});
+
+		// Watch for system theme changes
+		prefersDark.addEventListener('change', function(e) {
+			if (!localStorage.getItem('theme')) {
+				const newTheme = e.matches ? 'dark' : 'light';
+				document.documentElement.setAttribute('data-theme', newTheme);
+				updateThemeIcons(newTheme);
+			}
+		});
+	})();
 	</script>
 
-    <!-- End Google Tag Manager -->
+
+    <!-- End Google Tag Manager and toggle -->
 </head>
 
 	
@@ -656,450 +663,538 @@
 		<!--education end -->
 
 		<!--skills start -->
-		<section id="skills" class="skills-redesigned">
-			<div class="container">
-				<!-- Section Header -->
-				<div class="skills-header">
-					<div class="section-heading text-center">
-						<h2>Technical Skills</h2>
-						<p class="section-subtitle">Expertise across the full development stack</p>
+    <section id="skills" class="skills-redesigned">
+        <div class="container">
+            <!-- Section Header -->
+            <div class="skills-header">
+                <div class="section-heading text-center">
+                    <h2>Technical Skills</h2>
+                    <p class="section-subtitle">Expertise across the full development stack</p>
+                </div>
+            </div>
+
+            <!-- Skills Content -->
+            <div class="skills-redesigned-content">
+				<div class="skills-categories-grid">
+					<!-- Programming Languages -->
+					<div class="skill-category-redesigned">
+						<div class="category-header-redesigned">
+							<div class="category-icon-redesigned">
+								<i class="fas fa-code"></i>
+							</div>
+							<h3>Programming Languages</h3>
+						</div>
+						<div class="skills-list-redesigned">
+							<div class="skill-item-redesigned expert-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Python: High-level general-purpose programming language with clean syntax and extensive libraries">
+									Python
+								</div>
+								<div class="skill-level-redesigned">Expert</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="90"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned advanced-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="JavaScript: High-level scripting language for web development with dynamic typing and first-class functions">
+									JavaScript
+								</div>
+								<div class="skill-level-redesigned">Advanced</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="85"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned advanced-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="TypeScript: Strongly typed programming language that builds on JavaScript with type safety">
+									TypeScript
+								</div>
+								<div class="skill-level-redesigned">Advanced</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="80"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned expert-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="HTML5/CSS3: Markup and styling languages for creating web content and responsive design">
+									HTML5/CSS3
+								</div>
+								<div class="skill-level-redesigned">Expert</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="95"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned basic-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Go: Statically typed, compiled language designed for simplicity, efficiency, and concurrency">
+									Go
+								</div>
+								<div class="skill-level-redesigned">Basic</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="70"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- Frontend Technologies -->
+					<div class="skill-category-redesigned">
+						<div class="category-header-redesigned">
+							<div class="category-icon-redesigned">
+								<i class="fas fa-paint-brush"></i>
+							</div>
+							<h3>Frontend Development</h3>
+						</div>
+						<div class="skills-list-redesigned">
+							<div class="skill-item-redesigned advanced-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="React: JavaScript library for building user interfaces with component-based architecture">
+									React
+								</div>
+								<div class="skill-level-redesigned">Advanced</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="80"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned advanced-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="React Native: Framework for building native mobile applications using React architecture">
+									React Native
+								</div>
+								<div class="skill-level-redesigned">Advanced</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="75"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned intermediate-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Ionic: Framework for building cross-platform mobile applications with web technologies">
+									Ionic
+								</div>
+								<div class="skill-level-redesigned">Intermediate</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="70"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned expert-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Bootstrap/Tailwind: CSS frameworks for responsive, mobile-first design with pre-built components">
+									Bootstrap/Tailwind
+								</div>
+								<div class="skill-level-redesigned">Expert</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="90"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned intermediate-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Vue.js: Progressive JavaScript framework for building user interfaces with reactive data binding">
+									Vue.js
+								</div>
+								<div class="skill-level-redesigned">Intermediate</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="65"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- Backend Technologies -->
+					<div class="skill-category-redesigned">
+						<div class="category-header-redesigned">
+							<div class="category-icon-redesigned">
+								<i class="fas fa-server"></i>
+							</div>
+							<h3>Backend Development</h3>
+						</div>
+						<div class="skills-list-redesigned">
+							<div class="skill-item-redesigned expert-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Flask: Lightweight micro-framework for building web applications in Python with minimal boilerplate">
+									Flask
+								</div>
+								<div class="skill-level-redesigned">Expert</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="90"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned advanced-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Django: High-level Python web framework with batteries-included architecture and ORM">
+									Django
+								</div>
+								<div class="skill-level-redesigned">Advanced</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="85"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned intermediate-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="FastAPI: Modern, high-performance Python web framework with automatic API documentation">
+									FastAPI
+								</div>
+								<div class="skill-level-redesigned">Intermediate</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="75"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned intermediate-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Node.js: JavaScript runtime for server-side programming with event-driven architecture">
+									Node.js
+								</div>
+								<div class="skill-level-redesigned">Intermediate</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="75"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned basic-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Gin: Lightweight web framework for Go with performance and minimalist design">
+									Gin
+								</div>
+								<div class="skill-level-redesigned">Basic</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="75"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- Database & DevOps -->
+					<div class="skill-category-redesigned">
+						<div class="category-header-redesigned">
+							<div class="category-icon-redesigned">
+								<i class="fas fa-database"></i>
+							</div>
+							<h3>Database & DevOps</h3>
+						</div>
+						<div class="skills-list-redesigned">
+							<div class="skill-item-redesigned advanced-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="MySQL: Relational database management system for structured data storage and retrieval">
+									MySQL
+								</div>
+								<div class="skill-level-redesigned">Advanced</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="85"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned intermediate-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="PostgreSQL: Advanced object-relational database with extensive features and extensibility">
+									PostgreSQL
+								</div>
+								<div class="skill-level-redesigned">Intermediate</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="70"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned intermediate-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Docker: Platform for containerization to simplify application deployment and management">
+									Docker
+								</div>
+								<div class="skill-level-redesigned">Intermediate</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="80"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned intermediate-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Azure: Microsoft's cloud computing platform for building, deploying, and managing applications">
+									Azure
+								</div>
+								<div class="skill-level-redesigned">Intermediate</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="85"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned intermediate-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="AWS: Amazon's comprehensive cloud computing platform with numerous services and tools">
+									AWS
+								</div>
+								<div class="skill-level-redesigned">Intermediate</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="75"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned intermediate-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Jenkins: Open-source automation server for continuous integration and continuous delivery">
+									Jenkins
+								</div>
+								<div class="skill-level-redesigned">Intermediate</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="75"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- AI/ML & Data Science -->
+					<div class="skill-category-redesigned">
+						<div class="category-header-redesigned">
+							<div class="category-icon-redesigned">
+								<i class="fas fa-brain"></i>
+							</div>
+							<h3>AI/ML & Data Science</h3>
+						</div>
+						<div class="skills-list-redesigned">
+							<div class="skill-item-redesigned advanced-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="TensorFlow: Open-source library for machine learning and neural network modeling">
+									TensorFlow
+								</div>
+								<div class="skill-level-redesigned">Advanced</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="75"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned expert-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="NumPy & Pandas: Essential libraries for numerical computing and data manipulation in Python">
+									NumPy & Pandas
+								</div>
+								<div class="skill-level-redesigned">Expert</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="85"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned advanced-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Scikit-learn: Machine learning library with comprehensive algorithms for classification and regression">
+									Scikit-learn
+								</div>
+								<div class="skill-level-redesigned">Advanced</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="80"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned intermediate-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="OpenCV: Computer vision library for image and video processing applications">
+									OpenCV
+								</div>
+								<div class="skill-level-redesigned">Intermediate</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="70"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned intermediate-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="XGBoost: Optimized gradient boosting library for high-performance machine learning">
+									XGBoost
+								</div>
+								<div class="skill-level-redesigned">Intermediate</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="70"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- Tools & Operating Systems -->
+					<div class="skill-category-redesigned">
+						<div class="category-header-redesigned">
+							<div class="category-icon-redesigned">
+								<i class="fas fa-tools"></i>
+							</div>
+							<h3>Tools & OS</h3>
+						</div>
+						<div class="skills-list-redesigned">
+							<div class="skill-item-redesigned advanced-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Linux: Family of open-source Unix-like operating systems with kernel-based architecture">
+									Linux
+								</div>
+								<div class="skill-level-redesigned">Advanced</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="90"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned advanced-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="VS Code: Lightweight but powerful source code editor with extensive extension ecosystem">
+									VS Code
+								</div>
+								<div class="skill-level-redesigned">Advanced</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="88"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned advanced-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Postman: API development environment for testing and documenting web services">
+									Postman
+								</div>
+								<div class="skill-level-redesigned">Advanced</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="82"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned intermediate-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Figma: Collaborative interface design tool for creating web and mobile UI/UX">
+									Figma
+								</div>
+								<div class="skill-level-redesigned">Intermediate</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="65"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned advanced-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Jetbrains: Suite of integrated development environments for various programming languages">
+									Jetbrains
+								</div>
+								<div class="skill-level-redesigned">Advanced</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="85"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned advanced-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Git/Github: Distributed version control system for tracking code changes and collaboration">
+									Git/Github
+								</div>
+								<div class="skill-level-redesigned">Advanced</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="85"></div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
-
-				<!-- Skills Content -->
-				<div class="skills-redesigned-content">
+                
+                <!-- Familiar Tools & Concepts -->
+				<div class="familiar-tools-redesigned">
+					<div class="tools-header-redesigned">
+						<h4>Familiar Tools & Concepts</h4>
+						<p>Additional technologies and methodologies I work with </p>
+					</div>
 					
-					<!-- Skills Categories -->
-					<div class="skills-categories-grid">
+					<div class="tools-grid-redesigned">
 						
-						<!-- Programming Languages -->
-						<div class="skill-category-redesigned">
-							<div class="category-header-redesigned">
-								<div class="category-icon-redesigned">
-									<i class="fas fa-code"></i>
-								</div>
-								<h3>Programming Languages</h3>
+						<!-- Development Tools -->
+						<div class="tools-category-redesigned">
+							<div class="tools-category-header-redesigned">
+								<i class="fas fa-wrench"></i>
+								<h5>Development Tools</h5>
 							</div>
-							<div class="skills-list-redesigned">
-								<div class="skill-item-redesigned expert-redesigned">
-									<div class="skill-name-redesigned">Python</div>
-									<div class="skill-level-redesigned">Expert</div>
-									<div class="skill-bar-redesigned">
-										<div class="skill-progress-redesigned" data-progress="90"></div>
-									</div>
-								</div>
-								<div class="skill-item-redesigned advanced-redesigned">
-									<div class="skill-name-redesigned">JavaScript</div>
-									<div class="skill-level-redesigned">Advanced</div>
-									<div class="skill-bar-redesigned">
-										<div class="skill-progress-redesigned" data-progress="85"></div>
-									</div>
-								</div>
-								<div class="skill-item-redesigned advanced-redesigned">
-									<div class="skill-name-redesigned">TypeScript</div>
-									<div class="skill-level-redesigned">Advanced</div>
-									<div class="skill-bar-redesigned">
-										<div class="skill-progress-redesigned" data-progress="80"></div>
-									</div>
-								</div>
-								<div class="skill-item-redesigned expert-redesigned">
-									<div class="skill-name-redesigned">HTML5/CSS3</div>
-									<div class="skill-level-redesigned">Expert</div>
-									<div class="skill-bar-redesigned">
-										<div class="skill-progress-redesigned" data-progress="95"></div>
-									</div>
-								</div>
-								<div class="skill-item-redesigned intermediate-redesigned">
-									<div class="skill-name-redesigned">Java</div>
-									<div class="skill-level-redesigned">Intermediate</div>
-									<div class="skill-bar-redesigned">
-										<div class="skill-progress-redesigned" data-progress="70"></div>
-									</div>
-								</div>
+							<div class="tools-list-redesigned">
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="My primary coding environment with powerful extensions that boost productivity">Visual Studio Code</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Professional-grade IDEs with intelligent coding assistance for multiple languages">Jetbrains</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Lightning-fast text editor perfect for quick edits and scripting">Sublime Text</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Interactive data science environment for visualization and analysis">Jupyter Notebook</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Command-line text editor that's surprisingly powerful for server-side editing">Nano</span>
 							</div>
 						</div>
 
-						<!-- Frontend Technologies -->
-						<div class="skill-category-redesigned">
-							<div class="category-header-redesigned">
-								<div class="category-icon-redesigned">
-									<i class="fas fa-paint-brush"></i>
-								</div>
-								<h3>Frontend Development</h3>
+						<!-- Version Control -->
+						<div class="tools-category-redesigned">
+							<div class="tools-category-header-redesigned">
+								<i class="fab fa-git-alt"></i>
+								<h5>Version Control</h5>
 							</div>
-							<div class="skills-list-redesigned">
-								<div class="skill-item-redesigned advanced-redesigned">
-									<div class="skill-name-redesigned">React</div>
-									<div class="skill-level-redesigned">Advanced</div>
-									<div class="skill-bar-redesigned">
-										<div class="skill-progress-redesigned" data-progress="80"></div>
-									</div>
-								</div>
-								<div class="skill-item-redesigned advanced-redesigned">
-									<div class="skill-name-redesigned">React Native</div>
-									<div class="skill-level-redesigned">Advanced</div>
-									<div class="skill-bar-redesigned">
-										<div class="skill-progress-redesigned" data-progress="75"></div>
-									</div>
-								</div>
-								<div class="skill-item-redesigned intermediate-redesigned">
-									<div class="skill-name-redesigned">Ionic</div>
-									<div class="skill-level-redesigned">Intermediate</div>
-									<div class="skill-bar-redesigned">
-										<div class="skill-progress-redesigned" data-progress="70"></div>
-									</div>
-								</div>
-								<div class="skill-item-redesigned expert-redesigned">
-									<div class="skill-name-redesigned">Bootstrap/Tailwind</div>
-									<div class="skill-level-redesigned">Expert</div>
-									<div class="skill-bar-redesigned">
-										<div class="skill-progress-redesigned" data-progress="90"></div>
-									</div>
-								</div>
-								<div class="skill-item-redesigned intermediate-redesigned">
-									<div class="skill-name-redesigned">Vue.js</div>
-									<div class="skill-level-redesigned">Intermediate</div>
-									<div class="skill-bar-redesigned">
-										<div class="skill-progress-redesigned" data-progress="65"></div>
-									</div>
-								</div>
+							<div class="tools-list-redesigned">
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Track code changes with branching, merging, and history management">Git</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Collaborative development platform for hosting repositories and managing workflows">GitHub</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Complete DevOps platform with CI/CD pipelines and integrated project management">GitLab</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Structured branching strategy for feature development, releases, and hotfixes">Git Flow</span>
 							</div>
 						</div>
 
-						<!-- Backend Technologies -->
-						<div class="skill-category-redesigned">
-							<div class="category-header-redesigned">
-								<div class="category-icon-redesigned">
-									<i class="fas fa-server"></i>
-								</div>
-								<h3>Backend Development</h3>
+						<!-- Testing & Debugging -->
+						<div class="tools-category-redesigned">
+							<div class="tools-category-header-redesigned">
+								<i class="fas fa-bug"></i>
+								<h5>Testing & Debugging</h5>
 							</div>
-							<div class="skills-list-redesigned">
-								<div class="skill-item-redesigned expert-redesigned">
-									<div class="skill-name-redesigned">Flask</div>
-									<div class="skill-level-redesigned">Expert</div>
-									<div class="skill-bar-redesigned">
-										<div class="skill-progress-redesigned" data-progress="90"></div>
-									</div>
-								</div>
-								<div class="skill-item-redesigned advanced-redesigned">
-									<div class="skill-name-redesigned">Django</div>
-									<div class="skill-level-redesigned">Advanced</div>
-									<div class="skill-bar-redesigned">
-										<div class="skill-progress-redesigned" data-progress="85"></div>
-									</div>
-								</div>
-								<div class="skill-item-redesigned intermediate-redesigned">
-									<div class="skill-name-redesigned">FastAPI</div>
-									<div class="skill-level-redesigned">Intermediate</div>
-									<div class="skill-bar-redesigned">
-										<div class="skill-progress-redesigned" data-progress="75"></div>
-									</div>
-								</div>
-								<div class="skill-item-redesigned intermediate-redesigned">
-									<div class="skill-name-redesigned">Node.js</div>
-									<div class="skill-level-redesigned">Intermediate</div>
-									<div class="skill-bar-redesigned">
-										<div class="skill-progress-redesigned" data-progress="75"></div>
-									</div>
-								</div>
-								<div class="skill-item-redesigned intermediate-redesigned">
-									<div class="skill-name-redesigned">Express.js</div>
-									<div class="skill-level-redesigned">Intermediate</div>
-									<div class="skill-bar-redesigned">
-										<div class="skill-progress-redesigned" data-progress="75"></div>
-									</div>
-								</div>
+							<div class="tools-list-redesigned">
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Isolate and verify individual code components for reliable functionality">Unit Testing</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Python-focused testing framework with simple syntax and powerful assertions">Pytest</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Zero-config JavaScript testing with snapshot capabilities and mocking">Jest</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="API testing platform with request building, automated tests, and documentation">Postman</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Cloud-based cross-browser testing across 3000+ environments">LambdaTest</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Built-in browser toolset for inspecting, debugging, and profiling web apps">Chrome DevTools</span>
 							</div>
 						</div>
 
-						<!-- Database & DevOps -->
-						<div class="skill-category-redesigned">
-							<div class="category-header-redesigned">
-								<div class="category-icon-redesigned">
-									<i class="fas fa-database"></i>
-								</div>
-								<h3>Database & DevOps</h3>
+						<!-- Package Managers -->
+						<div class="tools-category-redesigned">
+							<div class="tools-category-header-redesigned">
+								<i class="fas fa-cube"></i>
+								<h5>Package Managers</h5>
 							</div>
-							<div class="skills-list-redesigned">
-								<div class="skill-item-redesigned advanced-redesigned">
-									<div class="skill-name-redesigned">MySQL</div>
-									<div class="skill-level-redesigned">Advanced</div>
-									<div class="skill-bar-redesigned">
-										<div class="skill-progress-redesigned" data-progress="85"></div>
-									</div>
-								</div>
-								<div class="skill-item-redesigned intermediate-redesigned">
-									<div class="skill-name-redesigned">PostgreSQL</div>
-									<div class="skill-level-redesigned">Intermediate</div>
-									<div class="skill-bar-redesigned">
-										<div class="skill-progress-redesigned" data-progress="70"></div>
-									</div>
-								</div>
-								<div class="skill-item-redesigned intermediate-redesigned">
-									<div class="skill-name-redesigned">Docker</div>
-									<div class="skill-level-redesigned">Intermediate</div>
-									<div class="skill-bar-redesigned">
-										<div class="skill-progress-redesigned" data-progress="80"></div>
-									</div>
-								</div>
-								<div class="skill-item-redesigned advanced-redesigned">
-									<div class="skill-name-redesigned">Git</div>
-									<div class="skill-level-redesigned">Advanced</div>
-									<div class="skill-bar-redesigned">
-										<div class="skill-progress-redesigned" data-progress="85"></div>
-									</div>
-								</div>
-								<div class="skill-item-redesigned intermediate-redesigned">
-									<div class="skill-name-redesigned">AWS</div>
-									<div class="skill-level-redesigned">Intermediate</div>
-									<div class="skill-bar-redesigned">
-										<div class="skill-progress-redesigned" data-progress="75"></div>
-									</div>
-								</div>
+							<div class="tools-list-redesigned">
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="World's largest software registry with 1.3M+ JavaScript packages">npm</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Python's preferred package installer with access to 350k+ libraries">pip</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Fast, reliable, and secure dependency management for JavaScript">yarn</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Cross-platform environment manager for data science and ML projects">conda</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Python dev workflow tool combining package and virtual environment management">pipenv</span>
 							</div>
 						</div>
 
-						<!-- AI/ML & Data Science -->
-						<div class="skill-category-redesigned">
-							<div class="category-header-redesigned">
-								<div class="category-icon-redesigned">
-									<i class="fas fa-brain"></i>
-								</div>
-								<h3>AI/ML & Data Science</h3>
+						<!-- Design & UI/UX -->
+						<div class="tools-category-redesigned">
+							<div class="tools-category-header-redesigned">
+								<i class="fas fa-palette"></i>
+								<h5>Design & UI/UX</h5>
 							</div>
-							<div class="skills-list-redesigned">
-								<div class="skill-item-redesigned advanced-redesigned">
-									<div class="skill-name-redesigned">TensorFlow</div>
-									<div class="skill-level-redesigned">Advanced</div>
-									<div class="skill-bar-redesigned">
-										<div class="skill-progress-redesigned" data-progress="75"></div>
-									</div>
-								</div>
-								<div class="skill-item-redesigned expert-redesigned">
-									<div class="skill-name-redesigned">NumPy & Pandas</div>
-									<div class="skill-level-redesigned">Expert</div>
-									<div class="skill-bar-redesigned">
-										<div class="skill-progress-redesigned" data-progress="85"></div>
-									</div>
-								</div>
-								<div class="skill-item-redesigned advanced-redesigned">
-									<div class="skill-name-redesigned">Scikit-learn</div>
-									<div class="skill-level-redesigned">Advanced</div>
-									<div class="skill-bar-redesigned">
-										<div class="skill-progress-redesigned" data-progress="80"></div>
-									</div>
-								</div>
-								<div class="skill-item-redesigned intermediate-redesigned">
-									<div class="skill-name-redesigned">OpenCV</div>
-									<div class="skill-level-redesigned">Intermediate</div>
-									<div class="skill-bar-redesigned">
-										<div class="skill-progress-redesigned" data-progress="70"></div>
-									</div>
-								</div>
-								<div class="skill-item-redesigned intermediate-redesigned">
-									<div class="skill-name-redesigned">XGBoost</div>
-									<div class="skill-level-redesigned">Intermediate</div>
-									<div class="skill-bar-redesigned">
-										<div class="skill-progress-redesigned" data-progress="70"></div>
-									</div>
-								</div>
+							<div class="tools-list-redesigned">
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Collaborative design platform for prototyping, wireframing and design systems">Figma</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Quick design tool for creating marketing materials and social media assets">Canva</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Google's unified design system for consistent, intuitive experiences">Material Design</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Mobile-first CSS framework with pre-built components and responsive layouts">Bootstrap</span>
 							</div>
 						</div>
 
-						<!-- Tools & Operating Systems -->
-						<div class="skill-category-redesigned">
-							<div class="category-header-redesigned">
-								<div class="category-icon-redesigned">
-									<i class="fas fa-tools"></i>
-								</div>
-								<h3>Tools & OS</h3>
+						<!-- Operating Systems -->
+						<div class="tools-category-redesigned">
+							<div class="tools-category-header-redesigned">
+								<i class="fas fa-desktop"></i>
+								<h5>Operating Systems</h5>
 							</div>
-							<div class="skills-list-redesigned">
-								<div class="skill-item-redesigned advanced-redesigned">
-									<div class="skill-name-redesigned">Linux</div>
-									<div class="skill-level-redesigned">Advanced</div>
-									<div class="skill-bar-redesigned">
-										<div class="skill-progress-redesigned" data-progress="90"></div>
-									</div>
-								</div>
-								<div class="skill-item-redesigned advanced-redesigned">
-									<div class="skill-name-redesigned">VS Code</div>
-									<div class="skill-level-redesigned">Advanced</div>
-									<div class="skill-bar-redesigned">
-										<div class="skill-progress-redesigned" data-progress="88"></div>
-									</div>
-								</div>
-								<div class="skill-item-redesigned advanced-redesigned">
-									<div class="skill-name-redesigned">Postman</div>
-									<div class="skill-level-redesigned">Advanced</div>
-									<div class="skill-bar-redesigned">
-										<div class="skill-progress-redesigned" data-progress="82"></div>
-									</div>
-								</div>
-								<div class="skill-item-redesigned intermediate-redesigned">
-									<div class="skill-name-redesigned">Figma</div>
-									<div class="skill-level-redesigned">Intermediate</div>
-									<div class="skill-bar-redesigned">
-										<div class="skill-progress-redesigned" data-progress="65"></div>
-									</div>
-								</div>
-								<div class="skill-item-redesigned advanced-redesigned">
-									<div class="skill-name-redesigned">CLI</div>
-									<div class="skill-level-redesigned">Advanced</div>
-									<div class="skill-bar-redesigned">
-										<div class="skill-progress-redesigned" data-progress="85"></div>
-									</div>
-								</div>
+							<div class="tools-list-redesigned">
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Developer-friendly Linux distro with vast package repository and strong community">Ubuntu</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Mainstream OS with broad application support and enterprise integration">Windows</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Unix-based system with elegant UI and powerful development capabilities">macOS</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Rock-solid Linux foundation known for stability and security">Debian</span>
 							</div>
 						</div>
+
+						<!-- Cloud Platforms -->
+						<div class="tools-category-redesigned">
+							<div class="tools-category-header-redesigned">
+								<i class="fas fa-cloud"></i>
+								<h5>Cloud Platforms</h5>
+							</div>
+							<div class="tools-list-redesigned">
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="AI-focused cloud platform with powerful data analytics and machine learning tools">Google Cloud</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Enterprise-grade infrastructure with autonomous database capabilities">Oracle</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Developer-friendly PaaS for quick deployments with simplified workflow">Heroku</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Developer-focused cloud platform with straightforward pricing and simplicity">DigitalOcean</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Specialized platform for frontend deployment with built-in CI/CD and previews">Vercel</span>
+							</div>
+						</div>
+
+						<!-- Development Concepts -->
+						<div class="tools-category-redesigned">
+							<div class="tools-category-header-redesigned">
+								<i class="fas fa-lightbulb"></i>
+								<h5>Development Concepts</h5>
+							</div>
+							<div class="tools-list-redesigned">
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Secure token-based authentication for stateless API authorization">JWT</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Industry-standard protocol for secure third-party authentication">OAuth 2.0</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Drop-in authentication solution with multi-provider support">Firebase Auth</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Self-hosted alternative to Firebase with auth, storage, and database services">Appwrite</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Powerful email API for transactional messages and campaigns">Mailgun</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Cloud communications platform for SMS, voice and video integration">Twilio</span>
+							</div>
+						</div>
+
+						<!-- Workflow & Orchestration -->
+						<div class="tools-category-redesigned">
+							<div class="tools-category-header-redesigned">
+								<i class="fas fa-project-diagram"></i>
+								<h5>Workflow & Orchestration</h5>
+							</div>
+							<div class="tools-list-redesigned">
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Container orchestration platform for automated deployment and scaling">Kubernetes</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Agile project management tool with customizable workflows and tracking">Jira</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="All-in-one workspace for notes, wikis, projects, and team collaboration">Notion</span>
+							</div>
+						</div>
+
 
 					</div>
-					<!-- Familiar Tools & Concepts -->
-					<div class="familiar-tools-redesigned">
-						<div class="tools-header-redesigned">
-							<h4>Familiar Tools & Concepts</h4>
-							<p>Additional technologies and methodologies I work with regularly</p>
-						</div>
-						
-						<div class="tools-grid-redesigned">
-							
-							<!-- Development Tools -->
-							<div class="tools-category-redesigned">
-								<div class="tools-category-header-redesigned">
-									<i class="fas fa-wrench"></i>
-									<h5>Development Tools</h5>
-								</div>
-								<div class="tools-list-redesigned">
-									<span class="tool-tag-redesigned">Visual Studio Code</span>
-									<span class="tool-tag-redesigned">PyCharm</span>
-									<span class="tool-tag-redesigned">Sublime Text</span>
-									<span class="tool-tag-redesigned">Jupyter Notebook</span>
-									<span class="tool-tag-redesigned">Vim</span>
-									<span class="tool-tag-redesigned">Nano</span>
-								</div>
-							</div>
 
-							<!-- Version Control -->
-							<div class="tools-category-redesigned">
-								<div class="tools-category-header-redesigned">
-									<i class="fab fa-git-alt"></i>
-									<h5>Version Control</h5>
-								</div>
-								<div class="tools-list-redesigned">
-									<span class="tool-tag-redesigned">Git</span>
-									<span class="tool-tag-redesigned">GitHub</span>
-									<span class="tool-tag-redesigned">GitLab</span>
-									<span class="tool-tag-redesigned">Bitbucket</span>
-									<span class="tool-tag-redesigned">Git Flow</span>
-								</div>
-							</div>
-
-							<!-- Testing & Debugging -->
-							<div class="tools-category-redesigned">
-								<div class="tools-category-header-redesigned">
-									<i class="fas fa-bug"></i>
-									<h5>Testing & Debugging</h5>
-								</div>
-								<div class="tools-list-redesigned">
-									<span class="tool-tag-redesigned">Unit Testing</span>
-									<span class="tool-tag-redesigned">Pytest</span>
-									<span class="tool-tag-redesigned">Jest</span>
-									<span class="tool-tag-redesigned">Postman</span>
-									<span class="tool-tag-redesigned">Chrome DevTools</span>
-								</div>
-							</div>
-
-							<!-- Package Managers -->
-							<div class="tools-category-redesigned">
-								<div class="tools-category-header-redesigned">
-									<i class="fas fa-cube"></i>
-									<h5>Package Managers</h5>
-								</div>
-								<div class="tools-list-redesigned">
-									<span class="tool-tag-redesigned">npm</span>
-									<span class="tool-tag-redesigned">pip</span>
-									<span class="tool-tag-redesigned">yarn</span>
-									<span class="tool-tag-redesigned">conda</span>
-									<span class="tool-tag-redesigned">pipenv</span>
-								</div>
-							</div>
-
-							<!-- Design & UI/UX -->
-							<div class="tools-category-redesigned">
-								<div class="tools-category-header-redesigned">
-									<i class="fas fa-palette"></i>
-									<h5>Design & UI/UX</h5>
-								</div>
-								<div class="tools-list-redesigned">
-									<span class="tool-tag-redesigned">Figma</span>
-									<span class="tool-tag-redesigned">Adobe XD</span>
-									<span class="tool-tag-redesigned">Canva</span>
-									<span class="tool-tag-redesigned">Material Design</span>
-									<span class="tool-tag-redesigned">Bootstrap</span>
-								</div>
-							</div>
-
-							<!-- Operating Systems -->
-							<div class="tools-category-redesigned">
-								<div class="tools-category-header-redesigned">
-									<i class="fas fa-desktop"></i>
-									<h5>Operating Systems</h5>
-								</div>
-								<div class="tools-list-redesigned">
-									<span class="tool-tag-redesigned">Ubuntu</span>
-									<span class="tool-tag-redesigned">CentOS</span>
-									<span class="tool-tag-redesigned">Windows</span>
-									<span class="tool-tag-redesigned">macOS</span>
-									<span class="tool-tag-redesigned">Debian</span>
-								</div>
-							</div>
-
-							<!-- Cloud Platforms -->
-							<div class="tools-category-redesigned">
-								<div class="tools-category-header-redesigned">
-									<i class="fas fa-cloud"></i>
-									<h5>Cloud Platforms</h5>
-								</div>
-								<div class="tools-list-redesigned">
-									<span class="tool-tag-redesigned">AWS</span>
-									<span class="tool-tag-redesigned">Google Cloud</span>
-									<span class="tool-tag-redesigned">Heroku</span>
-									<span class="tool-tag-redesigned">DigitalOcean</span>
-									<span class="tool-tag-redesigned">Vercel</span>
-								</div>
-							</div>
-
-							<!-- Development Concepts -->
-							<div class="tools-category-redesigned">
-								<div class="tools-category-header-redesigned">
-									<i class="fas fa-lightbulb"></i>
-									<h5>Development Concepts</h5>
-								</div>
-								<div class="tools-list-redesigned">
-									<span class="tool-tag-redesigned">RESTful APIs</span>
-									<span class="tool-tag-redesigned">MVC Architecture</span>
-									<span class="tool-tag-redesigned">Agile Development</span>
-									<span class="tool-tag-redesigned">Responsive Design</span>
-									<span class="tool-tag-redesigned">Object-Oriented Programming</span>
-								</div>
-							</div>
-
-						</div>
-
-						<!-- Call to Action -->
-						<div class="tools-cta-redesigned">
-							<h5>Ready to Collaborate?</h5>
-							<p>Let's discuss how these tools and skills can benefit your next project</p>
-							<a href="#contact" class="tools-cta-button-redesigned">
-								<i class="fas fa-handshake"></i>
-								Start Conversation
-							</a>
-						</div>
+					<!-- Call to Action -->
+					<div class="tools-cta-redesigned">
+						<h5>Ready to Collaborate?</h5>
+						<p>Let's discuss how these tools and skills can benefit your next project</p>
+						<a href="#contact" class="tools-cta-button-redesigned">
+							<i class="fas fa-handshake"></i>
+							Start Conversation
+						</a>
 					</div>
 				</div>
-			</div>
-		</section><!--/.skills-->
+
+            </div>
+        </div>
+    </section><!--/.skills-->
 		<!--skills end -->
 
 		<!--experience start -->
@@ -1260,201 +1355,100 @@
 			</div>
 		</section><!--/.profiles-->
 		
-		<!--profiles end -->
-
-		<!--portfolio start -->
-		<section id="portfolio" class="portfolio">
-			<div class="container">
-				<div class="section-heading text-center">
-					<h2>portfolio</h2>
-					<p>Showcasing innovative projects that demonstrate expertise in full-stack development, AI/ML, and modern web technologies</p>
-				</div>
-				
-				<div class="portfolio-content">
-					<!-- Portfolio Filter (optional) -->
-					<div class="portfolio-filter text-center mb-5">
-						<button class="filter-btn active" data-filter="all">All Projects</button>
-						<button class="filter-btn" data-filter="web">Web Apps</button>
-						<button class="filter-btn" data-filter="ai">AI/ML</button>
-						<button class="filter-btn" data-filter="mobile">Mobile</button>
-					</div>
-					
-					<!-- Portfolio Grid -->
-					<div class="portfolio-grid card-grid">
-						<!-- Project 1: Ambulance Tracking System -->
-						<div class="portfolio-item card-base" data-category="web">
-							<div class="portfolio-image">
-								<img src="{{ url_for('static', filename='assets/images/portfolio/p1.png')}}" alt="Ambulance Tracking System" />
-								<div class="portfolio-overlay">
-									<div class="portfolio-links">
-										<a href="https://github.com/Lusan-sapkota/Ambulance-tracking-system" target="_blank" class="btn-portfolio btn-github">
-											<i class="fab fa-github"></i>
-										</a>
-										<a href="#" class="btn-portfolio btn-preview">
-											<i class="fas fa-external-link-alt"></i>
-										</a>
-									</div>
-								</div>
-							</div>
-							<div class="portfolio-content">
-								<h3 class="portfolio-title">Ambulance Tracking System</h3>
-								<p class="portfolio-description">Real-time ambulance tracking system with GPS integration, optimizing emergency response times and resource allocation.</p>
-								<div class="portfolio-tech">
-									<span class="tech-tag">Python</span>
-									<span class="tech-tag">Flask</span>
-									<span class="tech-tag">JavaScript</span>
-									<span class="tech-tag">GPS API</span>
-								</div>
-							</div>
-						</div>
-						
-						<!-- Project 2: Face Recognition Attendance -->
-						<div class="portfolio-item card-base" data-category="ai">
-							<div class="portfolio-image">
-								<img src="{{ url_for('static', filename='assets/images/portfolio/p2.png')}}" alt="Face Recognition Attendance System" />
-								<div class="portfolio-overlay">
-									<div class="portfolio-links">
-										<a href="https://github.com/Lusan-sapkota/Face-Recognition-Based-Attendance-System" target="_blank" class="btn-portfolio btn-github">
-											<i class="fab fa-github"></i>
-										</a>
-										<a href="#" class="btn-portfolio btn-preview">
-											<i class="fas fa-external-link-alt"></i>
-										</a>
-									</div>
-								</div>
-							</div>
-							<div class="portfolio-content">
-								<h3 class="portfolio-title">Face Recognition Attendance</h3>
-								<p class="portfolio-description">AI-powered attendance system using computer vision and machine learning for automated student/employee tracking.</p>
-								<div class="portfolio-tech">
-									<span class="tech-tag">Python</span>
-									<span class="tech-tag">OpenCV</span>
-									<span class="tech-tag">Machine Learning</span>
-									<span class="tech-tag">Computer Vision</span>
-								</div>
-							</div>
-						</div>
-						
-						<!-- Project 3: Task Master -->
-						<div class="portfolio-item card-base" data-category="web">
-							<div class="portfolio-image">
-								<img src="{{ url_for('static', filename='assets/images/portfolio/p3.png')}}" alt="Task Master Application" />
-								<div class="portfolio-overlay">
-									<div class="portfolio-links">
-										<a href="https://github.com/Lusan-sapkota/Task-Master" target="_blank" class="btn-portfolio btn-github">
-											<i class="fab fa-github"></i>
-										</a>
-										<a href="#" class="btn-portfolio btn-preview">
-											<i class="fas fa-external-link-alt"></i>
-										</a>
-									</div>
-								</div>
-							</div>
-							<div class="portfolio-content">
-								<h3 class="portfolio-title">Task Master</h3>
-								<p class="portfolio-description">Comprehensive task management application with team collaboration features, real-time updates, and productivity analytics.</p>
-								<div class="portfolio-tech">
-									<span class="tech-tag">React</span>
-									<span class="tech-tag">Node.js</span>
-									<span class="tech-tag">MongoDB</span>
-									<span class="tech-tag">Socket.io</span>
-								</div>
-							</div>
-						</div>
-						
-						<!-- Project 4: Jarvis AI Assistant -->
-						<div class="portfolio-item card-base" data-category="ai">
-							<div class="portfolio-image">
-								<img src="{{ url_for('static', filename='assets/images/portfolio/p4.png')}}" alt="Jarvis AI Assistant" />
-								<div class="portfolio-overlay">
-									<div class="portfolio-links">
-										<a href="https://github.com/Lusan-sapkota/Jarvis" target="_blank" class="btn-portfolio btn-github">
-											<i class="fab fa-github"></i>
-										</a>
-										<a href="#" class="btn-portfolio btn-preview">
-											<i class="fas fa-external-link-alt"></i>
-										</a>
-									</div>
-								</div>
-							</div>
-							<div class="portfolio-content">
-								<h3 class="portfolio-title">Jarvis AI Assistant</h3>
-								<p class="portfolio-description">Intelligent voice-activated assistant with natural language processing, automation capabilities, and smart home integration.</p>
-								<div class="portfolio-tech">
-									<span class="tech-tag">Python</span>
-									<span class="tech-tag">NLP</span>
-									<span class="tech-tag">Speech Recognition</span>
-									<span class="tech-tag">AI/ML</span>
-								</div>
-							</div>
-						</div>
-						
-						<!-- Project 5: Chat History Master -->
-						<div class="portfolio-item card-base" data-category="web">
-							<div class="portfolio-image">
-								<img src="{{ url_for('static', filename='assets/images/portfolio/p5.png')}}" alt="Chat History Master" />
-								<div class="portfolio-overlay">
-									<div class="portfolio-links">
-										<a href="https://github.com/Lusan-sapkota/Chat-History_Master" target="_blank" class="btn-portfolio btn-github">
-											<i class="fab fa-github"></i>
-										</a>
-										<a href="#" class="btn-portfolio btn-preview">
-											<i class="fas fa-external-link-alt"></i>
-										</a>
-									</div>
-								</div>
-							</div>
-							<div class="portfolio-content">
-								<h3 class="portfolio-title">Chat History Master</h3>
-								<p class="portfolio-description">Advanced chat management system with search, backup, and analytics features for multiple messaging platforms.</p>
-								<div class="portfolio-tech">
-									<span class="tech-tag">Django</span>
-									<span class="tech-tag">PostgreSQL</span>
-									<span class="tech-tag">Redis</span>
-									<span class="tech-tag">API Integration</span>
-								</div>
-							</div>
-						</div>
-						
-						<!-- Project 6: Portfolio Website -->
-						<div class="portfolio-item card-base" data-category="web">
-							<div class="portfolio-image">
-								<img src="{{ url_for('static', filename='assets/images/portfolio/portfolio-site.jpg')}}" alt="Portfolio Website" />
-								<div class="portfolio-overlay">
-									<div class="portfolio-links">
-										<a href="https://github.com/Lusan-sapkota/portfolio" target="_blank" class="btn-portfolio btn-github">
-											<i class="fab fa-github"></i>
-										</a>
-										<a href="#" class="btn-portfolio btn-preview">
-											<i class="fas fa-external-link-alt"></i>
-										</a>
-									</div>
-								</div>
-							</div>
-							<div class="portfolio-content">
-								<h3 class="portfolio-title">Modern Portfolio Website</h3>
-								<p class="portfolio-description">Responsive developer portfolio with modern design, subdomain architecture, and integrated project showcase.</p>
-								<div class="portfolio-tech">
-									<span class="tech-tag">Flask</span>
-									<span class="tech-tag">JavaScript</span>
-									<span class="tech-tag">CSS3</span>
-									<span class="tech-tag">Bootstrap</span>
-								</div>
-							</div>
-						</div>
-					</div>
-					
-					<!-- View More Button -->
-					<div class="text-center mt-5">
-						<a href="https://github.com/Lusan-sapkota" target="_blank" class="btn btn-primary btn-lg">
-							<i class="fab fa-github me-2"></i>
-							View All Projects on GitHub
-						</a>
-					</div>
-				</div>
-			</div>
-		</section><!--/.portfolio-->
-		<!--portfolio end -->
+		<!--profiles end -->        <!--portfolio start -->
+        <section id="portfolio" class="portfolio">
+            <div class="container">
+                <div class="section-heading text-center">
+                    <h2>portfolio</h2>
+                    <p>Showcasing innovative projects that demonstrate expertise in full-stack development, AI/ML, and modern web technologies</p>
+                </div>
+                
+                <div class="portfolio-content">
+                    
+                    <!-- Portfolio Grid -->
+                    <div class="portfolio-grid card-grid">
+                        {% for project in portfolio_projects %}
+                        <div class="portfolio-item card-base" data-category="{{ project.category.name.lower().replace(' ', '-') if project.category else 'other' }}">
+                            <div class="portfolio-image">
+                                <img src="{{ project.image_url or url_for('static', filename='assets/images/portfolio/default-project.jpg') }}" alt="{{ project.title }}" />
+                                <div class="portfolio-overlay">
+                                    <div class="portfolio-links">
+                                        {% if project.github_url %}
+                                        <a href="{{ project.github_url }}" target="_blank" class="btn-portfolio btn-github">
+                                            <i class="fab fa-github"></i>
+                                        </a>
+                                        {% endif %}
+                                        {% if project.live_url %}
+                                        <a href="{{ project.live_url }}" target="_blank" class="btn-portfolio btn-preview">
+                                            <i class="fas fa-external-link-alt"></i>
+                                        </a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="portfolio-content">
+                                <h3 class="portfolio-title">{{ project.title }}</h3>
+                                <p class="portfolio-description">{{ project.description }}</p>
+                                <div class="portfolio-tech">
+                                    {% if project.technologies %}
+                                        {% for tech in project.technologies.split(',') %}
+                                        <span class="tech-tag">{{ tech.strip() }}</span>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                                {% if project.stars or project.forks %}
+                                <div class="portfolio-stats">
+                                    {% if project.stars %}
+                                    <span class="stat-item">
+                                        <i class="fas fa-star"></i> {{ project.stars }}
+                                    </span>
+                                    {% endif %}
+                                    {% if project.forks %}
+                                    <span class="stat-item">
+                                        <i class="fas fa-code-branch"></i> {{ project.forks }}
+                                    </span>
+                                    {% endif %}
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% else %}
+                        <!-- Fallback content if no projects in database -->
+                        <div class="portfolio-item card-base" data-category="web">
+                            <div class="portfolio-image">
+                                <img src="{{ url_for('static', filename='assets/images/portfolio/p1.png')}}" alt="Sample Project" />
+                                <div class="portfolio-overlay">
+                                    <div class="portfolio-links">
+                                        <a href="https://github.com/Lusan-sapkota" target="_blank" class="btn-portfolio btn-github">
+                                            <i class="fab fa-github"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="portfolio-content">
+                                <h3 class="portfolio-title">Sample Project</h3>
+                                <p class="portfolio-description">Portfolio projects will be displayed here once added to the database.</p>
+                                <div class="portfolio-tech">
+                                    <span class="tech-tag">Python</span>
+                                    <span class="tech-tag">Flask</span>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <!-- View More Button -->
+                    <div class="text-center mt-5">
+                        <a href="{{url_for('git.index')}}" target="_blank" class="btn btn-primary btn-lg">
+                            <i class="fas fa-code me-2"></i>
+                            View All Projects
+                       
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section><!--/.portfolio-->
+        <!--portfolio end -->
 
 		<!--contact start -->
 		<section id="contact" class="contact">
@@ -1467,8 +1461,7 @@
 						<div class="col-md-offset-1 col-md-5 col-sm-6">
 							<div class="single-contact-box">
 								<div class="contact-form">
-									<form action="https://api.web3forms.com/submit" method="POST" id="contact-form">
-										<input type="hidden" name="access_key" value="818bb4e1-1d81-49bf-8416-42591b05370a">
+									<form action="/contact/submit" method="POST" id="contact-form">
 										<div class="row">
 											<div class="col-sm-12">
 												<div class="form-group">
@@ -1491,7 +1484,8 @@
 										<div class="row">
 											<div class="col-sm-12">
 												<div class="form-group">
-													<input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+													<!-- Honeypot field for bot detection (hidden from users) -->
+													<input type="checkbox" name="botcheck" class="hidden" style="display: none;" tabindex="-1">
 												</div><!--/.form-group-->
 											</div><!--/.col-->
 										</div><!--/.row-->
@@ -1501,7 +1495,7 @@
 													<textarea class="form-control" rows="8" id="comment" placeholder="Message*" name="message" required></textarea>
 												</div><!--/.form-group-->
 											</div><!--/.col-->
-																														</div><!--/.row-->
+										</div><!--/.row-->
 										<div class="row">
 											<div class="col-sm-12">
 												<div class="single-contact-btn">
@@ -1511,6 +1505,8 @@
 										</div><!--/.row-->
 									</form>
 									
+									<!-- Contact form response message -->
+									<div id="contact-message" style="margin-top: 15px; display: none;"></div>
 									
 								</div><!--/.contact-form-->
 							</div><!--/.single-contact-box-->
@@ -1703,6 +1699,8 @@
         <form class="newsletter-form" id="newsletter-form" action="/newsletter/subscribe" method="POST">
           <div class="form-group">
             <input type="email" name="email" placeholder="Enter your email address" required>
+            <!-- Honeypot field for bot detection (hidden from users) -->
+            <input type="text" name="website" style="display: none;" tabindex="-1">
           </div>
           <button type="submit" class="newsletter-btn">Subscribe</button>
         </form>
@@ -1730,9 +1728,8 @@
 		<!--footer end-->
 
 		<!-- CDN JS: Bootstrap & jQuery -->
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
 		<script src="{{ url_for('static', filename='assets/js/custom.js') }}"></script>
 		
 		<!-- Subdomain Configuration for JavaScript -->
@@ -1746,55 +1743,65 @@
 		
 		<!-- Newsletter Form Handler -->
 		<script>
-		$(document).ready(function() {
-			$('#newsletter-form').on('submit', function(e) {
-				e.preventDefault();
-				
-				const form = $(this);
-				const submitBtn = form.find('.newsletter-btn');
-				const messageDiv = $('#newsletter-message');
-				const originalText = submitBtn.text();
-				
-				// Show loading state
-				submitBtn.text('Subscribing...').prop('disabled', true);
-				messageDiv.hide();
-				
-				// Get form data
-				const formData = new FormData(this);
-				
-				// Submit form
-				$.ajax({
-					url: form.attr('action'),
-					type: 'POST',
-					data: formData,
-					processData: false,
-					contentType: false,
-					success: function(response) {
-						messageDiv.removeClass('alert-danger').addClass('alert alert-' + 
-							(response.status === 'error' ? 'danger' : 
-							 response.status === 'info' ? 'info' : 'success'))
-							.text(response.message)
-							.show();
-						
-						if (response.status === 'success') {
-							form[0].reset();
+			document.addEventListener('DOMContentLoaded', function () {
+			// Newsletter Form Submission
+			const form = $('#newsletter-form');
+			const messageDiv = $('#newsletter-message');
+
+			if (form.length) {
+				form.on('submit', function (e) {
+					e.preventDefault();
+
+					const submitBtn = form.find('.newsletter-btn');
+					const originalText = submitBtn.text();
+					const formData = new FormData(this);
+
+					submitBtn.text('Subscribing...').prop('disabled', true);
+					messageDiv.hide();
+
+					$.ajax({
+						url: form.attr('action'),
+						type: 'POST',
+						data: formData,
+						processData: false,
+						contentType: false,
+						success: function (response) {
+							messageDiv
+								.removeClass('alert-success alert-danger alert-info')
+								.addClass('alert alert-' + (response.status === 'error' ? 'danger' : response.status === 'info' ? 'info' : 'success'))
+								.text(response.message)
+								.show();
+
+							if (response.status === 'success') {
+								form[0].reset();
+							}
+						},
+						error: function () {
+							messageDiv
+								.removeClass('alert-success alert-info')
+								.addClass('alert alert-danger')
+								.text('An error occurred. Please try again.')
+								.show();
+						},
+						complete: function () {
+							submitBtn.text(originalText).prop('disabled', false);
+							setTimeout(function () {
+								messageDiv.fadeOut();
+							}, 5000);
 						}
-					},
-					error: function() {
-						messageDiv.removeClass('alert-success alert-info')
-							.addClass('alert alert-danger')
-							.text('An error occurred. Please try again.')
-							.show();
-					},
-					complete: function() {
-						submitBtn.text(originalText).prop('disabled', false);
-						
-						// Auto-hide message after 5 seconds
-						setTimeout(function() {
-							messageDiv.fadeOut();
-						}, 5000);
-					}
+					});
 				});
+			}
+
+			// Bootstrap Tooltips
+			const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+			tooltipTriggerList.map(function (tooltipTriggerEl) {
+				return new bootstrap.Tooltip(tooltipTriggerEl);
+			});
+
+			// Optional: Change cursor on tooltip elements
+			document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
+				el.style.cursor = 'pointer';
 			});
 		});
 		</script>

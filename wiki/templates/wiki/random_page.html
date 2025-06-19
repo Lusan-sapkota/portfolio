@@ -33,7 +33,7 @@
     <section class="random-articles mb-5">
         <div class="section-header">
             <h2><i class="fas fa-sparkles"></i> Random Knowledge Gems</h2>
-            <p class="text-muted">Each refresh brings new discoveries from our knowledge base</p>
+            <p class="text-muted">Each refresh brings new discoveries from my knowledge base</p>
         </div>
         
         <div class="random-grid">
@@ -83,13 +83,13 @@
                 </div>
                 
                 <div class="article-actions">
-                    <a href="{{ url_for('wiki.article', article_id=article.id) }}" class="btn btn-primary">
+                    <a href="{{ url_for('wiki.article', article_id=article.id) }}" class="btn btn-primary gap-2">
                         <i class="fas fa-book-open"></i> Read Article
                     </a>
                     <button class="btn btn-outline-secondary btn-sm" onclick="bookmarkArticle('{{ article.id }}')">
                         <i class="fas fa-bookmark"></i>
                     </button>
-                    <button class="btn btn-outline-secondary btn-sm" onclick="shareArticle('{{ article.id }}', '{{ article.title|e }}')">>
+                    <button class="btn btn-outline-secondary btn-sm" onclick="shareArticle('{{ article.id }}', '{{ article.title|e }}')">
                         <i class="fas fa-share"></i>
                     </button>
                 </div>

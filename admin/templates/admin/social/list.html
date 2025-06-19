@@ -1,0 +1,129 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Social Links{% endblock %}
+
+{% block content %}
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">Social Links</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="{{ url_for('admin.dashboard') }}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Social Links</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="container-fluid">
+        <!-- Actions -->
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <a href="{{ url_for('admin.social_links_create') }}" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Add Social Link
+                </a>
+            </div>
+        </div>
+
+        <!-- Social Links List -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Social Links ({{ links|length }})</h3>
+            </div>
+            <div class="card-body table-responsive p-0">
+                <table class="table table-hover text-nowrap">
+                    <thead>
+                        <tr>
+                            <th>Platform</th>
+                            <th>Username</th>
+                            <th>URL</th>
+                            <th>Status</th>
+                            <th>Sort Order</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for link in links %}
+                        <tr class="{{ 'table-secondary' if not link.is_active else '' }}">
+                            <td>
+                                {% if link.icon_class %}
+                                    <i class="{{ link.icon_class }}"></i>
+                                {% endif %}
+                                {{ link.platform }}
+                            </td>
+                            <td>{{ link.username or '-' }}</td>
+                            <td>
+                                <a href="{{ link.url }}" target="_blank" rel="noopener" class="text-truncate d-inline-block" style="max-width: 200px;">
+                                    {{ link.url }}
+                                </a>
+                            </td>
+                            <td>
+                                {% if link.is_active %}
+                                    <span class="badge badge-success">Active</span>
+                                {% else %}
+                                    <span class="badge badge-secondary">Inactive</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ link.sort_order }}</td>
+                            <td>
+                                <div class="btn-group">
+                                    <a href="{{ url_for('admin.social_links_edit', id=link.id) }}" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteSocialLink({{ link.id }})">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="6" class="text-center">
+                                <div class="py-4">
+                                    <i class="fas fa-share-alt fa-3x text-muted mb-3"></i>
+                                    <h5>No Social Links</h5>
+                                    <p class="text-muted">Add your social media profiles to connect with visitors.</p>
+                                    <a href="{{ url_for('admin.social_links_create') }}" class="btn btn-primary">
+                                        <i class="fas fa-plus"></i> Add First Social Link
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function deleteSocialLink(id) {
+    if (confirm('Delete this social link? This action cannot be undone.')) {
+        fetch(`/admin/social-links/${id}/delete`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showNotification('Social link deleted successfully', 'success');
+                location.reload();
+            } else {
+                showNotification('Error: ' + data.message, 'error');
+            }
+        })
+        .catch(error => {
+            showNotification('Error deleting social link', 'error');
+        });
+    }
+}
+</script>
+{% endblock %}

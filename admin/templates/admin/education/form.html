@@ -1,0 +1,254 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}{{ 'Edit Education' if education else 'Add Education' }}{% endblock %}
+
+{% block content %}
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">{{ 'Edit Education' if education else 'Add Education' }}</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="{{ url_for('admin.dashboard') }}">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('admin.education') }}">Education</a></li>
+                    <li class="breadcrumb-item active">{{ 'Edit' if education else 'Add' }}</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="container-fluid">
+        <form id="education-form" onsubmit="saveEducation(event)">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Education Details</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="degree">Degree/Certificate *</label>
+                                        <input type="text" id="degree" name="degree" class="form-control" value="{{ education.degree if education else '' }}" required placeholder="e.g., Bachelor of Science">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="field_of_study">Field of Study</label>
+                                        <input type="text" id="field_of_study" name="field_of_study" class="form-control" value="{{ education.field_of_study if education else '' }}" placeholder="e.g., Computer Science">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="institution">Institution *</label>
+                                        <input type="text" id="institution" name="institution" class="form-control" value="{{ education.institution if education else '' }}" required placeholder="e.g., University of Technology">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="location">Location</label>
+                                        <input type="text" id="location" name="location" class="form-control" value="{{ education.location if education else '' }}" placeholder="e.g., New York, NY">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="start_date">Start Date *</label>
+                                        <input type="date" id="start_date" name="start_date" class="form-control" value="{{ education.start_date.strftime('%Y-%m-%d') if education and education.start_date else '' }}" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="end_date">End Date</label>
+                                        <input type="date" id="end_date" name="end_date" class="form-control" value="{{ education.end_date.strftime('%Y-%m-%d') if education and education.end_date else '' }}">
+                                        <small class="form-text text-muted">Leave blank if currently enrolled</small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="gpa">GPA/Grade</label>
+                                        <input type="text" id="gpa" name="gpa" class="form-control" value="{{ education.gpa if education else '' }}" placeholder="e.g., 3.8/4.0 or First Class">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="institution_url">Institution Website</label>
+                                        <input type="url" id="institution_url" name="institution_url" class="form-control" value="{{ education.institution_url if education else '' }}" placeholder="https://university.edu">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="is_current" name="is_current" {{ 'checked' if education and education.is_current else '' }}>
+                                    <label class="custom-control-label" for="is_current">Currently enrolled</label>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="description">Description/Achievements</label>
+                                <textarea id="description" name="description" class="form-control" rows="4" placeholder="Describe relevant coursework, projects, honors, or achievements...">{{ education.description if education else '' }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <!-- Actions -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Actions</h3>
+                        </div>
+                        <div class="card-body">
+                            <button type="submit" class="btn btn-primary btn-block">
+                                <i class="fas fa-save"></i> {{ 'Update Education' if education else 'Save Education' }}
+                            </button>
+                            <a href="{{ url_for('admin.education') }}" class="btn btn-secondary btn-block">
+                                <i class="fas fa-arrow-left"></i> Back to Education
+                            </a>
+                            {% if education %}
+                            <hr>
+                            <button type="button" class="btn btn-danger btn-block" onclick="deleteEducation()">
+                                <i class="fas fa-trash"></i> Delete Education
+                            </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <!-- Help -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Tips</h3>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled">
+                                <li class="mb-2">
+                                    <i class="fas fa-lightbulb text-warning"></i>
+                                    <small>Include relevant coursework and projects</small>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-lightbulb text-warning"></i>
+                                    <small>Mention academic honors and achievements</small>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-lightbulb text-warning"></i>
+                                    <small>Add extracurricular activities if relevant</small>
+                                </li>
+                                <li class="mb-0">
+                                    <i class="fas fa-lightbulb text-warning"></i>
+                                    <small>Keep GPA format consistent across entries</small>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+// Handle current enrollment checkbox
+document.getElementById('is_current').addEventListener('change', function() {
+    const endDateField = document.getElementById('end_date');
+    if (this.checked) {
+        endDateField.value = '';
+        endDateField.disabled = true;
+    } else {
+        endDateField.disabled = false;
+    }
+});
+
+function saveEducation(event) {
+    event.preventDefault();
+    
+    const form = event.target;
+    const formData = new FormData(form);
+    
+    // Convert FormData to JSON
+    const data = {};
+    for (let [key, value] of formData.entries()) {
+        if (key === 'is_current') {
+            data[key] = form.querySelector(`[name="${key}"]`).checked;
+        } else {
+            data[key] = value;
+        }
+    }
+    
+    const url = '{{ url_for("admin.education_edit", id=education.id) if education else url_for("admin.education_create") }}';
+    
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showNotification(data.message, 'success');
+            {% if not education %}
+            // Redirect to education list after creating new entry
+            setTimeout(() => {
+                window.location.href = '{{ url_for("admin.education") }}';
+            }, 1500);
+            {% endif %}
+        } else {
+            showNotification('Error: ' + data.message, 'error');
+        }
+    })
+    .catch(error => {
+        showNotification('Error saving education', 'error');
+    });
+}
+
+{% if education %}
+function deleteEducation() {
+    if (confirm('Delete this education entry? This action cannot be undone.')) {
+        fetch('{{ url_for("admin.education_delete", id=education.id) }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showNotification('Education deleted successfully', 'success');
+                window.location.href = '{{ url_for("admin.education") }}';
+            } else {
+                showNotification('Error: ' + data.message, 'error');
+            }
+        })
+        .catch(error => {
+            showNotification('Error deleting education', 'error');
+        });
+    }
+}
+{% endif %}
+
+// Initialize current enrollment state
+document.addEventListener('DOMContentLoaded', function() {
+    const isCurrentCheckbox = document.getElementById('is_current');
+    const endDateField = document.getElementById('end_date');
+    
+    if (isCurrentCheckbox.checked) {
+        endDateField.disabled = true;
+    }
+});
+</script>
+{% endblock %}

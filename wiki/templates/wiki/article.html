@@ -57,14 +57,14 @@
                 {% endif %}
             </div>
             
-            <div class="article-actions">
-                <button class="btn btn-outline-primary btn-sm" onclick="window.print()">
+            <div class="article-actions-article">
+                <button class="btn btn-sm" onclick="window.print()">
                     <i class="fas fa-print"></i> Print
                 </button>
-                <button class="btn btn-outline-primary btn-sm" onclick="shareArticle()">
+                <button class="btn btn-sm" onclick="shareArticle()">
                     <i class="fas fa-share"></i> Share
                 </button>
-                <button class="btn btn-outline-primary btn-sm" onclick="bookmarkArticle()">
+                <button class="btn btn-sm" onclick="bookmarkArticle()">
                     <i class="fas fa-bookmark"></i> Bookmark
                 </button>
             </div>
@@ -96,72 +96,82 @@
 
     <!-- Article Footer -->
     <div class="article-footer">
-        <div class="footer-navigation">
-            <div class="row">
-                <div class="col-md-6">
-                    <!-- Previous Article -->
-                    <div class="nav-item prev-article">
-                        <small class="text-muted">Previous Article</small>
-                        <div class="nav-title">
-                            <a href="#" onclick="return false;">
-                                <i class="fas fa-chevron-left"></i>
-                                Previous Article Title
-                            </a>
-                        </div>
+
+        <!-- Navigation to Previous / Next Article -->
+        <div class="footer-navigation gx-3 gy-4">
+            <div class="col-md-6 text-md-start text-center">
+                <div class="nav-item prev-article">
+                    {% if prev_article %}
+                    <div class="nav-title mt-1">
+                        <a href="{{ url_for('wiki.article', article_id=prev_article.id) }}">
+                            <i class="fas fa-chevron-left me-2"></i> {{ prev_article.title }}
+                        </a>
                     </div>
-                </div>
-                <div class="col-md-6 text-end">
-                    <!-- Next Article -->
-                    <div class="nav-item next-article">
-                        <small class="text-muted">Next Article</small>
-                        <div class="nav-title">
-                            <a href="#" onclick="return false;">
-                                Next Article Title
-                                <i class="fas fa-chevron-right"></i>
-                            </a>
-                        </div>
+                    {% else %}
+                    <div class="nav-title mt-1 text-muted">
+                        <i class="fas fa-chevron-left me-2"></i> No previous article
                     </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="footer-actions">
-            <div class="d-flex justify-content-between align-items-center">
-                <div class="back-buttons">
-                    <a href="{{ url_for('wiki.index') }}" class="btn btn-outline-secondary">
-                        <i class="fas fa-home"></i> Back to Home
-                    </a>
-                    {% if article.category %}
-                    <a href="#" onclick="history.back(); return false;" class="btn btn-outline-secondary">
-                        <i class="fas fa-arrow-left"></i> Back to Category
-                    </a>
                     {% endif %}
                 </div>
-                
-                <div class="social-share">
-                    <span class="text-muted me-2">Share:</span>
-                    <a href="#" onclick="shareOnTwitter(); return false;" class="social-link" title="Share on Twitter">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                    <a href="#" onclick="shareOnFacebook(); return false;" class="social-link" title="Share on Facebook">
-                        <i class="fab fa-facebook"></i>
-                    </a>
-                    <a href="#" onclick="shareOnLinkedIn(); return false;" class="social-link" title="Share on LinkedIn">
-                        <i class="fab fa-linkedin"></i>
-                    </a>
-                    <a href="#" onclick="copyLink(); return false;" class="social-link" title="Copy Link">
-                        <i class="fas fa-link"></i>
-                    </a>
+            </div>
+            <div class="col-md-6 text-md-end text-center">
+                <div class="nav-item next-article">
+                    {% if next_article %}
+                    <div class="nav-title mt-1">
+                        <a href="{{ url_for('wiki.article', article_id=next_article.id) }}">
+                            {{ next_article.title }} <i class="fas fa-chevron-right ms-2"></i>
+                        </a>
+                    </div>
+                    {% else %}
+                    <div class="nav-title mt-1 text-muted">
+                        No next article <i class="fas fa-chevron-right ms-2"></i>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
-    </div>
-</div>
 
-<!-- Scroll to Top Button -->
-<button class="scroll-to-top" onclick="scrollToTop()">
-    <i class="fas fa-chevron-up"></i>
-</button>
+        <!-- Footer Actions: Back Buttons + Social Share -->
+        <div class="footer-actions mt-5 py-4 px-3 border-top">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 article-footer-actions">
+            
+            <!-- Back Buttons -->
+            <div class="back-buttons d-flex flex-wrap gap-2">
+                <a href="{{ url_for('wiki.index') }}" class="btn btn-outline-secondary shadow-sm">
+                <i class="fas fa-home me-1"></i> Back to Home
+                </a>
+                {% if article.category %}
+                <a href="#" onclick="history.back(); return false;" class="btn btn-outline-secondary shadow-sm">
+                <i class="fas fa-arrow-left me-1"></i> Back to Category
+                </a>
+                {% endif %}
+            </div>
+
+            <!-- Social Share -->
+            <div class="social-share d-flex align-items-center gap-2">
+                <a href="#" onclick="shareOnTwitter(); return false;" class="social-link" title="Share on Twitter">
+                <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" onclick="shareOnFacebook(); return false;" class="social-link" title="Share on Facebook">
+                <i class="fab fa-facebook"></i>
+                </a>
+                <a href="#" onclick="shareOnLinkedIn(); return false;" class="social-link" title="Share on LinkedIn">
+                <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="#" onclick="copyLink(); return false;" class="social-link" title="Copy Link">
+                <i class="fas fa-link"></i>
+                </a>
+                <button class="social-link" onclick="scrollToTop()">
+                    <i class="fas fa-chevron-up"></i>
+                </button>
+            </div>
+
+            </div>
+    </div>
+
+    </div>
+
+</div>
 
 <script>
 function shareArticle() {
@@ -208,14 +218,5 @@ function scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// Show/hide scroll to top button
-window.addEventListener('scroll', () => {
-    const scrollBtn = document.querySelector('.scroll-to-top');
-    if (window.pageYOffset > 300) {
-        scrollBtn.style.display = 'block';
-    } else {
-        scrollBtn.style.display = 'none';
-    }
-});
 </script>
 {% endblock %}

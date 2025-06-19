@@ -1,0 +1,262 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Contact Submissions{% endblock %}
+
+{% block content %}
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">Contact Submissions</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="{{ url_for('admin.dashboard') }}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Contact Submissions</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="container-fluid">
+        <!-- Filter and Search -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Filters & Search</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <form method="GET" class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="status">Status</label>
+                            <select name="status" id="status" class="form-control">
+                                <option value="">All</option>
+                                <option value="unread" {{ 'selected' if request.args.get('status') == 'unread' }}>Unread</option>
+                                <option value="read" {{ 'selected' if request.args.get('status') == 'read' }}>Read</option>
+                                <option value="spam" {{ 'selected' if request.args.get('status') == 'spam' }}>Spam</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="date_from">From Date</label>
+                            <input type="date" name="date_from" id="date_from" class="form-control" value="{{ request.args.get('date_from', '') }}">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="date_to">To Date</label>
+                            <input type="date" name="date_to" id="date_to" class="form-control" value="{{ request.args.get('date_to', '') }}">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="search">Search</label>
+                            <input type="text" name="search" id="search" class="form-control" placeholder="Name, email, message..." value="{{ request.args.get('search', '') }}">
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-search"></i> Filter
+                        </button>
+                        <a href="{{ url_for('admin.contacts') }}" class="btn btn-secondary">
+                            <i class="fas fa-times"></i> Clear
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Contact Submissions List -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Contact Submissions ({{ contacts|length }})</h3>
+                <div class="card-tools">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-warning" onclick="markAllAsRead()">
+                            <i class="fas fa-envelope-open"></i> Mark All Read
+                        </button>
+                        <button type="button" class="btn btn-sm btn-danger" onclick="deleteSpam()">
+                            <i class="fas fa-trash"></i> Delete Spam
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body table-responsive p-0">
+                <table class="table table-hover text-nowrap">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="select-all"></th>
+                            <th>Status</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Subject</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for contact in contacts %}
+                        <tr class="{{ 'table-warning' if not contact.is_read else '' }} {{ 'table-danger' if contact.is_spam else '' }}">
+                            <td><input type="checkbox" class="contact-checkbox" data-id="{{ contact.id }}"></td>
+                            <td>
+                                {% if contact.is_spam %}
+                                    <span class="badge badge-danger">Spam</span>
+                                {% elif not contact.is_read %}
+                                    <span class="badge badge-warning">Unread</span>
+                                {% else %}
+                                    <span class="badge badge-success">Read</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ contact.name }}</td>
+                            <td>{{ contact.email }}</td>
+                            <td>{{ contact.subject }}</td>
+                            <td>{{ contact.submitted_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                            <td>
+                                <div class="btn-group">
+                                    <a href="{{ url_for('admin.contacts_view', id=contact.id) }}" class="btn btn-sm btn-info">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    {% if not contact.is_spam %}
+                                    <button type="button" class="btn btn-sm btn-warning" onclick="markAsSpam({{ contact.id }})">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </button>
+                                    {% endif %}
+                                    <button type="button" class="btn btn-sm btn-danger" onclick="deleteContact({{ contact.id }})">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="7" class="text-center">No contact submissions found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Select all functionality
+document.getElementById('select-all').addEventListener('change', function() {
+    const checkboxes = document.querySelectorAll('.contact-checkbox');
+    checkboxes.forEach(checkbox => checkbox.checked = this.checked);
+});
+
+// Mark as spam
+function markAsSpam(id) {
+    if (confirm('Mark this contact as spam?')) {
+        fetch(`/admin/api/contacts/${id}/mark-spam`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showNotification('Contact marked as spam', 'success');
+                location.reload();
+            } else {
+                showNotification('Error: ' + data.message, 'error');
+            }
+        })
+        .catch(error => {
+            showNotification('Error marking as spam', 'error');
+        });
+    }
+}
+
+// Delete contact
+function deleteContact(id) {
+    if (confirm('Delete this contact submission? This action cannot be undone.')) {
+        fetch(`/admin/contacts/${id}/delete`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showNotification('Contact deleted successfully', 'success');
+                location.reload();
+            } else {
+                showNotification('Error: ' + data.message, 'error');
+            }
+        })
+        .catch(error => {
+            showNotification('Error deleting contact', 'error');
+        });
+    }
+}
+
+// Mark all as read
+function markAllAsRead() {
+    const checkboxes = document.querySelectorAll('.contact-checkbox:checked');
+    if (checkboxes.length === 0) {
+        showNotification('Please select contacts to mark as read', 'warning');
+        return;
+    }
+    
+    if (confirm('Mark selected contacts as read?')) {
+        const ids = Array.from(checkboxes).map(cb => cb.dataset.id);
+        
+        fetch('/admin/api/contacts/bulk-mark-read', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ ids: ids })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showNotification('Contacts marked as read', 'success');
+                location.reload();
+            } else {
+                showNotification('Error: ' + data.message, 'error');
+            }
+        })
+        .catch(error => {
+            showNotification('Error marking contacts as read', 'error');
+        });
+    }
+}
+
+// Delete spam
+function deleteSpam() {
+    if (confirm('Delete all spam contacts? This action cannot be undone.')) {
+        fetch('/admin/api/contacts/delete-spam', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showNotification('Spam contacts deleted', 'success');
+                location.reload();
+            } else {
+                showNotification('Error: ' + data.message, 'error');
+            }
+        })
+        .catch(error => {
+            showNotification('Error deleting spam', 'error');
+        });
+    }
+}
+</script>
+{% endblock %}

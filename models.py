@@ -321,3 +321,153 @@ class NewsletterSubscriber(db.Model):
             'interests': self.interests.split(',') if self.interests else [],
             'subscribed_at': self.subscribed_at.isoformat() if self.subscribed_at else None
         }
+
+class ContactSubmission(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(120), nullable=False)
+    subject = db.Column(db.String(200))
+    message = db.Column(db.Text, nullable=False)
+    ip_address = db.Column(db.String(45))  # IPv6 compatible
+    user_agent = db.Column(db.String(500))
+    is_spam = db.Column(db.Boolean, default=False)
+    is_replied = db.Column(db.Boolean, default=False)
+    submitted_at = db.Column(db.DateTime, default=datetime.utcnow)
+    replied_at = db.Column(db.DateTime)
+    
+    def __repr__(self):
+        return f'<ContactSubmission {self.name} - {self.email}>'
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'email': self.email,
+            'subject': self.subject,
+            'message': self.message,
+            'is_spam': self.is_spam,
+            'is_replied': self.is_replied,
+            'submitted_at': self.submitted_at.isoformat() if self.submitted_at else None,
+            'replied_at': self.replied_at.isoformat() if self.replied_at else None
+        }
+
+class SeoSettings(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    page_name = db.Column(db.String(100), unique=True, nullable=False)  # 'home', 'about', 'contact', etc.
+    title = db.Column(db.String(200))
+    meta_description = db.Column(db.Text)
+    meta_keywords = db.Column(db.Text)
+    og_title = db.Column(db.String(200))
+    og_description = db.Column(db.Text)
+    og_image = db.Column(db.String(255))
+    canonical_url = db.Column(db.String(255))
+    robots = db.Column(db.String(100), default='index, follow')
+    schema_markup = db.Column(db.Text)  # JSON-LD structured data
+    is_active = db.Column(db.Boolean, default=True)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    def __repr__(self):
+        return f'<SeoSettings {self.page_name}>'
+
+class PersonalInfo(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    title = db.Column(db.String(200))
+    bio = db.Column(db.Text)
+    email = db.Column(db.String(120))
+    phone = db.Column(db.String(20))
+    address = db.Column(db.String(200))
+    profile_image = db.Column(db.String(255))
+    resume_url = db.Column(db.String(255))
+    location = db.Column(db.String(100))
+    tagline = db.Column(db.String(200))
+    years_experience = db.Column(db.Integer)
+    projects_completed = db.Column(db.Integer)
+    clients_served = db.Column(db.Integer)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    def __repr__(self):
+        return f'<PersonalInfo {self.name}>'
+
+class SocialLink(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    platform = db.Column(db.String(50), nullable=False)  # github, linkedin, twitter, etc.
+    url = db.Column(db.String(255), nullable=False)
+    icon = db.Column(db.String(50))  # FontAwesome icon class
+    display_name = db.Column(db.String(100))
+    is_active = db.Column(db.Boolean, default=True)
+    sort_order = db.Column(db.Integer, default=0)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    def __repr__(self):
+        return f'<SocialLink {self.platform}>'
+
+class Skill(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    category = db.Column(db.String(50))  # programming, frontend, backend, database, etc.
+    proficiency = db.Column(db.Integer)  # 1-100 percentage
+    icon = db.Column(db.String(50))
+    description = db.Column(db.Text)
+    years_experience = db.Column(db.Float)
+    is_featured = db.Column(db.Boolean, default=False)
+    sort_order = db.Column(db.Integer, default=0)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    def __repr__(self):
+        return f'<Skill {self.name}>'
+
+class Experience(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    company = db.Column(db.String(100), nullable=False)
+    position = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.Text)
+    start_date = db.Column(db.Date)
+    end_date = db.Column(db.Date)  # NULL means current position
+    location = db.Column(db.String(100))
+    company_url = db.Column(db.String(255))
+    logo_url = db.Column(db.String(255))
+    technologies = db.Column(db.Text)  # Comma-separated
+    achievements = db.Column(db.Text)  # JSON or formatted text
+    is_current = db.Column(db.Boolean, default=False)
+    sort_order = db.Column(db.Integer, default=0)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    def __repr__(self):
+        return f'<Experience {self.company} - {self.position}>'
+
+class Education(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    institution = db.Column(db.String(200), nullable=False)
+    degree = db.Column(db.String(100), nullable=False)
+    field_of_study = db.Column(db.String(100))
+    description = db.Column(db.Text)
+    start_date = db.Column(db.Date)
+    end_date = db.Column(db.Date)
+    grade = db.Column(db.String(20))
+    location = db.Column(db.String(100))
+    institution_url = db.Column(db.String(255))
+    logo_url = db.Column(db.String(255))
+    is_current = db.Column(db.Boolean, default=False)
+    sort_order = db.Column(db.Integer, default=0)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    def __repr__(self):
+        return f'<Education {self.institution} - {self.degree}>'
+
+class Testimonial(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    client_name = db.Column(db.String(100), nullable=False)
+    client_title = db.Column(db.String(100))
+    client_company = db.Column(db.String(100))
+    testimonial_text = db.Column(db.Text, nullable=False)
+    rating = db.Column(db.Integer)  # 1-5 stars
+    client_image = db.Column(db.String(255))
+    project_related = db.Column(db.String(100))
+    is_featured = db.Column(db.Boolean, default=False)
+    is_approved = db.Column(db.Boolean, default=True)
+    sort_order = db.Column(db.Integer, default=0)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    def __repr__(self):
+        return f'<Testimonial {self.client_name}>'

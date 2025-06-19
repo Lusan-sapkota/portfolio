@@ -1,0 +1,235 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Personal Information{% endblock %}
+
+{% block content %}
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">Personal Information</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="{{ url_for('admin.dashboard') }}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Personal Info</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="container-fluid">
+        <form id="personal-info-form" onsubmit="savePersonalInfo(event)">
+            <div class="row">
+                <div class="col-md-8">
+                    <!-- Basic Information -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Basic Information</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="full_name">Full Name *</label>
+                                        <input type="text" id="full_name" name="full_name" class="form-control" value="{{ personal_info.full_name if personal_info else '' }}" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="display_name">Display Name</label>
+                                        <input type="text" id="display_name" name="display_name" class="form-control" value="{{ personal_info.display_name if personal_info else '' }}">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="email">Email *</label>
+                                        <input type="email" id="email" name="email" class="form-control" value="{{ personal_info.email if personal_info else '' }}" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="phone">Phone</label>
+                                        <input type="text" id="phone" name="phone" class="form-control" value="{{ personal_info.phone if personal_info else '' }}">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="title">Professional Title</label>
+                                        <input type="text" id="title" name="title" class="form-control" value="{{ personal_info.title if personal_info else '' }}" placeholder="e.g., Full Stack Developer">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="location">Location</label>
+                                        <input type="text" id="location" name="location" class="form-control" value="{{ personal_info.location if personal_info else '' }}" placeholder="e.g., New York, NY">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="bio">Bio/About Me</label>
+                                <textarea id="bio" name="bio" class="form-control" rows="4" placeholder="Tell visitors about yourself...">{{ personal_info.bio if personal_info else '' }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Professional Information -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Professional Information</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="years_experience">Years of Experience</label>
+                                        <input type="number" id="years_experience" name="years_experience" class="form-control" value="{{ personal_info.years_experience if personal_info else '' }}" min="0">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="availability">Availability Status</label>
+                                        <select id="availability" name="availability" class="form-control">
+                                            <option value="available" {{ 'selected' if personal_info and personal_info.availability == 'available' }}>Available for work</option>
+                                            <option value="busy" {{ 'selected' if personal_info and personal_info.availability == 'busy' }}>Currently busy</option>
+                                            <option value="not_looking" {{ 'selected' if personal_info and personal_info.availability == 'not_looking' }}>Not looking</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="specialties">Specialties (comma-separated)</label>
+                                <input type="text" id="specialties" name="specialties" class="form-control" value="{{ personal_info.specialties if personal_info else '' }}" placeholder="Web Development, Mobile Apps, UI/UX Design">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <!-- Profile Images -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Profile Images</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="profile_image">Profile Image URL</label>
+                                <input type="url" id="profile_image" name="profile_image" class="form-control" value="{{ personal_info.profile_image if personal_info else '' }}">
+                                {% if personal_info and personal_info.profile_image %}
+                                <div class="mt-2">
+                                    <img src="{{ personal_info.profile_image }}" alt="Profile" class="img-thumbnail" style="max-width: 150px;">
+                                </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="resume_url">Resume URL</label>
+                                <input type="url" id="resume_url" name="resume_url" class="form-control" value="{{ personal_info.resume_url if personal_info else '' }}">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Additional Settings -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Settings</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="is_freelancer" name="is_freelancer" {{ 'checked' if personal_info and personal_info.is_freelancer else '' }}>
+                                    <label class="custom-control-label" for="is_freelancer">Available for Freelance</label>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="show_contact_form" name="show_contact_form" {{ 'checked' if personal_info and personal_info.show_contact_form else '' }}>
+                                    <label class="custom-control-label" for="show_contact_form">Show Contact Form</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Actions -->
+                    <div class="card">
+                        <div class="card-body">
+                            <button type="submit" class="btn btn-primary btn-block">
+                                <i class="fas fa-save"></i> Save Personal Info
+                            </button>
+                            <a href="{{ url_for('admin.dashboard') }}" class="btn btn-secondary btn-block">
+                                <i class="fas fa-arrow-left"></i> Back to Dashboard
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function savePersonalInfo(event) {
+    event.preventDefault();
+    
+    const form = event.target;
+    const formData = new FormData(form);
+    
+    // Convert FormData to JSON
+    const data = {};
+    for (let [key, value] of formData.entries()) {
+        if (key === 'is_freelancer' || key === 'show_contact_form') {
+            data[key] = form.querySelector(`[name="${key}"]`).checked;
+        } else {
+            data[key] = value;
+        }
+    }
+    
+    fetch('/admin/personal-info', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showNotification('Personal information saved successfully', 'success');
+        } else {
+            showNotification('Error: ' + data.message, 'error');
+        }
+    })
+    .catch(error => {
+        showNotification('Error saving personal information', 'error');
+    });
+}
+
+// Preview profile image when URL changes
+document.getElementById('profile_image').addEventListener('change', function() {
+    const url = this.value;
+    const existingPreview = document.querySelector('.profile-image-preview');
+    
+    if (existingPreview) {
+        existingPreview.remove();
+    }
+    
+    if (url) {
+        const preview = document.createElement('div');
+        preview.className = 'mt-2 profile-image-preview';
+        preview.innerHTML = `<img src="${url}" alt="Profile Preview" class="img-thumbnail" style="max-width: 150px;" onerror="this.style.display='none'">`;
+        this.parentNode.appendChild(preview);
+    }
+});
+</script>
+{% endblock %}

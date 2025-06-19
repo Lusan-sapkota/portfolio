@@ -1,0 +1,247 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Donation Details - Admin{% endblock %}
+
+{% block content %}
+<div class="admin-content">
+    <div class="admin-header">
+        <div class="admin-header-left">
+            <h1 class="admin-title">
+                <i class="fas fa-donate"></i>
+                Donation Details
+            </h1>
+            <p class="admin-subtitle">View donation information and details</p>
+        </div>
+        <div class="admin-header-right">
+            <a href="{{ url_for('admin.donations') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Donations
+            </a>
+        </div>
+    </div>
+
+    <div class="admin-info-cards">
+        <!-- Donation Information -->
+        <div class="info-card">
+            <div class="info-card-header">
+                <h5><i class="fas fa-donate"></i> Donation Information</h5>
+                <span class="badge badge-{{ 'success' if donation.status == 'completed' else 'warning' if donation.status == 'pending' else 'danger' }}">
+                    {{ donation.status.title() }}
+                </span>
+            </div>
+            <div class="info-card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="detail-group">
+                            <label>Donation ID:</label>
+                            <div class="detail-value">#{{ donation.id }}</div>
+                        </div>
+                        <div class="detail-group">
+                            <label>Amount:</label>
+                            <div class="detail-value currency">${{ "%.2f"|format(donation.amount) }}</div>
+                        </div>
+                        <div class="detail-group">
+                            <label>Status:</label>
+                            <div class="detail-value">
+                                <span class="badge badge-{{ 'success' if donation.status == 'completed' else 'warning' if donation.status == 'pending' else 'danger' }}">
+                                    {{ donation.status.title() }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="detail-group">
+                            <label>Date:</label>
+                            <div class="detail-value">{{ donation.created_at.strftime('%B %d, %Y at %I:%M %p') if donation.created_at else 'N/A' }}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="detail-group">
+                            <label>Payment Method:</label>
+                            <div class="detail-value">{{ donation.payment_method.title() if donation.payment_method else 'N/A' }}</div>
+                        </div>
+                        <div class="detail-group">
+                            <label>Payment ID:</label>
+                            <div class="detail-value">{{ donation.payment_id if donation.payment_id else 'N/A' }}</div>
+                        </div>
+                        <div class="detail-group">
+                            <label>Anonymous:</label>
+                            <div class="detail-value">
+                                {% if donation.is_anonymous %}
+                                <span class="badge badge-warning">Yes</span>
+                                {% else %}
+                                <span class="badge badge-info">No</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Donor Information -->
+        <div class="info-card">
+            <div class="info-card-header">
+                <h5><i class="fas fa-user"></i> Donor Information</h5>
+            </div>
+            <div class="info-card-body">
+                {% if donation.is_anonymous %}
+                <div class="text-center text-muted py-3">
+                    <i class="fas fa-user-secret fa-2x mb-2"></i>
+                    <p>This donation was made anonymously</p>
+                </div>
+                {% else %}
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="detail-group">
+                            <label>Name:</label>
+                            <div class="detail-value">{{ donation.donor_name }}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="detail-group">
+                            <label>Email:</label>
+                            <div class="detail-value">
+                                <a href="mailto:{{ donation.donor_email }}">{{ donation.donor_email }}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Project Information -->
+        <div class="info-card">
+            <div class="info-card-header">
+                <h5><i class="fas fa-heart"></i> Project Information</h5>
+            </div>
+            <div class="info-card-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="detail-group">
+                            <label>Project:</label>
+                            <div class="detail-value">
+                                <a href="{{ url_for('admin.donation_project_edit', project_id=donation.project.id) }}">
+                                    {{ donation.project.title }}
+                                </a>
+                            </div>
+                        </div>
+                        <div class="detail-group">
+                            <label>Description:</label>
+                            <div class="detail-value">{{ donation.project.short_description or donation.project.description[:150] + '...' }}</div>
+                        </div>
+                        <div class="detail-group">
+                            <label>Goal:</label>
+                            <div class="detail-value currency">${{ "%.2f"|format(donation.project.goal_amount) }}</div>
+                        </div>
+                        <div class="detail-group">
+                            <label>Current Amount:</label>
+                            <div class="detail-value currency">${{ "%.2f"|format(donation.project.current_amount) }}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        {% if donation.project.image_url %}
+                        <img src="{{ donation.project.image_url }}" alt="{{ donation.project.title }}" class="img-fluid rounded">
+                        {% endif %}
+                        <div class="progress mt-3">
+                            <div class="progress-bar bg-success" style="width: {{ donation.project.get_progress_percentage() }}%"></div>
+                        </div>
+                        <small class="text-muted">{{ "%.1f"|format(donation.project.get_progress_percentage()) }}% funded</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Message -->
+        {% if donation.message %}
+        <div class="info-card">
+            <div class="info-card-header">
+                <h5><i class="fas fa-comment"></i> Message</h5>
+            </div>
+            <div class="info-card-body">
+                <blockquote class="blockquote">
+                    <p class="mb-0">{{ donation.message }}</p>
+                    <footer class="blockquote-footer mt-2">
+                        {{ 'Anonymous' if donation.is_anonymous else donation.donor_name }}
+                    </footer>
+                </blockquote>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="admin-actions mt-4">
+        {% if donation.status != 'completed' %}
+        <button class="btn btn-success status-btn" data-id="{{ donation.id }}" data-status="completed">
+            <i class="fas fa-check"></i> Mark as Completed
+        </button>
+        {% endif %}
+        {% if donation.status != 'failed' %}
+        <button class="btn btn-danger status-btn" data-id="{{ donation.id }}" data-status="failed">
+            <i class="fas fa-times"></i> Mark as Failed
+        </button>
+        {% endif %}
+        {% if donation.status != 'pending' %}
+        <button class="btn btn-warning status-btn" data-id="{{ donation.id }}" data-status="pending">
+            <i class="fas fa-clock"></i> Mark as Pending
+        </button>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Status Update Modal -->
+<div class="modal fade" id="statusModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Update Donation Status</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to update this donation status to <span id="newStatus"></span>?</p>
+                <p class="text-warning"><small>This action will affect project funding totals.</small></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirmStatusUpdate">Update Status</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Status update functionality
+    let updateData = null;
+    
+    document.querySelectorAll('.status-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            updateData = {
+                id: this.dataset.id,
+                status: this.dataset.status
+            };
+            document.getElementById('newStatus').textContent = updateData.status;
+            new bootstrap.Modal(document.getElementById('statusModal')).show();
+        });
+    });
+    
+    document.getElementById('confirmStatusUpdate').addEventListener('click', function() {
+        if (updateData) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = `/admin/donations/${updateData.id}/update-status`;
+            
+            const statusInput = document.createElement('input');
+            statusInput.type = 'hidden';
+            statusInput.name = 'status';
+            statusInput.value = updateData.status;
+            form.appendChild(statusInput);
+            
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
+});
+</script>
+{% endblock %}

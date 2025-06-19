@@ -16,21 +16,9 @@ def index():
     articles = WikiArticle.query.order_by(WikiArticle.title).all()
     categories = get_categories()
     
-    # Convert categories to dictionaries with article counts
-    categories_with_counts = []
-    for category in categories:
-        category_dict = {
-            'id': category.id,
-            'name': category.name,
-            'description': category.description,
-            'article_count': WikiArticle.query.filter_by(category_id=category.id).count(),
-            'subcategories': category.subcategories if hasattr(category, 'subcategories') else []
-        }
-        categories_with_counts.append(category_dict)
-    
     return render_template('wiki/index.html', 
                           articles=articles, 
-                          categories=categories_with_counts,
+                          categories=categories,
                           active_category=None,
                           active_subcategory=None,
                           current_year=datetime.now().year)
@@ -135,6 +123,10 @@ def article(article_id):
     article = WikiArticle.query.get_or_404(article_id)
     categories = get_categories()  # Get all top-level categories
     
+    # Get next and previous articles
+    prev_article = WikiArticle.query.filter(WikiArticle.id < article_id).order_by(WikiArticle.id.desc()).first()
+    next_article = WikiArticle.query.filter(WikiArticle.id > article_id).order_by(WikiArticle.id.asc()).first()
+    
     # Determine active category/subcategory
     active_category = None
     active_subcategory = None
@@ -150,6 +142,8 @@ def article(article_id):
     return render_template('wiki/article.html', 
                           article=article,
                           categories=categories,
+                          prev_article=prev_article,
+                          next_article=next_article,
                           active_category=active_category,
                           active_subcategory=active_subcategory,
                           current_year=datetime.now().year)
@@ -185,3 +179,58 @@ def random_article():
     import random as py_random
     random_article = py_random.choice(all_articles)
     return redirect(url_for('wiki.article', article_id=random_article.id))
+
+@wiki_bp.route('/explore')
+def explore():
+    """Display all articles in a grid layout with filtering and sorting options."""
+    categories = get_categories()
+    
+    # Get query parameters
+    sort_by = request.args.get('sort', 'title')  # title, date, views
+    category_filter = request.args.get('category', '')
+    search_query = request.args.get('search', '')
+    page = request.args.get('page', 1, type=int)
+    per_page = 12  # Articles per page
+    
+    # Build base query
+    query = WikiArticle.query
+    
+    # Apply category filter
+    if category_filter and category_filter.isdigit():
+        query = query.filter_by(category_id=int(category_filter))
+    
+    # Apply search filter
+    if search_query:
+        query = query.filter(
+            or_(
+                WikiArticle.title.ilike(f'%{search_query}%'),
+                WikiArticle.summary.ilike(f'%{search_query}%'),
+                WikiArticle.tags.ilike(f'%{search_query}%')
+            )
+        )
+    
+    # Apply sorting
+    if sort_by == 'date':
+        query = query.order_by(WikiArticle.created_at.desc())
+    elif sort_by == 'views':
+        query = query.order_by(WikiArticle.views.desc())
+    else:  # title (default)
+        query = query.order_by(WikiArticle.title.asc())
+    
+    # Paginate results
+    articles_pagination = query.paginate(
+        page=page, per_page=per_page, error_out=False
+    )
+    
+    # Get all categories for filter dropdown
+    all_categories = WikiCategory.query.all()
+    
+    return render_template('wiki/explore.html',
+                          articles=articles_pagination.items,
+                          pagination=articles_pagination,
+                          categories=categories,
+                          all_categories=all_categories,
+                          sort_by=sort_by,
+                          category_filter=category_filter,
+                          search_query=search_query,
+                          current_year=datetime.now().year)

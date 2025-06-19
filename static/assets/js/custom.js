@@ -197,108 +197,54 @@ $(document).ready(function(){
         }
     }
 
-    // 5. FIXED: Contact Form with enhanced validation
+    // 5. Contact Form Handling
     function initializeContactForm() {
-        const contactForm = $('form#contact-form');
-        if (!contactForm.length) return;
-        
-        const submitButton = contactForm.find('button[type="submit"]');
-        const originalButtonText = submitButton.text();
-        
-        // Initialize form status container
-        if($('#form-status').length === 0) {
-            contactForm.after('<div id="form-status" class="mt-3" style="display:none;"></div>');
-        }
-        const formStatus = $('#form-status');
-        
-        // Clear validation on input focus
-        contactForm.find('input, textarea').on('focus', function() {
-            $(this).removeClass('is-invalid');
-            $(this).siblings('.invalid-feedback').remove();
-        });
-        
-        // Enhanced form submission
-        contactForm.on('submit', function(e) {
-            e.preventDefault();
-            
-            // Clear previous validation
-            contactForm.find('.invalid-feedback').remove();
-            contactForm.find('.is-invalid').removeClass('is-invalid');
-            formStatus.html('').hide();
-            
-            // Validate form
-            let isValid = true;
-            const requiredFields = contactForm.find('input[required], textarea[required]');
-            
-            requiredFields.each(function() {
-                const field = $(this);
-                const fieldValue = field.val().trim();
-                
-                if(!fieldValue) {
-                    isValid = false;
-                    field.addClass('is-invalid');
-                    $('<div class="invalid-feedback">This field is required</div>').insertAfter(field);
-                }
-            });
-            
-            // Email validation
-            const emailInput = contactForm.find('input[type="email"]');
-            if(emailInput.length && emailInput.val().trim()) {
-                const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-                if(!emailPattern.test(emailInput.val().trim())) {
-                    isValid = false;
-                    emailInput.addClass('is-invalid');
-                    $('<div class="invalid-feedback">Please enter a valid email address</div>').insertAfter(emailInput);
-                }
-            }
-            
-            if(!isValid) {
-                showFormMessage('danger', 'Please fix the highlighted errors');
-                return false;
-            }
-            
-            // Submit form
-            submitButton.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Sending...');
-            
-            const formData = new FormData(contactForm[0]);
-            
-            $.ajax({
-                url: contactForm.attr('action'),
-                type: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                    showFormMessage('success', 'Thank you! Your message has been sent successfully.');
-                    contactForm[0].reset();
-                    
-                    setTimeout(function() {
-                        submitButton.prop('disabled', false).text(originalButtonText);
-                    }, 2000);
-                },
-                error: function(xhr, status, error) {
-                    let errorMessage = 'Sorry, there was a problem sending your message.';
-                    
-                    if(xhr.responseJSON && xhr.responseJSON.message) {
-                        errorMessage += ' Error: ' + xhr.responseJSON.message;
+        const contactForm = $('#contact-form');
+        const contactMessageDiv = $('#contact-message');
+
+        if (contactForm.length) {
+            contactForm.on('submit', function (e) {
+                e.preventDefault();
+
+                const submitBtn = contactForm.find('.contact-btn');
+                const originalText = submitBtn.text();
+                const formData = new FormData(this);
+
+                submitBtn.text('Sending...').prop('disabled', true);
+                contactMessageDiv.hide();
+
+                $.ajax({
+                    url: contactForm.attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        contactMessageDiv
+                            .removeClass('alert-success alert-danger alert-info')
+                            .addClass('alert alert-' + (response.status === 'error' ? 'danger' : response.status === 'info' ? 'info' : 'success'))
+                            .text(response.message)
+                            .show();
+
+                        if (response.status === 'success') {
+                            contactForm[0].reset();
+                        }
+                    },
+                    error: function () {
+                        contactMessageDiv
+                            .removeClass('alert-success alert-info')
+                            .addClass('alert alert-danger')
+                            .text('An error occurred while sending your message. Please try again.')
+                            .show();
+                    },
+                    complete: function () {
+                        submitBtn.text(originalText).prop('disabled', false);
+                        setTimeout(function () {
+                            contactMessageDiv.fadeOut();
+                        }, 8000);
                     }
-                    
-                    showFormMessage('danger', errorMessage);
-                    submitButton.prop('disabled', false).text(originalButtonText);
-                }
+                });
             });
-        });
-        
-        function showFormMessage(type, message) {
-            const iconClass = type === 'success' ? 'fa-check-circle' : 'fa-times-circle';
-            formStatus.html(`
-                <div class="alert alert-${type}">
-                    <i class="fa ${iconClass}"></i> ${message}
-                    <button type="button" class="close-alert">&times;</button>
-                </div>
-            `).fadeIn();
-            
-            startDismissTimer(formStatus);
         }
     }
 
@@ -468,36 +414,6 @@ $(document).on('click', '.close-alert', function() {
         (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
     document.documentElement.setAttribute('data-theme', currentTheme);
 })();
-
-// Newsletter Form Handler
-$(document).ready(function() {
-    $('#newsletter-form').on('submit', function(e) {
-        e.preventDefault();
-        
-        const email = $(this).find('input[type="email"]').val();
-        const button = $(this).find('.newsletter-btn');
-        const originalText = button.text();
-        
-        // Basic email validation
-        if (!email || !email.includes('@')) {
-            alert('Please enter a valid email address');
-            return;
-        }
-        
-        // Show loading state
-        button.text('Subscribing...').prop('disabled', true);
-        
-        // Simulate API call (replace with your actual newsletter service)
-        setTimeout(() => {
-            button.text('Subscribed!').css('background', '#27ae60');
-            $(this).find('input[type="email"]').val('');
-            
-            setTimeout(() => {
-                button.text(originalText).prop('disabled', false).css('background', '');
-            }, 3000);
-        }, 1500);
-    });
-});
 
 // Skills Redesigned Animation
 $(document).ready(function() {

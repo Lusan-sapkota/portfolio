@@ -1,0 +1,248 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Donations - Admin{% endblock %}
+
+{% block content %}
+<div class="admin-content">
+    <div class="admin-header">
+        <div class="admin-header-left">
+            <h1 class="admin-title">
+                <i class="fas fa-donate"></i>
+                Donations
+            </h1>
+            <p class="admin-subtitle">View and manage all donation submissions</p>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="admin-filters">
+        <form method="GET" class="filter-form">
+            <div class="filter-group">
+                <label>Status:</label>
+                <select name="status" class="form-control">
+                    <option value="">All Statuses</option>
+                    <option value="pending" {% if current_status == 'pending' %}selected{% endif %}>Pending</option>
+                    <option value="completed" {% if current_status == 'completed' %}selected{% endif %}>Completed</option>
+                    <option value="failed" {% if current_status == 'failed' %}selected{% endif %}>Failed</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Project:</label>
+                <select name="project" class="form-control">
+                    <option value="">All Projects</option>
+                    {% for project in projects %}
+                    <option value="{{ project.id }}" {% if current_project == project.id %}selected{% endif %}>
+                        {{ project.title }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="filter-actions">
+                <button type="submit" class="btn btn-outline-primary">Filter</button>
+                <a href="{{ url_for('admin.donations') }}" class="btn btn-outline-secondary">Clear</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Summary Stats -->
+    <div class="admin-stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon bg-success">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">${{ "%.2f"|format(donations|selectattr('status', 'equalto', 'completed')|map(attribute='amount')|sum) }}</div>
+                <div class="stat-label">Total Completed</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon bg-warning">
+                <i class="fas fa-clock"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">{{ donations|selectattr('status', 'equalto', 'pending')|list|length }}</div>
+                <div class="stat-label">Pending</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon bg-danger">
+                <i class="fas fa-times-circle"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">{{ donations|selectattr('status', 'equalto', 'failed')|list|length }}</div>
+                <div class="stat-label">Failed</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon bg-info">
+                <i class="fas fa-donate"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">{{ donations|length }}</div>
+                <div class="stat-label">Total Donations</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Donations Table -->
+    <div class="admin-table-container">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Donor</th>
+                    <th>Project</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Payment</th>
+                    <th>Date</th>
+                    <th width="150">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for donation in donations %}
+                <tr>
+                    <td>
+                        <div class="item-info">
+                            <div class="item-avatar item-avatar-placeholder">
+                                {% if donation.is_anonymous %}
+                                <i class="fas fa-user-secret"></i>
+                                {% else %}
+                                <i class="fas fa-user"></i>
+                                {% endif %}
+                            </div>
+                            <div class="item-details">
+                                <div class="item-title">
+                                    {{ 'Anonymous' if donation.is_anonymous else donation.donor_name }}
+                                </div>
+                                <div class="item-subtitle">
+                                    {% if not donation.is_anonymous %}
+                                    {{ donation.donor_email }}
+                                    {% else %}
+                                    <span class="text-muted">Hidden</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="item-details">
+                            <div class="item-title">{{ donation.project.title }}</div>
+                            {% if donation.project.short_description %}
+                            <div class="item-subtitle">{{ donation.project.short_description[:50] }}...</div>
+                            {% endif %}
+                        </div>
+                    </td>
+                    <td>
+                        <span class="currency">${{ "%.2f"|format(donation.amount) }}</span>
+                    </td>
+                    <td>
+                        <span class="badge badge-{{ 'success' if donation.status == 'completed' else 'warning' if donation.status == 'pending' else 'danger' }}">
+                            {{ donation.status.title() }}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="item-details">
+                            {% if donation.payment_method %}
+                            <div class="item-title">{{ donation.payment_method.title() }}</div>
+                            {% endif %}
+                            {% if donation.payment_id %}
+                            <div class="item-subtitle">{{ donation.payment_id[:20] }}...</div>
+                            {% endif %}
+                        </div>
+                    </td>
+                    <td>
+                        <span class="date">{{ donation.created_at.strftime('%Y-%m-%d %H:%M') if donation.created_at else 'N/A' }}</span>
+                    </td>
+                    <td>
+                        <div class="action-buttons">
+                            <a href="{{ url_for('admin.donation_view', donation_id=donation.id) }}" 
+                               class="btn btn-sm btn-outline-info" title="View Details">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            {% if donation.status != 'completed' %}
+                            <button class="btn btn-sm btn-outline-success status-btn" 
+                                    data-id="{{ donation.id }}" 
+                                    data-status="completed" title="Mark as Completed">
+                                <i class="fas fa-check"></i>
+                            </button>
+                            {% endif %}
+                            {% if donation.status != 'failed' %}
+                            <button class="btn btn-sm btn-outline-danger status-btn" 
+                                    data-id="{{ donation.id }}" 
+                                    data-status="failed" title="Mark as Failed">
+                                <i class="fas fa-times"></i>
+                            </button>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="7" class="text-center text-muted py-4">
+                        <i class="fas fa-donate fa-2x mb-2"></i>
+                        <p>No donations found</p>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Status Update Modal -->
+<div class="modal fade" id="statusModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Update Donation Status</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to update this donation status to <span id="newStatus"></span>?</p>
+                <p class="text-warning"><small>This action will affect project funding totals.</small></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirmStatusUpdate">Update Status</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Status update functionality
+    let updateData = null;
+    
+    document.querySelectorAll('.status-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            updateData = {
+                id: this.dataset.id,
+                status: this.dataset.status
+            };
+            document.getElementById('newStatus').textContent = updateData.status;
+            new bootstrap.Modal(document.getElementById('statusModal')).show();
+        });
+    });
+    
+    document.getElementById('confirmStatusUpdate').addEventListener('click', function() {
+        if (updateData) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = `/admin/donations/${updateData.id}/update-status`;
+            
+            const statusInput = document.createElement('input');
+            statusInput.type = 'hidden';
+            statusInput.name = 'status';
+            statusInput.value = updateData.status;
+            form.appendChild(statusInput);
+            
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
+});
+</script>
+{% endblock %}

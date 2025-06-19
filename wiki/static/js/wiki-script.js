@@ -1,4 +1,28 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Ensure dropdown works on click only
+    const dropdownToggle = document.getElementById('mainSiteDropdown');
+    if (dropdownToggle) {
+        // Remove any existing event listeners that might interfere
+        dropdownToggle.addEventListener('click', function(e) {
+            // Let Bootstrap handle the dropdown
+            // Don't prevent default here
+        });
+        
+        // Prevent accidental hover behavior
+        const dropdown = dropdownToggle.closest('.dropdown');
+        if (dropdown) {
+            dropdown.addEventListener('mouseenter', function(e) {
+                // Don't trigger dropdown on hover
+                e.stopPropagation();
+            });
+            
+            dropdown.addEventListener('mouseleave', function(e) {
+                // Don't close dropdown on mouse leave
+                e.stopPropagation();
+            });
+        }
+    }
+    
     // Category collapse icons
     document.querySelectorAll('.wiki-category-header, .wiki-subcategory-header').forEach(header => {
         const icon = header.querySelector('i.fas');

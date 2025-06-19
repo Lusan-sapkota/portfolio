@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 
-{% block title %}{{ project.title }} - Donation{% endblock %}
+{% block title %}Donate to {{ project.title }} - {{ seo_settings.site_title if seo_settings else 'Donation Platform' }}{% endblock %}
+
+{% block meta_description %}Support {{ project.title }} - {{ project.short_description or project.description[:150] }}. Help advance open source innovation with your contribution.{% endblock %}
 
 {% block extra_css %}
 <style>

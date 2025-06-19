@@ -1,0 +1,583 @@
+{% extends 'wiki/base.html' %}
+
+{% block title %}Explore Articles - Lusan's Wiki{% endblock %}
+
+{% block head %}
+<style>
+    .explore-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    padding: 4rem 0 2rem;
+    margin-bottom: 3rem;
+    border-radius: 0 0 30px 30px;
+}
+
+.explore-header h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.explore-header p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    margin-bottom: 0;
+}
+
+/* Filter Controls - Themed and Responsive */
+.filter-controls {
+    background: var(--surface-color);
+    border-radius: 1.5rem;
+    padding: 2rem;
+    margin-bottom: 3rem;
+    box-shadow: var(--shadow-soft);
+    border: 2px solid var(--border-color);
+}
+
+.filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    align-items: flex-end;
+}
+
+.filter-row input::placeholder {
+    color: var(--primary-color);
+    opacity: 0.8;
+}
+
+.filter-group {
+    flex: 1 1 200px;
+}
+
+.filter-group label {
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.filter-group .form-control,
+.filter-group .form-select {
+    width: 100%;
+    border-radius: 10px;
+    border: 2px solid var(--border-color);
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+.filter-group .form-control:focus,
+.filter-group .form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px var(--primary-light);
+    outline: none;
+}
+
+.btn-filter {
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-soft);
+}
+
+.btn-filter:hover {
+    background: var(--gradient-accent);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+.btn-reset {
+    background: var(--surface-color);
+    color: var(--text-muted);
+    border: 2px solid var(--border-color);
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    margin-left: 0.5rem;
+}
+
+.btn-reset:hover {
+    background: var(--light-color);
+    color: var(--text-color);
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+.articles-stats {
+    margin-bottom: 2rem;
+    padding: 1rem 1.5rem;
+    background: var(--light-color);
+    border-radius: 10px;
+    border-left: 4px solid var(--primary-color);
+}
+
+.articles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.article-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+.article-card-header {
+    padding: 1.5rem;
+    flex-grow: 1;
+}
+
+.article-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+    text-decoration: none;
+    display: block;
+    line-height: 1.4;
+}
+
+.article-title:hover {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.article-excerpt {
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.article-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background: var(--light-color);
+    border-top: 1px solid var(--border-color);
+    margin-top: auto;
+}
+
+.article-date {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.article-stats {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.article-stat {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.article-category {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.15); /* For glass feel */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff; /* Ensures text/icon contrast */
+  padding: 6px 12px;
+border-top-left-radius: inherit;
+border-top-right-radius: inherit;
+border-bottom-left-radius: 0;
+border-bottom-right-radius: 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: inline-block;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); /* Ensures visibility */
+}
+
+[data-theme="dark"] .article-category {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #eee;
+}
+
+.article-tags {
+    margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.article-tag {
+    background: var(--light-color);
+    color: var(--text-color);
+    padding: 0.2rem 0.6rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    border: 1px solid var(--border-color);
+}
+
+.pagination-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 3rem;
+}
+
+.pagination {
+    background: var(--surface-color);
+    border-radius: 15px;
+    padding: 1rem;
+    box-shadow: var(--shadow-soft);
+}
+
+.page-link {
+    border: none;
+    border-radius: 8px;
+    margin: 0 0.2rem;
+    padding: 0.75rem 1rem;
+    font-weight: 600;
+    color: var(--text-color);
+    background: var(--light-color);
+    transition: all 0.3s ease;
+}
+
+.page-link:hover {
+    background: var(--primary-color);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.page-item.active .page-link {
+    background: var(--primary-color);
+    color: white;
+    box-shadow: var(--shadow-soft);
+}
+
+.no-articles {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--text-muted);
+}
+
+.no-articles i {
+    font-size: 4rem;
+    margin-bottom: 2rem;
+    opacity: 0.5;
+}
+
+.no-articles h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--text-muted);
+}
+
+@media (max-width: 768px) {
+    .explore-header {
+        padding: 2rem 0 1rem;
+        margin-bottom: 2rem;
+    }
+    
+    .explore-header h1 {
+        font-size: 2rem;
+    }
+    
+    .filter-controls {
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+    }
+    
+    .filter-row {
+        gap: 1rem; /* Let flexbox wrap items naturally */
+    }
+
+    .btn-filter, .btn-reset {
+        flex: 1; /* Allow buttons to grow and fill space */
+        margin-left: 0;
+    }
+    
+    .articles-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .article-card-header {
+        padding: 1rem;
+    }
+    
+    .article-meta {
+        padding: 0.75rem 1rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .article-stats {
+        gap: 0.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .explore-header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .filter-controls {
+        padding: 1rem;
+    }
+    
+    .btn-filter,
+    .btn-reset {
+        width: 100%;
+        margin: 0;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Explore Header -->
+<div class="explore-header">
+    <div class="container">
+        <div class="text-center">
+            <h1><i class="fas fa-compass me-3"></i>Explore Articles</h1>
+            <p>Discover all the knowledge articles in my wiki collection</p>
+        </div>
+    </div>
+</div>
+
+<!-- Filter Controls -->
+<div class="filter-controls">
+    <form method="GET" action="{{ url_for('wiki.explore') }}">
+        <div class="filter-row">
+            <div class="filter-group">
+                <label for="search">Search Articles</label>
+                <input type="text" 
+                       class="form-control" 
+                       id="search" 
+                       name="search" 
+                       placeholder="Search by title, content, or tags..."
+                       value="{{ search_query }}">
+            </div>
+            
+            <div class="filter-group">
+                <label for="category">Category</label>
+                <select class="form-select" id="category" name="category">
+                    <option value="">All Categories</option>
+                    {% for cat in all_categories %}
+                    <option value="{{ cat.id }}" {% if category_filter == cat.id|string %}selected{% endif %}>
+                        {{ cat.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="sort">Sort By</label>
+                <select class="form-select" id="sort" name="sort">
+                    <option value="title" {% if sort_by == 'title' %}selected{% endif %}>Title (A-Z)</option>
+                    <option value="date" {% if sort_by == 'date' %}selected{% endif %}>Newest First</option>
+                    <option value="views" {% if sort_by == 'views' %}selected{% endif %}>Most Viewed</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <button type="submit" class="btn btn-filter">
+                    <i class="fas fa-filter me-2"></i>Filter
+                </button>
+                <a href="{{ url_for('wiki.explore') }}" class="btn btn-reset">
+                    <i class="fas fa-undo me-2"></i>Reset
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Articles Stats -->
+{% if articles or search_query or category_filter %}
+<div class="articles-stats">
+    <div class="d-flex justify-content-between align-items-center flex-wrap">
+        <div>
+            <strong>{{ pagination.total }}</strong> article{{ 's' if pagination.total != 1 else '' }} found
+            {% if search_query %}
+                for <strong>"{{ search_query }}"</strong>
+            {% endif %}
+            {% if category_filter %}
+                {% for cat in all_categories if cat.id == category_filter|int %}
+                    in <strong>{{ cat.name }}</strong>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="text-muted">
+            Page {{ pagination.page }} of {{ pagination.pages }}
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Articles Grid -->
+{% if articles %}
+<div class="articles-grid">
+    {% for article in articles %}
+    <div class="article-card">
+        {% if article.category %}
+        <div class="article-category">{{ article.category.name }}</div>
+        {% endif %}
+        
+        <div class="article-card-header">
+            <a href="{{ url_for('wiki.article', article_id=article.id) }}" class="article-title">
+                {{ article.title }}
+            </a>
+            
+            <div class="article-excerpt">
+                {{ article.get_excerpt(150) }}
+            </div>
+            
+            {% if article.tags %}
+            <div class="article-tags">
+                {% for tag in article.tags.split(',')[:3] %}
+                <span class="article-tag">{{ tag.strip() }}</span>
+                {% endfor %}
+                {% if article.tags.split(',')|length > 3 %}
+                <span class="article-tag">+{{ article.tags.split(',')|length - 3 }} more</span>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="article-meta">
+            <div class="article-date">
+                <i class="fas fa-calendar"></i>
+                {{ article.created_at.strftime('%b %d, %Y') if article.created_at else 'Unknown' }}
+            </div>
+            
+            <div class="article-stats">
+                {% if article.views %}
+                <div class="article-stat">
+                    <i class="fas fa-eye"></i>
+                    {{ article.views }}
+                </div>
+                {% endif %}
+                <div class="article-stat">
+                    <i class="fas fa-clock"></i>
+                    {{ article.get_reading_time() }} min
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Pagination -->
+{% if pagination.pages > 1 %}
+<div class="pagination-wrapper">
+    <nav aria-label="Articles pagination">
+        <ul class="pagination">
+            {% if pagination.has_prev %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('wiki.explore', page=pagination.prev_num, sort=sort_by, category=category_filter, search=search_query) }}">
+                    <i class="fas fa-chevron-left"></i>
+                </a>
+            </li>
+            {% endif %}
+            
+            {% for page_num in pagination.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+                {% if page_num %}
+                    {% if page_num != pagination.page %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('wiki.explore', page=page_num, sort=sort_by, category=category_filter, search=search_query) }}">{{ page_num }}</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item active">
+                        <span class="page-link">{{ page_num }}</span>
+                    </li>
+                    {% endif %}
+                {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">…</span>
+                </li>
+                {% endif %}
+            {% endfor %}
+            
+            {% if pagination.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('wiki.explore', page=pagination.next_num, sort=sort_by, category=category_filter, search=search_query) }}">
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+{% endif %}
+
+{% else %}
+<!-- No Articles Found -->
+<div class="no-articles">
+    <i class="fas fa-search"></i>
+    <h3>No articles found</h3>
+    <p class="mb-4">
+        {% if search_query or category_filter %}
+            Try adjusting your search criteria or browse all articles.
+        {% else %}
+            There are no articles available yet.
+        {% endif %}
+    </p>
+    {% if search_query or category_filter %}
+    <a href="{{ url_for('wiki.explore') }}" class="btn btn-primary">
+        <i class="fas fa-list me-2"></i>View All Articles
+    </a>
+    {% endif %}
+</div>
+{% endif %}
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Auto-submit form on select change for better UX
+document.addEventListener('DOMContentLoaded', function() {
+    const categorySelect = document.getElementById('category');
+    const sortSelect = document.getElementById('sort');
+    
+    if (categorySelect) {
+        categorySelect.addEventListener('change', function() {
+            this.form.submit();
+        });
+    }
+    
+    if (sortSelect) {
+        sortSelect.addEventListener('change', function() {
+            this.form.submit();
+        });
+    }
+    
+    // Handle search on Enter key
+    const searchInput = document.getElementById('search');
+    if (searchInput) {
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                this.form.submit();
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

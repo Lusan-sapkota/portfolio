@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Portfolio CMS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/admin-style.css') }}">
+</head>
+<body class="admin-body">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ url_for('admin.dashboard') }}">
+                <i class="fas fa-cog"></i> Portfolio CMS
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ url_for('admin.dashboard') }}">
+                            <i class="fas fa-dashboard"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('admin.projects') }}">
+                            <i class="fas fa-project-diagram"></i> Projects
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('admin.categories') }}">
+                            <i class="fas fa-tags"></i> Categories
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('admin.skills') }}">
+                            <i class="fas fa-code"></i> Skills
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('admin.seo_settings') }}">
+                            <i class="fas fa-search"></i> SEO
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('admin.contacts') }}">
+                            <i class="fas fa-envelope"></i> Contacts
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('admin.newsletter_subscribers') }}">
+                            <i class="fas fa-mail-bulk"></i> Newsletter
+                        </a>
+                    </li>
+                </ul>
+                
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user"></i> Admin
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ url_for('admin.personal_info') }}">
+                                <i class="fas fa-user-edit"></i> Personal Info
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{{ url_for('index') }}" target="_blank">
+                                <i class="fas fa-external-link-alt"></i> View Site
+                            </a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('admin.logout') }}">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid mt-4">
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="row">
+            <div class="col-12">
+                <h1 class="h3 mb-4">
+                    <i class="fas fa-dashboard"></i> Dashboard Overview
+                </h1>
+            </div>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="row mb-4">
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    Total Projects
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ stats.projects }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-project-diagram fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                    Newsletter Subscribers
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ stats.newsletter_subscribers }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-mail-bulk fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-info shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                    Contact Submissions
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ stats.contact_submissions }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-envelope fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-warning shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                    Skills & Categories
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ stats.skills + stats.categories }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-code fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="row">
+            <!-- Recent Contact Submissions -->
+            <div class="col-lg-6 mb-4">
+                <div class="card shadow">
+                    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                        <h6 class="m-0 font-weight-bold text-primary">Recent Contact Submissions</h6>
+                        <a href="{{ url_for('admin.contacts') }}" class="btn btn-sm btn-primary">View All</a>
+                    </div>
+                    <div class="card-body">
+                        {% if stats.recent_contacts %}
+                            {% for contact in stats.recent_contacts %}
+                            <div class="d-flex align-items-center py-2 border-bottom">
+                                <div class="flex-grow-1">
+                                    <strong>{{ contact.name }}</strong>
+                                    <small class="text-muted d-block">{{ contact.email }}</small>
+                                    <small class="text-muted">{{ contact.submitted_at.strftime('%Y-%m-%d %H:%M') }}</small>
+                                </div>
+                                <div>
+                                    {% if contact.is_replied %}
+                                        <span class="badge bg-success">Replied</span>
+                                    {% else %}
+                                        <span class="badge bg-warning">Pending</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <p class="text-muted mb-0">No recent contact submissions.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Newsletter Subscribers -->
+            <div class="col-lg-6 mb-4">
+                <div class="card shadow">
+                    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                        <h6 class="m-0 font-weight-bold text-success">Recent Newsletter Subscribers</h6>
+                        <a href="{{ url_for('admin.newsletter_subscribers') }}" class="btn btn-sm btn-success">View All</a>
+                    </div>
+                    <div class="card-body">
+                        {% if stats.recent_subscribers %}
+                            {% for subscriber in stats.recent_subscribers %}
+                            <div class="d-flex align-items-center py-2 border-bottom">
+                                <div class="flex-grow-1">
+                                    <strong>{{ subscriber.email }}</strong>
+                                    {% if subscriber.name %}
+                                        <small class="text-muted d-block">{{ subscriber.name }}</small>
+                                    {% endif %}
+                                    <small class="text-muted">{{ subscriber.subscribed_at.strftime('%Y-%m-%d %H:%M') }}</small>
+                                </div>
+                                <div>
+                                    {% if subscriber.is_active %}
+                                        <span class="badge bg-success">Active</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">Inactive</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <p class="text-muted mb-0">No recent newsletter subscribers.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Quick Actions</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <a href="{{ url_for('admin.create_project') }}" class="btn btn-primary btn-block">
+                                    <i class="fas fa-plus"></i> Add New Project
+                                </a>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <a href="{{ url_for('admin.create_category') }}" class="btn btn-secondary btn-block">
+                                    <i class="fas fa-tag"></i> Add Category
+                                </a>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <a href="{{ url_for('admin.create_skill') }}" class="btn btn-info btn-block">
+                                    <i class="fas fa-code"></i> Add Skill
+                                </a>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <a href="{{ url_for('admin.create_seo_setting') }}" class="btn btn-warning btn-block">
+                                    <i class="fas fa-search"></i> Add SEO Setting
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='admin/js/admin-script.js') }}"></script>
+</body>
+</html>

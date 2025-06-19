@@ -1,0 +1,355 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Newsletter Subscribers{% endblock %}
+
+{% block content %}
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">Newsletter Subscribers</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="{{ url_for('admin.dashboard') }}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Newsletter</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="container-fluid">
+        <!-- Filter and Search -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Filters & Actions</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <form method="GET" class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="status">Status</label>
+                                    <select name="status" id="status" class="form-control">
+                                        <option value="">All</option>
+                                        <option value="active" {{ 'selected' if request.args.get('status') == 'active' }}>Active</option>
+                                        <option value="inactive" {{ 'selected' if request.args.get('status') == 'inactive' }}>Inactive</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="date_from">From Date</label>
+                                    <input type="date" name="date_from" id="date_from" class="form-control" value="{{ request.args.get('date_from', '') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="search">Search</label>
+                                    <input type="text" name="search" id="search" class="form-control" placeholder="Email address..." value="{{ request.args.get('search', '') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-search"></i> Filter
+                                </button>
+                                <a href="{{ url_for('admin.newsletter') }}" class="btn btn-secondary">
+                                    <i class="fas fa-times"></i> Clear
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>&nbsp;</label>
+                            <div>
+                                <a href="{{ url_for('admin.export_newsletter') }}" class="btn btn-success btn-block">
+                                    <i class="fas fa-download"></i> Export Subscribers
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics -->
+        <div class="row">
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        <h3>{{ total_subscribers }}</h3>
+                        <p>Total Subscribers</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-success">
+                    <div class="inner">
+                        <h3>{{ active_subscribers }}</h3>
+                        <p>Active Subscribers</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-warning">
+                    <div class="inner">
+                        <h3>{{ inactive_subscribers }}</h3>
+                        <p>Inactive Subscribers</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-user-times"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-secondary">
+                    <div class="inner">
+                        <h3>{{ this_month_subscribers }}</h3>
+                        <p>This Month</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Subscribers List -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Subscribers ({{ subscribers|length }})</h3>
+                <div class="card-tools">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-success" onclick="activateSelected()">
+                            <i class="fas fa-check"></i> Activate Selected
+                        </button>
+                        <button type="button" class="btn btn-sm btn-warning" onclick="deactivateSelected()">
+                            <i class="fas fa-pause"></i> Deactivate Selected
+                        </button>
+                        <button type="button" class="btn btn-sm btn-danger" onclick="deleteSelected()">
+                            <i class="fas fa-trash"></i> Delete Selected
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body table-responsive p-0">
+                <table class="table table-hover text-nowrap">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="select-all"></th>
+                            <th>Status</th>
+                            <th>Email</th>
+                            <th>Subscribed Date</th>
+                            <th>Source</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for subscriber in subscribers %}
+                        <tr class="{{ 'table-success' if subscriber.is_active else 'table-secondary' }}">
+                            <td><input type="checkbox" class="subscriber-checkbox" data-id="{{ subscriber.id }}"></td>
+                            <td>
+                                {% if subscriber.is_active %}
+                                    <span class="badge badge-success">Active</span>
+                                {% else %}
+                                    <span class="badge badge-secondary">Inactive</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ subscriber.email }}</td>
+                            <td>{{ subscriber.subscribed_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                            <td>{{ subscriber.source or 'Website' }}</td>
+                            <td>
+                                <div class="btn-group">
+                                    {% if subscriber.is_active %}
+                                    <button type="button" class="btn btn-sm btn-warning" onclick="toggleActive({{ subscriber.id }})">
+                                        <i class="fas fa-pause"></i>
+                                    </button>
+                                    {% else %}
+                                    <button type="button" class="btn btn-sm btn-success" onclick="toggleActive({{ subscriber.id }})">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                    {% endif %}
+                                    <button type="button" class="btn btn-sm btn-danger" onclick="deleteSubscriber({{ subscriber.id }})">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="6" class="text-center">No newsletter subscribers found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Select all functionality
+document.getElementById('select-all').addEventListener('change', function() {
+    const checkboxes = document.querySelectorAll('.subscriber-checkbox');
+    checkboxes.forEach(checkbox => checkbox.checked = this.checked);
+});
+
+// Toggle active status
+function toggleActive(id) {
+    fetch(`/admin/api/newsletter/${id}/toggle-active`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showNotification('Status updated successfully', 'success');
+            location.reload();
+        } else {
+            showNotification('Error: ' + data.message, 'error');
+        }
+    })
+    .catch(error => {
+        showNotification('Error updating status', 'error');
+    });
+}
+
+// Delete subscriber
+function deleteSubscriber(id) {
+    if (confirm('Delete this subscriber? This action cannot be undone.')) {
+        fetch(`/admin/newsletter/${id}/delete`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showNotification('Subscriber deleted successfully', 'success');
+                location.reload();
+            } else {
+                showNotification('Error: ' + data.message, 'error');
+            }
+        })
+        .catch(error => {
+            showNotification('Error deleting subscriber', 'error');
+        });
+    }
+}
+
+// Bulk operations
+function activateSelected() {
+    const checkboxes = document.querySelectorAll('.subscriber-checkbox:checked');
+    if (checkboxes.length === 0) {
+        showNotification('Please select subscribers to activate', 'warning');
+        return;
+    }
+    
+    if (confirm('Activate selected subscribers?')) {
+        const ids = Array.from(checkboxes).map(cb => cb.dataset.id);
+        
+        fetch('/admin/api/newsletter/bulk-activate', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ ids: ids })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showNotification('Subscribers activated', 'success');
+                location.reload();
+            } else {
+                showNotification('Error: ' + data.message, 'error');
+            }
+        })
+        .catch(error => {
+            showNotification('Error activating subscribers', 'error');
+        });
+    }
+}
+
+function deactivateSelected() {
+    const checkboxes = document.querySelectorAll('.subscriber-checkbox:checked');
+    if (checkboxes.length === 0) {
+        showNotification('Please select subscribers to deactivate', 'warning');
+        return;
+    }
+    
+    if (confirm('Deactivate selected subscribers?')) {
+        const ids = Array.from(checkboxes).map(cb => cb.dataset.id);
+        
+        fetch('/admin/api/newsletter/bulk-deactivate', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ ids: ids })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showNotification('Subscribers deactivated', 'success');
+                location.reload();
+            } else {
+                showNotification('Error: ' + data.message, 'error');
+            }
+        })
+        .catch(error => {
+            showNotification('Error deactivating subscribers', 'error');
+        });
+    }
+}
+
+function deleteSelected() {
+    const checkboxes = document.querySelectorAll('.subscriber-checkbox:checked');
+    if (checkboxes.length === 0) {
+        showNotification('Please select subscribers to delete', 'warning');
+        return;
+    }
+    
+    if (confirm('Delete selected subscribers? This action cannot be undone.')) {
+        const ids = Array.from(checkboxes).map(cb => cb.dataset.id);
+        
+        fetch('/admin/api/newsletter/bulk-delete', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ ids: ids })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showNotification('Subscribers deleted', 'success');
+                location.reload();
+            } else {
+                showNotification('Error: ' + data.message, 'error');
+            }
+        })
+        .catch(error => {
+            showNotification('Error deleting subscribers', 'error');
+        });
+    }
+}
+</script>
+{% endblock %}

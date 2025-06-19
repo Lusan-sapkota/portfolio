@@ -1,0 +1,199 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Education{% endblock %}
+
+{% block content %}
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">Education</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="{{ url_for('admin.dashboard') }}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Education</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="container-fluid">
+        <!-- Actions -->
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <a href="{{ url_for('admin.education_create') }}" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Add Education
+                </a>
+            </div>
+        </div>
+
+        <!-- Education List -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Education Entries ({{ educations|length }})</h3>
+            </div>
+            <div class="card-body">
+                {% if educations %}
+                    <div class="timeline">
+                        {% for education in educations %}
+                        <div class="timeline-item">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <div class="card">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h5 class="mb-1">{{ education.degree }}</h5>
+                                            <h6 class="text-muted mb-0">
+                                                {{ education.institution }}
+                                                {% if education.location %}
+                                                    - {{ education.location }}
+                                                {% endif %}
+                                            </h6>
+                                        </div>
+                                        <div class="btn-group">
+                                            <a href="{{ url_for('admin.education_edit', id=education.id) }}" class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteEducation({{ education.id }})">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <p class="text-muted mb-2">
+                                                    <i class="fas fa-calendar-alt"></i>
+                                                    {{ education.start_date.strftime('%B %Y') if education.start_date else 'Unknown' }}
+                                                    -
+                                                    {% if education.is_current %}
+                                                        <span class="badge badge-success">Present</span>
+                                                    {% elif education.end_date %}
+                                                        {{ education.end_date.strftime('%B %Y') }}
+                                                    {% else %}
+                                                        Unknown
+                                                    {% endif %}
+                                                </p>
+                                            </div>
+                                            {% if education.field_of_study %}
+                                            <div class="col-md-6">
+                                                <p class="text-muted mb-2">
+                                                    <i class="fas fa-book"></i>
+                                                    {{ education.field_of_study }}
+                                                </p>
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                        
+                                        {% if education.gpa %}
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <p class="text-muted mb-2">
+                                                    <i class="fas fa-star"></i>
+                                                    GPA: {{ education.gpa }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                        
+                                        {% if education.institution_url %}
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <p class="text-muted mb-2">
+                                                    <i class="fas fa-link"></i>
+                                                    <a href="{{ education.institution_url }}" target="_blank" rel="noopener">Institution Website</a>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                        
+                                        {% if education.description %}
+                                        <p class="mb-0">{{ education.description|nl2br }}</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="text-center py-5">
+                        <i class="fas fa-graduation-cap fa-3x text-muted mb-3"></i>
+                        <h4>No Education Entries</h4>
+                        <p class="text-muted">Add your educational background to showcase your academic journey.</p>
+                        <a href="{{ url_for('admin.education_create') }}" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Add First Education
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.timeline {
+    position: relative;
+    padding-left: 30px;
+}
+
+.timeline:before {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #28a745;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.timeline-marker {
+    position: absolute;
+    left: -23px;
+    top: 20px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #28a745;
+    border: 3px solid #fff;
+    box-shadow: 0 0 0 3px #28a745;
+}
+
+.timeline-content {
+    margin-left: 15px;
+}
+</style>
+
+<script>
+function deleteEducation(id) {
+    if (confirm('Delete this education entry? This action cannot be undone.')) {
+        fetch(`/admin/education/${id}/delete`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showNotification('Education deleted successfully', 'success');
+                location.reload();
+            } else {
+                showNotification('Error: ' + data.message, 'error');
+            }
+        })
+        .catch(error => {
+            showNotification('Error deleting education', 'error');
+        });
+    }
+}
+</script>
+{% endblock %}

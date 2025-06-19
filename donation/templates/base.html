@@ -3,7 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Donation Platform{% endblock %}</title>
+    <title>{% block title %}{{ seo_settings.site_title if seo_settings else 'Donation Platform' }}{% endblock %}</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="{% block meta_description %}{{ seo_settings.meta_description if seo_settings else 'Support open source projects and innovation' }}{% endblock %}">
+    <meta name="keywords" content="{% block meta_keywords %}{{ seo_settings.meta_keywords if seo_settings else 'donation, open source, projects, support' }}{% endblock %}">
+    <meta name="author" content="{{ personal_info.full_name if personal_info else 'Developer' }}">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request.url }}">
+    <meta property="og:title" content="{% block og_title %}{{ seo_settings.site_title if seo_settings else 'Donation Platform' }}{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}{{ seo_settings.meta_description if seo_settings else 'Support open source projects and innovation' }}{% endblock %}">
+    <meta property="og:image" content="{{ url_for('static', filename='assets/images/profile.jpg', _external=True) }}">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ request.url }}">
+    <meta property="twitter:title" content="{% block twitter_title %}{{ seo_settings.site_title if seo_settings else 'Donation Platform' }}{% endblock %}">
+    <meta property="twitter:description" content="{% block twitter_description %}{{ seo_settings.meta_description if seo_settings else 'Support open source projects and innovation' }}{% endblock %}">
+    <meta property="twitter:image" content="{{ url_for('static', filename='assets/images/profile.jpg', _external=True) }}">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{{ request.url }}">
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -11,6 +34,42 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Local CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('donation.static', filename='css/donation-style.css') }}">
+
+    <!-- Universal favicon -->
+	<link rel="icon" type="image/png" href="{{ url_for('static', filename='assets/logo/logo.png') }}" sizes="any">
+
+	<!-- For Apple devices -->
+	<link rel="apple-touch-icon" href="{{ url_for('static', filename='assets/logo/logo.png') }}">
+
+    <script>
+    // Initialize theme before page renders
+    (function() {
+        const currentTheme = localStorage.getItem('theme') || 
+            (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        
+        // Ensure icons are reset on initial load
+        document.addEventListener('DOMContentLoaded', function() {
+            const moonIcons = document.querySelectorAll('.fa-moon');
+            const sunIcons = document.querySelectorAll('.fa-sun');
+            
+            moonIcons.forEach(icon => icon.classList.toggle('d-none', currentTheme === 'dark'));
+            sunIcons.forEach(icon => icon.classList.toggle('d-none', currentTheme === 'light'));
+        });
+    })();
+
+    // Handle system theme changes
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+        if (!localStorage.getItem('theme')) {
+            const newTheme = e.matches ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            updateThemeIcons(newTheme);
+        }
+    });
+    </script>
     
     <style>
         :root {
@@ -49,79 +108,6 @@
             line-height: 1.6;
             color: var(--text-color);
             background-color: var(--bg-color);
-        }
-        
-        .navbar {
-            background: var(--navbar-bg) !important;
-            box-shadow: var(--shadow);
-            padding: 1rem 0;
-            border-bottom: 1px solid var(--border-color);
-            transition: all 0.3s ease;
-        }
-        
-        .navbar-brand {
-            font-weight: 700;
-            font-size: 1.5rem;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .navbar-nav .nav-link {
-            color: var(--text-color) !important;
-            font-weight: 500;
-            padding: 0.5rem 1rem !important;
-            transition: var(--transition);
-            position: relative;
-        }
-        
-        .navbar-nav .nav-link:hover {
-            color: var(--primary-color) !important;
-        }
-        
-        .navbar-nav .nav-link:before {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: 0;
-            left: 50%;
-            background-color: var(--primary-color);
-            transition: all 0.3s ease;
-        }
-        
-        .navbar-nav .nav-link:hover:before,
-        .navbar-nav .nav-link.active:before {
-            width: 80%;
-            left: 10%;
-        }
-        
-        .navbar-nav .nav-link.active {
-            color: var(--primary-color) !important;
-            font-weight: 600;
-            background: rgba(243, 156, 18, 0.1);
-            border-radius: 20px;
-        }
-        
-        [data-theme="dark"] .navbar-nav .nav-link.active {
-            background: rgba(243, 156, 18, 0.2);
-        }
-        
-        .theme-toggle {
-            background: transparent;
-            border: 2px solid var(--border-color);
-            color: var(--text-color);
-            padding: 8px 12px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        
-        .theme-toggle:hover {
-            background: var(--primary-color);
-            color: white;
-            border-color: var(--primary-color);
         }
         
         /* Form Elements Dark Mode Support */
@@ -218,39 +204,82 @@
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+    <nav class="navbar navbar-expand-lg navbar fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="{{ url_for('donation.index') }}">
-                <i class="fas fa-heart"></i> Donations
+            <!-- Logo -->
+            <a class="navbar-brand" href="{{ url_for('index') }}">
+                <img src="{{ url_for('static', filename='assets/logo/logo.png') }}" alt="{{ personal_info.full_name if personal_info else 'Lusan Sapkota' }}" height="40">
+                <span class="brand-text">Donations</span>
             </a>
-            
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+
+            <!-- Mobile Toggle -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            
+
+            <!-- Navigation Links -->
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
+                    <!-- Projects -->
                     <li class="nav-item">
-                        <a class="nav-link {% if request.endpoint == 'donation.index' %}active{% endif %}" href="{{ url_for('donation.index') }}">Projects</a>
+                        <a class="nav-link{% if request.endpoint == 'wiki.index' %} active{% endif %}" href="{{ url_for('donation.index') }}">
+                            <i class="fas fa-book"></i> Projects
+                        </a>
                     </li>
+                    
+                    <!-- Hightlights -->
                     <li class="nav-item">
-                        <a class="nav-link {% if request.endpoint == 'donation.highlights' %}active{% endif %}" href="{{ url_for('donation.highlights') }}">Highlights</a>
+                        <a class="nav-link{% if request.endpoint == 'wiki.explore' %} active{% endif %}" href="{{ url_for('donation.highlights') }}">
+                            <i class="fas fa-compass"></i> Highlights
+                        </a>
                     </li>
+                    
+                    <!-- Thanksgiving -->
                     <li class="nav-item">
-                        <a class="nav-link {% if request.endpoint == 'donation.thanksgiving' %}active{% endif %}" href="{{ url_for('donation.thanksgiving') }}">Thanksgiving</a>
+                        <a class="nav-link{% if request.endpoint == 'wiki.search' %} active{% endif %}" href="{{ url_for('donation.thanksgiving') }}">
+                            <i class="fas fa-search"></i> Thanksgiving
+                        </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">Main Site</a>
+
+                    <!-- Main Site with Submenu -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="mainSiteDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-home"></i> Main Site
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="mainSiteDropdown">
+                            <li>
+                                <a class="dropdown-item" href="{{ url_for('index') }}" target="_blank">
+                                    <i class="fas fa-home"></i> Home
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ url_for('git.index') }}">
+                                    <i class="fas fa-code"></i> Projects
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="https://store.lusansapkota.com" target="_blank">
+                                    <i class="fas fa-store"></i> Store
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ url_for('donation.index') }}">
+                                    <i class="fas fa-heart"></i> Donate
+                                </a>
+                            </li>
+                        </ul>
                     </li>
-                    <li class="nav-item">
-                        <button class="theme-toggle" id="themeToggle">
-                            <i class="fas fa-moon" id="themeIcon"></i>
+                    <li class="nav-item theme-toggle-wrapper">
+                        <button type="button" class="btn btn-link nav-link theme-toggle" id="theme-toggle">
+                        <i class="fas fa-moon"></i>
+                        <i class="fas fa-sun"></i>
                         </button>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
+
     
     <!-- Main Content -->
     <main style="margin-top: 80px;">
@@ -263,54 +292,39 @@
             <div class="row">
                 <div class="col-md-6">
                     <h5>Support Open Source</h5>
-                    <p>Help us build amazing projects that benefit the entire developer community.</p>
+                    <p>{{ personal_info.bio if personal_info else 'Help me build amazing projects that benefit the entire developer community.' }}</p>
                 </div>
                 <div class="col-md-6 text-md-end">
                     <h6>Connect</h6>
-                    <a href="#" class="me-3"><i class="fab fa-github"></i></a>
-                    <a href="#" class="me-3"><i class="fab fa-linkedin"></i></a>
-                    <a href="#" class="me-3"><i class="fab fa-twitter"></i></a>
+                    {% if social_links %}
+                        {% for link in social_links %}
+                            <a href="{{ link.url }}" class="me-3" target="_blank" rel="noopener" aria-label="{{ link.platform }}">
+                                <i class="fab fa-{{ link.platform.lower() }}"></i>
+                            </a>
+                        {% endfor %}
+                    {% else %}
+                        <a href="#" class="me-3"><i class="fab fa-github"></i></a>
+                        <a href="#" class="me-3"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="me-3"><i class="fab fa-twitter"></i></a>
+                    {% endif %}
                 </div>
             </div>
             <hr class="my-4">
             <div class="text-center">
-                <p>&copy; {{ current_year }} Lusan's Portfolio. All rights reserved.</p>
+                <p>&copy; {{ current_year }} {{ personal_info.full_name if personal_info else "Lusan's Portfolio" }}. All rights reserved.</p>
             </div>
         </div>
     </footer>
     
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- Theme Toggle Script -->
-    <script>
-        // Theme management
-        const themeToggle = document.getElementById('themeToggle');
-        const themeIcon = document.getElementById('themeIcon');
-        const html = document.documentElement;
-        
-        // Load saved theme or default to light
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        html.setAttribute('data-theme', savedTheme);
-        updateThemeIcon(savedTheme);
-        
-        themeToggle.addEventListener('click', () => {
-            const currentTheme = html.getAttribute('data-theme');
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            
-            html.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            updateThemeIcon(newTheme);
-        });
-        
-        function updateThemeIcon(theme) {
-            if (theme === 'dark') {
-                themeIcon.className = 'fas fa-sun';
-            } else {
-                themeIcon.className = 'fas fa-moon';
-            }
-        }
-    </script>
+    <!-- Scripts -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
+
+    <!-- Font Awesome JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    <!-- Custom JS -->
+	<script src="{{ url_for('static', filename='assets/js/custom.js') }}"></script>
+    <script src="{{ url_for('git.static', filename='js/donation-script.js') }}"></script>
     
     {% block extra_js %}{% endblock %}
 </body>

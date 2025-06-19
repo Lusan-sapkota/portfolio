@@ -1,0 +1,245 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}{{ 'Edit Experience' if experience else 'Add Experience' }}{% endblock %}
+
+{% block content %}
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">{{ 'Edit Experience' if experience else 'Add Experience' }}</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="{{ url_for('admin.dashboard') }}">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('admin.experience') }}">Experience</a></li>
+                    <li class="breadcrumb-item active">{{ 'Edit' if experience else 'Add' }}</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="container-fluid">
+        <form id="experience-form" onsubmit="saveExperience(event)">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Experience Details</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="title">Job Title *</label>
+                                        <input type="text" id="title" name="title" class="form-control" value="{{ experience.title if experience else '' }}" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="company">Company *</label>
+                                        <input type="text" id="company" name="company" class="form-control" value="{{ experience.company if experience else '' }}" required>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="location">Location</label>
+                                        <input type="text" id="location" name="location" class="form-control" value="{{ experience.location if experience else '' }}" placeholder="e.g., New York, NY">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="company_url">Company Website</label>
+                                        <input type="url" id="company_url" name="company_url" class="form-control" value="{{ experience.company_url if experience else '' }}" placeholder="https://company.com">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="start_date">Start Date *</label>
+                                        <input type="date" id="start_date" name="start_date" class="form-control" value="{{ experience.start_date.strftime('%Y-%m-%d') if experience and experience.start_date else '' }}" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="end_date">End Date</label>
+                                        <input type="date" id="end_date" name="end_date" class="form-control" value="{{ experience.end_date.strftime('%Y-%m-%d') if experience and experience.end_date else '' }}">
+                                        <small class="form-text text-muted">Leave blank if this is your current position</small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="is_current" name="is_current" {{ 'checked' if experience and experience.is_current else '' }}>
+                                    <label class="custom-control-label" for="is_current">This is my current position</label>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="description">Job Description</label>
+                                <textarea id="description" name="description" class="form-control" rows="5" placeholder="Describe your responsibilities, achievements, and key contributions...">{{ experience.description if experience else '' }}</textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="technologies">Technologies Used</label>
+                                <input type="text" id="technologies" name="technologies" class="form-control" value="{{ experience.technologies if experience else '' }}" placeholder="e.g., Python, JavaScript, React, Docker">
+                                <small class="form-text text-muted">Separate multiple technologies with commas</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <!-- Actions -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Actions</h3>
+                        </div>
+                        <div class="card-body">
+                            <button type="submit" class="btn btn-primary btn-block">
+                                <i class="fas fa-save"></i> {{ 'Update Experience' if experience else 'Save Experience' }}
+                            </button>
+                            <a href="{{ url_for('admin.experience') }}" class="btn btn-secondary btn-block">
+                                <i class="fas fa-arrow-left"></i> Back to Experience
+                            </a>
+                            {% if experience %}
+                            <hr>
+                            <button type="button" class="btn btn-danger btn-block" onclick="deleteExperience()">
+                                <i class="fas fa-trash"></i> Delete Experience
+                            </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <!-- Help -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Tips</h3>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled">
+                                <li class="mb-2">
+                                    <i class="fas fa-lightbulb text-warning"></i>
+                                    <small>Use action verbs to describe your achievements</small>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-lightbulb text-warning"></i>
+                                    <small>Include quantifiable results when possible</small>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-lightbulb text-warning"></i>
+                                    <small>List relevant technologies and tools used</small>
+                                </li>
+                                <li class="mb-0">
+                                    <i class="fas fa-lightbulb text-warning"></i>
+                                    <small>Keep descriptions concise but informative</small>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+// Handle current position checkbox
+document.getElementById('is_current').addEventListener('change', function() {
+    const endDateField = document.getElementById('end_date');
+    if (this.checked) {
+        endDateField.value = '';
+        endDateField.disabled = true;
+    } else {
+        endDateField.disabled = false;
+    }
+});
+
+function saveExperience(event) {
+    event.preventDefault();
+    
+    const form = event.target;
+    const formData = new FormData(form);
+    
+    // Convert FormData to JSON
+    const data = {};
+    for (let [key, value] of formData.entries()) {
+        if (key === 'is_current') {
+            data[key] = form.querySelector(`[name="${key}"]`).checked;
+        } else {
+            data[key] = value;
+        }
+    }
+    
+    const url = {{ 'experience/' + experience.id|string + '/edit' if experience else 'experience/create' }};
+    
+    fetch(`/admin/${url}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showNotification(data.message, 'success');
+            if (!{{ 'true' if experience else 'false' }}) {
+                // Redirect to experience list after creating new entry
+                setTimeout(() => {
+                    window.location.href = '{{ url_for("admin.experience") }}';
+                }, 1500);
+            }
+        } else {
+            showNotification('Error: ' + data.message, 'error');
+        }
+    })
+    .catch(error => {
+        showNotification('Error saving experience', 'error');
+    });
+}
+
+{% if experience %}
+function deleteExperience() {
+    if (confirm('Delete this experience entry? This action cannot be undone.')) {
+        fetch(`/admin/experience/{{ experience.id }}/delete`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showNotification('Experience deleted successfully', 'success');
+                window.location.href = '{{ url_for("admin.experience") }}';
+            } else {
+                showNotification('Error: ' + data.message, 'error');
+            }
+        })
+        .catch(error => {
+            showNotification('Error deleting experience', 'error');
+        });
+    }
+}
+{% endif %}
+
+// Initialize current position state
+document.addEventListener('DOMContentLoaded', function() {
+    const isCurrentCheckbox = document.getElementById('is_current');
+    const endDateField = document.getElementById('end_date');
+    
+    if (isCurrentCheckbox.checked) {
+        endDateField.disabled = true;
+    }
+});
+</script>
+{% endblock %}

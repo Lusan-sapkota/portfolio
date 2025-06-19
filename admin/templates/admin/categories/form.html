@@ -1,0 +1,200 @@
+{% extends "admin/base.html" %}
+
+{% block title %}{% if category %}Edit Category{% else %}Add Category{% endif %}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0">
+                    <i class="fas fa-tags"></i>
+                    {% if category %}Edit Category: {{ category.name }}{% else %}Add New Category{% endif %}
+                </h4>
+            </div>
+            <div class="card-body">
+                <form method="POST" id="categoryForm">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="name" name="name" 
+                               value="{{ category.name if category else '' }}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" name="description" rows="3" 
+                                  placeholder="Brief description of this category...">{{ category.description if category else '' }}</textarea>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="icon" class="form-label">FontAwesome Icon</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i id="iconPreview" class="{{ category.icon if category else 'fas fa-folder' }}"></i>
+                                    </span>
+                                    <input type="text" class="form-control" id="icon" name="icon" 
+                                           value="{{ category.icon if category else '' }}"
+                                           placeholder="fas fa-code">
+                                </div>
+                                <small class="form-text text-muted">
+                                    Use FontAwesome classes (e.g., fas fa-code, fab fa-github)
+                                </small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="color" class="form-label">Color</label>
+                                <div class="input-group">
+                                    <input type="color" class="form-control form-control-color" id="color" name="color" 
+                                           value="{{ category.color if category else '#6c757d' }}" title="Choose color">
+                                    <input type="text" class="form-control" id="colorText" 
+                                           value="{{ category.color if category else '#6c757d' }}" readonly>
+                                </div>
+                                <small class="form-text text-muted">Color for category identification</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Preview</label>
+                        <div class="p-3 border rounded bg-light">
+                            <span class="badge d-inline-flex align-items-center gap-2" id="categoryPreview" 
+                                  style="background-color: {{ category.color if category else '#6c757d' }}; color: white; font-size: 1rem;">
+                                <i id="previewIcon" class="{{ category.icon if category else 'fas fa-folder' }}"></i>
+                                <span id="previewName">{{ category.name if category else 'Category Name' }}</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    {% if category %}
+                    <div class="mb-3">
+                        <label class="form-label">Projects in this category</label>
+                        <p class="text-muted">
+                            <strong>{{ category.projects.count() }}</strong> project(s) are using this category.
+                            {% if category.projects.count() > 0 %}
+                            You can edit this category, but deleting it requires moving or deleting all projects first.
+                            {% endif %}
+                        </p>
+                    </div>
+                    {% endif %}
+
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ url_for('admin.categories') }}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Back to Categories
+                            </a>
+                            <div>
+                                {% if category and category.projects.count() == 0 %}
+                                <button type="button" class="btn btn-outline-danger me-2" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                                {% endif %}
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save"></i> 
+                                    {% if category %}Update Category{% else %}Create Category{% endif %}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if category and category.projects.count() == 0 %}
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Category</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete the category "{{ category.name }}"?</p>
+                <p class="text-danger"><strong>This action cannot be undone.</strong></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form method="POST" action="{{ url_for('admin.categories_delete', id=category.id) }}" style="display: inline;">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+    // Update preview when inputs change
+    $('#name, #icon, #color').on('input', updatePreview);
+    
+    // Sync color picker with text input
+    $('#color').on('input', function() {
+        $('#colorText').val(this.value);
+        updatePreview();
+    });
+    
+    // Update icon preview in input group
+    $('#icon').on('input', function() {
+        const iconClass = this.value || 'fas fa-folder';
+        $('#iconPreview').attr('class', iconClass);
+        updatePreview();
+    });
+    
+    function updatePreview() {
+        const name = $('#name').val() || 'Category Name';
+        const icon = $('#icon').val() || 'fas fa-folder';
+        const color = $('#color').val() || '#6c757d';
+        
+        $('#previewName').text(name);
+        $('#previewIcon').attr('class', icon);
+        $('#categoryPreview').css('background-color', color);
+    }
+    
+    // Form submission with AJAX
+    $('#categoryForm').on('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        const isEdit = {{ 'true' if category else 'false' }};
+        const url = isEdit ? window.location.href : '{{ url_for("admin.categories_create") }}';
+        
+        // Convert FormData to regular object for JSON
+        const data = {};
+        formData.forEach((value, key) => {
+            data[key] = value;
+        });
+        
+        $.ajax({
+            url: url,
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            data: JSON.stringify(data),
+            success: function(response) {
+                if (response.status === 'success') {
+                    window.location.href = '{{ url_for("admin.categories") }}';
+                } else {
+                    alert(response.message || 'Error saving category');
+                }
+            },
+            error: function(xhr) {
+                let message = 'Error saving category';
+                if (xhr.responseJSON && xhr.responseJSON.message) {
+                    message = xhr.responseJSON.message;
+                }
+                alert(message);
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

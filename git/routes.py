@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, current_app, jsonify
-from models import Project, ProjectCategory
+from models import Project, ProjectCategory, SeoSettings, PersonalInfo
 from database import db
 from sqlalchemy import or_
 from . import git_bp
@@ -69,13 +69,19 @@ def index():
     except Exception as e:
         print(f"DEBUG: Error getting template '{template_name_to_render}' from Jinja2 env: {e}")
     
+    # Get CMS data
+    seo = SeoSettings.query.filter_by(page_name='git').first() or SeoSettings.query.first()
+    personal = PersonalInfo.query.first()
+    
     return render_template(template_name_to_render, 
                          projects=projects, 
                          categories=categories,
                          current_category=category_id,
                          current_type=project_type,
                          current_status=status,
-                         search_query=search_query)
+                         search_query=search_query,
+                         seo=seo,
+                         personal=personal)
 
 @git_bp.route('/search')
 def search():
@@ -88,8 +94,13 @@ def search():
         )).all()
     else:
         projects = []
+    
+    # Get CMS data
+    seo = SeoSettings.query.filter_by(page_name='git').first() or SeoSettings.query.first()
+    personal = PersonalInfo.query.first()
+    
     # Also update search.html if it's in git/templates
-    return render_template('git/search.html', projects=projects, query=query) # Assuming search.html is in git/templates
+    return render_template('git/search.html', projects=projects, query=query, seo=seo, personal=personal)
 
 @git_bp.route('/api/projects')
 def api_projects():
@@ -142,7 +153,12 @@ def api_projects():
 @git_bp.route('/project/<int:project_id>')
 def project(project_id):
     project = Project.query.get_or_404(project_id)
-    return render_template('git/project.html', project=project)
+    
+    # Get CMS data
+    seo = SeoSettings.query.filter_by(page_name='git').first() or SeoSettings.query.first()
+    personal = PersonalInfo.query.first()
+    
+    return render_template('git/project.html', project=project, seo=seo, personal=personal)
 
 @git_bp.route('/api/github/cache-stats')
 def github_cache_stats():

@@ -1,0 +1,272 @@
+{% extends "admin/base.html" %}
+
+{% block title %}SEO Settings{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2><i class="fas fa-search"></i> SEO Settings</h2>
+            <a href="{{ url_for('admin.seo_create') }}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Add Page SEO
+            </a>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                {% if seo_settings %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Page</th>
+                                <th>Title</th>
+                                <th>Meta Description</th>
+                                <th>Status</th>
+                                <th>Last Updated</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for seo in seo_settings %}
+                            <tr>
+                                <td>
+                                    <span class="badge bg-primary">{{ seo.page_name.title() }}</span>
+                                </td>
+                                <td>
+                                    {% if seo.title %}
+                                    <strong>{{ seo.title[:50] }}{% if seo.title|length > 50 %}...{% endif %}</strong>
+                                    {% else %}
+                                    <span class="text-muted">No title set</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if seo.meta_description %}
+                                    {{ seo.meta_description[:80] }}{% if seo.meta_description|length > 80 %}...{% endif %}
+                                    {% else %}
+                                    <span class="text-muted">No description set</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <span class="badge bg-{% if seo.is_active %}success{% else %}secondary{% endif %}">
+                                        {% if seo.is_active %}Active{% else %}Inactive{% endif %}
+                                    </span>
+                                </td>
+                                <td>
+                                    <small>{{ seo.updated_at.strftime('%Y-%m-%d %H:%M') }}</small>
+                                </td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <a href="{{ url_for('admin.seo_edit', id=seo.id) }}" 
+                                           class="btn btn-outline-primary" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-outline-info" 
+                                                title="Preview" data-bs-toggle="modal" 
+                                                data-bs-target="#previewModal" 
+                                                onclick="showSeoPreview({{ seo.id }})">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-outline-danger delete-seo" 
+                                                data-seo-id="{{ seo.id }}" 
+                                                data-page-name="{{ seo.page_name }}" title="Delete">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center py-5">
+                    <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">No SEO settings found</h5>
+                    <p class="text-muted">Configure SEO settings for your pages to improve search rankings!</p>
+                    <a href="{{ url_for('admin.seo_create') }}" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Add Page SEO
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- SEO Tips Card -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-lightbulb"></i> SEO Best Practices</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Title Tags</h6>
+                        <ul class="small">
+                            <li>Keep under 60 characters</li>
+                            <li>Include primary keyword</li>
+                            <li>Make each page unique</li>
+                            <li>Front-load important keywords</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Meta Descriptions</h6>
+                        <ul class="small">
+                            <li>Keep between 150-160 characters</li>
+                            <li>Include call-to-action</li>
+                            <li>Summarize page content</li>
+                            <li>Use active voice</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <h6>Open Graph</h6>
+                        <ul class="small">
+                            <li>Use compelling OG titles</li>
+                            <li>Add attractive images (1200x630px)</li>
+                            <li>Write engaging descriptions</li>
+                            <li>Test social media previews</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Schema Markup</h6>
+                        <ul class="small">
+                            <li>Use structured data for rich results</li>
+                            <li>Add Person/Organization schema</li>
+                            <li>Include breadcrumb markup</li>
+                            <li>Validate with Google's tool</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SEO Preview Modal -->
+<div class="modal fade" id="previewModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">SEO Preview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div id="seoPreviewContent">
+                    <div class="text-center">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete SEO Settings</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete the SEO settings for "<span id="deletePageName"></span>"?</p>
+                <p class="text-danger"><strong>This action cannot be undone.</strong></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmDelete">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+    // Delete SEO settings
+    $('.delete-seo').click(function() {
+        const seoId = $(this).data('seo-id');
+        const pageName = $(this).data('page-name');
+        
+        $('#deletePageName').text(pageName);
+        $('#deleteModal').modal('show');
+        
+        $('#confirmDelete').off('click').on('click', function() {
+            $.ajax({
+                url: `/admin/seo/${seoId}/delete`,
+                method: 'POST',
+                success: function(response) {
+                    location.reload();
+                },
+                error: function() {
+                    alert('Error deleting SEO settings');
+                }
+            });
+        });
+    });
+});
+
+function showSeoPreview(seoId) {
+    $('#seoPreviewContent').html(`
+        <div class="text-center">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    `);
+    
+    $.ajax({
+        url: `/admin/api/seo/${seoId}/preview`,
+        method: 'GET',
+        success: function(data) {
+            const previewHtml = `
+                <div class="seo-preview">
+                    <h6>Google Search Preview</h6>
+                    <div class="border rounded p-3 mb-4" style="background-color: #f8f9fa;">
+                        <div class="text-primary" style="font-size: 18px; line-height: 1.2;">
+                            ${data.title || 'Page Title'}
+                        </div>
+                        <div class="text-success small">${window.location.origin}/${data.page_name}</div>
+                        <div class="text-muted small mt-1">
+                            ${data.meta_description || 'Meta description not set'}
+                        </div>
+                    </div>
+                    
+                    ${data.og_title || data.og_description || data.og_image ? `
+                    <h6>Social Media Preview</h6>
+                    <div class="border rounded p-3 mb-4" style="background-color: #f8f9fa;">
+                        ${data.og_image ? `<img src="${data.og_image}" class="img-fluid mb-2" style="max-height: 200px; object-fit: cover;">` : ''}
+                        <div class="fw-bold">${data.og_title || data.title || 'Page Title'}</div>
+                        <div class="text-muted small">${data.og_description || data.meta_description || 'Description not set'}</div>
+                        <div class="text-muted small">${window.location.hostname}</div>
+                    </div>
+                    ` : ''}
+                    
+                    <h6>Technical Details</h6>
+                    <table class="table table-sm">
+                        <tr><td><strong>Canonical URL:</strong></td><td>${data.canonical_url || 'Not set'}</td></tr>
+                        <tr><td><strong>Robots:</strong></td><td>${data.robots || 'index, follow'}</td></tr>
+                        <tr><td><strong>Keywords:</strong></td><td>${data.meta_keywords || 'Not set'}</td></tr>
+                        <tr><td><strong>Schema Markup:</strong></td><td>${data.schema_markup ? 'Configured' : 'Not set'}</td></tr>
+                        <tr><td><strong>Status:</strong></td><td>
+                            <span class="badge bg-${data.is_active ? 'success' : 'secondary'}">
+                                ${data.is_active ? 'Active' : 'Inactive'}
+                            </span>
+                        </td></tr>
+                    </table>
+                </div>
+            `;
+            $('#seoPreviewContent').html(previewHtml);
+        },
+        error: function() {
+            $('#seoPreviewContent').html('<div class="alert alert-danger">Error loading SEO preview</div>');
+        }
+    });
+}
+</script>
+{% endblock %}

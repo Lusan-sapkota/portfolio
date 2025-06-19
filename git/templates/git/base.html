@@ -5,11 +5,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>{% block title %}Project Repository{% endblock %}</title>
 
-	<!-- Favicon -->
-	<link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='assets/logo/apple-touch-icon.png') }}">
-	<link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='assets/logo/favicon-32x32.png') }}">
-	<link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='assets/logo/favicon-16x16.png') }}">
-	<link rel="manifest" href="{{ url_for('static', filename='assets/logo/site.webmanifest') }}">
+	<!-- Universal favicon -->
+	<link rel="icon" type="image/png" href="{{ url_for('static', filename='assets/logo/logo.png') }}" sizes="any">
+
+	<!-- For Apple devices -->
+	<link rel="apple-touch-icon" href="{{ url_for('static', filename='assets/logo/logo.png') }}">
 
 	<!-- CDN CSS: Bootstrap & Font Awesome -->
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-..." crossorigin="anonymous">
@@ -18,76 +18,99 @@
 	<!-- Local CSS -->
 	<link rel="preload" href="{{ url_for('git.static', filename='css/git-style.css') }}" as="style">
 	<link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style.css') }}">
-	<link rel="stylesheet" href="{{ url_for('static', filename='assets/css/animate.css') }}">
-	<link rel="stylesheet" href="{{ url_for('static', filename='assets/css/responsive.css') }}">
 	<link rel="stylesheet" href="{{ url_for('git.static', filename='css/git-style.css') }}">
+
+	<script>
+    // Initialize theme before page renders
+    (function() {
+        const currentTheme = localStorage.getItem('theme') || 
+            (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        
+        // Ensure icons are reset on initial load
+        document.addEventListener('DOMContentLoaded', function() {
+            const moonIcons = document.querySelectorAll('.fa-moon');
+            const sunIcons = document.querySelectorAll('.fa-sun');
+            
+            moonIcons.forEach(icon => icon.classList.toggle('d-none', currentTheme === 'dark'));
+            sunIcons.forEach(icon => icon.classList.toggle('d-none', currentTheme === 'light'));
+        });
+    })();
+
+    // Handle system theme changes
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+        if (!localStorage.getItem('theme')) {
+            const newTheme = e.matches ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            updateThemeIcons(newTheme);
+        }
+    });
+    </script>
 
 	{% block head %}{% endblock %}
 </head>
 <body>
 	<!-- Navigation -->
-	<nav class="navbar navbar-expand-lg navbar-light fixed-top">
-		<div class="container">
-			<!-- Logo -->
-			<a class="navbar-brand" href="{{ url_for('index') }}">
-				<img src="{{ url_for('static', filename='assets/logo/logo.png') }}" alt="Lusan Sapkota" height="40">
-				<span class="brand-text">Lusan Sapkota's Projects</span>
-			</a>
+    <nav class="navbar navbar-expand-lg navbar fixed-top">
+        <div class="container">
+            <!-- Logo -->
+            <a class="navbar-brand" href="{{ url_for('index') }}">
+                <img src="{{ url_for('static', filename='assets/logo/logo.png') }}" alt="Lusan Sapkota" height="40">
+                <span class="brand-text">Lusan's Projects</span>
+            </a>
 
-			<!-- Mobile Toggle -->
-			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
+            <!-- Mobile Toggle -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-			<!-- Navigation Links -->
-			<div class="collapse navbar-collapse" id="navbarNav">
-				<ul class="navbar-nav ms-auto">
-					<li class="nav-item">
-						<a class="nav-link active" href="{{ url_for('git.index') }}">
-							<i class="fas fa-code"></i> Projects
-						</a>
-					</li>
+            <!-- Navigation Links -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ url_for('git.index') }}">
+                            <i class="fas fa-book"></i> projects
+                        </a>
+                    </li>
 
-					<!-- Main Site with Submenu -->
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" id="mainSiteDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-							<i class="fas fa-home"></i> Main Site
-						</a>
-						<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="mainSiteDropdown">
-							<li>
-								<a class="dropdown-item" href="{{ url_for('index') }}" target="_blank">
-									<i class="fas fa-store"></i> Home
-								</a>
-							</li>
-							<li>
-								<a class="dropdown-item" href="https://store.lusansapkota.com" target="_blank">
-									<i class="fas fa-store"></i> Store
-								</a>
-							</li>
-							<li>
-								<a class="dropdown-item" href="{{ url_for('wiki.index') }}">
-									<i class="fas fa-book"></i> Wiki
-								</a>
-							</li>
-							<li>
-								<a class="dropdown-item" href="{{ url_for('donation.index') }}">
-									<i class="fas fa-heart"></i> Donate
-								</a>
-							</li>
-						</ul>
-					</li>
-
-					<!-- Dark Mode Toggle -->
-					<li class="nav-item">
-						<button class="btn btn-link nav-link theme-toggle" id="themeToggle" title="Toggle Dark Mode">
-							<i class="fas fa-moon" id="themeIcon"></i>
-						</button>
-					</li>
-				</ul>
-			</div>
-
-		</div>
-	</nav>
+                    <!-- Main Site with Submenu -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="mainSiteDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-home"></i> Main Site
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="mainSiteDropdown">
+                            <li>
+                                <a class="dropdown-item" href="{{ url_for('index') }}" target="_blank">
+                                    <i class="fas fa-home"></i> Home
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ url_for('git.index') }}">
+                                    <i class="fas fa-code"></i> Projects
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="https://store.lusansapkota.com" target="_blank">
+                                    <i class="fas fa-store"></i> Store
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ url_for('donation.index') }}">
+                                    <i class="fas fa-heart"></i> Donate
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item theme-toggle-wrapper">
+                        <button type="button" class="btn btn-link nav-link theme-toggle" id="theme-toggle">
+                        <i class="fas fa-moon"></i>
+                        <i class="fas fa-sun"></i>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
 	<!-- Main Content -->
 	<main class="main-content">
@@ -95,33 +118,33 @@
 	</main>
 
 	<!-- Footer -->
-	<footer class="footer">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-6">
-					<p>&copy; 2025 Lusan Sapkota. All rights reserved.</p>
-				</div>
-				<div class="col-md-6 text-end">
-					<a href="https://github.com/lusansapkota" target="_blank" class="footer-link">
-						<i class="fab fa-github"></i>
-					</a>
-					<a href="https://linkedin.com/in/lusansapkota" target="_blank" class="footer-link">
-						<i class="fab fa-linkedin"></i>
-					</a>
-					<a href="https://twitter.com/lusansapkota" target="_blank" class="footer-link">
-						<i class="fab fa-twitter"></i>
-					</a>
-				</div>
-			</div>
+	<footer class="footer-custom">
+	<div class="container">
+		<div class="footer-content-custom row align-items-center justify-content-between text-center text-md-start">
+		<div class="col-12 col-md-6 mb-3 mb-md-0">
+			<p class="footer-text-custom mb-0">&copy; {{ current_year|default(2025) }} Lusan Sapkota. All rights reserved.</p>
 		</div>
+		<div class="col-12 col-md-6 footer-socials-custom d-flex justify-content-center justify-content-md-end">
+			<a href="https://github.com/lusansapkota" target="_blank" class="footer-link-custom">
+			<i class="fab fa-github"></i>
+			</a>
+			<a href="https://linkedin.com/in/lusansapkota" target="_blank" class="footer-link-custom">
+			<i class="fab fa-linkedin"></i>
+			</a>
+			<a href="https://twitter.com/lusansapkota" target="_blank" class="footer-link-custom">
+			<i class="fab fa-twitter"></i>
+			</a>
+		</div>
+		</div>
+	</div>
 	</footer>
+
+
 
 	<!-- CDN JS: Bootstrap & jQuery -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
 
-	<!-- Local JS -->
-	<script src="{{ url_for('static', filename='assets/js/progressbar.js') }}"></script>
 	<script src="{{ url_for('static', filename='assets/js/custom.js') }}"></script>
     <script src="{{ url_for('git.static', filename='js/git-script.js') }}"></script>
 

@@ -1,0 +1,186 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Experience{% endblock %}
+
+{% block content %}
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">Work Experience</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="{{ url_for('admin.dashboard') }}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Experience</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="container-fluid">
+        <!-- Actions -->
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <a href="{{ url_for('admin.experience_create') }}" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Add Experience
+                </a>
+            </div>
+        </div>
+
+        <!-- Experience List -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Experience Entries ({{ experiences|length }})</h3>
+            </div>
+            <div class="card-body">
+                {% if experiences %}
+                    <div class="timeline">
+                        {% for experience in experiences %}
+                        <div class="timeline-item">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <div class="card">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h5 class="mb-1">{{ experience.title }}</h5>
+                                            <h6 class="text-muted mb-0">
+                                                {{ experience.company }}
+                                                {% if experience.location %}
+                                                    - {{ experience.location }}
+                                                {% endif %}
+                                            </h6>
+                                        </div>
+                                        <div class="btn-group">
+                                            <a href="{{ url_for('admin.experience_edit', id=experience.id) }}" class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteExperience({{ experience.id }})">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <p class="text-muted mb-2">
+                                                    <i class="fas fa-calendar-alt"></i>
+                                                    {{ experience.start_date.strftime('%B %Y') if experience.start_date else 'Unknown' }}
+                                                    -
+                                                    {% if experience.is_current %}
+                                                        <span class="badge badge-success">Present</span>
+                                                    {% elif experience.end_date %}
+                                                        {{ experience.end_date.strftime('%B %Y') }}
+                                                    {% else %}
+                                                        Unknown
+                                                    {% endif %}
+                                                </p>
+                                            </div>
+                                            {% if experience.company_url %}
+                                            <div class="col-md-6">
+                                                <p class="text-muted mb-2">
+                                                    <i class="fas fa-link"></i>
+                                                    <a href="{{ experience.company_url }}" target="_blank" rel="noopener">Company Website</a>
+                                                </p>
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                        
+                                        {% if experience.description %}
+                                        <p class="mb-2">{{ experience.description|nl2br }}</p>
+                                        {% endif %}
+                                        
+                                        {% if experience.technologies %}
+                                        <div class="mb-0">
+                                            <strong>Technologies:</strong>
+                                            {% for tech in experience.technologies.split(',') %}
+                                                <span class="badge badge-secondary">{{ tech.strip() }}</span>
+                                            {% endfor %}
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="text-center py-5">
+                        <i class="fas fa-briefcase fa-3x text-muted mb-3"></i>
+                        <h4>No Experience Entries</h4>
+                        <p class="text-muted">Add your work experience to showcase your professional journey.</p>
+                        <a href="{{ url_for('admin.experience_create') }}" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Add First Experience
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.timeline {
+    position: relative;
+    padding-left: 30px;
+}
+
+.timeline:before {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #007bff;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.timeline-marker {
+    position: absolute;
+    left: -23px;
+    top: 20px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #007bff;
+    border: 3px solid #fff;
+    box-shadow: 0 0 0 3px #007bff;
+}
+
+.timeline-content {
+    margin-left: 15px;
+}
+</style>
+
+<script>
+function deleteExperience(id) {
+    if (confirm('Delete this experience entry? This action cannot be undone.')) {
+        fetch(`/admin/experience/${id}/delete`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showNotification('Experience deleted successfully', 'success');
+                location.reload();
+            } else {
+                showNotification('Error: ' + data.message, 'error');
+            }
+        })
+        .catch(error => {
+            showNotification('Error deleting experience', 'error');
+        });
+    }
+}
+</script>
+{% endblock %}
