@@ -51,6 +51,9 @@
                             <i class="fas fa-code"></i> Skills
                         </a>
                     </li>
+                    <!-- Wiki section temporarily disabled until routes are implemented
+
+                    -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle {% if 'personal' in request.endpoint or 'experience' in request.endpoint or 'education' in request.endpoint or 'testimonial' in request.endpoint %}active{% endif %}" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown">
                             <i class="fas fa-user"></i> Profile
@@ -70,17 +73,20 @@
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="{{ url_for('admin.contacts') }}">Contact Submissions</a></li>
                             <li><a class="dropdown-item" href="{{ url_for('admin.newsletter') }}">Newsletter Subscribers</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="{{ url_for('admin.send_newsletter') }}"><i class="fas fa-paper-plane"></i> Send Newsletter</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('admin.export_newsletter') }}"><i class="fas fa-download"></i> Export Newsletter</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle {% if 'donation' in request.endpoint %}active{% endif %}" href="#" id="donationsDropdown" role="button" data-bs-toggle="dropdown">
+                        <a class="nav-link dropdown-toggle {% if 'donation' in request.endpoint or 'payment' in request.endpoint or 'thanksgiving' in request.endpoint %}active{% endif %}" href="#" id="donationsDropdown" role="button" data-bs-toggle="dropdown">
                             <i class="fas fa-heart"></i> Donations
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="{{ url_for('admin.donation_projects') }}">Donation Projects</a></li>
-                            <li><a class="dropdown-item" href="{{ url_for('admin.donations') }}">Donations</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('admin.donations') }}">All Donations</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{{ url_for('admin.payment_methods') }}">Payment Methods</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('admin.thanksgiving_settings') }}">Thanksgiving Settings</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('admin.donation_settings') }}">Donation Settings</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -118,7 +124,6 @@
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="/" target="_blank"><i class="fas fa-external-link-alt"></i> View Site</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="{{ url_for('admin.change_password') }}"><i class="fas fa-lock"></i> Change Password</a></li>
                             <li><a class="dropdown-item" href="{{ url_for('admin.logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
                         </ul>
                     </li>

@@ -1,0 +1,365 @@
+{% extends "admin/base.html" %}
+
+{% block title %}{{ 'Edit' if donation else 'Add' }} Donation - Admin{% endblock %}
+
+{% block extra_css %}
+<style>
+    .donation-details {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .donation-status-form {
+        background: white;
+        border-radius: 10px;
+        padding: 25px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .status-buttons {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+    
+    .status-btn {
+        flex: 1;
+        padding: 12px;
+        border: 2px solid transparent;
+        border-radius: 8px;
+        background: #f8f9fa;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-align: center;
+    }
+    
+    .status-btn.active {
+        border-color: var(--primary-color);
+        background: rgba(243, 156, 18, 0.1);
+    }
+    
+    .status-btn:hover {
+        background: rgba(243, 156, 18, 0.05);
+    }
+    
+    .amount-display {
+        font-size: 1.2em;
+        font-weight: bold;
+        color: #28a745;
+    }
+    
+    .verified-amount-section {
+        background: #e8f5e8;
+        border: 1px solid #d4edda;
+        border-radius: 8px;
+        padding: 15px;
+        margin: 15px 0;
+    }
+    
+    .confirmation-email-section {
+        background: #fff3cd;
+        border: 1px solid #ffeaa7;
+        border-radius: 8px;
+        padding: 15px;
+        margin: 15px 0;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="admin-content">
+    <div class="admin-header">
+        <div class="admin-header-left">
+            <h1 class="admin-title">
+                <i class="fas fa-edit"></i>
+                {{ 'Edit Donation' if donation else 'Add Donation' }}
+            </h1>
+            <p class="admin-subtitle">Update donation status and verification details</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <!-- Donation Status Form -->
+            <div class="donation-status-form">
+                <form method="POST" id="donationForm">
+                    <h4 class="mb-4">
+                        <i class="fas fa-clipboard-check"></i> 
+                        Donation Verification
+                    </h4>
+                    
+                    <!-- Status Selection -->
+                    <div class="mb-4">
+                        <label class="form-label">Status</label>
+                        <div class="status-buttons">
+                            <div class="status-btn {{ 'active' if donation and donation.status == 'pending' else '' }}" 
+                                 onclick="setStatus('pending')">
+                                <i class="fas fa-clock text-warning"></i><br>
+                                <strong>Pending</strong><br>
+                                <small>Awaiting payment</small>
+                            </div>
+                            <div class="status-btn {{ 'active' if donation and donation.status == 'completed' else '' }}" 
+                                 onclick="setStatus('completed')">
+                                <i class="fas fa-check text-success"></i><br>
+                                <strong>Completed</strong><br>
+                                <small>Payment verified</small>
+                            </div>
+                            <div class="status-btn {{ 'active' if donation and donation.status == 'failed' else '' }}" 
+                                 onclick="setStatus('failed')">
+                                <i class="fas fa-times text-danger"></i><br>
+                                <strong>Failed</strong><br>
+                                <small>Payment failed</small>
+                            </div>
+                        </div>
+                        <input type="hidden" name="status" id="statusInput" value="{{ donation.status if donation else 'pending' }}">
+                    </div>
+                    
+                    <!-- Verified Amount -->
+                    <div class="verified-amount-section">
+                        <h5><i class="fas fa-money-check-alt"></i> Payment Verification</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="form-label">Original Amount</label>
+                                <div class="amount-display">
+                                    {% if donation %}
+                                        {% if donation.currency == 'NPR' %}
+                                            Rs. {{ "%.2f"|format(donation.amount) }}
+                                        {% else %}
+                                            ${{ "%.2f"|format(donation.amount) }}
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">
+                                    Verified Amount 
+                                    <small class="text-muted">(actual amount received)</small>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        {% if donation and donation.currency == 'NPR' %}Rs.{% else %}${% endif %}
+                                    </span>
+                                    <input type="number" 
+                                           step="0.01" 
+                                           class="form-control" 
+                                           name="verified_amount" 
+                                           value="{{ donation.verified_amount or donation.amount if donation else '' }}"
+                                           placeholder="Enter actual amount received">
+                                </div>
+                                <small class="form-text text-muted">
+                                    Leave blank to use original amount
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Confirmation Email Amount (for completed donations) -->
+                    <div class="confirmation-email-section" id="confirmationEmailSection" 
+                         style="display: {{ 'block' if donation and donation.status == 'completed' else 'none' }};">
+                        <h5><i class="fas fa-envelope"></i> Confirmation Email Settings</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="form-label">
+                                    Email Amount Display
+                                    <small class="text-muted">(amount shown in confirmation email)</small>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        {% if donation and donation.currency == 'NPR' %}Rs.{% else %}${% endif %}
+                                    </span>
+                                    <input type="number" 
+                                           step="0.01" 
+                                           class="form-control" 
+                                           name="email_amount" 
+                                           id="emailAmount"
+                                           value="{{ donation.verified_amount or donation.amount if donation else '' }}"
+                                           placeholder="Amount to show in email">
+                                </div>
+                                <small class="form-text text-muted">
+                                    This amount will be displayed in the confirmation email to the donor
+                                </small>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Send Confirmation Email</label>
+                                <div class="form-check mt-2">
+                                    <input class="form-check-input" 
+                                           type="checkbox" 
+                                           name="send_confirmation" 
+                                           id="sendConfirmation" 
+                                           checked>
+                                    <label class="form-check-label" for="sendConfirmation">
+                                        Send confirmation email when marking as completed
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Admin Notes -->
+                    <div class="mb-4">
+                        <label class="form-label">Admin Notes</label>
+                        <textarea class="form-control" 
+                                  name="admin_notes" 
+                                  rows="4" 
+                                  placeholder="Internal notes about this donation (payment ID, verification details, etc.)">{{ donation.admin_notes if donation else '' }}</textarea>
+                        <small class="form-text text-muted">
+                            These notes are for internal use only and will not be shown to the donor
+                        </small>
+                    </div>
+                    
+                    <!-- Anonymous Status -->
+                    <div class="mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="mb-0"><i class="fas fa-user-secret"></i> Privacy Settings</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-check">
+                                    <input class="form-check-input" 
+                                           type="checkbox" 
+                                           name="is_anonymous" 
+                                           id="isAnonymous" 
+                                           {{ 'checked' if donation and donation.is_anonymous else '' }}>
+                                    <label class="form-check-label" for="isAnonymous">
+                                        <strong>Anonymous Donation</strong>
+                                    </label>
+                                </div>
+                                <small class="form-text text-muted">
+                                    When checked, the donor's name and email will be hidden from public displays
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-end">
+                        <a href="{{ url_for('admin.donations') }}" class="btn btn-outline-secondary me-2">
+                            <i class="fas fa-arrow-left"></i> Cancel
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Update Donation
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            {% if donation %}
+            <!-- Donation Details -->
+            <div class="donation-details">
+                <h5><i class="fas fa-info-circle"></i> Donation Details</h5>
+                
+                <div class="detail-item">
+                    <strong>Project:</strong><br>
+                    {{ donation.project.title }}
+                </div>
+                
+                <div class="detail-item">
+                    <strong>Donor:</strong><br>
+                    {% if donation.is_anonymous %}
+                        <span class="text-muted">Anonymous Donation</span>
+                    {% else %}
+                        {{ donation.donor_name }}<br>
+                        <small class="text-muted">{{ donation.donor_email }}</small>
+                    {% endif %}
+                </div>
+                
+                {% if donation.donor_phone %}
+                <div class="detail-item">
+                    <strong>Phone:</strong><br>
+                    {{ donation.donor_phone }}
+                </div>
+                {% endif %}
+                
+                <div class="detail-item">
+                    <strong>Payment Method:</strong><br>
+                    {{ donation.payment_method|title if donation.payment_method else 'Not specified' }}
+                </div>
+                
+                <div class="detail-item">
+                    <strong>Currency:</strong><br>
+                    {{ donation.currency }}
+                </div>
+                
+                {% if donation.message %}
+                <div class="detail-item">
+                    <strong>Message:</strong><br>
+                    <em>"{{ donation.message }}"</em>
+                </div>
+                {% endif %}
+                
+                <div class="detail-item">
+                    <strong>Created:</strong><br>
+                    {{ donation.created_at.strftime('%B %d, %Y at %I:%M %p') if donation.created_at else 'N/A' }}
+                </div>
+                
+                {% if donation.updated_at and donation.updated_at != donation.created_at %}
+                <div class="detail-item">
+                    <strong>Last Updated:</strong><br>
+                    {{ donation.updated_at.strftime('%B %d, %Y at %I:%M %p') }}
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function setStatus(status) {
+    // Update hidden input
+    document.getElementById('statusInput').value = status;
+    
+    // Update visual state
+    document.querySelectorAll('.status-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    event.currentTarget.classList.add('active');
+    
+    // Show/hide confirmation email section
+    const confirmationSection = document.getElementById('confirmationEmailSection');
+    if (status === 'completed') {
+        confirmationSection.style.display = 'block';
+        // Auto-fill email amount with verified amount
+        const verifiedAmount = document.querySelector('input[name="verified_amount"]').value;
+        if (verifiedAmount) {
+            document.getElementById('emailAmount').value = verifiedAmount;
+        }
+    } else {
+        confirmationSection.style.display = 'none';
+    }
+}
+
+// Auto-update email amount when verified amount changes
+document.querySelector('input[name="verified_amount"]').addEventListener('input', function() {
+    const emailAmountField = document.getElementById('emailAmount');
+    if (emailAmountField && this.value) {
+        emailAmountField.value = this.value;
+    }
+});
+
+// Form submission handling
+document.getElementById('donationForm').addEventListener('submit', function(e) {
+    const status = document.getElementById('statusInput').value;
+    const verifiedAmount = document.querySelector('input[name="verified_amount"]').value;
+    
+    if (status === 'completed' && !verifiedAmount) {
+        if (!confirm('No verified amount entered. This will use the original donation amount. Continue?')) {
+            e.preventDefault();
+            return false;
+        }
+    }
+    
+    // Show loading state
+    const submitBtn = this.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
+    
+    return true;
+});
+</script>
+{% endblock %}

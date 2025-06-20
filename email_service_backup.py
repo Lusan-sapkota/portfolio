@@ -858,236 +858,62 @@ Admin Panel: https://lusansapkota.com.np/admin
             subject = f"New Donation Alert: {amount_display} for {project_title}"
             
             text_body = f"""
-New Donation Received!
-
-A new donation has been submitted and requires your attention.
-
-Donation Details:
-- Project: {project_title}
-- Amount: {amount_display}
-- Donor: {'Anonymous' if donation.is_anonymous else donation.donor_name}
-- Email: {donation.donor_email if not donation.is_anonymous else 'Hidden (Anonymous)'}
-- Phone: {donation.donor_phone or 'Not provided'}
-- Payment Method: {donation.payment_method or 'Not specified'}
-- Status: {donation.status}
-- Date: {donation.created_at.strftime('%B %d, %Y at %I:%M %p') if donation.created_at else 'N/A'}
-
-{f'Message from donor: "{donation.message}"' if donation.message else ''}
-
-Please log in to the admin panel to verify this donation and update its status.
-
-Admin Panel: https://lusansapkota.com.np/admin/donations
-
-Best regards,
-Portfolio Donation System
-"""
+            New Donation Received!
+            
+            A new donation has been submitted and requires your attention.
+            
+            Donation Details:
+            - Project: {project_title}
+            - Amount: {amount_display}
+            - Donor: {'Anonymous' if donation.is_anonymous else donation.donor_name}
+            - Email: {donation.donor_email if not donation.is_anonymous else 'Hidden (Anonymous)'}
+            - Phone: {donation.donor_phone or 'Not provided'}
+            - Payment Method: {donation.payment_method or 'Not specified'}
+            - Status: {donation.status}
+            - Date: {donation.created_at.strftime('%B %d, %Y at %I:%M %p') if donation.created_at else 'N/A'}
+            
+            {f'Message from donor: "{donation.message}"' if donation.message else ''}
+            
+            Please log in to the admin panel to verify this donation and update its status.
+            
+            Admin Panel: https://lusansapkota.com.np/admin/donations
+            
+            Best regards,
+            Portfolio Donation System
+            """
             
             html_body = f"""
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Donation Alert</title>
-</head>
-<body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8f9fa;">
-    <div style="max-width: 600px; margin: 20px auto; background: #ffffff; border-radius: 10px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); overflow: hidden;">
-        
-        <!-- Header -->
-        <header style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); padding: 30px; text-align: center;">
-            <h1 style="color: white; margin: 0; font-size: 24px;">
-                🔔 New Donation Alert
-            </h1>
-            <p style="color: rgba(255,255,255,0.9); margin: 10px 0 0 0; font-size: 16px;">
-                A new donation requires your attention
-            </p>
-        </header>
-        
-        <!-- Content -->
-        <div style="padding: 30px;">
-            <div style="background: #e8f5e8; border-left: 4px solid #28a745; padding: 20px; margin-bottom: 20px; border-radius: 5px;">
-                <h2 style="color: #155724; margin: 0 0 10px 0; font-size: 20px;">
-                    Donation Amount: {amount_display}
-                </h2>
-                <p style="color: #155724; margin: 0; font-size: 16px;">
-                    Project: <strong>{project_title}</strong>
-                </p>
-            </div>
-            
-            <h3 style="color: #333; margin-bottom: 15px;">Donation Details:</h3>
-            <p>Donor: {'Anonymous' if donation.is_anonymous else donation.donor_name}</p>
-            <p>Email: {donation.donor_email if not donation.is_anonymous else 'Hidden (Anonymous)'}</p>
-            <p>Phone: {donation.donor_phone or 'Not provided'}</p>
-            <p>Payment Method: {donation.payment_method or 'Not specified'}</p>
-            <p>Status: {donation.status}</p>
-            <p>Date: {donation.created_at.strftime('%B %d, %Y at %I:%M %p') if donation.created_at else 'N/A'}</p>
-            
-            {f'<div style="background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 5px; padding: 15px; margin-bottom: 20px;"><h4 style="color: #856404; margin: 0 0 10px 0;">Message from donor:</h4><p style="color: #856404; margin: 0; font-style: italic;">"{donation.message}"</p></div>' if donation.message else ''}
-            
-            <div style="text-align: center; margin-top: 30px;">
-                <a href="https://lusansapkota.com.np/admin/donations" 
-                   style="background: #007bff; 
-                          color: white; 
-                          text-decoration: none; 
-                          padding: 12px 24px; 
-                          border-radius: 6px; 
-                          font-weight: 500; 
-                          display: inline-block;">
-                    🔐 Verify in Admin Panel
-                </a>
-            </div>
-            
-            <p style="color: #6c757d; text-align: center; margin-top: 20px; font-size: 14px;">
-                Please confirm the payment status and update the donation accordingly.
-            </p>
-        </div>
-        
-        <!-- Footer -->
-        <footer style="border-top: 1px solid #eee; padding: 20px; text-align: center; background-color: #f8f9fa;">
-            <p style="color: #6c757d; margin: 0; font-size: 14px;">
-                This is an automated notification from your portfolio donation system.
-            </p>
-        </footer>
-    </div>
-</body>
-</html>
-"""
-            
-            # Send to admin email (sapkotalusan@gmail.com)
-            admin_email = "sapkotalusan@gmail.com"
-            
-            return self.send_email([admin_email], subject, text_body, html_body)
-            
-        except Exception as e:
-            logger.error(f"Failed to send admin donation notification: {e}")
-            return False
-
-    def send_donation_confirmation(self, donation, project_title: str, confirmation_amount: float = None) -> bool:
-        """
-        Send confirmation email to donor when donation is marked as complete
-        """
-        try:
-            # Use provided amount or fall back to verified/original amount
-            display_amount = confirmation_amount or donation.verified_amount or donation.amount
-            
-            # Format amount based on currency
-            if donation.currency == 'NPR':
-                amount_display = f"Rs. {display_amount:.2f}"
-            else:
-                amount_display = f"${display_amount:.2f}"
-            
-            subject = f"Donation Confirmed: Thank you for supporting {project_title}!"
-            
-            text_body = f"""
-Dear {donation.donor_name if not donation.is_anonymous else 'Valued Supporter'},
-
-We are delighted to confirm that your donation has been successfully processed!
-
-Donation Confirmation Details:
-- Project: {project_title}
-- Confirmed Amount: {amount_display}
-- Date Processed: {datetime.now().strftime('%B %d, %Y')}
-- Status: CONFIRMED
-
-Your generous contribution will help advance this project and make a meaningful impact. 
-{'Your donation has been made anonymously as requested.' if donation.is_anonymous else 'Your name will be added to our supporters list to recognize your contribution.'}
-
-{f'Your message: "{donation.message}"' if donation.message else ''}
-
-Thank you once again for your support and trust in our work.
-
-View all supporters: https://lusansapkota.com.np/donation/thanksgiving
-
-With gratitude,
-Lusan Sapkota
-"""
-            
-            html_body = f"""
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Donation Confirmed</title>
-</head>
-<body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8f9fa;">
-    <div style="max-width: 600px; margin: 20px auto; background: #ffffff; border-radius: 10px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); overflow: hidden;">
-        
-        <!-- Header -->
-        <header style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); padding: 30px; text-align: center;">
-            <h1 style="color: white; margin: 0; font-size: 24px;">
-                ✅ Donation Confirmed!
-            </h1>
-            <p style="color: rgba(255,255,255,0.9); margin: 10px 0 0 0; font-size: 16px;">
-                Thank you for your generous support
-            </p>
-        </header>
-        
-        <!-- Content -->
-        <div style="padding: 30px;">
-            <p style="font-size: 18px; color: #333; margin-bottom: 20px;">
-                Dear {donation.donor_name if not donation.is_anonymous else 'Valued Supporter'},
-            </p>
-            
-            <p style="color: #333; line-height: 1.6; margin-bottom: 20px;">
-                We are delighted to confirm that your donation has been successfully processed! 
-                Your support means the world to us.
-            </p>
-            
-            <div style="background: #e8f5e8; border: 1px solid #d4edda; border-radius: 8px; padding: 20px; margin: 20px 0;">
-                <h3 style="color: #155724; margin: 0 0 10px 0; font-size: 18px;">
-                    ✅ Donation Confirmed
-                </h3>
-                <p>Project: {project_title}</p>
-                <p style="font-size: 18px; color: #28a745; font-weight: bold;">Confirmed Amount: {amount_display}</p>
-                <p>Date Processed: {datetime.now().strftime('%B %d, %Y')}</p>
-                <p><span style="background: #28a745; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">CONFIRMED</span></p>
-            </div>
-            
-            <p style="color: #333; line-height: 1.6; margin-bottom: 20px;">
-                Your generous contribution will help advance this project and make a meaningful impact.
-                {'Your donation has been made anonymously as requested.' if donation.is_anonymous else 'Your name will be added to our supporters list to recognize your contribution.'}
-            </p>
-            
-            {f'<div style="background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 5px; padding: 15px; margin-bottom: 20px;"><h4 style="color: #856404; margin: 0 0 10px 0;">Your message:</h4><p style="color: #856404; margin: 0; font-style: italic;">"{donation.message}"</p></div>' if donation.message else ''}
-            
-            <div style="text-align: center; margin: 30px 0;">
-                <a href="https://lusansapkota.com.np/donation/thanksgiving" 
-                   style="background: #007bff; 
-                          color: white; 
-                          text-decoration: none; 
-                          padding: 12px 24px; 
-                          border-radius: 6px; 
-                          font-weight: 500; 
-                          display: inline-block;">
-                    ❤️ View All Supporters
-                </a>
-            </div>
-            
-            <p style="color: #333; line-height: 1.6; margin-top: 30px;">
-                Thank you once again for your support and trust in our work.
-            </p>
-            
-            <p style="color: #333; font-weight: bold;">
-                With gratitude,<br>
-                Lusan Sapkota
-            </p>
-        </div>
-        
-        <!-- Footer -->
-        <footer style="border-top: 1px solid #eee; padding: 20px; text-align: center; background-color: #f8f9fa;">
-            <p style="color: #6c757d; margin: 0; font-size: 14px;">
-                Thank you for supporting open source development and innovation.
-            </p>
-        </footer>
-    </div>
-</body>
-</html>
-"""
-            
-            return self.send_email([donation.donor_email], subject, text_body, html_body)
-            
-        except Exception as e:
-            logger.error(f"Failed to send donation confirmation email: {e}")
-            return False
-
-# Initialize email service
-email_service = EmailService()
+            <html>
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>New Donation Alert</title>
+            </head>
+            <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8f9fa;">
+                <div style="max-width: 600px; margin: 20px auto; background: #ffffff; border-radius: 10px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); overflow: hidden;">
+                    
+                    <!-- Header -->
+                    <header style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); padding: 30px; text-align: center;">
+                        <h1 style="color: white; margin: 0; font-size: 24px;">
+                            <i class="fas fa-bell"></i> New Donation Alert
+                        </h1>
+                        <p style="color: rgba(255,255,255,0.9); margin: 10px 0 0 0; font-size: 16px;">
+                            A new donation requires your attention
+                        </p>
+                    </header>
+                    
+                    <!-- Content -->
+                    <div style="padding: 30px;">
+                        <div style="background: #e8f5e8; border-left: 4px solid #28a745; padding: 20px; margin-bottom: 20px; border-radius: 5px;">
+                            <h2 style="color: #155724; margin: 0 0 10px 0; font-size: 20px;">
+                                Donation Amount: {amount_display}
+                            </h2>
+                            <p style="color: #155724; margin: 0; font-size: 16px;">
+                                Project: <strong>{project_title}</strong>
+                            </p>
+                        </div>
+                        
+                        <h3 style="color: #333; margin-bottom: 15px;">Donation Details:</h3>
+                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                            <tr>
+                                <td style="padding: 8px 0; border-bottom: 1px solid #eee; font-weight: 

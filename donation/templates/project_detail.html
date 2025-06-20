@@ -250,18 +250,25 @@
                 <div class="donation-form">
                     <h4 class="mb-4">Support This Project</h4>
                     
-                    <form action="{{ url_for('donation.make_donation', project_id=project.id) }}" method="POST" id="donationForm">
-                        <!-- Amount Selection -->
+                    <form action="{{ url_for('donation.donate', project_id=project.id) }}" method="POST" id="donationForm">
+                        <!-- Currency Selection -->
                         <div class="mb-3">
-                            <label class="form-label">Choose Amount</label>
-                            <div class="amount-buttons">
-                                <button type="button" class="amount-btn" data-amount="10">$10</button>
-                                <button type="button" class="amount-btn" data-amount="25">$25</button>
-                                <button type="button" class="amount-btn" data-amount="50">$50</button>
-                                <button type="button" class="amount-btn" data-amount="100">$100</button>
+                            <label class="form-label">Currency</label>
+                            <select class="form-control" name="currency" id="currencySelect" onchange="updatePaymentMethods()">
+                                <option value="NPR" selected>NPR (₨)</option>
+                                <option value="USD">USD ($)</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Amount Input -->
+                        <div class="mb-3">
+                            <label class="form-label">Enter Amount (Optional)</label>
+                            <div class="input-group">
+                                <span class="input-group-text" id="currencySymbol">₨</span>
+                                <input type="number" class="form-control" name="amount" id="customAmount" 
+                                       placeholder="Enter amount" min="1" step="0.01" required>
                             </div>
-                            <input type="number" class="form-control mt-3" name="amount" id="customAmount" 
-                                   placeholder="Enter custom amount" min="1" step="0.01" required>
+                            <small class="form-text text-muted">Enter the amount you'd like to donate</small>
                         </div>
                         
                         <!-- Donor Information -->
@@ -273,6 +280,11 @@
                         <div class="mb-3">
                             <label class="form-label">Email Address</label>
                             <input type="email" class="form-control" name="donor_email" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Phone Number <small class="text-muted">(won't be shown, just for verification)</small></label>
+                            <input type="tel" class="form-control" name="donor_phone" placeholder="+977-XXXXXXXXXX">
                         </div>
                         
                         <!-- Message -->
@@ -293,15 +305,36 @@
                         <!-- Payment Method -->
                         <div class="mb-4">
                             <label class="form-label">Payment Method</label>
-                            <select class="form-control" name="payment_method">
-                                <option value="paypal">PayPal</option>
-                                <option value="stripe">Credit Card</option>
-                                <option value="crypto">Cryptocurrency</option>
+                            <select class="form-control" name="payment_method" id="paymentMethodSelect">
+                                <option value="">Select payment method...</option>
+                                {% for method in payment_methods %}
+                                <option value="{{ method.method_type or method.display_name.lower().replace(' ', '_') }}" 
+                                        data-currency="{{ method.currency }}"
+                                        data-display-name="{{ method.display_name }}"
+                                        data-id="{{ method.id }}"
+                                        data-method-type="{{ method.method_type or 'custom' }}">
+                                    {{ method.display_name }}
+                                </option>
+                                {% endfor %}
+                                
+                                <!-- Fallback options if no payment methods in database -->
+                                {% if not payment_methods %}
+                                <!-- NPR Options -->
+                                <option value="wallet" data-currency="NPR">Digital Wallet (eSewa, Khalti, IME Pay)</option>
+                                <option value="bank_transfer" data-currency="NPR">Bank Transfer</option>
+                                <!-- USD Options -->
+                                <option value="wallet" data-currency="USD">Digital Wallet (PayPal)</option>
+                                <option value="swift_transfer" data-currency="USD">Swift Transfer / Bank Transfer</option>
+                                <option value="payoneer" data-currency="USD">Payoneer</option>
+                                {% endif %}
                             </select>
+                            {% if payment_methods %}
+                            <small class="form-text text-muted">{{ payment_methods|length }} payment method(s) available</small>
+                            {% endif %}
                         </div>
                         
                         <button type="submit" class="btn-donate">
-                            <i class="fas fa-heart"></i> Donate Now
+                            <i class="fas fa-heart"></i> Donate
                         </button>
                         
                         <p class="text-center text-muted mt-3 small">
@@ -331,32 +364,182 @@
 
 {% block extra_js %}
 <script>
-    // Amount button selection
-    document.querySelectorAll('.amount-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            // Remove active class from all buttons
-            document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('active'));
-            // Add active class to clicked button
-            this.classList.add('active');
-            // Set the amount in the input field
-            document.getElementById('customAmount').value = this.dataset.amount;
+    function updatePaymentMethods() {
+        const currency = document.getElementById('currencySelect').value;
+        const currencySymbol = document.getElementById('currencySymbol');
+        const paymentSelect = document.getElementById('paymentMethodSelect');
+        
+        // Update currency symbol
+        currencySymbol.textContent = currency === 'NPR' ? '₨' : '$';
+        
+        // Store all options if not already stored
+        if (!paymentSelect.allOptions) {
+            paymentSelect.allOptions = Array.from(paymentSelect.options);
+        }
+        
+        // Clear current options (except the first "Select..." option)
+        while (paymentSelect.options.length > 1) {
+            paymentSelect.removeChild(paymentSelect.options[1]);
+        }
+        
+        // Add matching options for current currency
+        let visibleCount = 0;
+        let firstValidOption = null;
+        
+        paymentSelect.allOptions.forEach(option => {
+            const optionCurrency = option.dataset.currency;
+            
+            // Skip the default "Select..." option
+            if (!optionCurrency && option.value === '') {
+                return;
+            }
+            
+            if (optionCurrency === currency) {
+                const newOption = option.cloneNode(true);
+                paymentSelect.appendChild(newOption);
+                visibleCount++;
+                
+                if (!firstValidOption) {
+                    firstValidOption = newOption;
+                }
+            }
         });
-    });
+        
+        // Auto-select the first available payment method
+        if (firstValidOption && visibleCount === 1) {
+            paymentSelect.value = firstValidOption.value;
+        } else {
+            paymentSelect.value = '';
+        }
+        
+        // Update helper text
+        const helperText = paymentSelect.parentNode.querySelector('.form-text');
+        if (helperText) {
+            helperText.textContent = `${visibleCount} payment method(s) available for ${currency}`;
+        }
+        
+        // Debug: Log available options
+        console.log('Currency:', currency);
+        console.log('Available payment options for', currency, ':', visibleCount);
+        for (let i = 1; i < paymentSelect.options.length; i++) {
+            const option = paymentSelect.options[i];
+            console.log('- ', option.value, option.textContent.trim());
+        }
+    }
     
-    // Custom amount input
-    document.getElementById('customAmount').addEventListener('input', function() {
-        // Remove active class from all buttons when typing custom amount
-        document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('active'));
+    // Initialize payment methods on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        updatePaymentMethods();
     });
     
     // Form validation
     document.getElementById('donationForm').addEventListener('submit', function(e) {
         const amount = parseFloat(document.getElementById('customAmount').value);
-        if (!amount || amount < 1) {
+        const currency = document.getElementById('currencySelect').value;
+        const paymentMethodSelect = document.getElementById('paymentMethodSelect');
+        const paymentMethod = paymentMethodSelect.value;
+        const donorName = document.querySelector('input[name="donor_name"]').value.trim();
+        const donorEmail = document.querySelector('input[name="donor_email"]').value.trim();
+        
+        // Debug logging
+        console.log('Form validation:', {
+            amount: amount,
+            currency: currency,
+            paymentMethod: paymentMethod,
+            paymentMethodSelectElement: paymentMethodSelect,
+            selectedIndex: paymentMethodSelect.selectedIndex,
+            optionsCount: paymentMethodSelect.options.length,
+            donorName: donorName,
+            donorEmail: donorEmail
+        });
+        
+        // Log all available options
+        console.log('Available payment options:');
+        for (let i = 0; i < paymentMethodSelect.options.length; i++) {
+            const opt = paymentMethodSelect.options[i];
+            console.log(`  ${i}: value="${opt.value}", text="${opt.text}", selected=${opt.selected}`);
+        }
+        
+        // Validate required fields
+        if (!donorName) {
             e.preventDefault();
-            alert('Please enter a valid donation amount of at least $1.');
+            alert('Please enter your name.');
+            document.querySelector('input[name="donor_name"]').focus();
             return false;
         }
+        
+        if (!donorEmail) {
+            e.preventDefault();
+            alert('Please enter your email address.');
+            document.querySelector('input[name="donor_email"]').focus();
+            return false;
+        }
+        
+        if (!amount || amount <= 0) {
+            e.preventDefault();
+            alert('Please enter a valid donation amount.');
+            document.getElementById('customAmount').focus();
+            return false;
+        }
+        
+        // Check if payment method is selected (and not the default empty option)
+        if (!paymentMethod || paymentMethod === '' || paymentMethodSelect.selectedIndex <= 0) {
+            e.preventDefault();
+            alert(`Please select a payment method. Current selection: "${paymentMethod}" (index: ${paymentMethodSelect.selectedIndex})`);
+            // Highlight the payment method field
+            paymentMethodSelect.style.borderColor = '#dc3545';
+            paymentMethodSelect.focus();
+            return false;
+        }
+        
+        // Reset border color if valid
+        paymentMethodSelect.style.borderColor = '';
+        
+        console.log('✅ Form validation passed! Submitting...');
+        
+        // Show processing message
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+        
+        // Reset button after 10 seconds in case of any issues
+        setTimeout(() => {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalText;
+        }, 10000);
+        
+        // Allow form submission
+        return true;
+    });
+    
+    // Add change listener to payment method select to provide visual feedback
+    document.getElementById('paymentMethodSelect').addEventListener('change', function() {
+        const selectedValue = this.value;
+        const selectedText = this.options[this.selectedIndex].text;
+        
+        console.log('Payment method changed:', {
+            value: selectedValue,
+            text: selectedText,
+            index: this.selectedIndex
+        });
+        
+        // Reset any error styling
+        this.style.borderColor = '';
+        
+        // Add visual feedback
+        if (selectedValue && selectedValue !== '') {
+            this.style.backgroundColor = '#d4edda';
+            setTimeout(() => {
+                this.style.backgroundColor = '';
+            }, 500);
+        }
+    });
+    
+    // Initialize currency change listener
+    document.getElementById('currencySelect').addEventListener('change', function() {
+        console.log('Currency changed to:', this.value);
+        updatePaymentMethods();
     });
     
     // Auto-hide flash messages

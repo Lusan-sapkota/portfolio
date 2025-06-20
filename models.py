@@ -44,10 +44,12 @@ class Project(db.Model):
     image_url = db.Column(db.String(255))
     github_url = db.Column(db.String(255))
     live_url = db.Column(db.String(255))
+    commercial_url = db.Column(db.String(255))  # For commercial product links
     technologies = db.Column(db.String(255))
     category_id = db.Column(db.Integer, db.ForeignKey('project_category.id'))
     is_featured = db.Column(db.Boolean, default=False)
     is_opensource = db.Column(db.Boolean, default=True)
+    show_on_homepage = db.Column(db.Boolean, default=True)  # Control home page display
     stars = db.Column(db.Integer, default=0)
     forks = db.Column(db.Integer, default=0)
     last_updated = db.Column(db.DateTime)
@@ -278,16 +280,21 @@ class Donation(db.Model):
     project_id = db.Column(db.Integer, db.ForeignKey('donation_project.id'), nullable=False)
     donor_name = db.Column(db.String(100), nullable=False)
     donor_email = db.Column(db.String(120), nullable=False)
+    donor_phone = db.Column(db.String(20))  # Phone for verification (not shown publicly)
     amount = db.Column(db.Float, nullable=False)
+    currency = db.Column(db.String(3), default='NPR')  # NPR or USD
     message = db.Column(db.Text)
     is_anonymous = db.Column(db.Boolean, default=False)
-    payment_method = db.Column(db.String(50))  # paypal, stripe, etc.
+    payment_method = db.Column(db.String(50))  # wallet, bank_transfer, swift_transfer, payoneer
     payment_id = db.Column(db.String(100))  # external payment ID
     status = db.Column(db.String(20), default='pending')  # pending, completed, failed
+    verified_amount = db.Column(db.Float)  # Amount actually received (can differ from requested)
+    admin_notes = db.Column(db.Text)  # Admin notes about the donation
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     
     def __repr__(self):
-        return f'<Donation {self.amount} for {self.project.title}>'
+        return f'<Donation {self.amount} {self.currency} for {self.project.title}>'
     
     def to_dict(self):
         return {
@@ -295,8 +302,12 @@ class Donation(db.Model):
             'project_id': self.project_id,
             'donor_name': self.donor_name if not self.is_anonymous else 'Anonymous',
             'amount': self.amount,
+            'currency': self.currency,
+            'verified_amount': self.verified_amount,
             'message': self.message,
             'is_anonymous': self.is_anonymous,
+            'payment_method': self.payment_method,
+            'status': self.status,
             'created_at': self.created_at.isoformat() if self.created_at else None
         }
 
@@ -471,3 +482,54 @@ class Testimonial(db.Model):
     
     def __repr__(self):
         return f'<Testimonial {self.client_name}>'
+
+class PaymentMethod(db.Model):
+    """Payment methods configuration for different currencies"""
+    id = db.Column(db.Integer, primary_key=True)
+    currency = db.Column(db.String(3), nullable=False)  # NPR or USD
+    method_name = db.Column(db.String(50), nullable=False)  # wallet, bank_transfer, etc.
+    display_name = db.Column(db.String(100), nullable=False)  # "eSewa Wallet"
+    account_info = db.Column(db.Text)  # Account details
+    qr_code_url = db.Column(db.String(255))  # QR code image URL
+    instructions = db.Column(db.Text)  # Payment instructions
+    is_active = db.Column(db.Boolean, default=True)
+    sort_order = db.Column(db.Integer, default=0)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    def __repr__(self):
+        return f'<PaymentMethod {self.currency} - {self.display_name}>'
+
+class ThanksgivingSettings(db.Model):
+    """Settings for the thanksgiving/donor recognition page"""
+    id = db.Column(db.Integer, primary_key=True)
+    page_title = db.Column(db.String(200), default='Thank You to Our Amazing Supporters')
+    page_description = db.Column(db.Text, default='We are grateful for the incredible support from our community.')
+    show_donor_names = db.Column(db.Boolean, default=True)
+    show_amounts = db.Column(db.Boolean, default=False)
+    show_messages = db.Column(db.Boolean, default=True)
+    min_amount_display = db.Column(db.Float, default=0.0)  # Minimum amount to display
+    anonymous_display_text = db.Column(db.String(100), default='Anonymous Supporter')
+    thank_you_message = db.Column(db.Text, default='Your support means the world to us and helps keep our projects alive!')
+    is_active = db.Column(db.Boolean, default=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    def __repr__(self):
+        return f'<ThanksgivingSettings {self.page_title}>'
+
+class DonationSettings(db.Model):
+    """General donation system settings"""
+    id = db.Column(db.Integer, primary_key=True)
+    default_currency = db.Column(db.String(3), default='NPR')
+    enable_custom_amounts = db.Column(db.Boolean, default=True)
+    enable_anonymous_donations = db.Column(db.Boolean, default=True)
+    require_phone_verification = db.Column(db.Boolean, default=False)
+    thank_you_email_template = db.Column(db.Text)
+    admin_notification_emails = db.Column(db.String(500))  # Comma-separated emails
+    auto_approve_donations = db.Column(db.Boolean, default=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    def __repr__(self):
+        return f'<DonationSettings {self.default_currency}>'

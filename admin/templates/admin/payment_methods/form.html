@@ -1,0 +1,187 @@
+{% extends "admin/base.html" %}
+
+{% block title %}{{ 'Edit' if method else 'Create' }} Payment Method{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="fas fa-credit-card"></i> {{ 'Edit' if method else 'Create' }} Payment Method</h2>
+    <a href="{{ url_for('admin.payment_methods') }}" class="btn btn-outline-secondary">
+        <i class="fas fa-arrow-left"></i> Back to List
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('admin.payment_methods_edit', id=method.id) if method else url_for('admin.payment_methods_create') }}">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Currency *</label>
+                                <select name="currency" class="form-control" required>
+                                    <option value="">Select Currency</option>
+                                    <option value="NPR" {% if method and method.currency == 'NPR' %}selected{% endif %}>NPR (₨)</option>
+                                    <option value="USD" {% if method and method.currency == 'USD' %}selected{% endif %}>USD ($)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Method Name *</label>
+                                <select name="method_name" class="form-control" required>
+                                    <option value="">Select Method</option>
+                                    <option value="wallet" {% if method and method.method_name == 'wallet' %}selected{% endif %}>Digital Wallet</option>
+                                    <option value="bank_transfer" {% if method and method.method_name == 'bank_transfer' %}selected{% endif %}>Bank Transfer</option>
+                                    <option value="swift_transfer" {% if method and method.method_name == 'swift_transfer' %}selected{% endif %}>Swift Transfer</option>
+                                    <option value="payoneer" {% if method and method.method_name == 'payoneer' %}selected{% endif %}>Payoneer</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Display Name *</label>
+                        <input type="text" name="display_name" class="form-control" 
+                               value="{{ method.display_name if method else '' }}" 
+                               placeholder="e.g., eSewa Wallet, Khalti, PayPal" required>
+                        <small class="form-text text-muted">This is what users will see</small>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Account Information</label>
+                        <textarea name="account_info" class="form-control" rows="4" 
+                                  placeholder="Account details, numbers, etc.">{{ method.account_info if method else '' }}</textarea>
+                        <small class="form-text text-muted">Account details that will be shown to donors</small>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">QR Code URL</label>
+                        <input type="url" name="qr_code_url" class="form-control" 
+                               value="{{ method.qr_code_url if method else '' }}" 
+                               placeholder="https://example.com/qr-code.png">
+                        <small class="form-text text-muted">URL to QR code image for easy payments</small>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Payment Instructions</label>
+                        <textarea name="instructions" class="form-control" rows="4" 
+                                  placeholder="Step-by-step instructions for donors">{{ method.instructions if method else '' }}</textarea>
+                        <small class="form-text text-muted">Detailed instructions for completing payment</small>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Sort Order</label>
+                                <input type="number" name="sort_order" class="form-control" 
+                                       value="{{ method.sort_order if method else 0 }}" min="0">
+                                <small class="form-text text-muted">Lower numbers appear first</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <div class="form-check mt-4">
+                                    <input type="checkbox" name="is_active" class="form-check-input" id="is_active"
+                                           {% if not method or method.is_active %}checked{% endif %}>
+                                    <label class="form-check-label" for="is_active">
+                                        Active (visible to donors)
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="border-top pt-3">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> {{ 'Update' if method else 'Create' }} Payment Method
+                        </button>
+                        {% if method %}
+                        <button type="button" class="btn btn-outline-danger" onclick="deleteMethod({{ method.id }})">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                        {% endif %}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-body">
+                <h5><i class="fas fa-info-circle"></i> Tips</h5>
+                <ul class="small">
+                    <li><strong>NPR Options:</strong> eSewa, Khalti, IME Pay, Bank Transfer</li>
+                    <li><strong>USD Options:</strong> PayPal, Payoneer, Swift Transfer</li>
+                    <li><strong>QR Codes:</strong> Upload QR code images to static/assets/images/qr/</li>
+                    <li><strong>Instructions:</strong> Be clear and specific about payment steps</li>
+                    <li><strong>Account Info:</strong> Include all necessary details for payments</li>
+                </ul>
+            </div>
+        </div>
+        
+        {% if method and method.qr_code_url %}
+        <div class="card mt-3">
+            <div class="card-body text-center">
+                <h6>Current QR Code</h6>
+                <img src="{{ method.qr_code_url }}" alt="QR Code" class="img-fluid" style="max-height: 200px;">
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function deleteMethod(id) {
+    if (confirm('Are you sure you want to delete this payment method? This action cannot be undone.')) {
+        fetch(`/admin/payment-methods/${id}/delete`, {
+            method: 'POST',
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.href = '{{ url_for("admin.payment_methods") }}';
+            } else {
+                alert('Error deleting payment method');
+            }
+        })
+        .catch(error => {
+            alert('Error deleting payment method');
+        });
+    }
+}
+
+// Dynamic placeholders based on currency and method
+document.addEventListener('DOMContentLoaded', function() {
+    const currencySelect = document.querySelector('select[name="currency"]');
+    const methodSelect = document.querySelector('select[name="method_name"]');
+    const displayNameInput = document.querySelector('input[name="display_name"]');
+    
+    function updatePlaceholders() {
+        const currency = currencySelect.value;
+        const method = methodSelect.value;
+        
+        let placeholder = '';
+        if (currency === 'NPR' && method === 'wallet') {
+            placeholder = 'eSewa Wallet / Khalti / IME Pay';
+        } else if (currency === 'NPR' && method === 'bank_transfer') {
+            placeholder = 'Bank Transfer - Nepal';
+        } else if (currency === 'USD' && method === 'wallet') {
+            placeholder = 'PayPal Wallet';
+        } else if (currency === 'USD' && method === 'swift_transfer') {
+            placeholder = 'Swift Transfer / Bank Transfer';
+        } else if (currency === 'USD' && method === 'payoneer') {
+            placeholder = 'Payoneer';
+        }
+        
+        displayNameInput.placeholder = placeholder;
+    }
+    
+    currencySelect.addEventListener('change', updatePlaceholders);
+    methodSelect.addEventListener('change', updatePlaceholders);
+    updatePlaceholders();
+});
+</script>
+{% endblock %}

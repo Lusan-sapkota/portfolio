@@ -93,8 +93,16 @@
                         </div>
                     </div>
 
+                    <div class="mb-3">
+                        <label for="commercial_url" class="form-label">Commercial Product URL</label>
+                        <input type="url" class="form-control" id="commercial_url" name="commercial_url" 
+                               value="{{ project.commercial_url if project else '' }}"
+                               placeholder="https://your-commercial-product.com">
+                        <small class="form-text text-muted">URL to the commercial version or product page</small>
+                    </div>
+
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="mb-3 form-check">
                                 <input type="checkbox" class="form-check-input" id="is_featured" name="is_featured" 
                                        {% if project and project.is_featured %}checked{% endif %}>
@@ -104,7 +112,7 @@
                                 <small class="form-text text-muted d-block">Featured projects appear prominently on the homepage</small>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="mb-3 form-check">
                                 <input type="checkbox" class="form-check-input" id="is_opensource" name="is_opensource" 
                                        {% if not project or project.is_opensource %}checked{% endif %}>
@@ -112,6 +120,16 @@
                                     Open Source
                                 </label>
                                 <small class="form-text text-muted d-block">Mark if this is an open source project</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="show_on_homepage" name="show_on_homepage" 
+                                       {% if project and project.show_on_homepage %}checked{% endif %}>
+                                <label class="form-check-label" for="show_on_homepage">
+                                    Show on Homepage
+                                </label>
+                                <small class="form-text text-muted d-block">Display this project on the main homepage</small>
                             </div>
                         </div>
                     </div>
@@ -206,7 +224,7 @@ $(document).ready(function() {
         // Convert FormData to regular object for JSON
         const data = {};
         formData.forEach((value, key) => {
-            if (key === 'is_featured' || key === 'is_opensource') {
+            if (key === 'is_featured' || key === 'is_opensource' || key === 'show_on_homepage') {
                 data[key] = $('#' + key).is(':checked');
             } else {
                 data[key] = value;

@@ -24,6 +24,12 @@
         </div>
     </div>
     <div class="col-xl-2 col-md-4">
+        <div class="stat-card stat-success">
+            <div class="stat-number">{{ stats.testimonials }}</div>
+            <div class="stat-label">Testimonials</div>
+        </div>
+    </div>
+    <div class="col-xl-2 col-md-4">
         <div class="stat-card stat-warning">
             <div class="stat-number">{{ stats.newsletter_subscribers }}</div>
             <div class="stat-label">Subscribers</div>
@@ -37,8 +43,14 @@
     </div>
     <div class="col-xl-2 col-md-4">
         <div class="stat-card stat-secondary">
-            <div class="stat-number">${{ "%.0f"|format(stats.total_donations) }}</div>
-            <div class="stat-label">Raised</div>
+            <div class="stat-number">${{ "%.0f"|format(stats.total_donations_usd) }}</div>
+            <div class="stat-label">Raised (USD)</div>
+        </div>
+    </div>
+    <div class="col-xl-2 col-md-4">
+        <div class="stat-card stat-secondary">
+            <div class="stat-number">Rs. {{ "%.0f"|format(stats.total_donations_npr) }}</div>
+            <div class="stat-label">Raised (NPR)</div>
         </div>
     </div>
 </div>
@@ -58,14 +70,32 @@
                     <a href="{{ url_for('admin.donation_project_new') }}" class="btn btn-outline-danger">
                         <i class="fas fa-heart"></i> Add Donation Project
                     </a>
+                    <a href="{{ url_for('admin.payment_methods_create') }}" class="btn btn-outline-warning">
+                        <i class="fas fa-credit-card"></i> Add Payment Method
+                    </a>
                     <a href="{{ url_for('admin.skills_create') }}" class="btn btn-outline-primary">
                         <i class="fas fa-code"></i> Add New Skill
+                    </a>
+                    <a href="{{ url_for('admin.testimonials_create') }}" class="btn btn-outline-success">
+                        <i class="fas fa-quote-left"></i> Add Testimonial
                     </a>
                     <a href="{{ url_for('admin.categories_create') }}" class="btn btn-outline-primary">
                         <i class="fas fa-tags"></i> Add Category
                     </a>
-                    <a href="{{ url_for('admin.seo_create') }}" class="btn btn-outline-primary">
-                        <i class="fas fa-search"></i> Add SEO Settings
+                </div>
+                
+                <hr>
+                
+                <h6 class="mb-2"><i class="fas fa-cogs"></i> Donation Settings</h6>
+                <div class="d-grid gap-1">
+                    <a href="{{ url_for('admin.donations') }}" class="btn btn-sm btn-outline-info">
+                        <i class="fas fa-list"></i> Manage Donations
+                    </a>
+                    <a href="{{ url_for('admin.thanksgiving_settings') }}" class="btn btn-sm btn-outline-info">
+                        <i class="fas fa-heart"></i> Thanksgiving Page
+                    </a>
+                    <a href="{{ url_for('admin.donation_settings') }}" class="btn btn-sm btn-outline-info">
+                        <i class="fas fa-cogs"></i> System Settings
                     </a>
                 </div>
             </div>

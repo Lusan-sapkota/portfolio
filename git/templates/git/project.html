@@ -17,4 +17,8 @@
 {% if project.live_url %}
   <p><a href="{{ project.live_url }}" target="_blank">Live Demo</a></p>
 {% endif %}
+
+{% if project.commercial_url %}
+  <p><a href="{{ project.commercial_url }}" target="_blank">Commercial Product</a></p>
+{% endif %}
 {% endblock %}

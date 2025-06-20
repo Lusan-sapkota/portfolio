@@ -364,6 +364,9 @@
 				          <a class="nav-link smooth-menu" href="#portfolio">Portfolio</a>
 				        </li>
 				        <li class="nav-item">
+				          <a class="nav-link smooth-menu" href="#testimonials">Testimonials</a>
+				        </li>
+				        <li class="nav-item">
 				          <a class="nav-link smooth-menu" href="#contact">Contact</a>
 				        </li>
 				        <li class="nav-item theme-toggle-wrapper">
@@ -1193,8 +1196,7 @@
 				</div>
 
             </div>
-        </div>
-    </section><!--/.skills-->
+        </section><!--/.skills-->
 		<!--skills end -->
 
 		<!--experience start -->
@@ -1383,6 +1385,11 @@
                                             <i class="fas fa-external-link-alt"></i>
                                         </a>
                                         {% endif %}
+                                        {% if project.commercial_url %}
+                                        <a href="{{ project.commercial_url }}" target="_blank" class="btn-portfolio btn-commercial">
+                                            <i class="fas fa-shopping-cart"></i>
+                                        </a>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -1397,7 +1404,7 @@
                                     {% endif %}
                                 </div>
                                 {% if project.stars or project.forks %}
-                                <div class="portfolio-stats">
+                                <div class="portfolio-stats mt-3 text-center">
                                     {% if project.stars %}
                                     <span class="stat-item">
                                         <i class="fas fa-star"></i> {{ project.stars }}
@@ -1449,6 +1456,55 @@
             </div>
         </section><!--/.portfolio-->
         <!--portfolio end -->
+
+
+		<!--testimonials start -->
+		<section id="testimonials" class="testimonials">
+		<div class="section-heading text-center">
+			<h2>what clients say</h2>
+			<p class="mt-2">Here's what some of my clients have to say about working with me</p>
+		</div>
+		<div class="testimonial-carousel-container container">
+			<div class="testimonial-carousel"> <!-- Fixed class name to match CSS -->
+			{% if testimonials %}
+				{% for testimonial in testimonials %}
+				<div class="testimonial-card">
+				<div class="testimonial-content">
+					<div class="testimonial-text">
+					<i class="fas fa-quote-left quote-icon"></i>
+					<p>{{ testimonial.testimonial_text }}</p>
+					</div>
+					<div class="testimonial-author">
+					<div class="author-info">
+						<h4>{{ testimonial.client_name }}</h4>
+						{% if testimonial.client_title and testimonial.client_company %}
+						<span class="author-position">{{ testimonial.client_title }} at {{ testimonial.client_company }}</span>
+						{% elif testimonial.client_title %}
+						<span class="author-position">{{ testimonial.client_title }}</span>
+						{% elif testimonial.client_company %}
+						<span class="author-position">{{ testimonial.client_company }}</span>
+						{% endif %}
+					</div>
+					<div class="testimonial-rating">
+						{% for i in range(testimonial.rating or 5) %}
+						<i class="fas fa-star"></i>
+						{% endfor %}
+					</div>
+					</div>
+				</div>
+				</div>
+				{% endfor %}
+			{% else %}
+				<div class="no-testimonials">
+				<p>No testimonials available at the moment.</p>
+				</div>
+			{% endif %}
+			</div>
+			<div class="carousel-dots"></div>
+		</div>
+		</section><!--/.testimonials-->
+		<!--testimonials end -->
+
 
 		<!--contact start -->
 		<section id="contact" class="contact">
@@ -1579,6 +1635,7 @@
             <li><a href="#skills"><i class="fas fa-chevron-right"></i>Skills</a></li>
             <li><a href="#experience"><i class="fas fa-chevron-right"></i>Experience</a></li>
             <li><a href="#portfolio"><i class="fas fa-chevron-right"></i>Portfolio</a></li>
+            <li><a href="#testimonials"><i class="fas fa-chevron-right"></i>Testimonials</a></li>
           </ul>
         </div>
         
@@ -1741,70 +1798,113 @@
 			{% endif %}
 		</script>
 		
-		<!-- Newsletter Form Handler -->
 		<script>
 			document.addEventListener('DOMContentLoaded', function () {
-			// Newsletter Form Submission
+			// === Testimonial Carousel Logic ===
+			const carousel = document.querySelector('.testimonial-carousel');
+			const testimonialCards = document.querySelectorAll('.testimonial-card');
+			const dotsContainer = document.querySelector('.carousel-dots');
+
+			if (carousel && testimonialCards.length > 1 && dotsContainer) {
+				dotsContainer.innerHTML = '';
+				testimonialCards.forEach((_, index) => {
+				const dot = document.createElement('div');
+				dot.classList.add('carousel-dot');
+				if (index === 0) dot.classList.add('active');
+				dot.addEventListener('click', () => {
+					scrollToCard(index);
+				});
+				dotsContainer.appendChild(dot);
+				});
+
+				function scrollToCard(index) {
+				const cardWidth = testimonialCards[0].offsetWidth + 30; // include gap
+				carousel.scrollTo({
+					left: cardWidth * index,
+					behavior: 'smooth'
+				});
+				updateActiveDot(index);
+				}
+
+				function updateActiveDot(index) {
+				document.querySelectorAll('.carousel-dot').forEach((dot, i) => {
+					dot.classList.toggle('active', i === index);
+				});
+				}
+
+				let debounceTimeout;
+				carousel.addEventListener('scroll', () => {
+				clearTimeout(debounceTimeout);
+				debounceTimeout = setTimeout(() => {
+					const scrollPosition = carousel.scrollLeft;
+					const cardWidth = testimonialCards[0].offsetWidth + 30;
+					const activeIndex = Math.round(scrollPosition / cardWidth);
+					updateActiveDot(activeIndex);
+				}, 100);
+				});
+			}
+
+			// === Newsletter Form Submission ===
 			const form = $('#newsletter-form');
 			const messageDiv = $('#newsletter-message');
 
 			if (form.length) {
 				form.on('submit', function (e) {
-					e.preventDefault();
+				e.preventDefault();
 
-					const submitBtn = form.find('.newsletter-btn');
-					const originalText = submitBtn.text();
-					const formData = new FormData(this);
+				const submitBtn = form.find('.newsletter-btn');
+				const originalText = submitBtn.text();
+				const formData = new FormData(this);
 
-					submitBtn.text('Subscribing...').prop('disabled', true);
-					messageDiv.hide();
+				submitBtn.text('Subscribing...').prop('disabled', true);
+				messageDiv.hide();
 
-					$.ajax({
-						url: form.attr('action'),
-						type: 'POST',
-						data: formData,
-						processData: false,
-						contentType: false,
-						success: function (response) {
-							messageDiv
-								.removeClass('alert-success alert-danger alert-info')
-								.addClass('alert alert-' + (response.status === 'error' ? 'danger' : response.status === 'info' ? 'info' : 'success'))
-								.text(response.message)
-								.show();
+				$.ajax({
+					url: form.attr('action'),
+					type: 'POST',
+					data: formData,
+					processData: false,
+					contentType: false,
+					success: function (response) {
+					messageDiv
+						.removeClass('alert-success alert-danger alert-info')
+						.addClass('alert alert-' + (response.status === 'error' ? 'danger' : response.status === 'info' ? 'info' : 'success'))
+						.text(response.message)
+						.show();
 
-							if (response.status === 'success') {
-								form[0].reset();
-							}
-						},
-						error: function () {
-							messageDiv
-								.removeClass('alert-success alert-info')
-								.addClass('alert alert-danger')
-								.text('An error occurred. Please try again.')
-								.show();
-						},
-						complete: function () {
-							submitBtn.text(originalText).prop('disabled', false);
-							setTimeout(function () {
-								messageDiv.fadeOut();
-							}, 5000);
-						}
-					});
+					if (response.status === 'success') {
+						form[0].reset();
+					}
+					},
+					error: function () {
+					messageDiv
+						.removeClass('alert-success alert-info')
+						.addClass('alert alert-danger')
+						.text('An error occurred. Please try again.')
+						.show();
+					},
+					complete: function () {
+					submitBtn.text(originalText).prop('disabled', false);
+					setTimeout(function () {
+						messageDiv.fadeOut();
+					}, 5000);
+					}
+				});
 				});
 			}
 
-			// Bootstrap Tooltips
+			// === Bootstrap Tooltips ===
 			const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
 			tooltipTriggerList.map(function (tooltipTriggerEl) {
 				return new bootstrap.Tooltip(tooltipTriggerEl);
 			});
 
-			// Optional: Change cursor on tooltip elements
 			document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
 				el.style.cursor = 'pointer';
 			});
 		});
 		</script>
+
 			
     </body>
 	

@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 
-{% block title %}Thanksgiving - My Supporters{% endblock %}
+{% block title %}{{ thanksgiving_settings.page_title if thanksgiving_settings else 'Thank You to Our Amazing Supporters' }}{% endblock %}
+
+{% block meta_description %}{{ thanksgiving_settings.page_description if thanksgiving_settings else 'We are grateful for the incredible support from our community.' }}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{{ url_for('donation.static', filename='css/donation-style.css') }}">
@@ -33,11 +35,23 @@
         box-shadow: var(--shadow-sm);
         border-left: 4px solid var(--primary-color);
         transition: var(--transition);
+        position: relative;
+        overflow: hidden;
     }
     
     .supporter-card:hover {
         transform: translateY(-5px);
         box-shadow: var(--shadow-md);
+    }
+    
+    .supporter-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
     }
     
     .supporter-name {
@@ -48,6 +62,80 @@
     }
     
     .supporter-amount {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--success-color);
+        margin-bottom: 0.5rem;
+    }
+    
+    .supporter-message {
+        font-style: italic;
+        color: var(--text-muted);
+        margin: 1rem 0;
+        padding: 1rem;
+        background: rgba(var(--primary-color-rgb), 0.1);
+        border-radius: 8px;
+        border-left: 3px solid var(--primary-color);
+    }
+    
+    .supporter-date {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+    }
+    
+    .project-tag {
+        display: inline-block;
+        background: var(--primary-color);
+        color: white;
+        padding: 0.25rem 0.75rem;
+        border-radius: 15px;
+        font-size: 0.8rem;
+        margin-top: 0.5rem;
+    }
+    
+    .stats-section {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        padding: 60px 0;
+        margin-bottom: 50px;
+    }
+    
+    .stat-item {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    
+    .stat-number {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+    
+    .stat-label {
+        font-size: 1.1rem;
+        opacity: 0.9;
+    }
+    
+    .thank-you-message {
+        background: rgba(var(--primary-color-rgb), 0.1);
+        border-radius: 15px;
+        padding: 30px;
+        text-align: center;
+        margin: 40px 0;
+        border: 2px solid rgba(var(--primary-color-rgb), 0.2);
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: var(--text-muted);
+    }
+    
+    .empty-state i {
+        font-size: 4rem;
+        margin-bottom: 20px;
+        opacity: 0.5;
+    }
         font-size: 1rem;
         color: var(--success-color);
         font-weight: 500;
@@ -208,58 +296,123 @@
 <!-- Hero Section -->
 <section class="thanksgiving-hero">
     <div class="container">
-        <h1><i class="fas fa-heart"></i> Thank You!</h1>
-        <p>
-            To all my amazing supporters who believe in open source innovation 
-            and help me build technology that makes a difference.
-        </p>
+        <h1><i class="fas fa-heart"></i> {{ thanksgiving_settings.page_title if thanksgiving_settings else 'Thank You to Our Amazing Supporters' }}</h1>
+        <p>{{ thanksgiving_settings.page_description if thanksgiving_settings else 'We are grateful for the incredible support from our community.' }}</p>
     </div>
 </section>
 
 <!-- Statistics Section -->
+{% if donations %}
 <section class="stats-section">
     <div class="container">
-        <h2 class="text-center mb-5">My Impact Together</h2>
         <div class="row">
             <div class="col-lg-3 col-md-6 mb-4">
-                <div class="stat-card">
-                    <div class="stat-number">${{ total_raised or 0 }}</div>
-                    <div class="stat-label">Total Raised</div>
+                <div class="stat-item">
+                    <div class="stat-number">{{ donations|length }}</div>
+                    <div class="stat-label">Total Supporters</div>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6 mb-4">
-                <div class="stat-card">
-                    <div class="stat-number">{{ total_supporters or 0 }}</div>
-                    <div class="stat-label">Supporters</div>
+                <div class="stat-item">
+                    <div class="stat-number">{{ donations|selectattr('project_title')|map(attribute='project_title')|unique|list|length }}</div>
+                    <div class="stat-label">Projects Supported</div>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6 mb-4">
-                <div class="stat-card">
-                    <div class="stat-number">{{ total_projects or 0 }}</div>
-                    <div class="stat-label">Projects Funded</div>
+                <div class="stat-item">
+                    <div class="stat-number">{{ donations|selectattr('currency')|map(attribute='currency')|unique|list|length }}</div>
+                    <div class="stat-label">Currencies</div>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6 mb-4">
-                <div class="stat-card">
-                    <div class="stat-number">{{ countries or 0 }}</div>
-                    <div class="stat-label">Countries</div>
+                <div class="stat-item">
+                    <div class="stat-number">{{ (donations|selectattr('created_at')|list|length / (donations|selectattr('created_at')|list|length + 1) * 100)|round|int }}%</div>
+                    <div class="stat-label">Success Rate</div>
                 </div>
             </div>
         </div>
     </div>
 </section>
+{% endif %}
 
-<!-- Gratitude Message -->
-<section class="gratitude-section">
+<!-- Thank You Message -->
+{% if thanksgiving_settings and thanksgiving_settings.thank_you_message %}
+<div class="container">
+    <div class="thank-you-message">
+        <h3><i class="fas fa-heart text-danger"></i> A Special Message</h3>
+        <p class="mb-0">{{ thanksgiving_settings.thank_you_message }}</p>
+    </div>
+</div>
+{% endif %}
+
+<!-- Supporters Section -->
+<section class="py-5">
     <div class="container">
-        <h2 class="mb-4">From My Hearts</h2>
-        <div class="gratitude-message">
-            <p>
-                Every donation, no matter the size, represents someone who believes in the power of 
-                open source technology to create positive change. Your support doesn't just fund 
-                my projects—it fuels innovation, education, and community building around the world.
-            </p>
-            <p>
+        <h2 class="text-center mb-5">Our Amazing Supporters</h2>
+        
+        {% if donations %}
+        <div class="row">
+            {% for donation in donations %}
+            <div class="col-lg-6 mb-4">
+                <div class="supporter-card">
+                    <div class="supporter-name">
+                        <i class="fas fa-user-circle"></i> {{ donation.donor_name }}
+                    </div>
+                    
+                    {% if donation.amount and thanksgiving_settings.show_amounts %}
+                    <div class="supporter-amount">
+                        <i class="fas fa-heart text-danger"></i> {{ donation.currency }} {{ "%.2f"|format(donation.amount) }}
+                    </div>
+                    {% endif %}
+                    
+                    {% if donation.project_title %}
+                    <div class="project-tag">
+                        <i class="fas fa-project-diagram"></i> {{ donation.project_title }}
+                    </div>
+                    {% endif %}
+                    
+                    {% if donation.message and thanksgiving_settings.show_messages %}
+                    <div class="supporter-message">
+                        <i class="fas fa-quote-left"></i>
+                        {{ donation.message }}
+                        <i class="fas fa-quote-right"></i>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="supporter-date">
+                        <i class="fas fa-calendar"></i> {{ donation.created_at.strftime('%B %d, %Y') }}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <i class="fas fa-heart"></i>
+            <h3>No supporters yet</h3>
+            <p>Be the first to support our projects and help us build amazing things!</p>
+            <a href="{{ url_for('donation.index') }}" class="btn btn-primary">
+                <i class="fas fa-heart"></i> Make a Donation
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="py-5" style="background: var(--light-gray);">
+    <div class="container text-center">
+        <h3>Want to Join Our Amazing Community?</h3>
+        <p class="lead mb-4">Support our projects and help us build technology that makes a difference</p>
+        <a href="{{ url_for('donation.index') }}" class="btn btn-primary btn-lg me-3">
+            <i class="fas fa-heart"></i> Make a Donation
+        </a>
+        <a href="{{ url_for('main.index') }}" class="btn btn-outline-primary btn-lg">
+            <i class="fas fa-home"></i> Back to Homepage
+        </a>
+    </div>
+</section>
+{% endblock %}
                 Thanks to your generosity, we've been able to develop tools that help other developers, 
                 create educational resources for students in developing countries, and build systems 
                 that can save lives. You are part of something bigger than code—you're part of a 

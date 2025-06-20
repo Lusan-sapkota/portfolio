@@ -1,6 +1,6 @@
 from flask import render_template, request, jsonify, flash, redirect, url_for, current_app
 from . import donation_bp
-from models import DonationProject, Donation, NewsletterSubscriber, db
+from models import DonationProject, Donation, NewsletterSubscriber, PaymentMethod, ThanksgivingSettings, DonationSettings, db
 from email_service import email_service
 from datetime import datetime
 import logging
@@ -61,6 +61,9 @@ def project_detail(project_id):
         project = Project.query.get_or_404(project_id)
         donations = []
     
+    # Get available payment methods
+    payment_methods = PaymentMethod.query.filter_by(is_active=True).order_by(PaymentMethod.sort_order).all()
+    
     # Get CMS data
     seo = SeoSettings.query.filter_by(page_name='donation').first() or SeoSettings.query.first()
     personal = PersonalInfo.query.first()
@@ -68,6 +71,7 @@ def project_detail(project_id):
     return render_template('project_detail.html', 
                          project=project,
                          donations=donations,
+                         payment_methods=payment_methods,
                          seo=seo,
                          personal=personal,
                          current_year=datetime.now().year)
@@ -84,7 +88,9 @@ def donate(project_id):
             # Get form data
             donor_name = request.form.get('donor_name', '').strip()
             donor_email = request.form.get('donor_email', '').strip()
+            donor_phone = request.form.get('donor_phone', '').strip()
             amount = float(request.form.get('amount', 0))
+            currency = request.form.get('currency', 'NPR')
             message = request.form.get('message', '').strip()
             is_anonymous = bool(request.form.get('is_anonymous'))
             payment_method = request.form.get('payment_method', 'manual')
@@ -101,7 +107,9 @@ def donate(project_id):
                 project_id=project_id,
                 donor_name=donor_name,
                 donor_email=donor_email,
+                donor_phone=donor_phone,
                 amount=amount,
+                currency=currency,
                 message=message,
                 is_anonymous=is_anonymous,
                 payment_method=payment_method,
@@ -111,17 +119,28 @@ def donate(project_id):
             db.session.add(donation)
             db.session.commit()
             
-            # Send thank you email
+            # Send thank you email to donor
             try:
                 if email_service:
                     email_service.send_donation_thank_you(
                         donor_email, 
                         donor_name, 
                         amount, 
-                        project.title
+                        project.title,
+                        currency
                     )
             except Exception as e:
                 logger.error(f"Failed to send thank you email: {e}")
+            
+            # Send admin notification email
+            try:
+                if email_service:
+                    email_service.send_admin_donation_notification(
+                        donation,
+                        project.title
+                    )
+            except Exception as e:
+                logger.error(f"Failed to send admin notification email: {e}")
             
             if request.is_json:
                 return jsonify({
@@ -130,8 +149,8 @@ def donate(project_id):
                     'donation_id': donation.id
                 })
             
-            flash('Thank you for your donation! Your contribution is being processed.', 'success')
-            return redirect(url_for('donation.donation_success', donation_id=donation.id))
+            flash('Thank you for your donation! Please complete the payment using the instructions below.', 'success')
+            return redirect(url_for('donation.payment_instructions', donation_id=donation.id))
             
         except ValueError:
             if request.is_json:
@@ -270,21 +289,45 @@ def highlights():
 
 @donation_bp.route('/thanksgiving')
 def thanksgiving():
-    """Thanksgiving page showing appreciation for supporters"""
-    recent_donations = Donation.query.filter_by(status='completed')\
-                                   .order_by(Donation.created_at.desc())\
-                                   .limit(20).all()
+    """Thanksgiving page showing donor recognition"""
+    from models import SeoSettings, PersonalInfo, ThanksgivingSettings
     
-    total_donations = db.session.query(db.func.sum(Donation.amount))\
-                               .filter_by(status='completed').scalar() or 0
+    # Get thanksgiving settings
+    thanksgiving_settings = ThanksgivingSettings.query.filter_by(is_active=True).first()
+    if not thanksgiving_settings:
+        # Default settings if none exist
+        thanksgiving_settings = ThanksgivingSettings()
     
-    total_supporters = db.session.query(db.func.count(Donation.id.distinct()))\
-                                .filter_by(status='completed').scalar() or 0
+    # Get donations for display based on settings
+    query = Donation.query.filter_by(status='completed')
     
-    return render_template('thanksgiving.html',
-                         recent_donations=recent_donations,
-                         total_donations=total_donations,
-                         total_supporters=total_supporters,
+    if thanksgiving_settings.min_amount_display > 0:
+        query = query.filter(Donation.verified_amount >= thanksgiving_settings.min_amount_display)
+    
+    donations = query.order_by(Donation.created_at.desc()).all()
+    
+    # Filter donations based on display settings
+    display_donations = []
+    for donation in donations:
+        donation_data = {
+            'donor_name': donation.donor_name if not donation.is_anonymous and thanksgiving_settings.show_donor_names else thanksgiving_settings.anonymous_display_text,
+            'amount': donation.verified_amount or donation.amount if thanksgiving_settings.show_amounts else None,
+            'currency': donation.currency if thanksgiving_settings.show_amounts else None,
+            'message': donation.message if thanksgiving_settings.show_messages and donation.message else None,
+            'created_at': donation.created_at,
+            'project_title': donation.project.title if donation.project else None
+        }
+        display_donations.append(donation_data)
+    
+    # Get CMS data
+    seo = SeoSettings.query.filter_by(page_name='thanksgiving').first() or SeoSettings.query.first()
+    personal = PersonalInfo.query.first()
+    
+    return render_template('thanksgiving.html', 
+                         donations=display_donations,
+                         thanksgiving_settings=thanksgiving_settings,
+                         seo_settings=seo,
+                         personal_info=personal,
                          current_year=datetime.now().year)
 
 @donation_bp.route('/why-donate/<int:project_id>')
@@ -333,7 +376,8 @@ def api_donate():
                     donation.donor_email, 
                     donation.donor_name, 
                     donation.amount, 
-                    project.title
+                    project.title,
+                    donation.currency
                 )
         except Exception as e:
             logger.error(f"Failed to send thank you email: {e}")
@@ -348,3 +392,31 @@ def api_donate():
         logger.error(f"API donation error: {e}")
         db.session.rollback()
         return jsonify({'success': False, 'message': 'An error occurred while processing your donation'}), 500
+
+@donation_bp.route('/payment/<int:donation_id>')
+def payment_instructions(donation_id):
+    """Show payment instructions after donation submission"""
+    from models import SeoSettings, PersonalInfo, PaymentMethod, DonationSettings
+    
+    donation = Donation.query.get_or_404(donation_id)
+    
+    # Get payment methods for the selected currency
+    payment_methods = PaymentMethod.query.filter_by(
+        currency=donation.currency, 
+        is_active=True
+    ).order_by(PaymentMethod.sort_order).all()
+    
+    # Get donation settings
+    settings = DonationSettings.query.first()
+    
+    # Get CMS data
+    seo = SeoSettings.query.filter_by(page_name='donation').first() or SeoSettings.query.first()
+    personal = PersonalInfo.query.first()
+    
+    return render_template('donation_payment.html', 
+                         donation=donation,
+                         payment_methods=payment_methods,
+                         settings=settings,
+                         seo_settings=seo,
+                         personal_info=personal,
+                         current_year=datetime.now().year)

@@ -71,6 +71,7 @@
                                 <th>Status</th>
                                 <th>GitHub</th>
                                 <th>Featured</th>
+                                <th>Homepage</th>
                                 <th>Created</th>
                                 <th>Actions</th>
                             </tr>
@@ -121,6 +122,13 @@
                                         <input class="form-check-input toggle-featured" type="checkbox" 
                                                data-project-id="{{ project.id }}" 
                                                {% if project.is_featured %}checked{% endif %}>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input toggle-homepage" type="checkbox" 
+                                               data-project-id="{{ project.id }}" 
+                                               {% if project.show_on_homepage %}checked{% endif %}>
                                     </div>
                                 </td>
                                 <td>
@@ -175,6 +183,8 @@
                             <option value="">Select action...</option>
                             <option value="feature">Mark as Featured</option>
                             <option value="unfeature">Remove from Featured</option>
+                            <option value="show_homepage">Show on Homepage</option>
+                            <option value="hide_homepage">Hide from Homepage</option>
                             <option value="status_completed">Set Status: Completed</option>
                             <option value="status_in_progress">Set Status: In Progress</option>
                             <option value="status_maintenance">Set Status: Maintenance</option>
@@ -256,6 +266,31 @@ $(document).ready(function() {
             },
             error: function() {
                 alert('Error updating featured status');
+                location.reload();
+            }
+        });
+    });
+    
+    // Toggle homepage display
+    $('.toggle-homepage').change(function() {
+        const projectId = $(this).data('project-id');
+        const showOnHomepage = $(this).is(':checked');
+        
+        $.ajax({
+            url: `/admin/api/projects/${projectId}/toggle-homepage`,
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            data: JSON.stringify({ show_on_homepage: showOnHomepage }),
+            success: function(response) {
+                if (response.status !== 'success') {
+                    alert('Error updating homepage display status');
+                    location.reload();
+                }
+            },
+            error: function() {
+                alert('Error updating homepage display status');
                 location.reload();
             }
         });

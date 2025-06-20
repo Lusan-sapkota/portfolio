@@ -76,7 +76,7 @@
                         
                         <h5>Message:</h5>
                         <div class="bg-light p-3 rounded">
-                            {{ contact.message|nl2br }}
+                            {{ contact.message|nl2br|safe }}
                         </div>
                     </div>
                 </div>
@@ -135,14 +135,14 @@
 
 <script>
 // Mark contact as read when viewing
-if (!{{ contact.is_read|tojson }}) {
-    fetch(`/admin/api/contacts/{{ contact.id }}/mark-read`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    });
-}
+{% if not contact.is_read %}
+fetch(`/admin/api/contacts/{{ contact.id }}/mark-read`, {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    }
+});
+{% endif %}
 
 // Send reply
 function sendReply(event) {

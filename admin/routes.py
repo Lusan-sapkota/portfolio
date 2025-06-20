@@ -2,7 +2,8 @@ from flask import render_template, request, redirect, url_for, flash, jsonify, s
 from functools import wraps
 from models import (User, Project, ProjectCategory, ContactSubmission, NewsletterSubscriber, 
                    SeoSettings, PersonalInfo, SocialLink, Skill, Experience, Education, Testimonial,
-                   DonationProject, Donation)
+                   DonationProject, Donation, PaymentMethod, ThanksgivingSettings, DonationSettings,
+                   WikiArticle, WikiCategory)
 from . import admin_bp
 from database import db
 from datetime import datetime, timedelta
@@ -10,8 +11,12 @@ from sqlalchemy import desc
 import os
 import time
 import re
+import logging
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+
+# Set up logging
+logger = logging.getLogger(__name__)
 
 # Rate limiter for admin routes (use Flask-Limiter decorators)
 import time 
@@ -97,9 +102,11 @@ def dashboard():
         'contact_submissions': ContactSubmission.query.count(),
         'newsletter_subscribers': NewsletterSubscriber.query.filter_by(is_active=True).count(),
         'skills': Skill.query.count(),
+        'testimonials': Testimonial.query.count(),
         'donation_projects': DonationProject.query.count(),
         'donations': Donation.query.count(),
-        'total_donations': db.session.query(db.func.sum(Donation.amount)).filter_by(status='completed').scalar() or 0,
+        'total_donations_usd': sum((d.verified_amount or d.amount) for d in Donation.query.filter_by(status='completed', currency='USD').all()),
+        'total_donations_npr': sum((d.verified_amount or d.amount) for d in Donation.query.filter_by(status='completed', currency='NPR').all()),
         'recent_contacts': ContactSubmission.query.filter_by(is_spam=False).order_by(desc(ContactSubmission.submitted_at)).limit(5).all(),
         'recent_subscribers': NewsletterSubscriber.query.order_by(desc(NewsletterSubscriber.subscribed_at)).limit(5).all(),
         'recent_donations': Donation.query.order_by(desc(Donation.created_at)).limit(5).all()
@@ -155,10 +162,12 @@ def projects_create():
             image_url=data.get('image_url'),
             github_url=data.get('github_url'),
             live_url=data.get('live_url'),
+            commercial_url=data.get('commercial_url'),
             technologies=data.get('technologies'),
             category_id=data.get('category_id') if data.get('category_id') else None,
             is_featured=bool(data.get('is_featured')),
             is_opensource=bool(data.get('is_opensource', True)),
+            show_on_homepage=bool(data.get('show_on_homepage')),
             status=data.get('status', 'completed')
         )
         
@@ -202,10 +211,12 @@ def projects_edit(id):
         project.image_url = data.get('image_url', project.image_url)
         project.github_url = data.get('github_url', project.github_url)
         project.live_url = data.get('live_url', project.live_url)
+        project.commercial_url = data.get('commercial_url', project.commercial_url)
         project.technologies = data.get('technologies', project.technologies)
         project.category_id = data.get('category_id') if data.get('category_id') else None
         project.is_featured = bool(data.get('is_featured'))
         project.is_opensource = bool(data.get('is_opensource'))
+        project.show_on_homepage = bool(data.get('show_on_homepage'))
         project.status = data.get('status', project.status)
         
         db.session.commit()
@@ -733,6 +744,20 @@ def toggle_project_featured(id):
         db.session.rollback()
         return jsonify({'status': 'error', 'message': str(e)}), 400
 
+@admin_bp.route('/api/projects/<int:id>/toggle-homepage', methods=['POST'])
+@admin_required
+def toggle_project_homepage(id):
+    """Toggle project homepage display status"""
+    try:
+        project = Project.query.get_or_404(id)
+        data = request.get_json()
+        project.show_on_homepage = data.get('show_on_homepage', False)
+        db.session.commit()
+        return jsonify({'status': 'success'})
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'status': 'error', 'message': str(e)}), 400
+
 @admin_bp.route('/api/skills/<int:id>/toggle-featured', methods=['POST'])
 @admin_required
 def toggle_skill_featured(id):
@@ -794,6 +819,12 @@ def projects_bulk_action():
         elif action == 'unfeature':
             for project in projects:
                 project.is_featured = False
+        elif action == 'show_homepage':
+            for project in projects:
+                project.show_on_homepage = True
+        elif action == 'hide_homepage':
+            for project in projects:
+                project.show_on_homepage = False
         elif action.startswith('status_'):
             status = action.replace('status_', '')
             for project in projects:
@@ -1351,14 +1382,15 @@ def testimonials_create():
         data = request.get_json() if request.is_json else request.form
         
         testimonial = Testimonial(
-            name=data.get('name'),
-            title=data.get('title'),
-            company=data.get('company'),
-            content=data.get('content'),
-            avatar_url=data.get('avatar_url'),
+            client_name=data.get('client_name'),
+            client_title=data.get('client_title'),
+            client_company=data.get('client_company'),
+            testimonial_text=data.get('testimonial_text'),
+            client_image=data.get('client_image'),
             rating=int(data.get('rating', 5)) if data.get('rating') else 5,
             is_featured=bool(data.get('is_featured')),
-            project_id=int(data.get('project_id')) if data.get('project_id') else None
+            project_related=data.get('project_related'),
+            sort_order=int(data.get('sort_order', 0)) if data.get('sort_order') else 0
         )
         
         db.session.add(testimonial)
@@ -1384,20 +1416,20 @@ def testimonials_edit(id):
     testimonial = Testimonial.query.get_or_404(id)
     
     if request.method == 'GET':
-        projects = Project.query.order_by(Project.title).all()
-        return render_template('admin/testimonials/form.html', testimonial=testimonial, projects=projects)
+        return render_template('admin/testimonials/form.html', testimonial=testimonial)
     
     try:
         data = request.get_json() if request.is_json else request.form
         
-        testimonial.name = data.get('name')
-        testimonial.title = data.get('title')
-        testimonial.company = data.get('company')
-        testimonial.content = data.get('content')
-        testimonial.avatar_url = data.get('avatar_url')
+        testimonial.client_name = data.get('client_name')
+        testimonial.client_title = data.get('client_title')
+        testimonial.client_company = data.get('client_company')
+        testimonial.testimonial_text = data.get('testimonial_text')
+        testimonial.client_image = data.get('client_image')
         testimonial.rating = int(data.get('rating', 5)) if data.get('rating') else 5
         testimonial.is_featured = bool(data.get('is_featured'))
-        testimonial.project_id = int(data.get('project_id')) if data.get('project_id') else None
+        testimonial.project_related = data.get('project_related')
+        testimonial.sort_order = int(data.get('sort_order', 0)) if data.get('sort_order') else 0
         
         db.session.commit()
         
@@ -1427,14 +1459,12 @@ def testimonials_delete(id):
             return jsonify({'success': True, 'message': 'Testimonial deleted successfully!'})
         
         flash('Testimonial deleted successfully!', 'success')
-        return redirect(url_for('admin.testimonials'))
-        
     except Exception as e:
         db.session.rollback()
         if request.is_json:
             return jsonify({'success': False, 'message': f'Error: {str(e)}'}), 400
         flash(f'Error deleting testimonial: {str(e)}', 'danger')
-        return redirect(url_for('admin.testimonials'))
+    return redirect(url_for('admin.testimonials'))
 
 @admin_bp.route('/api/testimonials/<int:id>/toggle-featured', methods=['POST'])
 @admin_required
@@ -1601,330 +1631,456 @@ def donations():
     """List all donations"""
     # Get filter parameters
     status = request.args.get('status')
-    project_id = request.args.get('project', type=int)
+    currency = request.args.get('currency')
+    anonymous = request.args.get('anonymous')
     
     # Base query
-    query = Donation.query.join(DonationProject)
+    query = Donation.query
     
     # Apply filters
     if status:
-        query = query.filter(Donation.status == status)
+        query = query.filter_by(status=status)
+    if currency:
+        query = query.filter_by(currency=currency)
+    if anonymous == 'true':
+        query = query.filter_by(is_anonymous=True)
+    elif anonymous == 'false':
+        query = query.filter_by(is_anonymous=False)
     
-    if project_id:
-        query = query.filter(Donation.project_id == project_id)
+    # Execute query with pagination
+    page = request.args.get('page', 1, type=int)
+    donations_paginated = query.order_by(desc(Donation.created_at)).paginate(
+        page=page, per_page=25, error_out=False)
     
-    # Execute query
-    donations = query.order_by(desc(Donation.created_at)).all()
-    projects = DonationProject.query.all()
+    # Calculate totals by currency
+    completed_donations = Donation.query.filter_by(status='completed').all()
+    total_usd = sum((d.verified_amount or d.amount) for d in completed_donations if d.currency == 'USD')
+    total_npr = sum((d.verified_amount or d.amount) for d in completed_donations if d.currency == 'NPR')
     
     return render_template('admin/donations/list.html', 
-                         donations=donations,
-                         projects=projects,
+                         donations=donations_paginated,
                          current_status=status,
-                         current_project=project_id)
+                         current_currency=currency,
+                         current_anonymous=anonymous,
+                         total_usd=total_usd,
+                         total_npr=total_npr)
 
-@admin_bp.route('/donations/<int:donation_id>')
+@admin_bp.route('/donations/<int:id>')
 @admin_required
-def donation_view(donation_id):
+def donations_view(id):
     """View donation details"""
-    donation = Donation.query.get_or_404(donation_id)
+    donation = Donation.query.get_or_404(id)
     return render_template('admin/donations/view.html', donation=donation)
 
-@admin_bp.route('/donations/<int:donation_id>/update-status', methods=['POST'])
+@admin_bp.route('/donations/<int:id>/edit', methods=['GET', 'POST'])
 @admin_required
-def donation_update_status(donation_id):
-    """Update donation status"""
+def donations_edit(id):
+    """Edit donation (mainly for admin verification)"""
+    donation = Donation.query.get_or_404(id)
+    
+    if request.method == 'GET':
+        return render_template('admin/donations/form.html', donation=donation)
+    
     try:
-        donation = Donation.query.get_or_404(donation_id)
+        # Store old status to check if it changed
         old_status = donation.status
-        new_status = request.form.get('status')
         
-        if new_status not in ['pending', 'completed', 'failed']:
-            if request.is_json:
-                return jsonify({'success': False, 'message': 'Invalid status'}), 400
-            flash('Invalid status', 'danger')
-            return redirect(url_for('admin.donations'))
+        # Admin can update status, verified amount, notes, and anonymous status
+        donation.status = request.form.get('status', donation.status)
+        donation.verified_amount = float(request.form.get('verified_amount', 0)) or donation.amount
+        donation.admin_notes = request.form.get('admin_notes', donation.admin_notes)
+        donation.is_anonymous = request.form.get('is_anonymous') == 'on'
         
-        donation.status = new_status
+        # Get email amount for confirmation (optional, defaults to verified amount)
+        email_amount = request.form.get('email_amount')
+        send_confirmation = request.form.get('send_confirmation') == 'on'
         
-        # If marking as completed, update project current amount
-        if new_status == 'completed' and old_status != 'completed':
-            donation.project.current_amount += donation.amount
-        elif old_status == 'completed' and new_status != 'completed':
-            donation.project.current_amount -= donation.amount
-            if donation.project.current_amount < 0:
-                donation.project.current_amount = 0
+        # If status changed to completed, update project amount
+        if donation.status == 'completed' and donation.project:
+            # Calculate difference and update project current_amount
+            old_verified = donation.verified_amount or 0
+            new_verified = donation.verified_amount
+            if old_verified != new_verified:
+                donation.project.current_amount += (new_verified - old_verified)
         
         db.session.commit()
         
-        if request.is_json:
-            return jsonify({'success': True, 'message': 'Donation status updated successfully'})
+        # Send confirmation email if status changed to completed and checkbox is checked
+        if old_status != 'completed' and donation.status == 'completed' and send_confirmation:
+            try:
+                from email_service import email_service
+                if email_service:
+                    # Use custom email amount if provided, otherwise use verified amount
+                    display_amount = float(email_amount) if email_amount else donation.verified_amount
+                    email_service.send_donation_confirmation(
+                        donation,
+                        donation.project.title,
+                        display_amount
+                    )
+                    flash('Donation updated and confirmation email sent!', 'success')
+                else:
+                    flash('Donation updated but email service not available.', 'warning')
+            except Exception as e:
+                logger.error(f"Failed to send donation confirmation email: {e}")
+                flash('Donation updated but failed to send confirmation email.', 'warning')
+        else:
+            flash('Donation updated successfully!', 'success')
         
-        flash('Donation status updated successfully!', 'success')
         return redirect(url_for('admin.donations'))
         
     except Exception as e:
         db.session.rollback()
-        if request.is_json:
-            return jsonify({'success': False, 'message': f'Error: {str(e)}'}), 400
+        flash(f'Error updating donation: {str(e)}', 'danger')
+        return render_template('admin/donations/form.html', donation=donation)
+
+@admin_bp.route('/donations/<int:id>/delete', methods=['POST'])
+@admin_required
+def donations_delete(id):
+    """Delete donation"""
+    try:
+        donation = Donation.query.get_or_404(id)
+        
+        # If donation was completed, subtract from project total
+        if donation.status == 'completed' and donation.project:
+            verified_amount = donation.verified_amount or donation.amount
+            donation.project.current_amount -= verified_amount
+        
+        db.session.delete(donation)
+        db.session.commit()
+        
+        flash('Donation deleted successfully!', 'success')
+        return redirect(url_for('admin.donations'))
+        
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Error deleting donation: {str(e)}', 'danger')
+        return redirect(url_for('admin.donations'))
+
+@admin_bp.route('/donations/<int:id>/update-status', methods=['POST'])
+@admin_required
+def donations_update_status(id):
+    """Update donation status (quick status update from list page)"""
+    try:
+        donation = Donation.query.get_or_404(id)
+        old_status = donation.status
+        new_status = request.form.get('status')
+        
+        if new_status not in ['pending', 'completed', 'failed']:
+            flash('Invalid status provided', 'danger')
+            return redirect(url_for('admin.donations'))
+            
+        donation.status = new_status
+        
+        # If status changed to completed, update project amount
+        if old_status != 'completed' and new_status == 'completed' and donation.project:
+            verified_amount = donation.verified_amount or donation.amount
+            donation.project.current_amount += verified_amount
+            
+        # If status changed from completed to something else, subtract from project
+        elif old_status == 'completed' and new_status != 'completed' and donation.project:
+            verified_amount = donation.verified_amount or donation.amount
+            donation.project.current_amount -= verified_amount
+        
+        db.session.commit()
+        
+        # Send confirmation email if status changed to completed
+        if old_status != 'completed' and new_status == 'completed':
+            try:
+                from email_service import email_service
+                if email_service:
+                    email_service.send_donation_confirmation(
+                        donation,
+                        donation.project.title,
+                        donation.verified_amount or donation.amount
+                    )
+            except Exception as e:
+                logger.error(f"Failed to send donation confirmation email: {e}")
+        
+        flash(f'Donation status updated to {new_status.title()}!', 'success')
+        return redirect(url_for('admin.donations'))
+        
+    except Exception as e:
+        db.session.rollback()
         flash(f'Error updating donation status: {str(e)}', 'danger')
         return redirect(url_for('admin.donations'))
 
-# ============ DONATION PROJECT API ROUTES ============
-@admin_bp.route('/api/donation-projects')
+@admin_bp.route('/donations/<int:id>/update-anonymous', methods=['POST'])
 @admin_required
-def api_donation_projects():
-    """Get donation projects as JSON"""
-    projects = DonationProject.query.order_by(desc(DonationProject.created_at)).all()
-    return jsonify({
-        'projects': [project.to_dict() for project in projects]
-    })
-
-@admin_bp.route('/api/donation-projects/<int:project_id>')
-@admin_required
-def api_donation_project(project_id):
-    """Get single donation project as JSON"""
-    project = DonationProject.query.get_or_404(project_id)
-    return jsonify(project.to_dict())
-
-@admin_bp.route('/api/donation-projects/bulk-toggle-featured', methods=['POST'])
-@admin_required
-def api_donation_projects_bulk_toggle_featured():
-    """Toggle featured status for multiple donation projects"""
+def donations_update_anonymous(id):
+    """Update donation anonymous status"""
     try:
-        data = request.get_json()
-        ids = data.get('ids', [])
-        featured = data.get('featured', True)
+        donation = Donation.query.get_or_404(id)
         
-        DonationProject.query.filter(DonationProject.id.in_(ids)).update(
-            {'is_featured': featured}, synchronize_session=False
-        )
+        # Update anonymous status
+        donation.is_anonymous = request.form.get('is_anonymous') == 'on'
+        
         db.session.commit()
         
-        action = 'featured' if featured else 'unfeatured'
-        return jsonify({'success': True, 'message': f'Projects {action}'})
+        status = 'anonymous' if donation.is_anonymous else 'public'
+        flash(f'Donation anonymity status updated to {status}!', 'success')
+        return redirect(url_for('admin.donations_view', id=donation.id))
         
     except Exception as e:
-        return jsonify({'success': False, 'message': f'Error: {str(e)}'}), 400
+        db.session.rollback()
+        flash(f'Error updating donation anonymity: {str(e)}', 'danger')
+        return redirect(url_for('admin.donations_view', id=id))
 
-@admin_bp.route('/api/donation-projects/bulk-toggle-active', methods=['POST'])
+@admin_bp.route('/donations/<int:id>/update-amount', methods=['POST'])
 @admin_required
-def api_donation_projects_bulk_toggle_active():
-    """Toggle active status for multiple donation projects"""
+def donations_update_amount(id):
+    """Update donation amount (original or verified)"""
     try:
-        data = request.get_json()
-        ids = data.get('ids', [])
-        active = data.get('active', True)
+        donation = Donation.query.get_or_404(id)
         
-        DonationProject.query.filter(DonationProject.id.in_(ids)).update(
-            {'is_active': active}, synchronize_session=False
-        )
+        # Check which amount is being updated
+        original_amount = request.form.get('original_amount')
+        verified_amount = request.form.get('verified_amount')
+        
+        if original_amount:
+            old_amount = donation.amount
+            donation.amount = float(original_amount)
+            
+            # If this donation is completed and affects project totals
+            if donation.status == 'completed' and donation.project:
+                # Adjust project total based on the change in original amount
+                verified_amount_used = donation.verified_amount or old_amount
+                new_verified_amount = donation.verified_amount or donation.amount
+                donation.project.current_amount += (new_verified_amount - verified_amount_used)
+            
+            flash('Original donation amount updated successfully!', 'success')
+            
+        elif verified_amount:
+            old_verified = donation.verified_amount or donation.amount
+            donation.verified_amount = float(verified_amount)
+            
+            # If this donation is completed, update project total
+            if donation.status == 'completed' and donation.project:
+                donation.project.current_amount += (donation.verified_amount - old_verified)
+            
+            flash('Verified donation amount updated successfully!', 'success')
+        
         db.session.commit()
-        
-        action = 'activated' if active else 'deactivated'
-        return jsonify({'success': True, 'message': f'Projects {action}'})
+        return redirect(url_for('admin.donations_view', id=donation.id))
         
     except Exception as e:
-        return jsonify({'success': False, 'message': f'Error: {str(e)}'}), 400
+        db.session.rollback()
+        flash(f'Error updating donation amount: {str(e)}', 'danger')
+        return redirect(url_for('admin.donations_view', id=id))
 
-# ============ DONATIONS API ROUTES ============
-@admin_bp.route('/api/donations')
+# ============ PAYMENT METHODS MANAGEMENT ============
+@admin_bp.route('/payment-methods')
 @admin_required
-def api_donations():
-    """Get donations as JSON"""
-    donations = Donation.query.order_by(desc(Donation.created_at)).all()
-    return jsonify({
-        'donations': [donation.to_dict() for donation in donations]
-    })
+def payment_methods():
+    """List all payment methods"""
+    currency = request.args.get('currency')
+    query = PaymentMethod.query
+    
+    if currency:
+        query = query.filter_by(currency=currency)
+    
+    methods = query.order_by(PaymentMethod.currency, PaymentMethod.sort_order).all()
+    return render_template('admin/payment_methods/list.html', methods=methods, current_currency=currency)
 
-@admin_bp.route('/api/donations/<int:donation_id>')
+@admin_bp.route('/payment-methods/create', methods=['GET', 'POST'])
 @admin_required
-def api_donation(donation_id):
-    """Get single donation as JSON"""
-    donation = Donation.query.get_or_404(donation_id)
-    return jsonify(donation.to_dict())
-
-# ============ NEWSLETTER SENDING ============
-@admin_bp.route('/newsletter/send', methods=['GET', 'POST'])
-@admin_required
-def send_newsletter():
-    """Send newsletter to subscribers"""
+def payment_methods_create():
+    """Create new payment method"""
     if request.method == 'GET':
-        # Get active subscribers count for display
-        active_subscribers = NewsletterSubscriber.query.filter_by(is_active=True).count()
-        return render_template('admin/newsletter_send.html', subscriber_count=active_subscribers)
+        return render_template('admin/payment_methods/form.html')
     
     try:
-        subject = request.form.get('subject', '').strip()
-        content = request.form.get('content', '').strip()
-        send_to_all = request.form.get('send_to_all') == 'on'
-        test_email = request.form.get('test_email', '').strip()
+        method = PaymentMethod(
+            currency=request.form['currency'],
+            method_name=request.form['method_name'],
+            display_name=request.form['display_name'],
+            account_info=request.form.get('account_info', ''),
+            qr_code_url=request.form.get('qr_code_url', ''),
+            instructions=request.form.get('instructions', ''),
+            is_active=bool(request.form.get('is_active')),
+            sort_order=int(request.form.get('sort_order', 0))
+        )
         
-        if not subject or not content:
-            flash('Subject and content are required.', 'error')
-            return redirect(url_for('admin.send_newsletter'))
-        
-        from email_service import email_service
-        
-        if test_email:
-            # Send test email
-            success = email_service.send_newsletter([test_email], subject, content)
-            if success:
-                flash(f'Test newsletter sent successfully to {test_email}!', 'success')
-            else:
-                flash('Failed to send test newsletter.', 'error')
-        elif send_to_all:
-            # Send to all active subscribers
-            subscribers = NewsletterSubscriber.query.filter_by(is_active=True).all()
-            if not subscribers:
-                flash('No active subscribers found.', 'warning')
-                return redirect(url_for('admin.send_newsletter'))
-            
-            subscriber_emails = [sub.email for sub in subscribers]
-            success = email_service.send_newsletter(subscriber_emails, subject, content)
-            
-            if success:
-                flash(f'Newsletter sent successfully to {len(subscriber_emails)} subscribers!', 'success')
-                current_app.logger.info(f'Newsletter "{subject}" sent to {len(subscriber_emails)} subscribers by {session.get("username")}')
-            else:
-                flash('Failed to send newsletter to subscribers.', 'error')
-        else:
-            flash('Please select test email or send to all subscribers.', 'error')
-            
-        return redirect(url_for('admin.send_newsletter'))
-        
-    except Exception as e:
-        current_app.logger.error(f'Newsletter sending error: {str(e)}')
-        flash(f'Error sending newsletter: {str(e)}', 'error')
-        return redirect(url_for('admin.send_newsletter'))
-
-# ============ PASSWORD CHANGE ============
-@admin_bp.route('/change-password', methods=['GET', 'POST'])
-@admin_required
-def change_password():
-    """Change admin password with enhanced security"""
-    if request.method == 'GET':
-        return render_template('admin/change_password.html')
-    
-    try:
-        current_password = request.form.get('current_password', '')
-        new_password = request.form.get('new_password', '')
-        confirm_password = request.form.get('confirm_password', '')
-        
-        # Input validation
-        if not all([current_password, new_password, confirm_password]):
-            flash('All password fields are required.', 'error')
-            return render_template('admin/change_password.html')
-        
-        if new_password != confirm_password:
-            flash('New passwords do not match.', 'error')
-            return render_template('admin/change_password.html')
-        
-        # Enhanced password validation
-        is_valid, error_message = validate_strong_password(new_password)
-        if not is_valid:
-            flash(error_message, 'error')
-            return render_template('admin/change_password.html')
-        
-        # Get current user
-        user = User.query.get(session['user_id'])
-        if not user:
-            flash('User not found.', 'error')
-            return redirect(url_for('admin.login'))
-        
-        # Verify current password
-        if not user.check_password(current_password):
-            flash('Current password is incorrect.', 'error')
-            return render_template('admin/change_password.html')
-        
-        # Check if new password is different from current
-        if user.check_password(new_password):
-            flash('New password must be different from your current password.', 'error')
-            return render_template('admin/change_password.html')
-        
-        # Update password
-        old_username = user.username
-        user.set_password(new_password)
+        db.session.add(method)
         db.session.commit()
         
-        # Send password change notification
-        try:
-            from email_service import email_service
-            email_service.send_admin_password_change_notification(
-                username=old_username,
-                ip_address=get_remote_address(),
-                timestamp=datetime.utcnow()
-            )
-            current_app.logger.info(f'Password change notification sent for: {old_username}')
-        except Exception as e:
-            current_app.logger.error(f'Failed to send password change notification: {e}')
-        
-        # Log password change
-        current_app.logger.warning(f'Admin password changed: {old_username} from IP: {get_remote_address()}')
-        
-        # Clear session to force re-login
-        session.clear()
-        
-        flash('Password changed successfully! Please log in with your new password.', 'success')
-        return redirect(url_for('admin.login'))
+        flash('Payment method created successfully!', 'success')
+        return redirect(url_for('admin.payment_methods'))
         
     except Exception as e:
-        current_app.logger.error(f'Password change error: {str(e)}')
-        flash('An error occurred while changing password. Please try again.', 'error')
-        return render_template('admin/change_password.html')
+        db.session.rollback()
+        flash(f'Error creating payment method: {str(e)}', 'danger')
+        return render_template('admin/payment_methods/form.html')
 
-# ============ SESSION TIMER API ============
+@admin_bp.route('/payment-methods/<int:id>/edit', methods=['GET', 'POST'])
+@admin_required
+def payment_methods_edit(id):
+    """Edit payment method"""
+    method = PaymentMethod.query.get_or_404(id)
+    
+    if request.method == 'GET':
+        return render_template('admin/payment_methods/form.html', method=method)
+    
+    try:
+        method.currency = request.form['currency']
+        method.method_name = request.form['method_name']
+        method.display_name = request.form['display_name']
+        method.account_info = request.form.get('account_info', '')
+        method.qr_code_url = request.form.get('qr_code_url', '')
+        method.instructions = request.form.get('instructions', '')
+        method.is_active = bool(request.form.get('is_active'))
+        method.sort_order = int(request.form.get('sort_order', 0)) if request.form.get('sort_order') else 0
+        
+        db.session.commit()
+        flash('Payment method updated successfully!', 'success')
+        return redirect(url_for('admin.payment_methods'))
+        
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Error updating payment method: {str(e)}', 'danger')
+        return render_template('admin/payment_methods/form.html', method=method)
+
+@admin_bp.route('/payment-methods/<int:id>/delete', methods=['POST'])
+@admin_required
+def payment_methods_delete(id):
+    """Delete payment method"""
+    try:
+        method = PaymentMethod.query.get_or_404(id)
+        db.session.delete(method)
+        db.session.commit()
+        
+        flash('Payment method deleted successfully!', 'success')
+        return redirect(url_for('admin.payment_methods'))
+        
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Error deleting payment method: {str(e)}', 'danger')
+        return redirect(url_for('admin.payment_methods'))
+
+# ============ THANKSGIVING SETTINGS ============
+@admin_bp.route('/thanksgiving-settings')
+@admin_required
+def thanksgiving_settings():
+    """Manage thanksgiving page settings"""
+    settings = ThanksgivingSettings.query.first()
+    if not settings:
+        # Create default settings
+        settings = ThanksgivingSettings()
+        db.session.add(settings)
+        db.session.commit()
+    
+    return render_template('admin/thanksgiving_settings/form.html', settings=settings)
+
+@admin_bp.route('/thanksgiving-settings/update', methods=['POST'])
+@admin_required
+def thanksgiving_settings_update():
+    """Update thanksgiving settings"""
+    try:
+        settings = ThanksgivingSettings.query.first()
+        if not settings:
+            settings = ThanksgivingSettings()
+            db.session.add(settings)
+        
+        settings.page_title = request.form['page_title']
+        settings.page_description = request.form['page_description']
+        settings.show_donor_names = bool(request.form.get('show_donor_names'))
+        settings.show_amounts = bool(request.form.get('show_amounts'))
+        settings.show_messages = bool(request.form.get('show_messages'))
+        settings.min_amount_display = float(request.form.get('min_amount_display', 0))
+        settings.anonymous_display_text = request.form['anonymous_display_text']
+        settings.thank_you_message = request.form['thank_you_message']
+        settings.is_active = bool(request.form.get('is_active'))
+        
+        db.session.commit()
+        flash('Thanksgiving settings updated successfully!', 'success')
+        return redirect(url_for('admin.thanksgiving_settings'))
+        
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Error updating settings: {str(e)}', 'danger')
+        return redirect(url_for('admin.thanksgiving_settings'))
+
+# ============ DONATION SETTINGS ============
+@admin_bp.route('/donation-settings')
+@admin_required
+def donation_settings():
+    """Manage general donation settings"""
+    settings = DonationSettings.query.first()
+    if not settings:
+        settings = DonationSettings()
+        db.session.add(settings)
+        db.session.commit()
+    
+    return render_template('admin/donation_settings/form.html', settings=settings)
+
+@admin_bp.route('/donation-settings/update', methods=['POST'])
+@admin_required
+def donation_settings_update():
+    """Update donation settings"""
+    try:
+        settings = DonationSettings.query.first()
+        if not settings:
+            settings = DonationSettings()
+            db.session.add(settings)
+        
+        settings.default_currency = request.form['default_currency']
+        settings.enable_custom_amounts = bool(request.form.get('enable_custom_amounts'))
+        settings.enable_anonymous_donations = bool(request.form.get('enable_anonymous_donations'))
+        settings.require_phone_verification = bool(request.form.get('require_phone_verification'))
+        settings.thank_you_email_template = request.form.get('thank_you_email_template', '')
+        settings.admin_notification_emails = request.form.get('admin_notification_emails', '')
+        settings.auto_approve_donations = bool(request.form.get('auto_approve_donations'))
+        
+        db.session.commit()
+        flash('Donation settings updated successfully!', 'success')
+        return redirect(url_for('admin.donation_settings'))
+        
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Error updating settings: {str(e)}', 'danger')
+        return redirect(url_for('admin.donation_settings'))
+
+# ============ SESSION API ENDPOINTS ============
 @admin_bp.route('/api/session-status')
 @admin_required
-def session_status():
-    """Check session status and remaining time"""
+def api_session_status():
+    """Get current session status and time remaining"""
     try:
-        login_time_str = session.get('login_time')
-        if not login_time_str:
-            return jsonify({'status': 'expired', 'remaining_time': 0})
-        
-        login_time = datetime.fromisoformat(login_time_str)
-        session_duration = datetime.utcnow() - login_time
-        max_duration = timedelta(hours=2)  # 2 hour session
-        warning_duration = timedelta(minutes=30)  # Warn at 30 minutes remaining
-        
-        remaining_time = max_duration - session_duration
-        
-        if remaining_time.total_seconds() <= 0:
+        # Check if session exists and is valid
+        if 'user_id' not in session or 'login_time' not in session:
             return jsonify({'status': 'expired', 'time_remaining': 0})
-        elif remaining_time <= warning_duration:
-            return jsonify({
-                'status': 'warning',
-                'time_remaining': int(remaining_time.total_seconds()),
-                'message': 'Your session will expire soon. Save your work!'
-            })
+        
+        # Calculate time remaining (2 hours session)
+        session_timeout = 7200  # 2 hours in seconds
+        login_time_str = session.get('login_time')
+        login_time = datetime.fromisoformat(login_time_str)
+        current_time = datetime.utcnow()
+        time_elapsed = (current_time - login_time).total_seconds()
+        time_remaining = max(0, session_timeout - time_elapsed)
+        
+        if time_remaining <= 0:
+            return jsonify({'status': 'expired', 'time_remaining': 0})
+        elif time_remaining <= 300:  # 5 minutes warning
+            return jsonify({'status': 'warning', 'time_remaining': int(time_remaining)})
         else:
-            return jsonify({
-                'status': 'active',
-                'time_remaining': int(remaining_time.total_seconds())
-            })
+            return jsonify({'status': 'active', 'time_remaining': int(time_remaining)})
             
     except Exception as e:
-        current_app.logger.error(f'Session status error: {e}')
-        return jsonify({'status': 'error', 'time_remaining': 0}), 500
+        return jsonify({'status': 'error', 'message': str(e)}), 500
 
 @admin_bp.route('/api/extend-session', methods=['POST'])
 @admin_required
-def extend_session():
-    """Extend session by 2 hours"""
+def api_extend_session():
+    """Extend the current session"""
     try:
-        # Update login time to extend session
+        # Reset the session timer by updating login time
         session['login_time'] = datetime.utcnow().isoformat()
-        
-        current_app.logger.info(f'Session extended for user: {session.get("username")} from IP: {get_remote_address()}')
+        session_timeout = 7200  # 2 hours
         
         return jsonify({
             'status': 'success',
-            'message': 'Session extended by 2 hours',
-            'time_remaining': int(timedelta(hours=2).total_seconds()),
-            'new_expiry': (datetime.utcnow() + timedelta(hours=2)).isoformat()
+            'message': 'Session extended successfully',
+            'time_remaining': session_timeout
         })
         
     except Exception as e:
-        current_app.logger.error(f'Session extension error: {e}')
-        return jsonify({'status': 'error', 'message': 'Failed to extend session'}), 500
+        return jsonify({'status': 'error', 'message': str(e)}), 500

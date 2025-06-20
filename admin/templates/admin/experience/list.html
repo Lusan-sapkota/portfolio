@@ -89,7 +89,7 @@
                                         </div>
                                         
                                         {% if experience.description %}
-                                        <p class="mb-2">{{ experience.description|nl2br }}</p>
+                                        <p class="mb-2">{{ experience.description|nl2br|safe }}</p>
                                         {% endif %}
                                         
                                         {% if experience.technologies %}

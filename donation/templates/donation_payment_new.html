@@ -1,0 +1,399 @@
+{% extends "base.html" %}
+
+{% block title %}Payment Instructions - {{ donation.project.title }}{% endblock %}
+
+{% block meta_description %}Complete your donation payment for {{ donation.project.title }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('donation.static', filename='css/donation-style.css') }}">
+<style>
+    .payment-hero {
+        background: var(--gradient-hero);
+        color: white;
+        padding: 80px 0 60px;
+        text-align: center;
+    }
+    
+    .payment-card {
+        background: var(--card-bg);
+        border-radius: 15px;
+        box-shadow: var(--shadow);
+        padding: 30px;
+        margin-bottom: 30px;
+        border: 1px solid var(--border-color);
+    }
+    
+    .payment-method {
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+        transition: all 0.3s ease;
+    }
+    
+    .payment-method:hover {
+        border-color: var(--primary-color);
+        transform: translateY(-2px);
+    }
+    
+    .qr-code {
+        max-width: 200px;
+        height: auto;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        transition: transform 0.2s ease;
+        cursor: pointer;
+    }
+    
+    .qr-code:hover {
+        transform: scale(1.05);
+    }
+    
+    .copy-btn {
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 5px;
+        font-size: 12px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .copy-btn:hover {
+        background: var(--accent-color);
+        transform: translateY(-1px);
+    }
+    
+    .important-note {
+        background: linear-gradient(135deg, #fff3cd 0%, #fef8e0 100%);
+        border: 1px solid #ffeaa7;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 30px;
+    }
+    
+    .important-note h5 {
+        color: #856404;
+        margin-bottom: 15px;
+    }
+    
+    .account-info {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        margin-top: 10px;
+    }
+    
+    .account-info code {
+        background: white;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+        padding: 8px 12px;
+        display: inline-block;
+        font-family: 'Courier New', monospace;
+        font-size: 14px;
+    }
+    
+    .qr-container {
+        background: white;
+        border-radius: 10px;
+        padding: 15px;
+        text-align: center;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Payment Instructions Hero -->
+<section class="payment-hero">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-3">
+            <i class="fas fa-credit-card"></i> Complete Your Donation
+        </h1>
+        <p class="lead">Follow the instructions below to complete your donation payment</p>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <!-- Main Content -->
+            <div class="col-lg-8">
+                <!-- Donation Details -->
+                <div class="payment-card">
+                    <h4 class="mb-3">
+                        <i class="fas fa-heart text-danger"></i> Your Donation Details
+                    </h4>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Project:</strong> {{ donation.project.title }}</p>
+                            <p><strong>Amount:</strong> {{ donation.currency }} {{ "%.2f"|format(donation.amount) }}</p>
+                            <p><strong>Donor:</strong> {{ donation.donor_name if not donation.is_anonymous else 'Anonymous' }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Email:</strong> {{ donation.donor_email }}</p>
+                            <p><strong>Currency:</strong> {{ donation.currency }}</p>
+                            <p><strong>Status:</strong> <span class="badge bg-warning">{{ donation.status|title }}</span></p>
+                        </div>
+                    </div>
+                    
+                    {% if donation.message %}
+                    <div class="mt-3">
+                        <p class="mb-0"><strong>Your Message:</strong> "{{ donation.message }}"</p>
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <!-- Important Note -->
+                <div class="important-note">
+                    <h5><i class="fas fa-exclamation-triangle"></i> Important Instructions</h5>
+                    <ul class="mb-0">
+                        <li>Please complete your payment using one of the methods below</li>
+                        <li>Your donation email is dynamic and contains the amount you entered</li>
+                        <li>If the amount we receive differs from your email, we will record the actual amount received</li>
+                        {% if donation.is_anonymous %}
+                        <li><strong>Anonymous Donation:</strong> As you chose to donate anonymously, your name won't appear in the thanksgiving list, though we are very grateful for your donation!</li>
+                        {% endif %}
+                    </ul>
+                </div>
+                
+                <!-- Payment Methods -->
+                <div class="payment-card">
+                    <h3 class="mb-4">
+                        <i class="fas fa-credit-card"></i> 
+                        Payment Instructions for {{ donation.currency }}
+                    </h3>
+                    
+                    {% if payment_methods %}
+                        <div class="alert alert-info mb-4">
+                            <h5>
+                                {% if donation.currency == 'NPR' %}
+                                    <i class="fas fa-money-bill-wave"></i> NPR Payment Options
+                                {% else %}
+                                    <i class="fas fa-globe"></i> International Payment ({{ donation.currency }})
+                                {% endif %}
+                            </h5>
+                            <p class="mb-0">
+                                Complete your {{ donation.currency }} {{ "%.2f"|format(donation.amount) }} donation using any of the methods below.
+                            </p>
+                        </div>
+                        
+                        {% for method in payment_methods %}
+                        <div class="payment-method">
+                            <div class="row align-items-center">
+                                <div class="col-md-8">
+                                    <h5 class="text-primary">
+                                        {% if method.method_type == 'wallet' %}
+                                            <i class="fas fa-wallet"></i>
+                                        {% elif method.method_type == 'bank' %}
+                                            <i class="fas fa-university"></i>
+                                        {% elif method.method_type == 'card' %}
+                                            <i class="fas fa-credit-card"></i>
+                                        {% else %}
+                                            <i class="fas fa-money-bill-wave"></i>
+                                        {% endif %}
+                                        {{ method.display_name }}
+                                        <span class="badge bg-secondary ms-2">{{ method.currency }}</span>
+                                    </h5>
+                                    
+                                    {% if method.account_info %}
+                                    <div class="account-info">
+                                        <strong>Payment Details:</strong>
+                                        <div class="mt-2">{{ method.account_info|safe }}</div>
+                                        <button class="copy-btn mt-2" onclick="copyToClipboard('{{ method.account_info|e }}')">
+                                            <i class="fas fa-copy"></i> Copy Details
+                                        </button>
+                                    </div>
+                                    {% endif %}
+                                    
+                                    <div class="mt-3">
+                                        <strong>Amount to Pay:</strong>
+                                        <div class="alert alert-success d-inline-block ms-2 py-1 px-2">
+                                            <strong>{{ donation.currency }} {{ "%.2f"|format(donation.amount) }}</strong>
+                                        </div>
+                                    </div>
+                                    
+                                    {% if method.instructions %}
+                                    <div class="instructions mt-3">
+                                        <strong>Instructions:</strong>
+                                        <div class="mt-2">{{ method.instructions|safe }}</div>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                
+                                {% if method.qr_code_url %}
+                                <div class="col-md-4 text-center">
+                                    <div class="qr-container">
+                                        <img src="{{ method.qr_code_url }}" alt="{{ method.display_name }} QR Code" class="qr-code mb-2">
+                                        <p class="text-muted small mb-0">
+                                            <i class="fas fa-qrcode"></i> Scan to pay
+                                        </p>
+                                        <p class="text-success small mb-0">
+                                            <strong>{{ donation.currency }} {{ "%.2f"|format(donation.amount) }}</strong>
+                                        </p>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="alert alert-warning">
+                            <h5><i class="fas fa-exclamation-triangle"></i> Payment methods are being configured</h5>
+                            <p class="mb-0">Please contact us directly to complete your donation. We'll update you once payment methods are available.</p>
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <!-- Verification Instructions -->
+                <div class="payment-card">
+                    <h4 class="mb-3">After Payment</h4>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6><i class="fas fa-check-circle text-success"></i> What happens next?</h6>
+                            <ul>
+                                <li>We'll verify your payment within 24-48 hours</li>
+                                <li>You'll receive a confirmation email</li>
+                                <li>Your contribution will be added to the project total</li>
+                                {% if not donation.is_anonymous %}
+                                <li>Your name will appear in our thanksgiving list</li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6><i class="fas fa-envelope text-primary"></i> Need Help?</h6>
+                            <p>If you have any questions about your donation or payment, please contact us at:</p>
+                            <p><strong>Email:</strong> {{ personal_info.email if personal_info else 'support@example.com' }}</p>
+                            {% if personal_info and personal_info.phone %}
+                            <p><strong>Phone:</strong> {{ personal_info.phone }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <div class="payment-card sticky-top">
+                    <h5 class="mb-3">Donation Summary</h5>
+                    <table class="table table-borderless">
+                        <tr>
+                            <td><strong>Project:</strong></td>
+                            <td>{{ donation.project.title }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Amount:</strong></td>
+                            <td>{{ donation.currency }} {{ "%.2f"|format(donation.amount) }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Currency:</strong></td>
+                            <td>{{ donation.currency }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Payment Method:</strong></td>
+                            <td>{{ donation.payment_method|title }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Donor:</strong></td>
+                            <td>{{ donation.donor_name if not donation.is_anonymous else 'Anonymous' }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Status:</strong></td>
+                            <td><span class="badge bg-warning">{{ donation.status|title }}</span></td>
+                        </tr>
+                    </table>
+                    
+                    <hr>
+                    
+                    <div class="text-center">
+                        <a href="{{ url_for('donation.index') }}" class="btn btn-outline-primary me-2">
+                            <i class="fas fa-arrow-left"></i> Back to Projects
+                        </a>
+                        <a href="{{ url_for('donation.thanksgiving') }}" class="btn btn-primary">
+                            <i class="fas fa-heart"></i> View Supporters
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function copyToClipboard(text) {
+        // Remove HTML tags for plain text copying
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = text;
+        const plainText = tempDiv.textContent || tempDiv.innerText || '';
+        
+        navigator.clipboard.writeText(plainText).then(function() {
+            // Show success message
+            const btn = event.target.closest('.copy-btn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+            btn.style.background = '#28a745';
+            
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.style.background = '';
+            }, 2000);
+        }).catch(function() {
+            // Fallback for older browsers
+            const textArea = document.createElement('textarea');
+            textArea.value = plainText;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                const btn = event.target.closest('.copy-btn');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                btn.style.background = '#28a745';
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.style.background = '';
+                }, 2000);
+            } catch (err) {
+                alert('Failed to copy. Please copy manually: ' + plainText);
+            }
+            document.body.removeChild(textArea);
+        });
+    }
+    
+    // Add visual enhancements
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add hover effects to payment methods
+        const paymentMethods = document.querySelectorAll('.payment-method');
+        paymentMethods.forEach(method => {
+            method.addEventListener('mouseenter', function() {
+                this.style.boxShadow = '0 4px 15px rgba(0,0,0,0.1)';
+            });
+            method.addEventListener('mouseleave', function() {
+                this.style.boxShadow = '';
+            });
+        });
+        
+        // Add animation to QR codes
+        const qrCodes = document.querySelectorAll('.qr-code');
+        qrCodes.forEach(qr => {
+            qr.addEventListener('click', function() {
+                this.style.transform = 'scale(1.1)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 200);
+            });
+        });
+    });
+    
+    // Auto-refresh page every 5 minutes to check for payment status updates
+    setTimeout(() => {
+        if (confirm('Would you like to refresh the page to check for payment updates?')) {
+            location.reload();
+        }
+    }, 300000); // 5 minutes
+</script>
+{% endblock %}

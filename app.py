@@ -20,6 +20,15 @@ load_dotenv()
 
 app = Flask(__name__)
 
+# Add custom Jinja2 filters
+@app.template_filter('nl2br')
+def nl2br_filter(text):
+    """Convert newlines to <br> tags"""
+    if not text:
+        return text
+    from markupsafe import Markup
+    return Markup(text.replace('\n', '<br>\n'))
+
 # Configure rate limiting
 limiter = Limiter(
     key_func=get_remote_address,
@@ -95,16 +104,14 @@ def index():
     try:
         # Fetch portfolio data from database
         from models import (Project, ProjectCategory, SeoSettings, PersonalInfo, 
-                          SocialLink, Skill, Experience, Education, Testimonial)
-        
-        # Get featured projects and all categories
-        featured_projects = Project.query.filter_by(is_featured=True).order_by(Project.created_at.desc()).limit(6).all()
+                          SocialLink, Skill, Experience, Education, Testimonial)        # Get projects for homepage and all categories
+        homepage_projects = Project.query.filter_by(show_on_homepage=True).order_by(Project.created_at.desc()).limit(9).all()
+        featured_projects = Project.query.filter_by(is_featured=True).order_by(Project.created_at.desc()).limit(9).all()
         all_projects = Project.query.order_by(Project.created_at.desc()).all()
         project_categories = ProjectCategory.query.all()
         
-        # If no featured projects, use the first 6 projects
-        if not featured_projects:
-            featured_projects = all_projects[:6]
+        # Use homepage projects as primary, fall back to featured, then to first 9
+        display_projects = homepage_projects or featured_projects or all_projects[:9]
         
         # Get CMS data
         seo = SeoSettings.query.filter_by(page_name='home').first() or SeoSettings.query.first()
@@ -113,7 +120,7 @@ def index():
         skills = Skill.query.filter_by(is_featured=True).order_by(Skill.sort_order).all()
         experience = Experience.query.order_by(Experience.start_date.desc()).limit(3).all()
         education = Education.query.order_by(Education.start_date.desc()).limit(3).all()
-        testimonials = Testimonial.query.filter_by(is_featured=True).limit(6).all()
+        testimonials = Testimonial.query.filter_by(is_featured=True).order_by(Testimonial.sort_order, Testimonial.created_at.desc()).limit(25).all()
         
         # Pass configuration data to template
         template_data = {
@@ -122,7 +129,7 @@ def index():
             'seo_config': SEO_CONFIG,
             'contact_info': CONTACT_INFO,
             'features': FEATURES,
-            'portfolio_projects': featured_projects,
+            'portfolio_projects': display_projects,
             'project_categories': project_categories,
             # CMS data
             'seo': seo,

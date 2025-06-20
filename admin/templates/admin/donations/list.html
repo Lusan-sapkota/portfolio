@@ -27,14 +27,19 @@
                 </select>
             </div>
             <div class="filter-group">
-                <label>Project:</label>
-                <select name="project" class="form-control">
-                    <option value="">All Projects</option>
-                    {% for project in projects %}
-                    <option value="{{ project.id }}" {% if current_project == project.id %}selected{% endif %}>
-                        {{ project.title }}
-                    </option>
-                    {% endfor %}
+                <label>Currency:</label>
+                <select name="currency" class="form-control">
+                    <option value="">All Currencies</option>
+                    <option value="NPR" {% if current_currency == 'NPR' %}selected{% endif %}>NPR</option>
+                    <option value="USD" {% if current_currency == 'USD' %}selected{% endif %}>USD</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Anonymous:</label>
+                <select name="anonymous" class="form-control">
+                    <option value="">All Donations</option>
+                    <option value="true" {% if current_anonymous == 'true' %}selected{% endif %}>Anonymous Only</option>
+                    <option value="false" {% if current_anonymous == 'false' %}selected{% endif %}>Named Only</option>
                 </select>
             </div>
             <div class="filter-actions">
@@ -48,11 +53,20 @@
     <div class="admin-stats-grid">
         <div class="stat-card">
             <div class="stat-icon bg-success">
-                <i class="fas fa-check-circle"></i>
+                <i class="fas fa-dollar-sign"></i>
             </div>
             <div class="stat-content">
-                <div class="stat-value">${{ "%.2f"|format(donations|selectattr('status', 'equalto', 'completed')|map(attribute='amount')|sum) }}</div>
-                <div class="stat-label">Total Completed</div>
+                <div class="stat-value">${{ "%.2f"|format(total_usd) }}</div>
+                <div class="stat-label">Total Completed (USD)</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon bg-success">
+                <i class="fas fa-coins"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">Rs. {{ "%.2f"|format(total_npr) }}</div>
+                <div class="stat-label">Total Completed (NPR)</div>
             </div>
         </div>
         <div class="stat-card">
@@ -78,7 +92,7 @@
                 <i class="fas fa-donate"></i>
             </div>
             <div class="stat-content">
-                <div class="stat-value">{{ donations|length }}</div>
+                <div class="stat-value">{{ donations.total }}</div>
                 <div class="stat-label">Total Donations</div>
             </div>
         </div>
@@ -86,7 +100,7 @@
 
     <!-- Donations Table -->
     <div class="admin-table-container">
-        <table class="admin-table">
+        <table class="admin-table donation-table">
             <thead>
                 <tr>
                     <th>Donor</th>
@@ -133,12 +147,38 @@
                         </div>
                     </td>
                     <td>
-                        <span class="currency">${{ "%.2f"|format(donation.amount) }}</span>
+                        <div class="amount-display">
+                            <span class="currency-amount">
+                                {% if donation.currency == 'NPR' %}
+                                    Rs. {{ "%.2f"|format(donation.amount) }}
+                                {% else %}
+                                    ${{ "%.2f"|format(donation.amount) }}
+                                {% endif %}
+                            </span>
+                            {% if donation.verified_amount and donation.verified_amount != donation.amount %}
+                            <br><small class="text-success">
+                                Verified: 
+                                {% if donation.currency == 'NPR' %}
+                                    Rs. {{ "%.2f"|format(donation.verified_amount) }}
+                                {% else %}
+                                    ${{ "%.2f"|format(donation.verified_amount) }}
+                                {% endif %}
+                            </small>
+                            {% endif %}
+                        </div>
                     </td>
                     <td>
-                        <span class="badge badge-{{ 'success' if donation.status == 'completed' else 'warning' if donation.status == 'pending' else 'danger' }}">
+                        <span class="badge 
+                            {% if donation.status == 'completed' %}bg-success
+                            {% elif donation.status == 'pending' %}bg-warning
+                            {% elif donation.status == 'failed' %}bg-danger
+                            {% else %}bg-secondary
+                            {% endif %}">
                             {{ donation.status.title() }}
                         </span>
+                        {% if donation.currency %}
+                        <br><small class="text-muted">{{ donation.currency }}</small>
+                        {% endif %}
                     </td>
                     <td>
                         <div class="item-details">
@@ -155,7 +195,7 @@
                     </td>
                     <td>
                         <div class="action-buttons">
-                            <a href="{{ url_for('admin.donation_view', donation_id=donation.id) }}" 
+                            <a href="{{ url_for('admin.donations_view', id=donation.id) }}" 
                                class="btn btn-sm btn-outline-info" title="View Details">
                                 <i class="fas fa-eye"></i>
                             </a>

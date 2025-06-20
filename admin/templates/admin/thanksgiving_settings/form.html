@@ -1,0 +1,146 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Thanksgiving Settings{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="fas fa-heart"></i> Thanksgiving Page Settings</h2>
+    <a href="{{ url_for('donation.thanksgiving') }}" class="btn btn-outline-primary" target="_blank">
+        <i class="fas fa-external-link-alt"></i> View Public Page
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('admin.thanksgiving_settings_update') }}">
+                    <div class="mb-3">
+                        <label class="form-label">Page Title</label>
+                        <input type="text" name="page_title" class="form-control" 
+                               value="{{ settings.page_title if settings else 'Thank You to Our Amazing Supporters' }}" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Page Description</label>
+                        <textarea name="page_description" class="form-control" rows="3" required>{{ settings.page_description if settings else 'We are grateful for the incredible support from our community.' }}</textarea>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Thank You Message</label>
+                        <textarea name="thank_you_message" class="form-control" rows="4">{{ settings.thank_you_message if settings else 'Your support means the world to us and helps keep our projects alive!' }}</textarea>
+                        <small class="form-text text-muted">Special message displayed prominently on the page</small>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Anonymous Display Text</label>
+                        <input type="text" name="anonymous_display_text" class="form-control" 
+                               value="{{ settings.anonymous_display_text if settings else 'Anonymous Supporter' }}">
+                        <small class="form-text text-muted">How anonymous donors are displayed</small>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Minimum Amount to Display</label>
+                        <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input type="number" name="min_amount_display" class="form-control" 
+                                   value="{{ settings.min_amount_display if settings else 0 }}" 
+                                   min="0" step="0.01">
+                        </div>
+                        <small class="form-text text-muted">Only show donations above this amount (0 = show all)</small>
+                    </div>
+                    
+                    <h5 class="mt-4 mb-3">Display Options</h5>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-check mb-3">
+                                <input type="checkbox" name="show_donor_names" class="form-check-input" id="show_donor_names"
+                                       {% if not settings or settings.show_donor_names %}checked{% endif %}>
+                                <label class="form-check-label" for="show_donor_names">
+                                    Show donor names (non-anonymous)
+                                </label>
+                            </div>
+                            
+                            <div class="form-check mb-3">
+                                <input type="checkbox" name="show_amounts" class="form-check-input" id="show_amounts"
+                                       {% if settings and settings.show_amounts %}checked{% endif %}>
+                                <label class="form-check-label" for="show_amounts">
+                                    Show donation amounts
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-check mb-3">
+                                <input type="checkbox" name="show_messages" class="form-check-input" id="show_messages"
+                                       {% if not settings or settings.show_messages %}checked{% endif %}>
+                                <label class="form-check-label" for="show_messages">
+                                    Show donor messages
+                                </label>
+                            </div>
+                            
+                            <div class="form-check mb-3">
+                                <input type="checkbox" name="is_active" class="form-check-input" id="is_active"
+                                       {% if not settings or settings.is_active %}checked{% endif %}>
+                                <label class="form-check-label" for="is_active">
+                                    Page is active (publicly accessible)
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="border-top pt-3">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Save Settings
+                        </button>
+                        <a href="{{ url_for('donation.thanksgiving') }}" class="btn btn-outline-primary" target="_blank">
+                            <i class="fas fa-eye"></i> Preview Page
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-body">
+                <h5><i class="fas fa-info-circle"></i> About Thanksgiving Page</h5>
+                <p class="small">The thanksgiving page showcases your supporters and their contributions. It helps build trust and community around your projects.</p>
+                
+                <h6 class="mt-3">Display Options:</h6>
+                <ul class="small">
+                    <li><strong>Donor Names:</strong> Show who donated (respects anonymous setting)</li>
+                    <li><strong>Amounts:</strong> Display how much was donated</li>
+                    <li><strong>Messages:</strong> Show supporter messages</li>
+                    <li><strong>Minimum Amount:</strong> Filter small donations from display</li>
+                </ul>
+                
+                <h6 class="mt-3">Privacy:</h6>
+                <ul class="small">
+                    <li>Anonymous donations always respect donor privacy</li>
+                    <li>Phone numbers are never displayed publicly</li>
+                    <li>Email addresses are never shown</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="card mt-3">
+            <div class="card-body">
+                <h6><i class="fas fa-chart-bar"></i> Current Stats</h6>
+                <div class="row text-center">
+                    <div class="col-6">
+                        <h4 class="text-primary">{{ total_donations or 0 }}</h4>
+                        <small>Total Donations</small>
+                    </div>
+                    <div class="col-6">
+                        <h4 class="text-success">{{ public_donations or 0 }}</h4>
+                        <small>Public Donations</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
