@@ -1,0 +1,73 @@
+{
+  "name": "Lusan Sapkota - Full Stack Developer Portfolio",
+  "short_name": "Lusan Portfolio",
+  "description": "Full Stack Software Developer & AI/ML Engineer from Nepal specializing in Python, JavaScript, and modern web technologies",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#f39c12",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en-US",
+  "categories": ["technology", "portfolio", "developer", "software"],
+  "icons": [
+    {
+      "src": "/static/assets/logo/logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/assets/logo/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/static/assets/images/portfolio-screenshot.jpg",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "label": "Portfolio Homepage"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Projects",
+      "short_name": "Projects",
+      "description": "View my projects",
+      "url": "/#projects",
+      "icons": [
+        {
+          "src": "/static/assets/logo/logo.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Wiki",
+      "short_name": "Wiki",
+      "description": "Technical documentation",
+      "url": "https://wiki.lusansapkota.com.np",
+      "icons": [
+        {
+          "src": "/static/assets/logo/logo.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Repository",
+      "short_name": "Git",
+      "description": "Code repositories",
+      "url": "https://git.lusansapkota.com.np",
+      "icons": [
+        {
+          "src": "/static/assets/logo/logo.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ]
+}

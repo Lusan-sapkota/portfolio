@@ -368,14 +368,70 @@ class SeoSettings(db.Model):
     title = db.Column(db.String(200))
     meta_description = db.Column(db.Text)
     meta_keywords = db.Column(db.Text)
+    
+    # Open Graph / Facebook
     og_title = db.Column(db.String(200))
     og_description = db.Column(db.Text)
     og_image = db.Column(db.String(255))
+    og_url = db.Column(db.String(255))
+    og_type = db.Column(db.String(50), default='website')
+    
+    # Twitter
+    twitter_title = db.Column(db.String(200))
+    twitter_description = db.Column(db.Text)
+    twitter_image = db.Column(db.String(255))
+    twitter_url = db.Column(db.String(255))
+    twitter_card = db.Column(db.String(50), default='summary_large_image')
+    
+    # Additional SEO Fields
     canonical_url = db.Column(db.String(255))
     robots = db.Column(db.String(100), default='index, follow')
+    hreflang = db.Column(db.String(10), default='en')
     schema_markup = db.Column(db.Text)  # JSON-LD structured data
+    focus_keywords = db.Column(db.Text)  # Primary keywords for the page
+    meta_author = db.Column(db.String(100))
+    meta_publisher = db.Column(db.String(100))
+    article_section = db.Column(db.String(100))  # For article pages
+    article_tags = db.Column(db.Text)  # Comma-separated tags
+    
+    # Technical SEO
+    page_priority = db.Column(db.Float, default=0.5)  # Sitemap priority
+    update_frequency = db.Column(db.String(20), default='weekly')  # Sitemap frequency
+    noindex = db.Column(db.Boolean, default=False)
+    nofollow = db.Column(db.Boolean, default=False)
+    noarchive = db.Column(db.Boolean, default=False)
+    nosnippet = db.Column(db.Boolean, default=False)
+    
+    # Analytics
+    google_analytics_id = db.Column(db.String(50))
+    google_tag_manager_id = db.Column(db.String(50))
+    facebook_pixel_id = db.Column(db.String(50))
+    
     is_active = db.Column(db.Boolean, default=True)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    @property
+    def robots_content(self):
+        """Generate robots meta content"""
+        directives = []
+        if self.noindex:
+            directives.append('noindex')
+        else:
+            directives.append('index')
+            
+        if self.nofollow:
+            directives.append('nofollow')
+        else:
+            directives.append('follow')
+            
+        if self.noarchive:
+            directives.append('noarchive')
+        if self.nosnippet:
+            directives.append('nosnippet')
+        else:
+            directives.extend(['max-snippet:-1', 'max-image-preview:large', 'max-video-preview:-1'])
+            
+        return ', '.join(directives)
     
     def __repr__(self):
         return f'<SeoSettings {self.page_name}>'

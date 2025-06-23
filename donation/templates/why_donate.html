@@ -3,198 +3,7 @@
 {% block title %}Why Support {{ project.title }}?{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('donation.static', filename='css/donation-style.css') }}">
-<style>
-    .why-hero {
-        background: var(--gradient-hero);
-        color: white;
-        padding: 100px 0 60px;
-    }
-    
-    .project-overview {
-        background: var(--card-bg);
-        border-radius: 15px;
-        padding: 2rem;
-        margin-bottom: 2rem;
-        box-shadow: var(--shadow-sm);
-    }
-    
-    .benefit-card {
-        background: var(--card-bg);
-        border-radius: 15px;
-        padding: 2rem;
-        margin-bottom: 2rem;
-        box-shadow: var(--shadow-sm);
-        border-left: 4px solid var(--primary-color);
-        transition: var(--transition);
-    }
-    
-    .benefit-card:hover {
-        transform: translateY(-5px);
-        box-shadow: var(--shadow-md);
-    }
-    
-    .benefit-icon {
-        font-size: 2.5rem;
-        color: var(--primary-color);
-        margin-bottom: 1rem;
-    }
-    
-    .benefit-title {
-        font-size: 1.3rem;
-        font-weight: 600;
-        margin-bottom: 1rem;
-        color: var(--text-color);
-    }
-    
-    .benefit-description {
-        color: var(--text-secondary);
-        line-height: 1.6;
-    }
-    
-    .impact-section {
-        background: var(--light-gray);
-        padding: 60px 0;
-        margin: 60px 0;
-    }
-    
-    .impact-item {
-        background: var(--card-bg);
-        border-radius: 15px;
-        padding: 2rem;
-        text-align: center;
-        box-shadow: var(--shadow-sm);
-        height: 100%;
-    }
-    
-    .impact-number {
-        font-size: 2rem;
-        font-weight: 700;
-        color: var(--primary-color);
-        margin-bottom: 0.5rem;
-    }
-    
-    .donation-levels {
-        background: var(--card-bg);
-        border-radius: 15px;
-        padding: 2rem;
-        margin-bottom: 2rem;
-        box-shadow: var(--shadow-sm);
-    }
-    
-    .level-item {
-        padding: 1.5rem;
-        border-radius: 10px;
-        margin-bottom: 1rem;
-        border: 2px solid var(--border-color);
-        transition: var(--transition);
-    }
-    
-    .level-item:hover {
-        border-color: var(--primary-color);
-        background: var(--accent-yellow);
-    }
-    
-    .level-amount {
-        font-size: 1.5rem;
-        font-weight: 600;
-        color: var(--primary-color);
-        margin-bottom: 0.5rem;
-    }
-    
-    .level-description {
-        color: var(--text-secondary);
-        line-height: 1.6;
-    }
-    
-    .urgency-banner {
-        background: linear-gradient(135deg, var(--warning-color), var(--primary-color));
-        color: white;
-        padding: 2rem;
-        border-radius: 15px;
-        text-align: center;
-        margin-bottom: 2rem;
-    }
-    
-    .urgency-title {
-        font-size: 1.5rem;
-        font-weight: 600;
-        margin-bottom: 1rem;
-    }
-    
-    .cta-section {
-        text-align: center;
-        padding: 60px 0;
-    }
-    
-    .cta-buttons {
-        display: flex;
-        justify-content: center;
-        gap: 1rem;
-        flex-wrap: wrap;
-        margin-top: 2rem;
-    }
-    
-    .btn-donate-large {
-        background: var(--gradient-primary);
-        color: white;
-        border: none;
-        padding: 15px 30px;
-        border-radius: 25px;
-        font-weight: 600;
-        font-size: 1.1rem;
-        text-decoration: none;
-        transition: var(--transition);
-    }
-    
-    .btn-donate-large:hover {
-        transform: translateY(-2px);
-        box-shadow: var(--shadow-md);
-        color: white;
-        text-decoration: none;
-    }
-    
-    .btn-secondary-large {
-        background: transparent;
-        color: var(--primary-color);
-        border: 2px solid var(--primary-color);
-        padding: 15px 30px;
-        border-radius: 25px;
-        font-weight: 600;
-        font-size: 1.1rem;
-        text-decoration: none;
-        transition: var(--transition);
-    }
-    
-    .btn-secondary-large:hover {
-        background: var(--primary-color);
-        color: white;
-        text-decoration: none;
-    }
-    
-    @media (max-width: 768px) {
-        .why-hero {
-            padding: 60px 0 40px;
-        }
-        
-        .project-overview,
-        .benefit-card,
-        .donation-levels {
-            padding: 1.5rem;
-        }
-        
-        .cta-buttons {
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .btn-donate-large,
-        .btn-secondary-large {
-            width: 100%;
-            max-width: 300px;
-        }
-    }
-</style>
+<link rel="stylesheet" href="{{ url_for('donation.static', filename='css/why-donate-page.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -213,6 +22,11 @@
                 {% if project.image_url %}
                 <img src="{{ project.image_url }}" alt="{{ project.title }}" 
                      class="img-fluid rounded" style="max-height: 200px;">
+                {% else %}
+                <div class="project-placeholder">
+                    <i class="fas fa-code fa-5x mb-3" style="color: rgba(255,255,255,0.7);"></i>
+                    <h4 style="color: rgba(255,255,255,0.9);">{{ project.title }}</h4>
+                </div>
                 {% endif %}
             </div>
         </div>
@@ -223,10 +37,68 @@
 <section class="py-5">
     <div class="container">
         <div class="project-overview">
-            <h2 class="mb-4">Project Overview</h2>
+            <h2 class="mb-4">About {{ project.title }}</h2>
             <div class="project-description">
                 {{ project.description|safe }}
             </div>
+            
+            <!-- Dynamic Project Stats -->
+            {% if project.github_url or project.demo_url or project.goal_amount %}
+            <div class="row mt-4">
+                {% if project.github_url %}
+                <div class="col-md-4 mb-3">
+                    <div class="project-stat-card">
+                        <i class="fab fa-github fa-2x mb-2" style="color: #667eea;"></i>
+                        <h5>Open Source</h5>
+                        <p>View code and contribute</p>
+                        <a href="{{ project.github_url }}" target="_blank" class="btn btn-outline-primary btn-sm">
+                            <i class="fab fa-github"></i> Repository
+                        </a>
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if project.demo_url %}
+                <div class="col-md-4 mb-3">
+                    <div class="project-stat-card">
+                        <i class="fas fa-external-link-alt fa-2x mb-2" style="color: #667eea;"></i>
+                        <h5>Live Demo</h5>
+                        <p>See it in action</p>
+                        <a href="{{ project.demo_url }}" target="_blank" class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-external-link-alt"></i> View Demo
+                        </a>
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if project.goal_amount %}
+                <div class="col-md-4 mb-3">
+                    <div class="project-stat-card">
+                        <i class="fas fa-target fa-2x mb-2"></i>
+                        <h5>Funding Goal</h5>
+                        <p>${{ "%.2f"|format(project.goal_amount) }}</p>
+                        
+                        <!-- Simple Bootstrap Progress Bar -->
+                        {% set progress_percent = ((project.current_amount or 0) / project.goal_amount * 100) if project.goal_amount > 0 else 0 %}
+                        <div class="progress mt-2" style="height: 20px;">
+                            <div class="progress-bar bg-warning" 
+                                 role="progressbar" 
+                                 style="width: {{ progress_percent }}%"
+                                 aria-valuenow="{{ progress_percent }}" 
+                                 aria-valuemin="0" 
+                                 aria-valuemax="100">
+                                {{ "%.0f"|format(progress_percent) }}%
+                            </div>
+                        </div>
+                        
+                        <small class="text-muted mt-2 d-block">
+                            ${{ "%.2f"|format(project.current_amount or 0) }} raised ({{ "%.1f"|format(progress_percent) }}%)
+                        </small>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
         </div>
         
         <!-- Urgency Banner -->
@@ -236,7 +108,7 @@
             </h3>
             <p class="mb-0">
                 This project is actively being developed and your contribution will 
-                directly accelerate its progress and impact.
+                directly accelerate its progress and impact. Every donation brings us closer to our goals.
             </p>
         </div>
     </div>
@@ -331,34 +203,34 @@
 <!-- Impact Potential -->
 <section class="impact-section">
     <div class="container">
-        <h2 class="text-center mb-5">Potential Impact</h2>
+        <h2 class="text-center mb-5">Impact of Supporting {{ project.title }}</h2>
         <div class="row">
             <div class="col-lg-3 col-md-6 mb-4">
                 <div class="impact-item">
                     <div class="impact-number">1000+</div>
                     <h4>Developers Helped</h4>
-                    <p>Estimated number of developers who will benefit from this project</p>
+                    <p>Estimated number of developers who will benefit from {{ project.title }}</p>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6 mb-4">
                 <div class="impact-item">
                     <div class="impact-number">50+</div>
                     <h4>Hours Saved</h4>
-                    <p>Average time saved per developer using this tool or resource</p>
+                    <p>Average time saved per developer using {{ project.title }}</p>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6 mb-4">
                 <div class="impact-item">
                     <div class="impact-number">24/7</div>
                     <h4>Availability</h4>
-                    <p>Continuous availability thanks to proper hosting and maintenance</p>
+                    <p>Continuous {{ project.title }} availability with proper hosting</p>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6 mb-4">
                 <div class="impact-item">
                     <div class="impact-number">100%</div>
-                    <h4>Open Source</h4>
-                    <p>Completely free and open for everyone to use and contribute</p>
+                    <h4>{{ 'Open Source' if project.github_url else 'Quality Focused' }}</h4>
+                    <p>{{ 'Completely free and open for everyone to use' if project.github_url else 'Dedicated focus on quality and user experience' }}</p>
                 </div>
             </div>
         </div>
@@ -368,33 +240,33 @@
 <!-- Donation Levels -->
 <section class="py-5">
     <div class="container">
-        <h2 class="text-center mb-5">How Different Amounts Help</h2>
+        <h2 class="text-center mb-5">How Your Contribution Helps {{ project.title }}</h2>
         <div class="donation-levels">
             <div class="level-item">
                 <div class="level-amount">$10</div>
                 <div class="level-description">
-                    Covers hosting costs for one month, ensuring the project stays online and accessible.
+                    Covers hosting costs for {{ project.title }} for one month, ensuring continuous availability.
                 </div>
             </div>
             
             <div class="level-item">
                 <div class="level-amount">$25</div>
                 <div class="level-description">
-                    Funds development tools and services that improve code quality and testing capabilities.
+                    Funds development tools and services that improve {{ project.title }}'s code quality and testing.
                 </div>
             </div>
             
             <div class="level-item">
                 <div class="level-amount">$50</div>
                 <div class="level-description">
-                    Supports creation of comprehensive documentation and tutorial content for new users.
+                    Supports creation of comprehensive documentation and tutorials for {{ project.title }} users.
                 </div>
             </div>
             
             <div class="level-item">
                 <div class="level-amount">$100+</div>
                 <div class="level-description">
-                    Enables major feature development and helps me dedicate significant time to the project.
+                    Enables major feature development for {{ project.title }} and dedicated development time.
                 </div>
             </div>
         </div>
@@ -452,7 +324,6 @@
 </section>
 {% endif %}
 {% endblock %}
-
 {% block extra_js %}
 <script>
     // Smooth scroll for anchor links

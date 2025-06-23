@@ -4,9 +4,18 @@ from database import db
 from sqlalchemy import or_
 from . import git_bp
 
+# Helper function to get SEO settings
+def get_git_seo_settings(page_name='git'):
+    """Get SEO settings for git pages"""
+    seo = SeoSettings.query.filter_by(page_name=page_name).first()
+    return seo
+
 @git_bp.route('/')
 def index():
     print(f"DEBUG: Accessing git blueprint index route. Attempting to render 'git/index.html'")
+    
+    # Get SEO settings
+    seo = get_git_seo_settings('git')
     
     # Get filter parameters
     category_id = request.args.get('category', type=int)
@@ -70,7 +79,6 @@ def index():
         print(f"DEBUG: Error getting template '{template_name_to_render}' from Jinja2 env: {e}")
     
     # Get CMS data
-    seo = SeoSettings.query.filter_by(page_name='git').first() or SeoSettings.query.first()
     personal = PersonalInfo.query.first()
     
     return render_template(template_name_to_render, 

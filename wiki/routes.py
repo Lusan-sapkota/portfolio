@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, jsonify, current_app
-from models import WikiArticle, WikiCategory
+from models import WikiArticle, WikiCategory, SeoSettings
 from database import db
 from sqlalchemy import or_
 from . import wiki_bp
@@ -10,18 +10,28 @@ import random
 def get_categories():
     return WikiCategory.query.filter_by(parent_id=None).all()
 
+# Helper function to get SEO settings
+def get_wiki_seo_settings(page_name='wiki'):
+    """Get SEO settings for wiki pages"""
+    seo = SeoSettings.query.filter_by(page_name=page_name).first()
+    return seo
+
 @wiki_bp.route('/')
 def index():
     print(f"DEBUG: Accessing wiki blueprint index route.")
     articles = WikiArticle.query.order_by(WikiArticle.title).all()
     categories = get_categories()
+    seo = get_wiki_seo_settings('wiki')
     
     return render_template('wiki/index.html', 
                           articles=articles, 
                           categories=categories,
                           active_category=None,
                           active_subcategory=None,
-                          current_year=datetime.now().year)
+                          current_year=datetime.now().year,
+                          seo=seo,
+                          page_title=seo.title if seo else "Lusan's Wiki | Technical Knowledge Base",
+                          page_description=seo.meta_description if seo else "Comprehensive technical documentation and programming tutorials")
 
 @wiki_bp.route('/search')
 def search():
@@ -115,7 +125,10 @@ def search():
                           query=query,
                           sort_by=sort_by,
                           categories=categories,
-                          current_year=datetime.now().year)
+                          current_year=datetime.now().year,
+                          seo=get_wiki_seo_settings('wiki'),
+                          page_title=f"Search Results for '{query}' | Lusan's Wiki" if query else "Search | Lusan's Wiki",
+                          page_description=f"Search results for '{query}' in technical documentation and programming tutorials" if query else "Search technical documentation and programming guides")
 
 
 @wiki_bp.route('/article/<int:article_id>')
@@ -139,6 +152,9 @@ def article(article_id):
             else:
                 active_category = category.id
     
+    # Get SEO settings for the article
+    seo = get_wiki_seo_settings('article')
+    
     return render_template('wiki/article.html', 
                           article=article,
                           categories=categories,
@@ -146,7 +162,10 @@ def article(article_id):
                           next_article=next_article,
                           active_category=active_category,
                           active_subcategory=active_subcategory,
-                          current_year=datetime.now().year)
+                          current_year=datetime.now().year,
+                          seo=seo,
+                          page_title=seo.title if seo else article.title,
+                          page_description=seo.meta_description if seo else article.summary)
 
 @wiki_bp.route('/random')
 def random():
@@ -167,7 +186,10 @@ def random():
     return render_template('wiki/random_page.html', 
                           articles=random_articles,
                           categories=categories,
-                          current_year=datetime.now().year)
+                          current_year=datetime.now().year,
+                          seo=get_wiki_seo_settings('wiki'),
+                          page_title="Random Articles | Lusan's Wiki",
+                          page_description="Discover random technical articles and programming tutorials from the knowledge base")
 
 @wiki_bp.route('/random-article')
 def random_article():
@@ -233,4 +255,7 @@ def explore():
                           sort_by=sort_by,
                           category_filter=category_filter,
                           search_query=search_query,
-                          current_year=datetime.now().year)
+                          current_year=datetime.now().year,
+                          seo=get_wiki_seo_settings('wiki'),
+                          page_title="Explore Articles | Lusan's Wiki",
+                          page_description="Browse and explore technical articles, programming tutorials, and development guides")

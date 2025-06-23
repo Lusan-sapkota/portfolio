@@ -15,5 +15,5 @@ requests
 Flask-Caching
 Flask-Limiter
 redis
-# only for local development (remove it for production)
-livereload
+alembic
+limits

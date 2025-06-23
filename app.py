@@ -77,6 +77,7 @@ from admin import admin_bp
 from wiki import wiki_bp
 from git import git_bp
 from donation import donation_bp
+from store import store_bp
 
 # Register blueprints
 app.register_blueprint(admin_bp) # url_prefix is set in admin_bp definition
@@ -89,11 +90,13 @@ if server_name_env:
     app.register_blueprint(wiki_bp, subdomain='wiki')
     app.register_blueprint(git_bp, subdomain='git')
     app.register_blueprint(donation_bp, subdomain='donation')
+    app.register_blueprint(store_bp, subdomain='store')  
 else:
     print("DEBUG: Registering wiki, git, and donation with URL prefixes for local development.")
     app.register_blueprint(wiki_bp, url_prefix='/wiki')
     app.register_blueprint(git_bp, url_prefix='/git')
     app.register_blueprint(donation_bp, url_prefix='/donation')
+    app.register_blueprint(store_bp, url_prefix='/store')
 
 # Import models here (after db initialization)
 from models import *
@@ -517,6 +520,135 @@ def newsletter_unsubscribe_confirm():
         return render_template('unsubscribe.html', 
                              error="An error occurred. Please try again.", 
                              current_year=datetime.now().year)
+
+# SEO Routes
+@app.route('/sitemap.xml')
+def sitemap():
+    """Generate dynamic sitemap.xml"""
+    try:
+        from models import Project, SeoSettings
+        from urllib.parse import urlparse
+        
+        # Base domain
+        base_url = request.url_root.rstrip('/')
+        
+        # Static pages
+        pages = [
+            {
+                'url': base_url + '/',
+                'lastmod': datetime.now().strftime('%Y-%m-%d'),
+                'changefreq': 'weekly',
+                'priority': '1.0'
+            },
+            {
+                'url': base_url + '/#about',
+                'lastmod': datetime.now().strftime('%Y-%m-%d'),
+                'changefreq': 'monthly',
+                'priority': '0.8'
+            },
+            {
+                'url': base_url + '/#projects',
+                'lastmod': datetime.now().strftime('%Y-%m-%d'),
+                'changefreq': 'weekly',
+                'priority': '0.9'
+            },
+            {
+                'url': base_url + '/#skills',
+                'lastmod': datetime.now().strftime('%Y-%m-%d'),
+                'changefreq': 'monthly',
+                'priority': '0.7'
+            },
+            {
+                'url': base_url + '/#contact',
+                'lastmod': datetime.now().strftime('%Y-%m-%d'),
+                'changefreq': 'monthly',
+                'priority': '0.6'
+            }
+        ]
+        
+        # Add projects (if available)
+        try:
+            projects = Project.query.filter_by(is_active=True).all()
+            for project in projects:
+                if project.live_url:
+                    pages.append({
+                        'url': project.live_url,
+                        'lastmod': project.updated_at.strftime('%Y-%m-%d') if project.updated_at else datetime.now().strftime('%Y-%m-%d'),
+                        'changefreq': 'monthly',
+                        'priority': '0.6'
+                    })
+        except:
+            pass  # Projects table might not exist yet
+            
+        # Add subdomain links
+        subdomain_pages = [
+            {
+                'url': 'https://wiki.lusansapkota.com.np/',
+                'lastmod': datetime.now().strftime('%Y-%m-%d'),
+                'changefreq': 'weekly',
+                'priority': '0.8'
+            },
+            {
+                'url': 'https://git.lusansapkota.com.np/',
+                'lastmod': datetime.now().strftime('%Y-%m-%d'),
+                'changefreq': 'daily',
+                'priority': '0.8'
+            },
+            {
+                'url': 'https://donation.lusansapkota.com.np/',
+                'lastmod': datetime.now().strftime('%Y-%m-%d'),
+                'changefreq': 'monthly',
+                'priority': '0.5'
+            }
+        ]
+        
+        pages.extend(subdomain_pages)
+        
+        # Generate XML
+        xml_content = '<?xml version="1.0" encoding="UTF-8"?>\n'
+        xml_content += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        
+        for page in pages:
+            xml_content += '  <url>\n'
+            xml_content += f'    <loc>{page["url"]}</loc>\n'
+            xml_content += f'    <lastmod>{page["lastmod"]}</lastmod>\n'
+            xml_content += f'    <changefreq>{page["changefreq"]}</changefreq>\n'
+            xml_content += f'    <priority>{page["priority"]}</priority>\n'
+            xml_content += '  </url>\n'
+            
+        xml_content += '</urlset>'
+        
+        from flask import Response
+        return Response(xml_content, mimetype='application/xml')
+        
+    except Exception as e:
+        print(f"Sitemap generation error: {e}")
+        abort(500)
+
+@app.route('/robots.txt')
+def robots_txt():
+    """Serve robots.txt file"""
+    try:
+        from flask import send_from_directory
+        return send_from_directory(app.static_folder, 'robots.txt')
+    except FileNotFoundError:
+        # Generate basic robots.txt if file doesn't exist
+        content = """User-agent: *
+Allow: /
+
+Sitemap: https://www.lusansapkota.com.np/sitemap.xml
+"""
+        from flask import Response
+        return Response(content, mimetype='text/plain')
+
+@app.route('/manifest.json')
+def manifest():
+    """Serve PWA manifest"""
+    try:
+        from flask import send_from_directory
+        return send_from_directory(app.static_folder, 'manifest.json')
+    except FileNotFoundError:
+        abort(404)
 
 commands.register_commands(app)
 

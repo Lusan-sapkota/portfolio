@@ -133,7 +133,7 @@ Messaging application with advanced search and history management features.
 <div align="center">
   
   📧 **Email:** [sapkotalusan@gmail.com](mailto:sapkotalusan@gmail.com)  
-  📱 **Phone:** +977-9848189845  
+  📱 **Phone:** Available upon request  
   🌐 **Website:** [www.lusansapkota.com.np](https://www.lusansapkota.com.np)
   
 </div>

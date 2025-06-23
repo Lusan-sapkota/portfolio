@@ -73,7 +73,7 @@ SEO_CONFIG = {
 
 # Contact Information
 CONTACT_INFO = {
-    'phone': '+977-9848189845',
+    'phone': 'Available upon request',
     'email': 'sapkotalusan@gmail.com',
     'website': 'https://www.lusansapkota.com.np',
     'location': {

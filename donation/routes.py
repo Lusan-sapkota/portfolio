@@ -12,6 +12,10 @@ def index():
     """Main donation page showing all active projects"""
     from models import SeoSettings, PersonalInfo, SocialLink
     
+    # Get SEO settings for donation page
+    seo_settings = SeoSettings.query.filter_by(page_name='donation').first()
+    personal_info = PersonalInfo.query.first()
+    
     # Get donation projects (we can use regular projects for donations too)
     try:
         # Check if we have DonationProject model, otherwise use Project
@@ -29,6 +33,38 @@ def index():
         all_projects = Project.query.all()
         recent_donations = []
     
+    # Calculate real-time statistics
+    try:
+        project_count = DonationProject.query.filter_by(is_active=True).count()
+        
+        # Calculate total raised in different currencies
+        total_usd = db.session.query(db.func.sum(Donation.amount)).filter(
+            Donation.status == 'completed',
+            Donation.currency == 'USD'
+        ).scalar() or 0
+        
+        total_npr = db.session.query(db.func.sum(Donation.amount)).filter(
+            Donation.status == 'completed',
+            Donation.currency == 'NPR'
+        ).scalar() or 0
+        
+        # Format the totals for display
+        total_raised_display = ""
+        if total_usd > 0 and total_npr > 0:
+            total_raised_display = f"${total_usd:.2f} / Rs.{total_npr:.2f}"
+        elif total_usd > 0:
+            total_raised_display = f"${total_usd:.2f}"
+        elif total_npr > 0:
+            total_raised_display = f"Rs.{total_npr:.2f}"
+        else:
+            total_raised_display = "$0 / Rs.0"
+        
+        supporter_count = db.session.query(db.func.count(db.func.distinct(Donation.donor_email))).filter_by(status='completed').scalar() or 0
+    except:
+        project_count = 0
+        total_raised_display = "$0 / Rs.0"
+        supporter_count = 0
+    
     # Get CMS data
     seo = SeoSettings.query.filter_by(page_name='donation').first() or SeoSettings.query.first()
     personal = PersonalInfo.query.first()
@@ -38,9 +74,12 @@ def index():
                          featured_projects=featured_projects,
                          all_projects=all_projects,
                          recent_donations=recent_donations,
-                         seo_settings=seo,
-                         personal_info=personal,
+                         seo_settings=seo_settings,
+                         personal_info=personal_info,
                          social_links=social_links,
+                         project_count=project_count,
+                         total_raised=total_raised_display,
+                         supporter_count=supporter_count,
                          current_year=datetime.now().year)
 
 @donation_bp.route('/project/<int:project_id>')

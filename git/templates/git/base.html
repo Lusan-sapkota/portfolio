@@ -1,15 +1,189 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" itemscope itemtype="http://schema.org/WebPage">
 <head>
+	<!-- Essential Meta Tags -->
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>{% block title %}Project Repository{% endblock %}</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+	<meta http-equiv="Accept-CH" content="DPR, Viewport-Width, Width">
+	
+	<!-- Primary Meta Tags -->
+	<title>{% block title %}{{ page_title if page_title else 'Lusan\'s Code Repository | Open Source Projects & Development Portfolio' }}{% endblock %}</title>
+	<meta name="title" content="{% block meta_title %}{{ page_title if page_title else 'Lusan\'s Code Repository | Open Source Projects & Development Portfolio' }}{% endblock %}">
+	<meta name="description" content="{% block meta_description %}{{ page_description if page_description else 'Explore Lusan Sapkota\'s open source projects, code repositories, and software development portfolio. Featuring Python, JavaScript, AI/ML projects, web applications, and innovative solutions.' }}{% endblock %}">
+	<meta name="author" content="Lusan Sapkota">
+	<meta name="keywords" content="{% block meta_keywords %}{{ page_keywords if page_keywords else 'Lusan Sapkota GitHub, open source projects, code repository, Python projects, JavaScript projects, AI ML projects, web development portfolio, software engineering, Nepal developer projects, programming portfolio, git repositories' }}{% endblock %}">
+	<meta name="subject" content="Open Source Projects & Code Repository">
+	<meta name="copyright" content="Lusan Sapkota">
+	<meta name="topic" content="Software Development, Open Source, Programming">
+	<meta name="summary" content="Open source code repository and project portfolio">
+	<meta name="classification" content="Technology, Programming, Open Source, Software Development">
+	<meta name="designer" content="Lusan Sapkota">
+	<meta name="owner" content="Lusan Sapkota">
+	<meta name="url" content="https://git.lusansapkota.com.np{{ request.path }}">
+	<meta name="identifier-URL" content="https://git.lusansapkota.com.np{{ request.path }}">
+	<meta name="category" content="Technology, Open Source, Programming, Software Development">
+	<meta name="coverage" content="Worldwide">
+	<meta name="distribution" content="Global">
+	<meta name="rating" content="General">
+	<meta name="revisit-after" content="3 days">
+	
+	<!-- Language and Geography -->
+	<meta name="language" content="English">
+	<meta name="geo.region" content="NP-3">
+	<meta name="geo.placename" content="Kathmandu, Nepal">
+	<meta name="geo.position" content="27.7172;85.3240">
+	<meta name="ICBM" content="27.7172, 85.3240">
+	
+	<!-- Canonical URL -->
+	<link rel="canonical" href="https://git.lusansapkota.com.np{{ request.path }}">
+	
+	<!-- Alternate URLs -->
+	<link rel="alternate" hreflang="en" href="https://git.lusansapkota.com.np{{ request.path }}">
+	<link rel="alternate" hreflang="x-default" href="https://git.lusansapkota.com.np{{ request.path }}">
+	
+	<!-- Open Graph / Facebook -->
+	<meta property="og:type" content="{% block og_type %}website{% endblock %}">
+	<meta property="og:url" content="https://git.lusansapkota.com.np{{ request.path }}">
+	<meta property="og:title" content="{% block og_title %}{{ page_title if page_title else 'Lusan\'s Code Repository | Open Source Projects' }}{% endblock %}">
+	<meta property="og:description" content="{% block og_description %}{{ page_description if page_description else 'Explore innovative open source projects and code repositories featuring Python, JavaScript, AI/ML solutions, and web applications.' }}{% endblock %}">
+	<meta property="og:image" content="{% block og_image %}{{ project_image if project_image else url_for('static', filename='assets/images/git-preview.jpg', _external=True) }}{% endblock %}">
+	<meta property="og:image:secure_url" content="{% block og_image_secure %}{{ project_image if project_image else url_for('static', filename='assets/images/git-preview.jpg', _external=True) }}{% endblock %}">
+	<meta property="og:image:width" content="1200">
+	<meta property="og:image:height" content="630">
+	<meta property="og:image:alt" content="{% block og_image_alt %}Lusan's Open Source Projects{% endblock %}">
+	<meta property="og:site_name" content="Lusan's Code Repository">
+	<meta property="og:locale" content="en_US">
+	<meta property="article:author" content="Lusan Sapkota">
+	<meta property="article:publisher" content="https://www.lusansapkota.com.np">
+	
+	<!-- Twitter -->
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:url" content="https://git.lusansapkota.com.np{{ request.path }}">
+	<meta name="twitter:title" content="{% block twitter_title %}{{ page_title if page_title else 'Lusan\'s Code Repository' }}{% endblock %}">
+	<meta name="twitter:description" content="{% block twitter_description %}{{ page_description if page_description else 'Open source projects and code repositories featuring innovative software solutions and development work.' }}{% endblock %}">
+	<meta name="twitter:image" content="{% block twitter_image %}{{ project_image if project_image else url_for('static', filename='assets/images/git-preview.jpg', _external=True) }}{% endblock %}">
+	<meta name="twitter:image:alt" content="{% block twitter_image_alt %}Open Source Code Repository{% endblock %}">
+	<meta name="twitter:site" content="@LusanSapkota">
+	<meta name="twitter:creator" content="@LusanSapkota">
+	<meta name="twitter:label1" content="Developer">
+	<meta name="twitter:data1" content="Lusan Sapkota">
+	<meta name="twitter:label2" content="Projects">
+	<meta name="twitter:data2" content="Open Source">
+	
+	<!-- LinkedIn -->
+	<meta property="og:see_also" content="https://github.com/Lusan-sapkota">
+	
+	<!-- Mobile App Meta Tags -->
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	<meta name="apple-mobile-web-app-title" content="Lusan's Git">
+	<meta name="application-name" content="Code Repository">
+	<meta name="theme-color" content="#0f172a">
+	<meta name="msapplication-TileColor" content="#0f172a">
+	
+	<!-- Performance Optimization -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+	<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+	<link rel="preconnect" href="https://github.com" crossorigin>
+	<link rel="preconnect" href="https://api.github.com" crossorigin>
+	<link rel="dns-prefetch" href="https://fonts.googleapis.com">
+	<link rel="dns-prefetch" href="https://fonts.gstatic.com">
+	<link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+	<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+	<link rel="dns-prefetch" href="https://github.com">
+	<link rel="dns-prefetch" href="https://api.github.com">
+	
+	<!-- Robots Control -->
+	<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+	<meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+	<meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+	
+	<!-- Additional SEO Tags -->
+	<meta name="referrer" content="no-referrer-when-downgrade">
+	<meta name="format-detection" content="telephone=no">
+	<meta name="handheld-friendly" content="true">
+	<meta name="MobileOptimized" content="320">
 
-	<!-- Universal favicon -->
+	<!-- PWA Manifest -->
+	<link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+	
+	<!-- Icons and Favicons -->
 	<link rel="icon" type="image/png" href="{{ url_for('static', filename='assets/logo/logo.png') }}" sizes="any">
-
-	<!-- For Apple devices -->
 	<link rel="apple-touch-icon" href="{{ url_for('static', filename='assets/logo/logo.png') }}">
+	<link rel="shortcut icon" href="{{ url_for('static', filename='assets/logo/logo.png') }}">
+	
+	<!-- Windows Tiles -->
+	<meta name="msapplication-config" content="{{ url_for('static', filename='assets/logo/browserconfig.xml') }}">
+	
+	<!-- Schema.org Structured Data -->
+	<script type="application/ld+json">
+	{
+	  "@context": "https://schema.org",
+	  "@graph": [
+		{
+		  "@type": "WebSite",
+		  "@id": "https://git.lusansapkota.com.np/#website",
+		  "url": "https://git.lusansapkota.com.np/",
+		  "name": "Lusan's Code Repository",
+		  "description": "Open source projects and code repositories",
+		  "publisher": {
+			"@type": "Person",
+			"name": "Lusan Sapkota",
+			"url": "https://www.lusansapkota.com.np",
+			"sameAs": [
+			  "https://github.com/Lusan-sapkota",
+			  "https://www.linkedin.com/in/lusan-sapkota-a08194284/"
+			]
+		  },
+		  "potentialAction": {
+			"@type": "SearchAction",
+			"target": "https://git.lusansapkota.com.np/search?q={search_term_string}",
+			"query-input": "required name=search_term_string"
+		  },
+		  "inLanguage": "en-US"
+		},
+		{
+		  "@type": "WebPage",
+		  "@id": "https://git.lusansapkota.com.np{{ request.path }}#webpage",
+		  "url": "https://git.lusansapkota.com.np{{ request.path }}",
+		  "name": "{% block schema_name %}{{ page_title if page_title else 'Code Repository' }}{% endblock %}",
+		  "isPartOf": {
+			"@id": "https://git.lusansapkota.com.np/#website"
+		  },
+		  "description": "{% block schema_description %}{{ page_description if page_description else 'Open source projects and development portfolio' }}{% endblock %}",
+		  "breadcrumb": {
+			"@type": "BreadcrumbList",
+			"itemListElement": [
+			  {
+				"@type": "ListItem",
+				"position": 1,
+				"name": "Home",
+				"item": "https://www.lusansapkota.com.np/"
+			  },
+			  {
+				"@type": "ListItem",
+				"position": 2,
+				"name": "Repository",
+				"item": "https://git.lusansapkota.com.np/"
+			  }
+			  {% block additional_breadcrumbs %}{% endblock %}
+			]
+		  },
+		  "author": {
+			"@type": "Person",
+			"name": "Lusan Sapkota",
+			"url": "https://www.lusansapkota.com.np"
+		  },
+		  "datePublished": "{% block date_published %}2024-01-01{% endblock %}T00:00:00+00:00",
+		  "dateModified": "2024-12-23T00:00:00+00:00"
+		}
+		{% block additional_schema %}{% endblock %}
+	  ]
+	}
+	</script>
 
 	<!-- CDN CSS: Bootstrap & Font Awesome -->
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-..." crossorigin="anonymous">
@@ -54,7 +228,7 @@
     <nav class="navbar navbar-expand-lg navbar fixed-top">
         <div class="container">
             <!-- Logo -->
-            <a class="navbar-brand" href="{{ url_for('index') }}">
+            <a class="navbar-brand" href="{{ url_for('git.index') }}">
                 <img src="{{ url_for('static', filename='assets/logo/logo.png') }}" alt="Lusan Sapkota" height="40">
                 <span class="brand-text">Lusan's Projects</span>
             </a>
@@ -90,7 +264,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="https://store.lusansapkota.com" target="_blank">
+                                <a class="dropdown-item" href="{{ url_for('store.index') }}" target="_blank">
                                     <i class="fas fa-store"></i> Store
                                 </a>
                             </li>
@@ -125,15 +299,24 @@
 			<p class="footer-text-custom mb-0">&copy; {{ current_year|default(2025) }} Lusan Sapkota. All rights reserved.</p>
 		</div>
 		<div class="col-12 col-md-6 footer-socials-custom d-flex justify-content-center justify-content-md-end">
-			<a href="https://github.com/lusansapkota" target="_blank" class="footer-link-custom">
-			<i class="fab fa-github"></i>
-			</a>
-			<a href="https://linkedin.com/in/lusansapkota" target="_blank" class="footer-link-custom">
-			<i class="fab fa-linkedin"></i>
-			</a>
-			<a href="https://twitter.com/lusansapkota" target="_blank" class="footer-link-custom">
-			<i class="fab fa-twitter"></i>
-			</a>
+          <a href="https://github.com/Lusan-sapkota" target="_blank" class="social-link" title="GitHub">
+            <i class="fab fa-github"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/lusan-sapkota-a08194284/" target="_blank" class="social-link" title="LinkedIn">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+          <a href="https://x.com/LusanSapkota" target="_blank" class="social-link" title="X(Twitter)">
+            <i class="fab fa-x-twitter"></i>
+          </a>
+          <a href="https://www.instagram.com/sapkotalusan/" target="_blank" class="social-link" title="Instagram">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="https://www.youtube.com/@learn_with_lusan" target="_blank" class="social-link" title="YouTube">
+            <i class="fab fa-youtube"></i>
+          </a>
+          <a href="https://discord.gg/X9JzzRug" target="_blank" class="social-link" title="Discord">
+            <i class="fab fa-discord"></i>
+          </a>
 		</div>
 		</div>
 	</div>
@@ -147,6 +330,134 @@
 
 	<script src="{{ url_for('static', filename='assets/js/custom.js') }}"></script>
     <script src="{{ url_for('git.static', filename='js/git-script.js') }}"></script>
+
+    <!-- Analytics Integration -->
+    {% if seo and seo.google_analytics_id %}
+    <!-- Google Analytics (GA4) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ seo.google_analytics_id }}"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '{{ seo.google_analytics_id }}', {
+            page_title: document.title,
+            page_location: window.location.href,
+            custom_map: {
+                'custom_dimension_1': 'user_type',
+                'custom_dimension_2': 'page_category'
+            }
+        });
+        
+        // Enhanced tracking for git repository views
+        gtag('event', 'page_view', {
+            page_title: document.title,
+            page_location: window.location.href,
+            content_group1: 'Git Repository',
+            custom_dimension_2: 'git'
+        });
+    </script>
+    {% endif %}
+
+    {% if seo and seo.google_tag_manager_id %}
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','{{ seo.google_tag_manager_id }}');</script>
+    {% endif %}
+
+    {% if seo and seo.facebook_pixel_id %}
+    <!-- Facebook Pixel -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '{{ seo.facebook_pixel_id }}');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id={{ seo.facebook_pixel_id }}&ev=PageView&noscript=1"
+    /></noscript>
+    {% endif %}
+
+    {% if seo and seo.linkedin_insight_tag %}
+    <!-- LinkedIn Insight Tag -->
+    <script type="text/javascript">
+        _linkedin_partner_id = "{{ seo.linkedin_insight_tag }}";
+        window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];
+        window._linkedin_data_partner_ids.push(_linkedin_partner_id);
+    </script><script type="text/javascript">
+        (function(l) {
+            if (!l){window.lintrk = function(a,b){window.lintrk.q.push([a,b])};
+            window.lintrk.q=[]}
+            var s = document.getElementsByTagName("script")[0];
+            var b = document.createElement("script");
+            b.type = "text/javascript";b.async = true;
+            b.src = "https://snap.licdn.com/li.lms-analytics/insight.min.js";
+            s.parentNode.insertBefore(b, s);})(window.lintrk);
+    </script>
+    <noscript>
+        <img height="1" width="1" style="display:none;" alt="" src="https://px.ads.linkedin.com/collect/?pid={{ seo.linkedin_insight_tag }}&fmt=gif" />
+    </noscript>
+    {% endif %}
+
+    <!-- Performance Monitoring -->
+    <script>
+        // Core Web Vitals monitoring
+        function sendToAnalytics(metric) {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', metric.name, {
+                    event_category: 'Web Vitals',
+                    value: Math.round(metric.name === 'CLS' ? metric.value * 1000 : metric.value),
+                    custom_parameter_1: metric.id,
+                    non_interaction: true,
+                });
+            }
+        }
+
+        // Load web vitals library
+        const script = document.createElement('script');
+        script.src = 'https://unpkg.com/web-vitals@3/dist/web-vitals.attribution.iife.js';
+        script.onload = function() {
+            webVitals.onCLS(sendToAnalytics);
+            webVitals.onFID(sendToAnalytics);
+            webVitals.onFCP(sendToAnalytics);
+            webVitals.onLCP(sendToAnalytics);
+            webVitals.onTTFB(sendToAnalytics);
+        };
+        document.head.appendChild(script);
+
+        // Enhanced error tracking for git repository views
+        window.onerror = function(msg, url, lineNo, columnNo, error) {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'exception', {
+                    'description': msg + ' at ' + url + ':' + lineNo,
+                    'fatal': false,
+                    'page_location': window.location.href
+                });
+            }
+            return false;
+        };
+
+        // Service Worker registration for PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/static/sw.js')
+                    .then(function(registration) {
+                        console.log('ServiceWorker registration successful');
+                    })
+                    .catch(function(err) {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            });
+        }
+    </script>
 
 	{% block scripts %}{% endblock %}
 </body>

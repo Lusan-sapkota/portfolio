@@ -1,48 +1,210 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="light" itemscope itemtype="http://schema.org/WebPage">
 <head>
+    <!-- Essential Meta Tags -->
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}{{ seo_settings.site_title if seo_settings else 'Donation Platform' }}{% endblock %}</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta http-equiv="Accept-CH" content="DPR, Viewport-Width, Width">
     
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="{% block meta_description %}{{ seo_settings.meta_description if seo_settings else 'Support open source projects and innovation' }}{% endblock %}">
-    <meta name="keywords" content="{% block meta_keywords %}{{ seo_settings.meta_keywords if seo_settings else 'donation, open source, projects, support' }}{% endblock %}">
-    <meta name="author" content="{{ personal_info.full_name if personal_info else 'Developer' }}">
-    <meta name="robots" content="index, follow">
+    <!-- Primary Meta Tags -->
+    <title>{% block title %}{{ seo_settings.site_title if seo_settings else 'Support Lusan Sapkota | Donation Platform for Open Source Innovation' }}{% endblock %}</title>
+    <meta name="title" content="{% block meta_title %}{{ seo_settings.site_title if seo_settings else 'Support Lusan Sapkota | Donation Platform for Open Source Innovation' }}{% endblock %}">
+    <meta name="description" content="{% block meta_description %}{{ seo_settings.meta_description if seo_settings else 'Support open source innovation and software development projects by Lusan Sapkota. Your donations help fund cutting-edge AI/ML research, web development tools, and community resources. Secure donation platform with multiple payment options.' }}{% endblock %}">
+    <meta name="keywords" content="{% block meta_keywords %}{{ seo_settings.meta_keywords if seo_settings else 'donation, support developer, open source funding, Lusan Sapkota donations, software development support, AI ML research funding, tech innovation support, Nepal developer support, programming project funding, secure donations' }}{% endblock %}">
+    <meta name="author" content="{{ personal_info.full_name if personal_info else 'Lusan Sapkota' }}">
+    <meta name="subject" content="Developer Support & Open Source Funding">
+    <meta name="copyright" content="Lusan Sapkota">
+    <meta name="topic" content="Donations, Open Source Support, Developer Funding">
+    <meta name="summary" content="Secure donation platform supporting open source development and innovation">
+    <meta name="classification" content="Finance, Technology, Open Source, Support">
+    <meta name="designer" content="Lusan Sapkota">
+    <meta name="owner" content="Lusan Sapkota">
+    <meta name="url" content="https://donation.lusansapkota.com.np{{ request.path }}">
+    <meta name="identifier-URL" content="https://donation.lusansapkota.com.np{{ request.path }}">
+    <meta name="category" content="Technology Support, Open Source, Donations">
+    <meta name="coverage" content="Worldwide">
+    <meta name="distribution" content="Global">
+    <meta name="rating" content="General">
+    <meta name="revisit-after" content="7 days">
+    
+    <!-- Language and Geography -->
+    <meta name="language" content="English">
+    <meta name="geo.region" content="NP-3">
+    <meta name="geo.placename" content="Kathmandu, Nepal">
+    <meta name="geo.position" content="27.7172;85.3240">
+    <meta name="ICBM" content="27.7172, 85.3240">
+    
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' https:;">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://donation.lusansapkota.com.np{{ request.path }}">
+    
+    <!-- Alternate URLs -->
+    <link rel="alternate" hreflang="en" href="https://donation.lusansapkota.com.np{{ request.path }}">
+    <link rel="alternate" hreflang="x-default" href="https://donation.lusansapkota.com.np{{ request.path }}">
     
     <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="{{ request.url }}">
-    <meta property="og:title" content="{% block og_title %}{{ seo_settings.site_title if seo_settings else 'Donation Platform' }}{% endblock %}">
-    <meta property="og:description" content="{% block og_description %}{{ seo_settings.meta_description if seo_settings else 'Support open source projects and innovation' }}{% endblock %}">
-    <meta property="og:image" content="{{ url_for('static', filename='assets/images/profile.jpg', _external=True) }}">
+    <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+    <meta property="og:url" content="https://donation.lusansapkota.com.np{{ request.path }}">
+    <meta property="og:title" content="{% block og_title %}{{ seo_settings.site_title if seo_settings else 'Support Open Source Innovation | Lusan Sapkota' }}{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}{{ seo_settings.meta_description if seo_settings else 'Support cutting-edge software development and AI/ML research. Your donations fund open source projects and community resources.' }}{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}{{ url_for('static', filename='assets/images/donation-preview.jpg', _external=True) }}{% endblock %}">
+    <meta property="og:image:secure_url" content="{% block og_image_secure %}{{ url_for('static', filename='assets/images/donation-preview.jpg', _external=True) }}{% endblock %}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Support Open Source Development">
+    <meta property="og:site_name" content="Lusan Sapkota Donation Platform">
+    <meta property="og:locale" content="en_US">
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="{{ request.url }}">
-    <meta property="twitter:title" content="{% block twitter_title %}{{ seo_settings.site_title if seo_settings else 'Donation Platform' }}{% endblock %}">
-    <meta property="twitter:description" content="{% block twitter_description %}{{ seo_settings.meta_description if seo_settings else 'Support open source projects and innovation' }}{% endblock %}">
-    <meta property="twitter:image" content="{{ url_for('static', filename='assets/images/profile.jpg', _external=True) }}">
+    <meta property="twitter:url" content="https://donation.lusansapkota.com.np{{ request.path }}">
+    <meta property="twitter:title" content="{% block twitter_title %}{{ seo_settings.site_title if seo_settings else 'Support Open Source Innovation' }}{% endblock %}">
+    <meta property="twitter:description" content="{% block twitter_description %}{{ seo_settings.meta_description if seo_settings else 'Support software development and AI/ML research through secure donations. Help fund innovative open source projects.' }}{% endblock %}">
+    <meta property="twitter:image" content="{% block twitter_image %}{{ url_for('static', filename='assets/images/donation-preview.jpg', _external=True) }}{% endblock %}">
+    <meta property="twitter:image:alt" content="Support Open Source Development">
+    <meta property="twitter:site" content="@LusanSapkota">
+    <meta property="twitter:creator" content="@LusanSapkota">
+    <meta property="twitter:label1" content="Platform">
+    <meta property="twitter:data1" content="Donation Support">
+    <meta property="twitter:label2" content="Security">
+    <meta property="twitter:data2" content="SSL Encrypted">
     
-    <!-- Canonical URL -->
-    <link rel="canonical" href="{{ request.url }}">
+    <!-- Mobile App Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Support Lusan">
+    <meta name="application-name" content="Donation Platform">
+    <meta name="theme-color" content="#10b981">
+    <meta name="msapplication-TileColor" content="#10b981">
+    
+    <!-- Performance Optimization -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    
+    <!-- Additional SEO Tags -->
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="handheld-friendly" content="true">
+    <meta name="MobileOptimized" content="320">
+    
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://donation.lusansapkota.com.np/#website",
+          "url": "https://donation.lusansapkota.com.np/",
+          "name": "Lusan Sapkota Donation Platform",
+          "description": "Support open source development and innovation",
+          "publisher": {
+            "@type": "Person",
+            "name": "Lusan Sapkota",
+            "url": "https://www.lusansapkota.com.np"
+          },
+          "potentialAction": {
+            "@type": "DonateAction",
+            "target": "https://donation.lusansapkota.com.np/donate",
+            "recipient": {
+              "@type": "Person",
+              "name": "Lusan Sapkota"
+            }
+          }
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://donation.lusansapkota.com.np{{ request.path }}#webpage",
+          "url": "https://donation.lusansapkota.com.np{{ request.path }}",
+          "name": "{% block schema_name %}Support Open Source Development{% endblock %}",
+          "isPartOf": {
+            "@id": "https://donation.lusansapkota.com.np/#website"
+          },
+          "description": "{% block schema_description %}Secure donation platform supporting software development and innovation{% endblock %}",
+          "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://www.lusansapkota.com.np/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Donation",
+                "item": "https://donation.lusansapkota.com.np/"
+              }
+              {% block additional_breadcrumbs %}{% endblock %}
+            ]
+          },
+          "author": {
+            "@type": "Person",
+            "name": "Lusan Sapkota",
+            "url": "https://www.lusansapkota.com.np"
+          }
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://donation.lusansapkota.com.np/#organization",
+          "name": "Lusan Sapkota Open Source Initiative",
+          "description": "Supporting open source software development and AI/ML research",
+          "founder": {
+            "@type": "Person",
+            "name": "Lusan Sapkota"
+          },
+          "location": {
+            "@type": "Place",
+            "name": "Kathmandu, Nepal"
+          },
+          "sameAs": [
+            "https://github.com/Lusan-sapkota",
+            "https://www.linkedin.com/in/lusan-sapkota-a08194284/"
+          ]
+        }
+        {% block additional_schema %}{% endblock %}
+      ]
+    }
+    </script>>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    
+    <!-- Icons and Favicons -->
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='assets/logo/logo.png') }}" sizes="any">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='assets/logo/logo.png') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='assets/logo/logo.png') }}">
+    
+    <!-- Windows Tiles -->
+    <meta name="msapplication-config" content="{{ url_for('static', filename='assets/logo/browserconfig.xml') }}">
+    
+    <!-- Performance Hints -->
+    <link rel="preload" href="{{ url_for('static', filename='assets/css/style.css') }}" as="style">
+    <link rel="preload" href="{{ url_for('donation.static', filename='css/donation-style.css') }}" as="style">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" as="style">
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha384-..." crossorigin="anonymous">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Local CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('donation.static', filename='css/donation-style.css') }}">
-
-    <!-- Universal favicon -->
-	<link rel="icon" type="image/png" href="{{ url_for('static', filename='assets/logo/logo.png') }}" sizes="any">
-
-	<!-- For Apple devices -->
-	<link rel="apple-touch-icon" href="{{ url_for('static', filename='assets/logo/logo.png') }}">
 
     <script>
     // Initialize theme before page renders
@@ -207,7 +369,7 @@
     <nav class="navbar navbar-expand-lg navbar fixed-top">
         <div class="container">
             <!-- Logo -->
-            <a class="navbar-brand" href="{{ url_for('index') }}">
+            <a class="navbar-brand" href="{{ url_for('donation.index') }}">
                 <img src="{{ url_for('static', filename='assets/logo/logo.png') }}" alt="{{ personal_info.full_name if personal_info else 'Lusan Sapkota' }}" height="40">
                 <span class="brand-text">Donations</span>
             </a>
@@ -222,21 +384,21 @@
                 <ul class="navbar-nav ms-auto">
                     <!-- Projects -->
                     <li class="nav-item">
-                        <a class="nav-link{% if request.endpoint == 'wiki.index' %} active{% endif %}" href="{{ url_for('donation.index') }}">
+                        <a class="nav-link{% if request.endpoint == 'donation.index' %} active{% endif %}" href="{{ url_for('donation.index') }}">
                             <i class="fas fa-book"></i> Projects
                         </a>
                     </li>
                     
                     <!-- Hightlights -->
                     <li class="nav-item">
-                        <a class="nav-link{% if request.endpoint == 'wiki.explore' %} active{% endif %}" href="{{ url_for('donation.highlights') }}">
+                        <a class="nav-link{% if request.endpoint == 'donation.highlights' %} active{% endif %}" href="{{ url_for('donation.highlights') }}">
                             <i class="fas fa-compass"></i> Highlights
                         </a>
                     </li>
                     
                     <!-- Thanksgiving -->
                     <li class="nav-item">
-                        <a class="nav-link{% if request.endpoint == 'wiki.search' %} active{% endif %}" href="{{ url_for('donation.thanksgiving') }}">
+                        <a class="nav-link{% if request.endpoint == 'donation.thanksgiving' %} active{% endif %}" href="{{ url_for('donation.thanksgiving') }}">
                             <i class="fas fa-search"></i> Thanksgiving
                         </a>
                     </li>
@@ -258,7 +420,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="https://store.lusansapkota.com" target="_blank">
+                                <a class="dropdown-item" href="{{ url_for('store.index') }}" target="_blank">
                                     <i class="fas fa-store"></i> Store
                                 </a>
                             </li>
@@ -294,19 +456,25 @@
                     <h5>Support Open Source</h5>
                     <p>{{ personal_info.bio if personal_info else 'Help me build amazing projects that benefit the entire developer community.' }}</p>
                 </div>
-                <div class="col-md-6 text-md-end">
-                    <h6>Connect</h6>
-                    {% if social_links %}
-                        {% for link in social_links %}
-                            <a href="{{ link.url }}" class="me-3" target="_blank" rel="noopener" aria-label="{{ link.platform }}">
-                                <i class="fab fa-{{ link.platform.lower() }}"></i>
-                            </a>
-                        {% endfor %}
-                    {% else %}
-                        <a href="#" class="me-3"><i class="fab fa-github"></i></a>
-                        <a href="#" class="me-3"><i class="fab fa-linkedin"></i></a>
-                        <a href="#" class="me-3"><i class="fab fa-twitter"></i></a>
-                    {% endif %}
+                <div class="col-12 col-md-6 footer-socials-custom d-flex justify-content-center justify-content-md-end">
+                <a href="https://github.com/Lusan-sapkota" target="_blank" class="social-link" title="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/lusan-sapkota-a08194284/" target="_blank" class="social-link" title="LinkedIn">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="https://x.com/LusanSapkota" target="_blank" class="social-link" title="X(Twitter)">
+                    <i class="fab fa-x-twitter"></i>
+                </a>
+                <a href="https://www.instagram.com/sapkotalusan/" target="_blank" class="social-link" title="Instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://www.youtube.com/@learn_with_lusan" target="_blank" class="social-link" title="YouTube">
+                    <i class="fab fa-youtube"></i>
+                </a>
+                <a href="https://discord.gg/X9JzzRug" target="_blank" class="social-link" title="Discord">
+                    <i class="fab fa-discord"></i>
+                </a>
                 </div>
             </div>
             <hr class="my-4">
@@ -325,6 +493,134 @@
     <!-- Custom JS -->
 	<script src="{{ url_for('static', filename='assets/js/custom.js') }}"></script>
     <script src="{{ url_for('git.static', filename='js/donation-script.js') }}"></script>
+    
+    <!-- Analytics Integration -->
+    {% if seo_settings and seo_settings.google_analytics_id %}
+    <!-- Google Analytics (GA4) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ seo_settings.google_analytics_id }}"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '{{ seo_settings.google_analytics_id }}', {
+            page_title: document.title,
+            page_location: window.location.href,
+            custom_map: {
+                'custom_dimension_1': 'user_type',
+                'custom_dimension_2': 'page_category'
+            }
+        });
+        
+        // Enhanced E-commerce tracking for donations
+        gtag('event', 'page_view', {
+            page_title: document.title,
+            page_location: window.location.href,
+            content_group1: 'Donation Platform',
+            custom_dimension_2: 'donation'
+        });
+    </script>
+    {% endif %}
+
+    {% if seo_settings and seo_settings.google_tag_manager_id %}
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','{{ seo_settings.google_tag_manager_id }}');</script>
+    {% endif %}
+
+    {% if seo_settings and seo_settings.facebook_pixel_id %}
+    <!-- Facebook Pixel -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '{{ seo_settings.facebook_pixel_id }}');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id={{ seo_settings.facebook_pixel_id }}&ev=PageView&noscript=1"
+    /></noscript>
+    {% endif %}
+
+    {% if seo_settings and seo_settings.linkedin_insight_tag %}
+    <!-- LinkedIn Insight Tag -->
+    <script type="text/javascript">
+        _linkedin_partner_id = "{{ seo_settings.linkedin_insight_tag }}";
+        window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];
+        window._linkedin_data_partner_ids.push(_linkedin_partner_id);
+    </script><script type="text/javascript">
+        (function(l) {
+            if (!l){window.lintrk = function(a,b){window.lintrk.q.push([a,b])};
+            window.lintrk.q=[]}
+            var s = document.getElementsByTagName("script")[0];
+            var b = document.createElement("script");
+            b.type = "text/javascript";b.async = true;
+            b.src = "https://snap.licdn.com/li.lms-analytics/insight.min.js";
+            s.parentNode.insertBefore(b, s);})(window.lintrk);
+    </script>
+    <noscript>
+        <img height="1" width="1" style="display:none;" alt="" src="https://px.ads.linkedin.com/collect/?pid={{ seo_settings.linkedin_insight_tag }}&fmt=gif" />
+    </noscript>
+    {% endif %}
+
+    <!-- Performance Monitoring -->
+    <script>
+        // Core Web Vitals monitoring
+        function sendToAnalytics(metric) {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', metric.name, {
+                    event_category: 'Web Vitals',
+                    value: Math.round(metric.name === 'CLS' ? metric.value * 1000 : metric.value),
+                    custom_parameter_1: metric.id,
+                    non_interaction: true,
+                });
+            }
+        }
+
+        // Load web vitals library
+        const script = document.createElement('script');
+        script.src = 'https://unpkg.com/web-vitals@3/dist/web-vitals.attribution.iife.js';
+        script.onload = function() {
+            webVitals.onCLS(sendToAnalytics);
+            webVitals.onFID(sendToAnalytics);
+            webVitals.onFCP(sendToAnalytics);
+            webVitals.onLCP(sendToAnalytics);
+            webVitals.onTTFB(sendToAnalytics);
+        };
+        document.head.appendChild(script);
+
+        // Enhanced error tracking for donations
+        window.onerror = function(msg, url, lineNo, columnNo, error) {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'exception', {
+                    'description': msg + ' at ' + url + ':' + lineNo,
+                    'fatal': false,
+                    'page_location': window.location.href
+                });
+            }
+            return false;
+        };
+
+        // Service Worker registration for PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/static/sw.js')
+                    .then(function(registration) {
+                        console.log('ServiceWorker registration successful');
+                    })
+                    .catch(function(err) {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            });
+        }
+    </script>
     
     {% block extra_js %}{% endblock %}
 </body>
