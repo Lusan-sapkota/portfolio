@@ -33,7 +33,7 @@ def setup_admin():
             print("🚀 Creating default admin user...")
             
             username = 'admin'
-            email = 'admin@lusansapkota.com.np'
+            email = 'contact@lusansapkota.com.np'
             password = 'admin123'
             
             user = User(username=username, email=email, is_admin=True)

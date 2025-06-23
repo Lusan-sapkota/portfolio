@@ -8,7 +8,7 @@
    - Created one secure admin with strong credentials:
      * Username: admin
      * Password: H7CtoyboLqDVz@CU,zPI (20 characters, mixed case, numbers, symbols)
-     * Email: admin@lusansapkota.com.np
+     * Email: contact@lusansapkota.com.np
 
 2. **Enhanced Login Security**
    - Rate limiting: 10 login attempts per minute per IP

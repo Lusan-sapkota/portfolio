@@ -261,7 +261,7 @@ MAIL_USE_TLS=True
 MAIL_USERNAME=your-email@gmail.com
 MAIL_PASSWORD=your-app-password
 FROM_NAME=Lusan Sapkota
-ADMIN_EMAIL=admin@lusansapkota.com.np
+ADMIN_EMAIL=contact@lusansapkota.com.np
 
 # GitHub Integration
 GITHUB_TOKEN=your_github_personal_access_token
@@ -629,7 +629,7 @@ MAIL_USE_TLS=True
 MAIL_USERNAME=your-email@gmail.com
 MAIL_PASSWORD=your-gmail-app-password
 FROM_NAME=Lusan Sapkota
-ADMIN_EMAIL=admin@lusansapkota.com.np
+ADMIN_EMAIL=contact@lusansapkota.com.np
 
 # Security
 SESSION_COOKIE_SECURE=True

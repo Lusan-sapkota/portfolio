@@ -322,7 +322,7 @@ function fetchSessionTime() {
         },
         error: function(xhr) {
             console.error('Failed to fetch session status:', xhr.status);
-            // If we get a 401/403, the session is likely expired
+            // If I get a 401/403, the session is likely expired
             if (xhr.status === 401 || xhr.status === 403) {
                 handleSessionExpired();
             }

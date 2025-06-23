@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Database migration script to add new columns to existing donation table.
-This adds the new fields we defined in the enhanced Donation model.
+This adds the new fields I defined in the enhanced Donation model.
 """
 
 import sys

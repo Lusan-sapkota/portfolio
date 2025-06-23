@@ -43,7 +43,7 @@ def show_admin_users():
                 # Create default admin user
                 admin = User(
                     username='admin',
-                    email='admin@lusansapkota.com.np',
+                    email='contact@lusansapkota.com.np',
                     is_admin=True
                 )
                 admin.set_password('admin123')
@@ -56,7 +56,7 @@ def show_admin_users():
                 print("🔑 Login Credentials:")
                 print("   Username: admin")
                 print("   Password: admin123")
-                print("   Email: admin@lusansapkota.com.np")
+                print("   Email: contact@lusansapkota.com.np")
             
     except Exception as e:
         print(f"❌ Error: {e}")

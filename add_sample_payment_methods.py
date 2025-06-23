@@ -80,7 +80,7 @@ def add_sample_payment_methods():
 <li>Transfer to the account details shown</li>
 <li>Use reference: <strong>Donation - {project}</strong></li>
 <li>Keep the transaction receipt</li>
-<li>We'll verify within 24 hours</li>
+<li>I'll verify within 24 hours</li>
 </ol>''',
                 'is_active': True,
                 'sort_order': 4

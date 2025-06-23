@@ -91,7 +91,7 @@ def create_sample_projects():
             <p>Python/Django, PostgreSQL, Redis, WebSocket, Google Maps API, Mobile Apps (React Native)</p>
             
             <h4>Social Impact:</h4>
-            <p>This system can significantly reduce emergency response times, potentially saving thousands of lives. We're working with local hospitals to implement this in Nepal first, then expand to other regions.</p>
+            <p>This system can significantly reduce emergency response times, potentially saving thousands of lives. I're working with local hospitals to implement this in Nepal first, then expand to other regions.</p>
             ''',
             'short_description': 'Life-saving emergency response system with real-time tracking and intelligent dispatch.',
             'goal_amount': 3000.0,
@@ -184,7 +184,7 @@ def create_sample_projects():
             'donor_name': 'Dev Team Solutions',
             'donor_email': 'contact@devteam.com',
             'amount': 500.0,
-            'message': 'We believe this tool will revolutionize code review. Excited to see it in production!',
+            'message': 'I believe this tool will revolutionize code review. Excited to see it in production!',
             'is_anonymous': False,
             'status': 'completed'
         },
@@ -193,7 +193,7 @@ def create_sample_projects():
             'donor_name': 'Dr. Medical Corp',
             'donor_email': 'info@medcorp.com',
             'amount': 1000.0,
-            'message': 'This system could save lives. We support this initiative wholeheartedly.',
+            'message': 'This system could save lives. I support this initiative wholeheartedly.',
             'is_anonymous': False,
             'status': 'completed'
         }

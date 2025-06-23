@@ -169,7 +169,7 @@ class GitHubService:
         cache_key = self._get_cache_key(username, repo)
         error_cache_key = self._get_error_cache_key(username, repo)
         
-        # Check if we have a cached error (don't retry failed requests for 6 hours)
+        # Check if I have a cached error (don't retry failed requests for 6 hours)
         if not force_refresh and self.cache:
             cached_error = self.cache.get(error_cache_key)
             if cached_error:

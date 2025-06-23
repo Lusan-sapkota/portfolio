@@ -559,14 +559,14 @@ class PaymentMethod(db.Model):
 class ThanksgivingSettings(db.Model):
     """Settings for the thanksgiving/donor recognition page"""
     id = db.Column(db.Integer, primary_key=True)
-    page_title = db.Column(db.String(200), default='Thank You to Our Amazing Supporters')
-    page_description = db.Column(db.Text, default='We are grateful for the incredible support from our community.')
+    page_title = db.Column(db.String(200), default='Thank You to My Amazing Supporters')
+    page_description = db.Column(db.Text, default='I are grateful for the incredible support from my community.')
     show_donor_names = db.Column(db.Boolean, default=True)
     show_amounts = db.Column(db.Boolean, default=False)
     show_messages = db.Column(db.Boolean, default=True)
     min_amount_display = db.Column(db.Float, default=0.0)  # Minimum amount to display
     anonymous_display_text = db.Column(db.String(100), default='Anonymous Supporter')
-    thank_you_message = db.Column(db.Text, default='Your support means the world to us and helps keep our projects alive!')
+    thank_you_message = db.Column(db.Text, default='Your support means the world to me and helps keep my projects alive!')
     is_active = db.Column(db.Boolean, default=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)

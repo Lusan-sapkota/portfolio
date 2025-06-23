@@ -16,9 +16,9 @@ def index():
     seo_settings = SeoSettings.query.filter_by(page_name='donation').first()
     personal_info = PersonalInfo.query.first()
     
-    # Get donation projects (we can use regular projects for donations too)
+    # Get donation projects (I can use regular projects for donations too)
     try:
-        # Check if we have DonationProject model, otherwise use Project
+        # Check if I have DonationProject model, otherwise use Project
         featured_projects = DonationProject.query.filter_by(is_active=True, is_featured=True).all()
         all_projects = DonationProject.query.filter_by(is_active=True).all()
         
@@ -253,7 +253,7 @@ def subscribe_newsletter():
         if existing:
             if existing.is_active:
                 if request.is_json or 'application/json' in request.headers.get('Accept', ''):
-                    return jsonify({'success': False, 'status': 'info', 'message': 'You are already subscribed to our newsletter.'})
+                    return jsonify({'success': False, 'status': 'info', 'message': 'You are already subscribed to my newsletter.'})
                 flash('You are already subscribed to my newsletter.', 'info')
             else:
                 existing.is_active = True
@@ -280,7 +280,7 @@ def subscribe_newsletter():
                 logger.error(f"Failed to send welcome email: {e}")
             
             if request.is_json or 'application/json' in request.headers.get('Accept', ''):
-                return jsonify({'success': True, 'status': 'success', 'message': 'Thank you for subscribing to our newsletter!'})
+                return jsonify({'success': True, 'status': 'success', 'message': 'Thank you for subscribing to my newsletter!'})
             flash('Thank you for subscribing to my newsletter!', 'success')
         
         if request.is_json or 'application/json' in request.headers.get('Accept', ''):

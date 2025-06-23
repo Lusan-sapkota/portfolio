@@ -28,7 +28,7 @@ def create_admin_user():
             # Create new admin
             admin = User(
                 username='admin',
-                email='admin@lusansapkota.com.np',
+                email='contact@lusansapkota.com.np',
                 is_admin=True
             )
             admin.set_password('admin123')
@@ -42,7 +42,7 @@ def create_admin_user():
             print(f"   URL: /admin")
             print(f"   Username: admin")
             print(f"   Password: admin123")
-            print(f"   Email: admin@lusansapkota.com.np")
+            print(f"   Email: contact@lusansapkota.com.np")
             
     except Exception as e:
         print(f"❌ Error: {e}")

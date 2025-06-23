@@ -81,7 +81,7 @@ Features:
 - Calendar integration
 - Mobile app support
 
-This platform aims to improve remote work productivity and team collaboration. Your support will help us add advanced features like AI meeting summaries, advanced analytics, and enterprise-grade security.''',
+This platform aims to improve remote work productivity and team collaboration. Your support will help me add advanced features like AI meeting summaries, advanced analytics, and enterprise-grade security.''',
                     'short_description': 'Real-time collaboration platform with video calls, document editing, and project management.',
                     'goal_amount': 12000.0,
                     'current_amount': 4800.0,

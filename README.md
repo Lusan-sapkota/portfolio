@@ -127,7 +127,7 @@ For complete production setup with Oracle Cloud + Cloudflare, see [DEPLOYMENT_GU
 
 ## 📞 Contact
 
-**Professional Inquiries:** [admin@lusansapkota.com.np](mailto:admin@lusansapkota.com.np)
+**Professional Inquiries:** [contact@lusansapkota.com.np](mailto:contact@lusansapkota.com.np)
 
 <div align="center">
   

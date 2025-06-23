@@ -66,9 +66,9 @@
                             <ul class="mb-0">
                                 <li>Please complete your payment using one of the methods below</li>
                                 <li>Your donation email is dynamic and contains the amount you entered</li>
-                                <li>If the amount we receive differs from your email, we will record the actual amount received</li>
+                                <li>If the amount I receive differs from your email, I will record the actual amount received</li>
                                 {% if donation.is_anonymous %}
-                                <li><strong>Anonymous Donation:</strong> As you chose to donate anonymously, your name won't appear in the thanksgiving list, though we are very grateful for your donation!</li>
+                                <li><strong>Anonymous Donation:</strong> As you chose to donate anonymously, your name won't appear in the thanksgiving list, though I are very grateful for your donation!</li>
                                 {% endif %}
                             </ul>
                         </div>
@@ -156,7 +156,7 @@
                     {% else %}
                         <div class="alert alert-warning">
                             <h5><i class="fas fa-exclamation-triangle"></i> Payment methods are being configured</h5>
-                            <p class="mb-0">Please contact us directly to complete your donation. We'll update you once payment methods are available.</p>
+                            <p class="mb-0">Please contact me directly to complete your donation. I'll update you once payment methods are available.</p>
                         </div>
                     {% endif %}
                 </div>
@@ -168,17 +168,17 @@
                                 <div class="col-md-6">
                                     <h6><i class="fas fa-tasks text-success"></i> What happens next?</h6>
                                     <ul>
-                                        <li>We'll verify your payment within 24-48 hours</li>
+                                        <li>I'll verify your payment within 24-48 hours</li>
                                         <li>You'll receive a confirmation email</li>
                                         <li>Your contribution will be added to the project total</li>
                                         {% if not donation.is_anonymous %}
-                                        <li>Your name will appear in our thanksgiving list</li>
+                                        <li>Your name will appear in my thanksgiving list</li>
                                         {% endif %}
                                     </ul>
                                 </div>
                                 <div class="col-md-6">
                                     <h6><i class="fas fa-question-circle text-primary"></i> Need Help?</h6>
-                                    <p>If you have any questions about your donation or payment, please contact us at:</p>
+                                    <p>If you have any questions about your donation or payment, please contact me at:</p>
                                     <p><strong>Email:</strong> {{ personal_info.email if personal_info else 'support@example.com' }}</p>
                                     {% if personal_info and personal_info.phone %}
                                     <p><strong>Phone:</strong> {{ personal_info.phone }}</p>

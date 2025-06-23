@@ -55,7 +55,7 @@ def secure_admin_setup():
             print(f"   ✗ Removed admin: {admin.username}")
         
         # Also remove any non-admin users with the target email
-        existing_user = User.query.filter_by(email="admin@lusansapkota.com.np").first()
+        existing_user = User.query.filter_by(email="contact@lusansapkota.com.np").first()
         if existing_user:
             db.session.delete(existing_user)
             print(f"   ✗ Removed existing user with target email: {existing_user.username}")
@@ -65,7 +65,7 @@ def secure_admin_setup():
         
         # Create new secure admin
         username = "admin"
-        email = "admin@lusansapkota.com.np"
+        email = "contact@lusansapkota.com.np"
         secure_password = generate_secure_password(20)
         
         new_admin = User(

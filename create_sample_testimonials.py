@@ -19,7 +19,7 @@ def create_sample_testimonials():
                     'client_name': 'Sarah Chen',
                     'client_title': 'CTO',
                     'client_company': 'TechFlow Inc.',
-                    'testimonial_text': 'Lusan delivered an exceptional e-commerce platform that exceeded our expectations. His attention to detail and technical expertise made our project a huge success. The scalable architecture he designed has been handling our growing traffic flawlessly.',
+                    'testimonial_text': 'Lusan delivered an exceptional e-commerce platform that exceeded my expectations. His attention to detail and technical expertise made my project a huge success. The scalable architecture he designed has been handling my growing traffic flawlessly.',
                     'rating': 5,
                     'is_featured': True,
                     'project_related': 'E-commerce Platform'
@@ -28,7 +28,7 @@ def create_sample_testimonials():
                     'client_name': 'Michael Rodriguez',
                     'client_title': 'Product Manager',
                     'client_company': 'DataVision Corp',
-                    'testimonial_text': 'Working with Lusan was a fantastic experience. He transformed our complex data requirements into an intuitive analytics dashboard. His ability to understand business needs and translate them into technical solutions is remarkable.',
+                    'testimonial_text': 'Working with Lusan was a fantastic experience. He transformed my complex data requirements into an intuitive analytics dashboard. His ability to understand business needs and translate them into technical solutions is remarkable.',
                     'rating': 5,
                     'is_featured': True,
                     'project_related': 'Analytics Dashboard'
@@ -37,7 +37,7 @@ def create_sample_testimonials():
                     'client_name': 'Emma Thompson',
                     'client_title': 'Startup Founder',
                     'client_company': 'HealthTech Solutions',
-                    'testimonial_text': 'Lusan built our entire healthcare management system from scratch. His expertise in both frontend and backend development, combined with his understanding of healthcare workflows, made him the perfect developer for our project.',
+                    'testimonial_text': 'Lusan built my entire healthcare management system from scratch. His expertise in both frontend and backend development, combined with his understanding of healthcare workflows, made him the perfect developer for my project.',
                     'rating': 5,
                     'is_featured': True,
                     'project_related': 'Healthcare Management System'
@@ -46,7 +46,7 @@ def create_sample_testimonials():
                     'client_name': 'James Wilson',
                     'client_title': 'IT Director',
                     'client_company': 'LogiCorp',
-                    'testimonial_text': 'The logistics tracking system Lusan developed has revolutionized our operations. Real-time tracking, automated notifications, and comprehensive reporting - everything works seamlessly. Highly recommended!',
+                    'testimonial_text': 'The logistics tracking system Lusan developed has revolutionized my operations. Real-time tracking, automated notifications, and comprehensive reporting - everything works seamlessly. Highly recommended!',
                     'rating': 5,
                     'is_featured': True,
                     'project_related': 'Logistics Tracking System'
@@ -55,7 +55,7 @@ def create_sample_testimonials():
                     'client_name': 'Dr. Lisa Kumar',
                     'client_title': 'Research Director',
                     'client_company': 'AI Research Lab',
-                    'testimonial_text': 'Lusan\'s work on our machine learning pipeline was outstanding. His deep understanding of AI algorithms and ability to implement complex models efficiently saved us months of development time.',
+                    'testimonial_text': 'Lusan\'s work on my machine learning pipeline was outstanding. His deep understanding of AI algorithms and ability to implement complex models efficiently saved me months of development time.',
                     'rating': 5,
                     'is_featured': True,
                     'project_related': 'ML Pipeline'
@@ -64,7 +64,7 @@ def create_sample_testimonials():
                     'client_name': 'Robert Davis',
                     'client_title': 'Business Owner',
                     'client_company': 'Local Restaurant Chain',
-                    'testimonial_text': 'The restaurant management system Lusan created has streamlined our entire operation. From inventory management to customer orders, everything is now automated and efficient. Our revenue has increased by 30% since implementation.',
+                    'testimonial_text': 'The restaurant management system Lusan created has streamlined my entire operation. From inventory management to customer orders, everything is now automated and efficient. My revenue has increased by 30% since implementation.',
                     'rating': 5,
                     'is_featured': True,
                     'project_related': 'Restaurant Management System'

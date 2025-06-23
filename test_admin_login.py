@@ -63,7 +63,7 @@ def test_admin_login():
     except Exception as e:
         print(f"   ❌ Failed to test admin login: {e}")
     
-    print(f"\n📧 Login notification email should be sent to: admin@lusansapkota.com.np")
+    print(f"\n📧 Login notification email should be sent to: contact@lusansapkota.com.np")
     print(f"🕐 Test completed at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     
     print("\n🔐 Admin System Security Features:")

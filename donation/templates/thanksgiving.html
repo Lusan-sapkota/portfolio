@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 
-{% block title %}{{ thanksgiving_settings.page_title if thanksgiving_settings else 'Thank You to Our Amazing Supporters' }}{% endblock %}
+{% block title %}{{ thanksgiving_settings.page_title if thanksgiving_settings else 'Thank You to My Amazing Supporters' }}{% endblock %}
 
-{% block meta_description %}{{ thanksgiving_settings.page_description if thanksgiving_settings else 'We are grateful for the incredible support from our community.' }}{% endblock %}
+{% block meta_description %}{{ thanksgiving_settings.page_description if thanksgiving_settings else 'I are grateful for the incredible support from my community.' }}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{{ url_for('donation.static', filename='css/donation-style.css') }}">
@@ -15,10 +15,10 @@
         <div class="container">
             <h1>
                 <i class="fas fa-heart"></i> 
-                {{ thanksgiving_settings.page_title if thanksgiving_settings else 'Thank You to Our Amazing Supporters' }}
+                {{ thanksgiving_settings.page_title if thanksgiving_settings else 'Thank You to My Amazing Supporters' }}
             </h1>
             <p class="lead">
-                {{ thanksgiving_settings.page_description if thanksgiving_settings else 'We are grateful for the incredible support from our community. Your contributions make our projects possible and help us build technology that makes a difference.' }}
+                {{ thanksgiving_settings.page_description if thanksgiving_settings else 'I are grateful for the incredible support from my community. Your contributions make my projects possible and help me build technology that makes a difference.' }}
             </p>
             
             {% if donations %}
@@ -46,7 +46,7 @@
         <div class="container">
             <div class="text-center mb-5">
                 <h2 class="display-5 fw-bold mb-3">Impact by the Numbers</h2>
-                <p class="lead">See how our community is making a difference together</p>
+                <p class="lead">See how my community is making a difference together</p>
             </div>
             
             <div class="stats-grid">
@@ -93,9 +93,9 @@
         <div class="container">
             <div class="text-center mb-5">
                 <h2 class="display-5 fw-bold mb-3">
-                    <i class="fas fa-heart text-danger me-3"></i>Our Amazing Supporters
+                    <i class="fas fa-heart text-danger me-3"></i>My Amazing Supporters
                 </h2>
-                <p class="lead">Meet the incredible people who make our work possible</p>
+                <p class="lead">Meet the incredible people who make my work possible</p>
             </div>
             
             {% if donations %}
@@ -148,7 +148,7 @@
             <div class="thanksgiving-empty-state">
                 <i class="fas fa-heart empty-icon"></i>
                 <h3>No supporters yet</h3>
-                <p>Be the first to support our projects and help us build amazing things that make a difference in the world!</p>
+                <p>Be the first to support my projects and help me build amazing things that make a difference in the world!</p>
                 <a href="{{ url_for('donation.index') }}" class="thanksgiving-btn-primary">
                     <i class="fas fa-heart"></i> Make a Donation
                 </a>
@@ -160,8 +160,8 @@
     <!-- Enhanced Call to Action -->
     <section class="thanksgiving-cta-section">
         <div class="container">
-            <h3>Want to Join Our Amazing Community?</h3>
-            <p class="lead">Support our projects and help us build technology that makes a difference in people's lives</p>
+            <h3>Want to Join My Amazing Community?</h3>
+            <p class="lead">Support my projects and help me build technology that makes a difference in people's lives</p>
             
             <div class="thanksgiving-btn-group">
                 <a href="{{ url_for('donation.index') }}" class="thanksgiving-btn-primary">

@@ -23,7 +23,7 @@ def migrate_donation_system():
             # Create all tables
             db.create_all()
             
-            # Check if we need to create default settings
+            # Check if I need to create default settings
             if not DonationSettings.query.first():
                 print("Creating default donation settings...")
                 settings = DonationSettings(
@@ -38,14 +38,14 @@ def migrate_donation_system():
             if not ThanksgivingSettings.query.first():
                 print("Creating default thanksgiving settings...")
                 thanksgiving = ThanksgivingSettings(
-                    page_title='Thank You to Our Amazing Supporters',
-                    page_description='We are grateful for the incredible support from our community.',
+                    page_title='Thank You to My Amazing Supporters',
+                    page_description='I are grateful for the incredible support from my community.',
                     show_donor_names=True,
                     show_amounts=False,
                     show_messages=True,
                     min_amount_display=0.0,
                     anonymous_display_text='Anonymous Supporter',
-                    thank_you_message='Your support means the world to us and helps keep our projects alive!',
+                    thank_you_message='Your support means the world to me and helps keep my projects alive!',
                     is_active=True
                 )
                 db.session.add(thanksgiving)

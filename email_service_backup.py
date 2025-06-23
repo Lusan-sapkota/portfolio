@@ -134,7 +134,7 @@ class EmailService:
         Thank you for your generous donation of ${amount:.2f} to support "{project_title}".
 
         Your contribution helps me continue developing and maintaining this project. 
-        We truly appreciate your support!
+        I truly appreciate your support!
 
         Best regards,
         The Development Team
@@ -161,7 +161,7 @@ class EmailService:
                 </div>
                 
                 <p>Your contribution helps me continue developing and maintaining this project. 
-                We truly appreciate your support!</p>
+                I truly appreciate your support!</p>
                 
                 <p>Best regards,<br>
                 <strong>The Development Team</strong></p>
@@ -441,7 +441,7 @@ class EmailService:
         What happens next:
         ✅ Your donation is being processed
         ✅ You'll receive an update when the processing is complete
-        ✅ You can track the project's progress on our donation page
+        ✅ You can track the project's progress on my donation page
 
         I'm truly grateful for supporters like you who believe in open source innovation and community-driven development.
 
@@ -483,7 +483,7 @@ class EmailService:
                         <ul style="color: #856404; margin: 0; padding-left: 20px;">
                             <li>✅ Your donation is being processed</li>
                             <li>✅ You'll receive an update when the processing is complete</li>
-                            <li>✅ You can track the project's progress on our donation page</li>
+                            <li>✅ You can track the project's progress on my donation page</li>
                         </ul>
                     </div>
                     
@@ -491,7 +491,7 @@ class EmailService:
                     <div style="background: #e7f3ff; border: 1px solid #b8daff; padding: 15px; border-radius: 8px; margin: 20px 0;">
                         <h4 style="color: #0c5460; margin: 0 0 10px 0;">💡 Payment Note:</h4>
                         <p style="color: #0c5460; margin: 0;">
-                            {f"You selected to pay in {currency_name}. Please complete your payment using the instructions provided. The exact amount we receive may differ slightly due to transaction fees or exchange rates, and we'll record the actual amount received." if currency == 'NPR' else "You selected to pay in US Dollars. International payment processing may take 1-3 business days depending on your payment method."}
+                            {f"You selected to pay in {currency_name}. Please complete your payment using the instructions provided. The exact amount I receive may differ slightly due to transaction fees or exchange rates, and I'll record the actual amount received." if currency == 'NPR' else "You selected to pay in US Dollars. International payment processing may take 1-3 business days depending on your payment method."}
                         </p>
                     </div>
                     ''' if currency else ''}

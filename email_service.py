@@ -134,7 +134,7 @@ class EmailService:
         Thank you for your generous donation of ${amount:.2f} to support "{project_title}".
 
         Your contribution helps me continue developing and maintaining this project. 
-        We truly appreciate your support!
+        I truly appreciate your support!
 
         Best regards,
         The Development Team
@@ -161,7 +161,7 @@ class EmailService:
                 </div>
                 
                 <p>Your contribution helps me continue developing and maintaining this project. 
-                We truly appreciate your support!</p>
+                I truly appreciate your support!</p>
                 
                 <p>Best regards,<br>
                 <strong>The Development Team</strong></p>
@@ -441,7 +441,7 @@ class EmailService:
         What happens next:
         ✅ Your donation is being processed
         ✅ You'll receive an update when the processing is complete
-        ✅ You can track the project's progress on our donation page
+        ✅ You can track the project's progress on my donation page
 
         I'm truly grateful for supporters like you who believe in open source innovation and community-driven development.
 
@@ -483,7 +483,7 @@ class EmailService:
                         <ul style="color: #856404; margin: 0; padding-left: 20px;">
                             <li>✅ Your donation is being processed</li>
                             <li>✅ You'll receive an update when the processing is complete</li>
-                            <li>✅ You can track the project's progress on our donation page</li>
+                            <li>✅ You can track the project's progress on my donation page</li>
                         </ul>
                     </div>
                     
@@ -491,7 +491,7 @@ class EmailService:
                     <div style="background: #e7f3ff; border: 1px solid #b8daff; padding: 15px; border-radius: 8px; margin: 20px 0;">
                         <h4 style="color: #0c5460; margin: 0 0 10px 0;">💡 Payment Note:</h4>
                         <p style="color: #0c5460; margin: 0;">
-                            {f"You selected to pay in {currency_name}. Please complete your payment using the instructions provided. The exact amount we receive may differ slightly due to transaction fees or exchange rates, and we'll record the actual amount received." if currency == 'NPR' else "You selected to pay in US Dollars. International payment processing may take 1-3 business days depending on your payment method."}
+                            {f"You selected to pay in {currency_name}. Please complete your payment using the instructions provided. The exact amount I receive may differ slightly due to transaction fees or exchange rates, and I'll record the actual amount received." if currency == 'NPR' else "You selected to pay in US Dollars. International payment processing may take 1-3 business days depending on your payment method."}
                         </p>
                     </div>
                     ''' if currency else ''}
@@ -980,7 +980,7 @@ Portfolio Donation System
             text_body = f"""
 Dear {donation.donor_name if not donation.is_anonymous else 'Valued Supporter'},
 
-We are delighted to confirm that your donation has been successfully processed!
+I are delighted to confirm that your donation has been successfully processed!
 
 Donation Confirmation Details:
 - Project: {project_title}
@@ -989,11 +989,11 @@ Donation Confirmation Details:
 - Status: CONFIRMED
 
 Your generous contribution will help advance this project and make a meaningful impact. 
-{'Your donation has been made anonymously as requested.' if donation.is_anonymous else 'Your name will be added to our supporters list to recognize your contribution.'}
+{'Your donation has been made anonymously as requested.' if donation.is_anonymous else 'Your name will be added to my supporters list to recognize your contribution.'}
 
 {f'Your message: "{donation.message}"' if donation.message else ''}
 
-Thank you once again for your support and trust in our work.
+Thank you once again for your support and trust in my work.
 
 View all supporters: https://lusansapkota.com.np/donation/thanksgiving
 
@@ -1028,8 +1028,8 @@ Lusan Sapkota
             </p>
             
             <p style="color: #333; line-height: 1.6; margin-bottom: 20px;">
-                We are delighted to confirm that your donation has been successfully processed! 
-                Your support means the world to us.
+                I are delighted to confirm that your donation has been successfully processed! 
+                Your support means the world to me.
             </p>
             
             <div style="background: #e8f5e8; border: 1px solid #d4edda; border-radius: 8px; padding: 20px; margin: 20px 0;">
@@ -1044,7 +1044,7 @@ Lusan Sapkota
             
             <p style="color: #333; line-height: 1.6; margin-bottom: 20px;">
                 Your generous contribution will help advance this project and make a meaningful impact.
-                {'Your donation has been made anonymously as requested.' if donation.is_anonymous else 'Your name will be added to our supporters list to recognize your contribution.'}
+                {'Your donation has been made anonymously as requested.' if donation.is_anonymous else 'Your name will be added to my supporters list to recognize your contribution.'}
             </p>
             
             {f'<div style="background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 5px; padding: 15px; margin-bottom: 20px;"><h4 style="color: #856404; margin: 0 0 10px 0;">Your message:</h4><p style="color: #856404; margin: 0; font-style: italic;">"{donation.message}"</p></div>' if donation.message else ''}
@@ -1063,7 +1063,7 @@ Lusan Sapkota
             </div>
             
             <p style="color: #333; line-height: 1.6; margin-top: 30px;">
-                Thank you once again for your support and trust in our work.
+                Thank you once again for your support and trust in my work.
             </p>
             
             <p style="color: #333; font-weight: bold;">

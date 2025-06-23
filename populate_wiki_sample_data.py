@@ -146,7 +146,7 @@ def populate_wiki_sample_data():
                 'title': 'Building Modern Web Applications with Flask',
                 'content': '''
                 <h2>Introduction to Flask</h2>
-                <p>Flask is a lightweight Python web framework that provides a solid foundation for building web applications. In this comprehensive guide, we'll explore how to create modern, scalable web applications using Flask.</p>
+                <p>Flask is a lightweight Python web framework that provides a solid foundation for building web applications. In this comprehensive guide, I'll explore how to create modern, scalable web applications using Flask.</p>
                 
                 <h3>Setting Up Your Flask Environment</h3>
                 <pre><code>pip install flask

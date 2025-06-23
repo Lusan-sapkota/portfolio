@@ -38,7 +38,7 @@ if [ "$USER" != "portfolio" ]; then
     exit 1
 fi
 
-# Check if we're in the right directory
+# Check if I're in the right directory
 if [ ! -f "app.py" ]; then
     print_error "app.py not found. Make sure you're in the portfolio directory"
     exit 1

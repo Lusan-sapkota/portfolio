@@ -114,7 +114,7 @@ def test_github_service():
             # Test with a sample repository
             print("Testing with sample repository...")
             
-            # Check if we have projects in database
+            # Check if I have projects in database
             projects = Project.query.filter(Project.github_url.isnot(None)).limit(3).all()
             
             if projects:
@@ -151,7 +151,7 @@ def main():
     print("🚀 Portfolio GitHub Integration Setup")
     print("=" * 40)
     
-    # Check if we're in the right directory
+    # Check if I're in the right directory
     if not Path('app.py').exists():
         print("❌ Error: app.py not found. Please run this script from the portfolio root directory.")
         sys.exit(1)

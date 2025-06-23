@@ -480,7 +480,7 @@ def newsletter_unsubscribe_token(token):
                                  current_year=datetime.now().year)
         else:
             return render_template('unsubscribe.html', 
-                                 error="Email not found in our subscription list", 
+                                 error="Email not found in my subscription list", 
                                  current_year=datetime.now().year)
             
     except Exception as e:
@@ -512,7 +512,7 @@ def newsletter_unsubscribe_confirm():
                                  current_year=datetime.now().year)
         else:
             return render_template('unsubscribe.html', 
-                                 error="Email not found in our subscription list", 
+                                 error="Email not found in my subscription list", 
                                  current_year=datetime.now().year)
             
     except Exception as e:
