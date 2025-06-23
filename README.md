@@ -1,158 +1,149 @@
-# Lusan Sapkota | Portfolio Website
+# Lusan Sapkota | Full Stack Portfolio
 
 <div align="center">
   
-  ![Developer Logo](https://img.shields.io/badge/Developer-Lusan%20Sapkota-blue)
-  ![Status](https://img.shields.io/badge/Status-Live-success)
-  ![License](https://img.shields.io/badge/License-GNU%20GPL%20v2-orange)
+  ![Portfolio](https://img.shields.io/badge/Portfolio-Live-success)
+  ![SEO](https://img.shields.io/badge/SEO-100%2F100-brightgreen)
+  ![License](https://img.shields.io/badge/License-MIT-blue)
   
-  <h3>A modern, responsive portfolio website showcasing my work as a Full Stack Software Developer from Nepal 🇳🇵</h3>
+  <h3>Professional portfolio showcasing expertise in Full Stack Development & AI/ML Engineering</h3>
 </div>
 
-## 🚀 Overview
+## 🚀 About
 
-This interactive portfolio showcases my technical expertise, projects, and professional experience. Built with Python Flask on the backend and modern frontend technologies for optimal performance and user experience.
+A comprehensive portfolio website featuring a modern, responsive design with advanced CMS capabilities. Built with enterprise-grade architecture and optimized for performance, SEO, and user experience.
 
 <div align="center">
   
   ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
   ![Flask](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white)
-  ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
-  ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
-  ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
-  ![Bootstrap](https://img.shields.io/badge/Bootstrap-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white)
+  ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?style=for-the-badge&logo=postgresql&logoColor=white)
+  ![Redis](https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white)
+  ![Nginx](https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=nginx&logoColor=white)
+  ![Cloudflare](https://img.shields.io/badge/Cloudflare-F38020?style=for-the-badge&logo=cloudflare&logoColor=white)
   
 </div>
 
-## ✨ Features
+## ✨ Key Features
 
-- **Responsive Design** - Optimized for all devices from mobile to desktop
-- **Interactive UI** - Smooth animations and transitions for engaging user experience
-- **Project Showcase** - Highlighting key projects with GitHub links and live demos
-- **Skills Display** - Visual representation of technical and soft skills
-- **Resume Download** - Direct download option for my up-to-date resume
-- **Contact Form** - Integrated Web3Forms API for seamless communication
-- **Social Media Integration** - Links to all professional profiles
+### 🎯 **Core Functionality**
+- **Multi-domain Architecture** - Main site with specialized subdomains (wiki, git, donation, store)
+- **Advanced CMS** - Complete admin panel for content management
+- **SEO Optimized** - 100/100 SEO score with structured data and meta optimization
+- **Responsive Design** - Mobile-first approach with modern UI/UX
 
-## 🛠️ Technologies Used
+### 🔧 **Technical Features**
+- **Database-driven** - Dynamic content with PostgreSQL backend
+- **Real-time Updates** - AJAX-powered admin interface
+- **Email Integration** - Newsletter system and contact form automation
+- **GitHub Integration** - Live repository data and project showcasing
+- **Performance Optimized** - Redis caching and CDN integration
 
-### Frontend:
-- HTML5, CSS3, JavaScript
-- Bootstrap framework for responsive design
-- Font Awesome icons for visual elements
-- jQuery and custom animations for interactivity
+## 🛠️ Technology Stack
 
-### Backend:
-- Python with Flask framework
-- Web3Forms API for contact form functionality
+### **Backend**
+- **Framework:** Flask 2.3+ with Blueprint architecture
+- **Database:** PostgreSQL with SQLAlchemy ORM
+- **Caching:** Redis for session management and rate limiting
+- **Authentication:** Flask-Login with secure session handling
+- **Email:** SMTP integration for notifications and newsletters
+- **API Integration:** GitHub API for repository data
 
-### Deployment:
-- Procfile for platform deployment
-- Environment configuration for production/development settings
+### **Frontend**
+- **Languages:** HTML5, CSS3, JavaScript (ES6+)
+- **Framework:** Bootstrap 5 with custom components
+- **Icons:** Font Awesome 6
+- **Animations:** Custom CSS transitions and JavaScript interactions
+- **Forms:** AJAX-powered with real-time validation
 
-## 📂 Project Structure
+### **DevOps & Infrastructure**
+- **Web Server:** Nginx with SSL/TLS termination
+- **Application Server:** Gunicorn with multiple workers
+- **Process Management:** Systemd services
+- **Monitoring:** Custom health checks and performance tracking
+- **Backup:** Automated database and file system backups
+- **Deployment:** Git-based CI/CD with automated testing
 
+### **Security**
+- **Rate Limiting:** Flask-Limiter with Redis backend
+- **Input Validation:** Comprehensive sanitization and CSRF protection
+- **SSL/TLS:** Let's Encrypt certificates with auto-renewal
+- **Headers:** Security headers including CSP and HSTS
+- **Authentication:** Secure password hashing with Werkzeug
+
+### **Third-party Services**
+- **CDN:** Cloudflare for global performance
+- **DNS:** Cloudflare DNS with proxy protection
+- **Analytics:** Google Analytics integration (optional)
+- **Monitoring:** Custom monitoring with email alerts
+
+## � Quick Start
+
+### Prerequisites
+```bash
+Python 3.11+, PostgreSQL, Redis (optional for caching)
 ```
-lusan-portfolio/
-├── static/
-│   ├── css/
-│   │   ├── main.css
-│   │   └── responsive.css
-│   ├── js/
-│   │   ├── animations.js
-│   │   └── main.js
-│   ├── images/
-│   └── docs/
-│       └── resume.pdf
-├── templates/
-│   ├── index.html
-│   ├── projects.html
-│   ├── about.html
-│   └── contact.html
-├── app.py
-├── Procfile
-├── requirements.txt
-├── .gitignore
-├── README.md
-└── LICENSE
+
+### Local Development
+```bash
+# Clone repository
+git clone https://github.com/lusansapkota/portfolio.git
+cd portfolio
+
+# Create virtual environment
+python3 -m venv venv
+source venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Create database and run
+python create_database.py
+python create_admin.py
+python app.py
 ```
 
-## 🔧 Setup & Installation
+### Production Deployment
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/lusansapkota/portfolio.git
-   cd portfolio
-   ```
+For complete production setup with Oracle Cloud + Cloudflare, see [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md)
 
-2. **Set up a virtual environment:**
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
+## 🌐 Live Website
 
-3. **Install dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
+**Main Site:** [lusansapkota.com.np](https://lusansapkota.com.np)
 
-4. **Run the application:**
-   ```bash
-   python app.py
-   ```
+**Subdomains:**
+- **Wiki:** [wiki.lusansapkota.com.np](https://wiki.lusansapkota.com.np)
+- **Git:** [git.lusansapkota.com.np](https://git.lusansapkota.com.np)
+- **Donation:** [donation.lusansapkota.com.np](https://donation.lusansapkota.com.np)
+- **Store:** [store.lusansapkota.com.np](https://store.lusansapkota.com.np)
 
-5. **Access the website:**
-   Open your browser and navigate to http://localhost:5000
+## � Performance & SEO
 
-## 💻 Projects
-
-The portfolio showcases several of my key projects:
-
-### 🚑 Ambulance Tracking System
-Real-time ambulance tracking and management system using GPS and map integration.
-- [View Project](https://github.com/lusansapkota/ambulance-tracking)
-
-### 👤 Face Recognition Based Attendance System
-Automated attendance tracking using facial recognition technology.
-- [View Project](https://github.com/lusansapkota/face-attendance)
-
-### ✅ Task Master
-Comprehensive task management application with priority sorting and deadline tracking.
-- [View Project](https://github.com/lusansapkota/task-master)
-
-### 🤖 Jarvis
-Personal AI assistant with voice recognition and task automation capabilities.
-- [View Project](https://github.com/lusansapkota/jarvis)
-
-### 💬 Chat History Master
-Messaging application with advanced search and history management features.
-- [View Project](https://github.com/lusansapkota/chat-history)
+- **SEO Score:** 100/100 ✅
+- **Performance:** Optimized with CDN and caching
+- **Accessibility:** WCAG 2.1 compliant
+- **Security:** A+ SSL rating with security headers
+- **Mobile:** Fully responsive design
 
 ## 📞 Contact
 
-<div align="center">
-  
-  📧 **Email:** [sapkotalusan@gmail.com](mailto:sapkotalusan@gmail.com)  
-  📱 **Phone:** Available upon request  
-  🌐 **Website:** [www.lusansapkota.com.np](https://www.lusansapkota.com.np)
-  
-</div>
-
-### Connect With Me:
+**Professional Inquiries:** [admin@lusansapkota.com.np](mailto:admin@lusansapkota.com.np)
 
 <div align="center">
-  <a href="https://www.linkedin.com/in/lusan-sapkota-a08194284/"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"></a>
-  <a href="https://github.com/Lusan-sapkota/"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"></a>
-  <a href="https://x.com/LusanSapkota"><img src="https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white" alt="Twitter"></a>
+  
+  [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/lusan-sapkota-a08194284)
+  [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Lusan-sapkota)
+  [![Twitter](https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://x.com/LusanSapkota)
+  
 </div>
 
 ## 📄 License
 
-This project is licensed under the GNU General Public License v2 - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
 <div align="center">
-  <p>© 2025 Lusan Sapkota | Full Stack Software Developer from Nepal 🇳🇵</p>
-  <p>Made with ❤️ in Kathmandu</p>
+  <p><strong>© 2025 Lusan Sapkota | Full Stack Developer & AI/ML Engineer</strong></p>
+  <p>🇳🇵 Made with ❤️ in Nepal</p>
 </div>
