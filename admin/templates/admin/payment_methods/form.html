@@ -65,10 +65,10 @@
                     
                     <div class="mb-3">
                         <label class="form-label">QR Code URL</label>
-                        <input type="url" name="qr_code_url" class="form-control" 
+                        <input type="text" name="qr_code_url" class="form-control" 
                                value="{{ method.qr_code_url if method else '' }}" 
-                               placeholder="https://example.com/qr-code.png">
-                        <small class="form-text text-muted">URL to QR code image for easy payments</small>
+                               placeholder="/donation/static/images/esewa.png or https://example.com/qr-code.png">
+                        <small class="form-text text-muted">URL to QR code image for easy payments (supports relative paths)</small>
                     </div>
                     
                     <div class="mb-3">
@@ -145,7 +145,11 @@
         <div class="card mt-3">
             <div class="card-body text-center">
                 <h6>Current QR Code</h6>
-                <img src="{{ method.qr_code_url }}" alt="QR Code" class="img-fluid" style="max-height: 200px;">
+                {% if method.qr_code_url.startswith('/donation/static/') %}
+                    <img src="{{ url_for('donation.static', filename=method.qr_code_url.replace('/donation/static/', '')) }}" alt="QR Code" class="img-fluid" style="max-height: 200px;">
+                {% else %}
+                    <img src="{{ method.qr_code_url }}" alt="QR Code" class="img-fluid" style="max-height: 200px;">
+                {% endif %}
             </div>
         </div>
         {% endif %}

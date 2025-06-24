@@ -224,6 +224,11 @@ function showNotification(type, message, duration = 5000) {
 }
 
 function isValidUrl(string) {
+    // Allow relative paths for internal static files
+    if (string.startsWith('/') || string.startsWith('../') || string.startsWith('./')) {
+        return true;
+    }
+    
     try {
         new URL(string);
         return true;
