@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "donation/base.html" %}
 
 {% block title %}Payment Instructions - {{ donation.project.title }}{% endblock %}
 
@@ -6,6 +6,336 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{{ url_for('donation.static', filename='css/donation-style.css') }}">
+
+<style>
+/* ===== VERIFICATION PENDING PAYMENT METHODS ===== */
+.payment-method-card.verification-pending {
+  position: relative;
+  opacity: 0.6;
+  cursor: pointer;
+  background: rgba(245, 158, 11, 0.05) !important;
+  border: 2px dashed #f59e0b !important;
+  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.2) !important;
+  overflow: visible !important;
+  transition: all 0.3s ease;
+}
+
+.payment-method-card.verification-pending:hover {
+  opacity: 0.8;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 25px rgba(245, 158, 11, 0.3) !important;
+}
+
+.verification-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, 
+    rgba(245, 158, 11, 0.15) 0%, 
+    rgba(245, 158, 11, 0.08) 50%, 
+    rgba(245, 158, 11, 0.15) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  border-radius: 18px;
+  backdrop-filter: blur(1px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.payment-method-card.verification-pending:hover .verification-overlay {
+  opacity: 1;
+}
+
+.verification-message {
+  background: #f59e0b;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+  animation: pulse-warning 2s infinite;
+  transform: translateY(0);
+  transition: transform 0.3s ease;
+}
+
+.payment-method-card.verification-pending:hover .verification-message {
+  transform: translateY(-5px);
+}
+
+@keyframes pulse-warning {
+  0%, 100% { 
+    transform: scale(1); 
+    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+  }
+  50% { 
+    transform: scale(1.02); 
+    box-shadow: 0 6px 20px rgba(245, 158, 11, 0.6);
+  }
+}
+
+/* Content blurring for verification pending */
+.payment-method-card.verification-pending .payment-method-title,
+.payment-method-card.verification-pending .payment-account-info,
+.payment-method-card.verification-pending .payment-instructions,
+.payment-method-card.verification-pending .qr-display-container {
+  filter: blur(2px);
+  pointer-events: none;
+  transition: filter 0.3s ease;
+}
+
+.payment-method-card.verification-pending:hover .payment-method-title,
+.payment-method-card.verification-pending:hover .payment-account-info,
+.payment-method-card.verification-pending:hover .payment-instructions,
+.payment-method-card.verification-pending:hover .qr-display-container {
+  filter: blur(3px);
+}
+
+/* ===== ENHANCED MODAL STYLES WITH THEME SUPPORT ===== */
+#verificationModal .modal-dialog {
+  max-width: 600px;
+  margin: 1.75rem auto;
+  transition: transform 0.3s ease-out;
+}
+
+#verificationModal .modal-content {
+  border: none;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  background: var(--bs-body-bg, #ffffff);
+  position: relative;
+}
+
+/* Light theme */
+#verificationModal .modal-header {
+  background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+  color: white;
+  border-bottom: none;
+  padding: 25px 30px;
+  position: relative;
+  z-index: 10;
+}
+
+#verificationModal .modal-body {
+  padding: 30px;
+  background: var(--bs-body-bg, #ffffff);
+  color: var(--bs-body-color, #333);
+  position: relative;
+  z-index: 10;
+  min-height: 200px;
+}
+
+#verificationModal .modal-footer {
+  padding: 25px 30px;
+  border-top: 1px solid var(--bs-border-color, #dee2e6);
+  background: var(--bs-light, #f8f9fa);
+  position: relative;
+  z-index: 10;
+}
+
+/* Dark theme support */
+[data-bs-theme="dark"] #verificationModal .modal-content {
+  background: #2d3748;
+  color: #e2e8f0;
+}
+
+[data-bs-theme="dark"] #verificationModal .modal-body {
+  background: #2d3748;
+  color: #e2e8f0;
+}
+
+[data-bs-theme="dark"] #verificationModal .modal-footer {
+  background: #1a202c;
+  border-top-color: #4a5568;
+}
+
+[data-bs-theme="dark"] #verificationModal .alert-warning {
+  background: rgba(245, 158, 11, 0.2) !important;
+  color: #fbbf24 !important;
+  border-left-color: #f59e0b !important;
+}
+
+[data-bs-theme="dark"] #verificationModal .alert-info {
+  background: rgba(59, 130, 246, 0.2) !important;
+  color: #60a5fa !important;
+  border-left-color: #3b82f6 !important;
+}
+
+/* Alert styling */
+#verificationModal .alert {
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  border: none;
+  position: relative;
+}
+
+#verificationModal .alert-warning {
+  background: rgba(245, 158, 11, 0.1);
+  border-left: 4px solid #f59e0b;
+  color: #92400e;
+}
+
+#verificationModal .alert-info {
+  background: rgba(59, 130, 246, 0.1);
+  border-left: 4px solid #3b82f6;
+  color: #1e40af;
+}
+
+/* Button styling */
+#verificationModal .btn {
+  border-radius: 25px;
+  padding: 12px 24px;
+  font-weight: 600;
+  border: none;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#verificationModal .btn-warning {
+  background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+  color: white;
+}
+
+#verificationModal .btn-warning:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
+  color: white;
+}
+
+#verificationModal .btn-secondary {
+  background: #6c757d;
+  color: white;
+}
+
+#verificationModal .btn-secondary:hover {
+  background: #5a6268;
+  transform: translateY(-2px);
+  color: white;
+}
+
+/* Icon styling */
+#verificationModal .fa-clock {
+  color: #f59e0b;
+  filter: drop-shadow(0 2px 4px rgba(245, 158, 11, 0.3));
+}
+
+/* Modal animation improvements */
+.modal.fade .modal-dialog {
+  transition: transform 0.3s ease-out, opacity 0.2s ease-out;
+  transform: translate(0, -30px) scale(0.95);
+}
+
+.modal.show .modal-dialog {
+  transform: translate(0, 0) scale(1);
+}
+
+/* Backdrop styling */
+.modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(2px);
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 768px) {
+  #verificationModal .modal-dialog {
+    margin: 1rem;
+    max-width: calc(100% - 2rem);
+  }
+  
+  #verificationModal .modal-header,
+  #verificationModal .modal-body,
+  #verificationModal .modal-footer {
+    padding: 20px;
+  }
+  
+  #verificationModal .modal-header h5 {
+    font-size: 1.1rem;
+  }
+  
+  .verification-message {
+    padding: 10px 16px;
+    font-size: 0.85rem;
+  }
+  
+  #verificationModal .btn {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+  
+  .hero-stats,
+  .hero-badges {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .verification-overlay {
+    border-radius: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .payment-method-card.verification-pending .payment-method-title,
+  .payment-method-card.verification-pending .payment-account-info {
+    filter: blur(1px);
+  }
+  
+  .verification-message {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+  }
+  
+  #verificationModal .alert {
+    padding: 15px;
+  }
+}
+
+/* ===== HIGH CONTRAST MODE SUPPORT ===== */
+@media (prefers-contrast: high) {
+  .payment-method-card.verification-pending {
+    border-width: 3px !important;
+    opacity: 0.7;
+  }
+  
+  .verification-message {
+    border: 2px solid #ffffff;
+  }
+  
+  #verificationModal .modal-content {
+    border: 2px solid var(--bs-border-color, #000);
+  }
+}
+
+/* ===== REDUCED MOTION SUPPORT ===== */
+@media (prefers-reduced-motion: reduce) {
+  .payment-method-card.verification-pending,
+  .verification-overlay,
+  .verification-message,
+  #verificationModal .modal-dialog,
+  #verificationModal .btn {
+    transition: none;
+  }
+  
+  @keyframes pulse-warning {
+    0%, 100% { transform: none; }
+  }
+  
+  .modal.fade .modal-dialog {
+    transition: none;
+  }
+}
+</style>
 
 {% endblock %}
 
@@ -95,7 +425,17 @@
                         </div>
                         
                         {% for method in payment_methods %}
-                        <div class="payment-method-card">
+                        <div class="payment-method-card {% if method.is_verification_pending %}verification-pending{% endif %}" 
+                             {% if method.is_verification_pending %}data-verification-pending="true" data-method-name="{{ method.display_name }}"{% endif %}>
+                            {% if method.is_verification_pending %}
+                            <div class="verification-overlay">
+                                <div class="verification-message">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    <span>Verification Pending</span>
+                                </div>
+                            </div>
+                            {% endif %}
+                            
                             <div class="row align-items-center">
                                 <div class="col-lg-8 col-md-7">
                                     <h5 class="payment-method-title">
@@ -110,6 +450,11 @@
                                         {% endif %}
                                         {{ method.display_name }}
                                         <span class="badge bg-secondary ms-2">{{ method.currency }}</span>
+                                        {% if method.is_verification_pending %}
+                                        <span class="badge bg-warning ms-2">
+                                            <i class="fas fa-exclamation-triangle"></i> Verification Pending
+                                        </span>
+                                        {% endif %}
                                     </h5>
                                     
                                     {% if method.account_info %}
@@ -236,6 +581,46 @@
         </section>
     </div>
 </div>
+
+<!-- Verification Pending Modal -->
+<div class="modal fade" id="verificationModal" tabindex="-1" aria-labelledby="verificationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="verificationModalLabel">
+                    <i class="fas fa-exclamation-triangle"></i> Payment Method Under Verification
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center mb-4">
+                    <i class="fas fa-clock fa-3x text-warning mb-3"></i>
+                </div>
+                <h6 class="text-center mb-3 fw-bold">This payment method is temporarily unavailable</h6>
+                <div class="alert alert-warning">
+                    <strong>Status:</strong> I'm currently verifying my <strong id="methodName">payment account</strong> 
+                    due to document completion requirements. This will be available within 1-2 weeks.
+                </div>
+                <div class="alert alert-info">
+                    <strong><i class="fas fa-lightbulb"></i> Alternative options:</strong>
+                    <ul class="mb-0 mt-2">
+                        <li>Use other available payment methods listed above</li>
+                        <li>Contact me directly for alternative payment arrangements</li>
+                        <li>Check back in a few days for verification updates</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-arrow-left"></i> Choose Different Method
+                </button>
+                <a href="mailto:sapkotalusan@gmail.com?subject=Payment%20Method%20Inquiry" class="btn btn-warning">
+                    <i class="fas fa-envelope"></i> Contact Me
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block extra_js %}
@@ -311,18 +696,21 @@
             });
         });
         
-        // Auto-hide alerts after 10 seconds
+        // Auto-hide alerts after 10 seconds (exclude modal alerts)
         setTimeout(() => {
             const alerts = document.querySelectorAll('.alert');
             alerts.forEach(alert => {
-                alert.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-                alert.style.opacity = '0';
-                alert.style.transform = 'translateY(-20px)';
-                setTimeout(() => {
-                    if (alert.parentNode) {
-                        alert.remove();
-                    }
-                }, 500);
+                // Don't hide alerts inside modals
+                if (!alert.closest('.modal')) {
+                    alert.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    alert.style.opacity = '0';
+                    alert.style.transform = 'translateY(-20px)';
+                    setTimeout(() => {
+                        if (alert.parentNode) {
+                            alert.remove();
+                        }
+                    }, 500);
+                }
             });
         }, 10000);
     });
@@ -346,6 +734,70 @@
                 setTimeout(() => {
                     this.style.transform = 'scale(1)';
                 }, 200);
+            });
+        });
+    });
+    
+    // Handle verification pending payment method clicks
+    document.addEventListener('DOMContentLoaded', function() {
+        const verificationPendingCards = document.querySelectorAll('.payment-method-card.verification-pending');
+        
+        verificationPendingCards.forEach(card => {
+            card.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // Get method name safely
+                const methodName = this.getAttribute('data-method-name') || 'payment method';
+                const methodNameElement = document.getElementById('methodName');
+                if (methodNameElement) {
+                    methodNameElement.textContent = methodName;
+                }
+                
+                // Show modal with stable configuration
+                const modalElement = document.getElementById('verificationModal');
+                if (modalElement && typeof bootstrap !== 'undefined') {
+                    // Ensure modal is properly initialized
+                    let modal = bootstrap.Modal.getInstance(modalElement);
+                    if (!modal) {
+                        modal = new bootstrap.Modal(modalElement, {
+                            backdrop: 'static',
+                            keyboard: true,
+                            focus: true
+                        });
+                    }
+                    
+                    // Prevent body scroll
+                    modalElement.addEventListener('show.bs.modal', function() {
+                        document.body.style.overflow = 'hidden';
+                        document.body.style.paddingRight = '15px'; // Prevent layout shift
+                    });
+                    
+                    modalElement.addEventListener('hidden.bs.modal', function() {
+                        document.body.style.overflow = '';
+                        document.body.style.paddingRight = '';
+                    });
+                    
+                    // Show modal
+                    modal.show();
+                } else {
+                    console.error('Modal element or Bootstrap not found');
+                }
+            });
+            
+            // Visual feedback
+            card.style.cursor = 'pointer';
+        });
+        
+        // Ensure close buttons work
+        const closeButtons = document.querySelectorAll('#verificationModal [data-bs-dismiss="modal"]');
+        closeButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const modal = bootstrap.Modal.getInstance(document.getElementById('verificationModal'));
+                if (modal) {
+                    modal.hide();
+                }
             });
         });
     });

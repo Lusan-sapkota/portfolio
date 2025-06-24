@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "donation/base.html" %}
 
 {% block title %}{{ seo_settings.site_title if seo_settings else 'Support My Projects - Donation' }}{% endblock %}
 
@@ -83,9 +83,13 @@
         <p class="donation-section-subtitle">Explore all my innovative projects that need your support</p>
         <div class="row">
             {% for project in all_projects %}
-            {% if not project.is_featured %}
             <div class="col-lg-4 col-md-6 mb-4">
                 <div class="donation-project-card">
+                    {% if project.is_featured %}
+                    <div class="featured-badge">
+                        <i class="fas fa-star"></i> Featured
+                    </div>
+                    {% endif %}
                     {% if project.image_url %}
                     <div class="donation-project-image" style="background-image: url('{{ project.image_url }}')"></div>
                     {% endif %}
@@ -104,7 +108,6 @@
                     </div>
                 </div>
             </div>
-            {% endif %}
             {% endfor %}
         </div>
     </div>
@@ -121,11 +124,24 @@
                 <div class="donation-activity-feed">
                     {% for donation in recent_donations[:5] %}
                     <div class="donation-activity-item">
-                        <span class="donation-activity-donor">{{ donation.donor_name if not donation.is_anonymous else 'Anonymous' }}</span>
-                        donated <span class="donation-activity-amount">${{ "%.2f"|format(donation.amount) }}</span>
-                        to <span class="donation-activity-project">{{ donation.project.title }}</span>
+                        <span class="donation-activity-donor">
+                            {% if donation.is_anonymous %}
+                                <i class="fas fa-user-secret"></i> Anonymous Supporter
+                            {% else %}
+                                {{ donation.donor_name }}
+                            {% endif %}
+                        </span>
+                        donated 
+                        <span class="donation-activity-amount">
+                            {% if donation.currency == 'NPR' %}
+                                Rs. {{ "%.2f"|format(donation.amount) }}
+                            {% else %}
+                                ${{ "%.2f"|format(donation.amount) }}
+                            {% endif %}
+                        </span>
+                        to <span class="donation-activity-project">{{ donation.project.title if donation.project else 'General Support' }}</span>
                         <span class="donation-activity-date">{{ donation.created_at.strftime('%B %d, %Y') }}</span>
-                        {% if donation.message %}
+                        {% if donation.message and not donation.is_anonymous %}
                         <div class="donation-activity-message">"{{ donation.message }}"</div>
                         {% endif %}
                     </div>
@@ -183,15 +199,18 @@
 
 {% block extra_js %}
 <script>
-    // Auto-hide flash messages after 5 seconds
+    // Auto-hide flash messages after 5 seconds (exclude modal alerts)
     setTimeout(function() {
         const alerts = document.querySelectorAll('.alert');
         alerts.forEach(function(alert) {
-            alert.style.transition = 'opacity 0.5s';
-            alert.style.opacity = '0';
-            setTimeout(function() {
-                alert.remove();
-            }, 500);
+            // Don't hide alerts inside modals
+            if (!alert.closest('.modal')) {
+                alert.style.transition = 'opacity 0.5s';
+                alert.style.opacity = '0';
+                setTimeout(function() {
+                    alert.remove();
+                }, 500);
+            }
         });
     }, 5000);
     

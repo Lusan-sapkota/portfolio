@@ -56,11 +56,19 @@
                     </div>
                     
                     <div class="mb-3">
+                        <label class="form-label">SWIFT/BIC Code</label>
+                        <input type="text" name="swift_code" class="form-control" 
+                               value="{{ method.swift_code if method else '' }}" 
+                               placeholder="e.g., ABCDNPKA001">
+                        <small class="form-text text-muted">SWIFT code for international bank transfers (optional)</small>
+                    </div>
+                    
+                    <div class="mb-3">
                         <label class="form-label">QR Code URL</label>
-                        <input type="url" name="qr_code_url" class="form-control" 
+                        <input type="text" name="qr_code_url" class="form-control" 
                                value="{{ method.qr_code_url if method else '' }}" 
-                               placeholder="https://example.com/qr-code.png">
-                        <small class="form-text text-muted">URL to QR code image for easy payments</small>
+                               placeholder="/donation/static/images/esewa.png or https://example.com/qr-code.png">
+                        <small class="form-text text-muted">URL to QR code image for easy payments (supports relative paths)</small>
                     </div>
                     
                     <div class="mb-3">
@@ -71,7 +79,7 @@
                     </div>
                     
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="mb-3">
                                 <label class="form-label">Sort Order</label>
                                 <input type="number" name="sort_order" class="form-control" 
@@ -79,7 +87,7 @@
                                 <small class="form-text text-muted">Lower numbers appear first</small>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="mb-3">
                                 <div class="form-check mt-4">
                                     <input type="checkbox" name="is_active" class="form-check-input" id="is_active"
@@ -87,6 +95,18 @@
                                     <label class="form-check-label" for="is_active">
                                         Active (visible to donors)
                                     </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <div class="form-check mt-4">
+                                    <input type="checkbox" name="is_verification_pending" class="form-check-input" id="is_verification_pending"
+                                           {% if method and method.is_verification_pending %}checked{% endif %}>
+                                    <label class="form-check-label" for="is_verification_pending">
+                                        <span class="text-warning">Verification Pending</span>
+                                    </label>
+                                    <small class="form-text text-muted d-block">For PayPal/Payoneer verification</small>
                                 </div>
                             </div>
                         </div>
@@ -125,7 +145,11 @@
         <div class="card mt-3">
             <div class="card-body text-center">
                 <h6>Current QR Code</h6>
-                <img src="{{ method.qr_code_url }}" alt="QR Code" class="img-fluid" style="max-height: 200px;">
+                {% if method.qr_code_url.startswith('/donation/static/') %}
+                    <img src="{{ url_for('donation.static', filename=method.qr_code_url.replace('/donation/static/', '')) }}" alt="QR Code" class="img-fluid" style="max-height: 200px;">
+                {% else %}
+                    <img src="{{ method.qr_code_url }}" alt="QR Code" class="img-fluid" style="max-height: 200px;">
+                {% endif %}
             </div>
         </div>
         {% endif %}

@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "donation/base.html" %}
 
 {% block title %}Donate to {{ project.title }} - {{ seo_settings.site_title if seo_settings else 'Donation Platform' }}{% endblock %}
 
@@ -177,6 +177,68 @@
         from { opacity: 0; transform: translateX(-50%) translateY(5px); }
         to { opacity: 1; transform: translateX(-50%) translateY(0); }
     }
+    
+    /* Verification pending payment method styling */
+    .verification-pending {
+        background-color: #f8f9fa !important;
+        color: #6c757d !important;
+        opacity: 0.6;
+        font-style: italic;
+    }
+    
+    .enhanced-form-control option.verification-pending {
+        background-color: #f8f9fa;
+        color: #6c757d;
+        opacity: 0.6;
+        font-style: italic;
+    }
+    
+    .enhanced-form-control option.verification-pending:hover {
+        background-color: #e9ecef;
+        cursor: not-allowed;
+    }
+    
+    /* Enhanced loading button animations */
+    .enhanced-donate-btn {
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .enhanced-donate-btn.loading {
+        background: linear-gradient(45deg, #f39c12, #e67e22);
+        transform: scale(0.98);
+        box-shadow: 0 4px 15px rgba(243, 156, 18, 0.4);
+        pointer-events: none;
+    }
+    
+    .enhanced-donate-btn.loading .btn-text {
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
+    }
+    
+    .enhanced-donate-btn.loading::before {
+        content: 'Processing...';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        font-weight: 600;
+        animation: pulse-text 1.5s infinite;
+    }
+    
+    @keyframes pulse-text {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.7; }
+    }
+    
+    /* Payment method selection feedback */
+    .enhanced-form-control:focus {
+        box-shadow: 0 0 0 4px rgba(243, 156, 18, 0.2);
+        border-color: #f39c12;
+    }
 </style>
 {% endblock %}
 
@@ -289,6 +351,7 @@
                                         <option value="NPR" selected>NPR (₨) - Nepalese Rupee</option>
                                         <option value="USD">USD ($) - US Dollar</option>
                                     </select>
+                                    <small class="form-text text-muted">Other countries? Please choose USD</small>
                                 </div>
                                 
                                 <!-- Amount Input -->
@@ -361,35 +424,74 @@
                                         <i class="fas fa-credit-card"></i> Payment Method
                                     </label>
                                     <select class="enhanced-form-control enhanced-select" name="payment_method" id="paymentMethodSelect" required>
-                                        <option value="">Select payment method...</option>
-                                        {% for method in payment_methods %}
-                                        <option value="{{ method.method_type or method.display_name.lower().replace(' ', '_') }}" 
-                                                data-currency="{{ method.currency }}"
+                                        <option value="">Choose payment method for NPR...</option>
+                                        
+                                        <!-- NPR Payment Methods -->
+                                        {% for method in npr_methods %}
+                                        <option value="{{ method.method_name }}" 
+                                                data-currency="NPR"
                                                 data-display-name="{{ method.display_name }}"
                                                 data-id="{{ method.id }}"
-                                                data-method-type="{{ method.method_type or 'custom' }}">
-                                            {{ method.display_name }}
+                                                data-verification-pending="{{ method.is_verification_pending }}"
+                                                data-account-info="{{ method.account_info or '' }}"
+                                                data-instructions="{{ method.instructions or '' }}"
+                                                {% if method.swift_code %}data-swift-code="{{ method.swift_code }}"{% endif %}
+                                                {% if method.is_verification_pending %}class="verification-pending"{% endif %}>
+                                            💳 {{ method.display_name }} (NPR)
+                                            {% if method.is_verification_pending %}
+                                            - Temporarily not available
+                                            {% else %}
+                                            - Available
+                                            {% endif %}
                                         </option>
                                         {% endfor %}
                                         
-                                        <!-- Fallback options if no payment methods in database -->
-                                        {% if not payment_methods %}
-                                        <!-- NPR Options -->
-                                        <option value="wallet" data-currency="NPR">Digital Wallet (eSewa, Khalti, IME Pay)</option>
-                                        <option value="bank_transfer" data-currency="NPR">Bank Transfer</option>
-                                        <!-- USD Options -->
-                                        <option value="wallet" data-currency="USD">Digital Wallet (PayPal)</option>
-                                        <option value="swift_transfer" data-currency="USD">Swift Transfer / Bank Transfer</option>
-                                        <option value="payoneer" data-currency="USD">Payoneer</option>
+                                        <!-- USD Payment Methods -->
+                                        {% for method in usd_methods %}
+                                        <option value="{{ method.method_name }}" 
+                                                data-currency="USD"
+                                                data-display-name="{{ method.display_name }}"
+                                                data-id="{{ method.id }}"
+                                                data-verification-pending="{{ method.is_verification_pending }}"
+                                                data-account-info="{{ method.account_info or '' }}"
+                                                data-instructions="{{ method.instructions or '' }}"
+                                                {% if method.swift_code %}data-swift-code="{{ method.swift_code }}"{% endif %}
+                                                {% if method.is_verification_pending %}class="verification-pending"{% endif %}>
+                                            💰 {{ method.display_name }} (USD)
+                                            {% if method.is_verification_pending %}
+                                            - Temporarily not available
+                                            {% else %}
+                                            - Available
+                                            {% endif %}
+                                        </option>
+                                        {% endfor %}
+                                        
+                                        <!-- Fallback if no payment methods in database -->
+                                        {% if not npr_methods and not usd_methods %}
+                                        <option value="esewa" data-currency="NPR">💳 eSewa Digital Wallet (NPR)</option>
+                                        <option value="khalti" data-currency="NPR">💳 Khalti Digital Wallet (NPR)</option>
+                                        <option value="bank_transfer" data-currency="NPR">🏦 Bank Transfer (NPR)</option>
+                                        <option value="paypal" data-currency="USD" data-verification-pending="true">💰 PayPal (USD) - ⚠️ Verification Pending</option>
+                                        <option value="swift_transfer" data-currency="USD">🌍 International Bank Transfer (USD)</option>
                                         {% endif %}
                                     </select>
-                                    {% if payment_methods %}
-                                    <small class="form-text text-muted">{{ payment_methods|length }} payment method(s) available</small>
-                                    {% endif %}
+                                    <small class="form-text text-muted">Choose a payment method for the selected currency</small>
+                                </div>
+                                
+                                <!-- Payment Instructions (dynamically updated) -->
+                                <div class="enhanced-form-group" id="paymentInstructions" style="display: none;">
+                                    <label class="enhanced-form-label">
+                                        <i class="fas fa-info-circle"></i> Payment Instructions
+                                    </label>
+                                    <div class="alert alert-info" id="paymentInstructionsContent">
+                                        <!-- Will be populated by JavaScript -->
+                                    </div>
                                 </div>
                                 
                                 <button type="submit" class="enhanced-donate-btn">
-                                    <i class="fas fa-heart"></i> Donate Now
+                                    <span class="btn-text">
+                                        <i class="fas fa-heart"></i> Donate Now
+                                    </span>
                                 </button>
                                 
                                 <p class="text-center text-muted mt-3 small">
@@ -436,6 +538,10 @@
             minAmountSpan.textContent = '$1';
         }
         
+        // Update placeholder text
+        const placeholderOption = paymentSelect.options[0];
+        placeholderOption.textContent = `Choose payment method for ${currency}...`;
+        
         // Store all options if not already stored
         if (!paymentSelect.allOptions) {
             paymentSelect.allOptions = Array.from(paymentSelect.options);
@@ -469,12 +575,8 @@
             }
         });
         
-        // Auto-select the first available payment method
-        if (firstValidOption && visibleCount === 1) {
-            paymentSelect.value = firstValidOption.value;
-        } else {
-            paymentSelect.value = '';
-        }
+        // Reset selection
+        paymentSelect.value = '';
         
         // Update helper text
         const helperText = paymentSelect.parentNode.querySelector('.form-text');
@@ -487,6 +589,8 @@
         setTimeout(() => {
             paymentSelect.style.animation = '';
         }, 500);
+        
+        console.log(`Updated payment methods for ${currency}: ${visibleCount} methods available`);
     }
     
     // Enhanced form validation and user experience
@@ -533,11 +637,10 @@
                 this.style.transform = 'translateY(-1px)';
             });
             
-            input.addEventListener('mouseleave', function() {
-                if (!this.matches(':focus')) {
-                    this.style.transform = '';
-                }
-            });
+        input.addEventListener('mouseleave', function() {
+            if (!this.matches(':focus')) {
+                this.style.transform = '';
+            }
         });
     });
     
@@ -584,7 +687,7 @@
             }
             if (amount > 1000000) {
                 field.classList.add('is-invalid');
-                addFieldError(field, 'Amount seems too large. Please contact me for large donations.');
+                addFieldError(field, 'Amount seems to large. Please contact me for large donations.');
                 return false;
             }
         }
@@ -663,13 +766,187 @@
         updatePaymentMethods();
     });
     
-    // Auto-hide flash messages
+    // Auto-hide flash messages (exclude modal alerts)
     setTimeout(function() {
         document.querySelectorAll('.alert').forEach(function(alert) {
-            alert.style.transition = 'opacity 0.5s';
-            alert.style.opacity = '0';
-            setTimeout(() => alert.remove(), 500);
+            // Don't hide alerts inside modals
+            if (!alert.closest('.modal')) {
+                alert.style.transition = 'opacity 0.5s';
+                alert.style.opacity = '0';
+                setTimeout(() => alert.remove(), 500);
+            }
         });
     }, 5000);
+});
 </script>
+
+<script>
+// Enhanced currency and payment method handling with strict filtering
+document.addEventListener('DOMContentLoaded', function() {
+    const currencySelect = document.getElementById('currencySelect');
+    const paymentMethodSelect = document.getElementById('paymentMethodSelect');
+    const paymentInstructions = document.getElementById('paymentInstructions');
+    const paymentInstructionsContent = document.getElementById('paymentInstructionsContent');
+    
+    function updatePaymentMethods() {
+        const selectedCurrency = currencySelect.value;
+        const currencySymbol = document.getElementById('currencySymbol');
+        const minAmountSpan = document.getElementById('minAmount');
+        
+        // Update currency symbol and minimum amount
+        if (selectedCurrency === 'NPR') {
+            currencySymbol.textContent = '₨';
+            minAmountSpan.textContent = '₨1';
+        } else if (selectedCurrency === 'USD') {
+            currencySymbol.textContent = '$';
+            minAmountSpan.textContent = '$1';
+        }
+        
+        // Store all original options if not already done
+        if (!paymentMethodSelect.allOriginalOptions) {
+            paymentMethodSelect.allOriginalOptions = Array.from(paymentMethodSelect.children);
+        }
+        
+        // Clear all current options and optgroups
+        while (paymentMethodSelect.firstChild) {
+            paymentMethodSelect.removeChild(paymentMethodSelect.firstChild);
+        }
+        
+        // Add the default "Select..." option
+        const defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.textContent = selectedCurrency ? 
+            `Select ${selectedCurrency} payment method...` : 
+            'First select currency above...';
+        defaultOption.disabled = true;
+        defaultOption.selected = true;
+        paymentMethodSelect.appendChild(defaultOption);
+        
+        // Add only options/optgroups that match the selected currency
+        let methodCount = 0;
+        paymentMethodSelect.allOriginalOptions.forEach(child => {
+            if (child.tagName === 'OPTGROUP') {
+                const groupCurrency = child.getAttribute('data-currency');
+                if (groupCurrency === selectedCurrency) {
+                    const clonedGroup = child.cloneNode(true);
+                    paymentMethodSelect.appendChild(clonedGroup);
+                    methodCount += clonedGroup.querySelectorAll('option').length;
+                }
+            } else if (child.tagName === 'OPTION' && child.value !== '') {
+                const optionCurrency = child.getAttribute('data-currency');
+                if (optionCurrency === selectedCurrency) {
+                    const clonedOption = child.cloneNode(true);
+                    paymentMethodSelect.appendChild(clonedOption);
+                    methodCount++;
+                }
+            }
+        });
+        
+        // Update helper text
+        const helperText = paymentMethodSelect.parentNode.querySelector('.form-text');
+        if (helperText) {
+            if (methodCount === 0) {
+                helperText.textContent = `No payment methods available for ${selectedCurrency}. Please contact me directly.`;
+                helperText.className = 'form-text text-warning';
+            } else {
+                helperText.textContent = `${methodCount} payment method(s) available for ${selectedCurrency}`;
+                helperText.className = 'form-text text-muted';
+            }
+        }
+        
+        // Hide payment instructions
+        if (paymentInstructions) {
+            paymentInstructions.style.display = 'none';
+        }
+        
+        // Add visual feedback
+        paymentMethodSelect.style.animation = 'pulse 0.5s ease-in-out';
+        setTimeout(() => {
+            paymentMethodSelect.style.animation = '';
+        }, 500);
+        
+        console.log(`Updated payment methods for ${selectedCurrency}: ${methodCount} methods available`);
+    }
+    
+    function handlePaymentMethodSelection() {
+        const selectedOption = paymentMethodSelect.options[paymentMethodSelect.selectedIndex];
+        
+        // Always hide payment instructions since we don't want to show them
+        if (paymentInstructions) {
+            paymentInstructions.style.display = 'none';
+        }
+        
+        if (selectedOption && selectedOption.value) {
+            const isVerificationPending = selectedOption.getAttribute('data-verification-pending') === 'true';
+            
+            if (isVerificationPending) {
+                // Show verification modal for pending methods
+                const methodName = selectedOption.getAttribute('data-display-name') || selectedOption.text;
+                document.getElementById('methodName').textContent = methodName;
+                
+                const modal = new bootstrap.Modal(document.getElementById('verificationModal'));
+                modal.show();
+                
+                // Reset selection to placeholder
+                paymentMethodSelect.selectedIndex = 0;
+                return;
+            }
+            
+            // For valid payment methods, just keep the selection
+            // Payment instructions will be shown on the next page after form submission
+        }
+    }
+    
+    // Event listeners
+    currencySelect.addEventListener('change', updatePaymentMethods);
+    paymentMethodSelect.addEventListener('change', handlePaymentMethodSelection);
+    
+    // Initialize
+    updatePaymentMethods();
+});
+</script>
+
+<!-- Verification Pending Modal -->
+<div class="modal fade" id="verificationModal" tabindex="-1" aria-labelledby="verificationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-white">
+                <h5 class="modal-title" id="verificationModalLabel">
+                    <i class="fas fa-exclamation-triangle"></i> Payment Method Under Verification
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center mb-3">
+                    <img src="{{ url_for('donation.static', filename='images/sorry.png') }}" 
+                         alt="Sorry" class="img-fluid" style="max-height: 150px;">
+                </div>
+                <h6 class="text-center mb-3">This payment method is temporarily unavailable</h6>
+                <p class="text-muted">
+                    I'm currently in the process of verifying my <strong id="methodName">PayPal/Payoneer</strong> account 
+                    due to document completion requirements. This payment method will be available soon.
+                </p>
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i> 
+                    <strong>Alternative options:</strong>
+                    <ul class="mb-0 mt-2">
+                        <li>Use other available payment methods</li>
+                        <li>Bank transfer or digital wallets</li>
+                        <li>Contact me directly for alternative arrangements</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-arrow-left"></i> Choose Different Method
+                </button>
+                <a href="{{ url_for('donation.index') }}" class="btn btn-primary">
+                    <i class="fas fa-heart"></i> View Other Projects
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 {% endblock %}

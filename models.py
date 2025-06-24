@@ -546,9 +546,11 @@ class PaymentMethod(db.Model):
     method_name = db.Column(db.String(50), nullable=False)  # wallet, bank_transfer, etc.
     display_name = db.Column(db.String(100), nullable=False)  # "eSewa Wallet"
     account_info = db.Column(db.Text)  # Account details
+    swift_code = db.Column(db.String(15))  # SWIFT/BIC code for international transfers
     qr_code_url = db.Column(db.String(255))  # QR code image URL
     instructions = db.Column(db.Text)  # Payment instructions
     is_active = db.Column(db.Boolean, default=True)
+    is_verification_pending = db.Column(db.Boolean, default=False)  # For PayPal/Payoneer verification
     sort_order = db.Column(db.Integer, default=0)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)

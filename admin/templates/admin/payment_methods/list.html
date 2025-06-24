@@ -92,7 +92,11 @@
                     
                     {% if method.qr_code_url %}
                     <div class="col-md-4 text-center">
-                        <img src="{{ method.qr_code_url }}" alt="QR Code" class="img-fluid" style="max-height: 120px; border-radius: 8px;">
+                        {% if method.qr_code_url.startswith('/donation/static/') %}
+                            <img src="{{ url_for('donation.static', filename=method.qr_code_url.replace('/donation/static/', '')) }}" alt="QR Code" class="img-fluid" style="max-height: 120px; border-radius: 8px;">
+                        {% else %}
+                            <img src="{{ method.qr_code_url }}" alt="QR Code" class="img-fluid" style="max-height: 120px; border-radius: 8px;">
+                        {% endif %}
                         <p class="small text-muted mt-1">QR Code</p>
                     </div>
                     {% endif %}

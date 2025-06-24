@@ -650,6 +650,40 @@ def manifest():
     except FileNotFoundError:
         abort(404)
 
+@app.route('/favicon.ico')
+def favicon():
+    """Serve favicon.ico for all domains and subdomains"""
+    try:
+        from flask import send_from_directory
+        return send_from_directory(app.static_folder + '/assets/logo', 'favicon.ico')
+    except FileNotFoundError:
+        # Fallback to logo.png if favicon.ico doesn't exist
+        try:
+            return send_from_directory(app.static_folder + '/assets/logo', 'logo.png')
+        except FileNotFoundError:
+            abort(404)
+
+@app.route('/apple-touch-icon.png')
+def apple_touch_icon():
+    """Serve apple-touch-icon.png for all domains and subdomains"""
+    try:
+        from flask import send_from_directory
+        return send_from_directory(app.static_folder + '/assets/logo', 'apple-touch-icon.png')
+    except FileNotFoundError:
+        try:
+            return send_from_directory(app.static_folder + '/assets/logo', 'logo.png')
+        except FileNotFoundError:
+            abort(404)
+
+@app.route('/static/assets/logo/<filename>')
+def serve_logo_files(filename):
+    """Explicitly serve logo files for all subdomains"""
+    try:
+        from flask import send_from_directory
+        return send_from_directory(app.static_folder + '/assets/logo', filename)
+    except FileNotFoundError:
+        abort(404)
+
 commands.register_commands(app)
 
 if __name__ == '__main__':

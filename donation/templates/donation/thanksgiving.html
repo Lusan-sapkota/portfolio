@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "donation/base.html" %}
 
 {% block title %}{{ thanksgiving_settings.page_title if thanksgiving_settings else 'Thank You to My Amazing Supporters' }}{% endblock %}
 
@@ -70,7 +70,14 @@
                 
                 <div class="thanksgiving-stat-card">
                     <i class="fas fa-chart-line thanksgiving-stat-icon"></i>
-                    <div class="thanksgiving-stat-number">{{ (donations|selectattr('created_at')|list|length / (donations|selectattr('created_at')|list|length + 1) * 100)|round|int }}%</div>
+                    <div class="thanksgiving-stat-number">
+                        {% set donations_with_dates = donations|selectattr('created_at')|list %}
+                        {% if donations_with_dates|length > 0 %}
+                            {{ ((donations_with_dates|length / (donations_with_dates|length + 1)) * 100)|round|int }}%
+                        {% else %}
+                            0%
+                        {% endif %}
+                    </div>
                     <div class="thanksgiving-stat-label">Success Rate</div>
                 </div>
             </div>
@@ -105,13 +112,17 @@
                     <div class="supporter-card-modern">
                         <div class="supporter-header">
                             <div class="supporter-avatar">
-                                {{ donation.donor_name[0]|upper if donation.donor_name else 'A' }}
+                                {% if donation.donor_name %}
+                                    {{ donation.donor_name[0]|upper }}
+                                {% else %}
+                                    A
+                                {% endif %}
                             </div>
                             
                             <div class="supporter-info">
                                 <div class="supporter-name-modern">
                                     <i class="fas fa-user-circle"></i>
-                                    {{ donation.donor_name }}
+                                    {{ donation.donor_name or 'Anonymous Supporter' }}
                                 </div>
                                 
                                 {% if donation.amount and thanksgiving_settings.show_amounts %}

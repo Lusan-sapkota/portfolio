@@ -1,0 +1,175 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Data Management - Admin{% endblock %}
+
+{% block extra_css %}
+<style>
+    .data-card {
+        background: white;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        border-left: 4px solid #007bff;
+    }
+    
+    .data-card h5 {
+        color: #007bff;
+        margin-bottom: 15px;
+    }
+    
+    .export-btn {
+        background: linear-gradient(45deg, #28a745, #20c997);
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        color: white;
+        text-decoration: none;
+        display: inline-block;
+        margin: 5px;
+        transition: all 0.3s ease;
+    }
+    
+    .export-btn:hover {
+        transform: translateY(-2px);
+        color: white;
+        text-decoration: none;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    
+    .backup-btn {
+        background: linear-gradient(45deg, #dc3545, #fd7e14);
+    }
+    
+    .warning-box {
+        background: #fff3cd;
+        border: 1px solid #ffeaa7;
+        border-radius: 5px;
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+    
+    .info-box {
+        background: #d1ecf1;
+        border: 1px solid #bee5eb;
+        border-radius: 5px;
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+    
+    .icon {
+        font-size: 1.2em;
+        margin-right: 8px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h2><i class="fas fa-database"></i> Data Management & Export</h2>
+            <p class="text-muted">Backup and export your portfolio data</p>
+        </div>
+    </div>
+    
+    <div class="warning-box">
+        <h6><i class="fas fa-exclamation-triangle text-warning"></i> Important Notes</h6>
+        <ul class="mb-0">
+            <li>Full backups contain all sensitive data including password hashes</li>
+            <li>Store backup files securely and never share them publicly</li>
+            <li>Regular backups are recommended for data safety</li>
+            <li>Large databases may take time to export</li>
+        </ul>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="data-card">
+                <h5><i class="fas fa-save icon"></i>Full Database Backup</h5>
+                <p>Export complete database backup including all tables and settings.</p>
+                <div class="info-box">
+                    <strong>Includes:</strong> Users, Projects, Donations, Settings, Content, etc.
+                </div>
+                <a href="{{ url_for('admin.export_full_backup') }}" class="export-btn backup-btn">
+                    <i class="fas fa-download"></i> Download Full Backup (JSON)
+                </a>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="data-card">
+                <h5><i class="fas fa-heart icon"></i>Donations Export</h5>
+                <p>Export all donation records with donor information and transaction details.</p>
+                <div class="info-box">
+                    <strong>Includes:</strong> Donor names, amounts, messages, payment methods
+                </div>
+                <a href="{{ url_for('admin.export_donations_csv') }}" class="export-btn">
+                    <i class="fas fa-file-csv"></i> Export Donations (CSV)
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="data-card">
+                <h5><i class="fas fa-envelope icon"></i>Contact Submissions</h5>
+                <p>Export all contact form submissions and inquiries.</p>
+                <div class="info-box">
+                    <strong>Includes:</strong> Names, emails, subjects, messages, dates
+                </div>
+                <a href="{{ url_for('admin.export_contacts_csv') }}" class="export-btn">
+                    <i class="fas fa-file-csv"></i> Export Contacts (CSV)
+                </a>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="data-card">
+                <h5><i class="fas fa-newspaper icon"></i>Newsletter Subscribers</h5>
+                <p>Export newsletter subscriber list with interests and status.</p>
+                <div class="info-box">
+                    <strong>Includes:</strong> Email addresses, interests, subscription dates
+                </div>
+                <a href="{{ url_for('admin.export_newsletter_csv') }}" class="export-btn">
+                    <i class="fas fa-file-csv"></i> Export Newsletter (CSV)
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-12">
+            <div class="data-card">
+                <h5><i class="fas fa-info-circle icon"></i>Backup Schedule Recommendation</h5>
+                <p>For production environments, consider setting up automated backups:</p>
+                <ul>
+                    <li><strong>Daily:</strong> Full database backup during low-traffic hours</li>
+                    <li><strong>Weekly:</strong> Export critical data (donations, contacts) for offline storage</li>
+                    <li><strong>Monthly:</strong> Complete system backup including files and configurations</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Add loading states to export buttons
+    document.querySelectorAll('.export-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            const originalText = this.innerHTML;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Exporting...';
+            this.style.pointerEvents = 'none';
+            
+            // Reset after 5 seconds (in case of error)
+            setTimeout(() => {
+                this.innerHTML = originalText;
+                this.style.pointerEvents = 'auto';
+            }, 5000);
+        });
+    });
+</script>
+{% endblock %}
