@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "donation/base.html" %}
 
 {% block title %}Project Highlights - Donation{% endblock %}
 
@@ -67,10 +67,14 @@
                                 <div class="project-funding-info">
                                     <div class="funding-amount">
                                         <i class="fas fa-heart text-danger me-2"></i>
-                                        ${{ "%.2f"|format(project.current_amount) }}
+                                        {% if project.currency == 'NPR' %}
+                                            Rs.{{ "{:,.0f}".format(project.current_amount) }}
+                                        {% else %}
+                                            ${{ "{:,.2f}".format(project.current_amount) }}
+                                        {% endif %}
                                     </div>
                                     <div class="funding-goal">
-                                        of ${{ "%.2f"|format(project.goal_amount) }} goal
+                                        of {% if project.currency == 'NPR' %}Rs.{{ "{:,.0f}".format(project.goal_amount) }}{% else %}\${{ "{:,.2f}".format(project.goal_amount) }}{% endif %} goal
                                     </div>
                                 </div>
                                 {% endif %}
@@ -130,7 +134,13 @@
                                     <div class="stat-label">Funded</div>
                                 </div>
                                 <div class="stat-item">
-                                    <div class="stat-value">${{ project.current_amount|int }}</div>
+                                    <div class="stat-value">
+                                        {% if project.currency == 'NPR' %}
+                                            Rs.{{ "{:,.0f}".format(project.current_amount) }}
+                                        {% else %}
+                                            ${{ "{:,.0f}".format(project.current_amount) }}
+                                        {% endif %}
+                                    </div>
                                     <div class="stat-label">Raised</div>
                                 </div>
                                 <div class="stat-item">
@@ -164,26 +174,32 @@
             <div class="achievement-grid">
                 <div class="achievement-card">
                     <i class="fas fa-project-diagram achievement-icon"></i>
-                    <div class="achievement-number">{{ featured_projects|length + (completed_projects|length if completed_projects else 0) }}</div>
+                    <div class="achievement-number">{{ achievement_stats.total_projects }}</div>
                     <div class="achievement-label">Total Projects</div>
                 </div>
                 
                 <div class="achievement-card">
                     <i class="fas fa-check-circle achievement-icon"></i>
-                    <div class="achievement-number">{{ completed_projects|length if completed_projects else 0 }}</div>
+                    <div class="achievement-number">{{ achievement_stats.completed_projects }}</div>
                     <div class="achievement-label">Completed</div>
                 </div>
                 
                 <div class="achievement-card">
                     <i class="fas fa-star achievement-icon"></i>
-                    <div class="achievement-number">{{ (featured_projects|selectattr('is_featured')|list|length) + (completed_projects|selectattr('is_featured')|list|length if completed_projects else 0) }}</div>
+                    <div class="achievement-number">{{ achievement_stats.featured_projects }}</div>
                     <div class="achievement-label">Featured Projects</div>
                 </div>
                 
                 <div class="achievement-card">
                     <i class="fas fa-heart achievement-icon"></i>
-                    <div class="achievement-number">${{ "%.0f"|format((featured_projects|sum(attribute='current_amount') or 0) + (completed_projects|sum(attribute='current_amount') or 0)) if featured_projects or completed_projects else 0 }}</div>
+                    <div class="achievement-number">{{ achievement_stats.total_raised_display }}</div>
                     <div class="achievement-label">Funds Raised</div>
+                </div>
+                
+                <div class="achievement-card">
+                    <i class="fas fa-users achievement-icon"></i>
+                    <div class="achievement-number">{{ achievement_stats.supporter_count }}</div>
+                    <div class="achievement-label">Supporters</div>
                 </div>
             </div>
         </div>

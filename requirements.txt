@@ -15,5 +15,3 @@ requests
 Flask-Caching
 Flask-Limiter
 redis
-alembic
-limits

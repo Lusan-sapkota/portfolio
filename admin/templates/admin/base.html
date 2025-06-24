@@ -94,6 +94,11 @@
                             <i class="fas fa-search"></i> SEO
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if 'data_management' in request.endpoint %}active{% endif %}" href="{{ url_for('admin.data_management') }}">
+                            <i class="fas fa-database"></i> Data Export
+                        </a>
+                    </li>
                 </ul>
                 
                 <ul class="navbar-nav">
