@@ -1,0 +1,185 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Donation Settings{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="fas fa-cogs"></i> Donation System Settings</h2>
+    <a href="{{ url_for('donation.index') }}" class="btn btn-outline-primary" target="_blank">
+        <i class="fas fa-external-link-alt"></i> View Donation Page
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('admin.donation_settings_update') }}">
+                    <h5 class="mb-3">General Settings</h5>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Default Currency</label>
+                                <select name="default_currency" class="form-control" required>
+                                    <option value="NPR" {% if settings and settings.default_currency == 'NPR' %}selected{% endif %}>NPR (₨)</option>
+                                    <option value="USD" {% if settings and settings.default_currency == 'USD' %}selected{% endif %}>USD ($)</option>
+                                </select>
+                                <small class="form-text text-muted">Currency shown by default on donation forms</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <div class="form-check mt-4">
+                                    <input type="checkbox" name="enable_custom_amounts" class="form-check-input" id="enable_custom_amounts"
+                                           {% if not settings or settings.enable_custom_amounts %}checked{% endif %}>
+                                    <label class="form-check-label" for="enable_custom_amounts">
+                                        Allow custom donation amounts
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-check mb-3">
+                                <input type="checkbox" name="enable_anonymous_donations" class="form-check-input" id="enable_anonymous_donations"
+                                       {% if not settings or settings.enable_anonymous_donations %}checked{% endif %}>
+                                <label class="form-check-label" for="enable_anonymous_donations">
+                                    Allow anonymous donations
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check mb-3">
+                                <input type="checkbox" name="require_phone_verification" class="form-check-input" id="require_phone_verification"
+                                       {% if settings and settings.require_phone_verification %}checked{% endif %}>
+                                <label class="form-check-label" for="require_phone_verification">
+                                    Require phone number for verification
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-check mb-4">
+                        <input type="checkbox" name="auto_approve_donations" class="form-check-input" id="auto_approve_donations"
+                               {% if settings and settings.auto_approve_donations %}checked{% endif %}>
+                        <label class="form-check-label" for="auto_approve_donations">
+                            Auto-approve donations (mark as completed automatically)
+                        </label>
+                        <small class="form-text text-muted">If disabled, donations will require manual approval</small>
+                    </div>
+                    
+                    <h5 class="mt-4 mb-3">Email Settings</h5>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Admin Notification Emails</label>
+                        <input type="text" name="admin_notification_emails" class="form-control" 
+                               value="{{ settings.admin_notification_emails if settings else '' }}" 
+                               placeholder="admin@example.com, finance@example.com">
+                        <small class="form-text text-muted">Comma-separated email addresses to notify about new donations</small>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="form-label">Thank You Email Template</label>
+                        <textarea name="thank_you_email_template" class="form-control" rows="6" 
+                                  placeholder="Enter custom thank you email template (optional)">{{ settings.thank_you_email_template if settings else '' }}</textarea>
+                        <small class="form-text text-muted">Custom email template for donation confirmations. Leave empty for default template.</small>
+                    </div>
+                    
+                    <div class="border-top pt-3">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Save Settings
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary" onclick="testEmail()">
+                            <i class="fas fa-envelope"></i> Test Email
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-body">
+                <h5><i class="fas fa-info-circle"></i> Settings Guide</h5>
+                
+                <h6 class="mt-3">Currency Options:</h6>
+                <ul class="small">
+                    <li><strong>NPR:</strong> Nepalese Rupees for local donors</li>
+                    <li><strong>USD:</strong> US Dollars for international donors</li>
+                </ul>
+                
+                <h6 class="mt-3">Donation Flow:</h6>
+                <ul class="small">
+                    <li>Donor fills out form</li>
+                    <li>Redirected to payment instructions</li>
+                    <li>Payment verification (manual/auto)</li>
+                    <li>Confirmation email sent</li>
+                    <li>Added to thanksgiving page</li>
+                </ul>
+                
+                <h6 class="mt-3">Security:</h6>
+                <ul class="small">
+                    <li>Phone numbers are for verification only</li>
+                    <li>Anonymous donations hide donor identity</li>
+                    <li>All payments are verified before completion</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="card mt-3">
+            <div class="card-body">
+                <h6><i class="fas fa-chart-line"></i> Donation Statistics</h6>
+                <div class="row text-center">
+                    <div class="col-6">
+                        <h5 class="text-primary">{{ total_donations or 0 }}</h5>
+                        <small>Total Donations</small>
+                    </div>
+                    <div class="col-6">
+                        <h5 class="text-success">{{ pending_donations or 0 }}</h5>
+                        <small>Pending Review</small>
+                    </div>
+                </div>
+                <hr>
+                <div class="row text-center">
+                    <div class="col-6">
+                        <h5 class="text-info">{{ anonymous_donations or 0 }}</h5>
+                        <small>Anonymous</small>
+                    </div>
+                    <div class="col-6">
+                        <h5 class="text-warning">{{ currencies_used or 0 }}</h5>
+                        <small>Currencies</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function testEmail() {
+    fetch('/admin/test-donation-email', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Test email sent successfully!');
+        } else {
+            alert('Failed to send test email: ' + data.message);
+        }
+    })
+    .catch(error => {
+        alert('Error sending test email');
+    });
+}
+</script>
+{% endblock %}

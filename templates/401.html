@@ -1,0 +1,174 @@
+{% extends "error_base.html" %}
+
+{% block error_title %}401 - Unauthorized{% endblock %}
+{% block error_description %}Authentication is required to access this resource on Lusan Sapkota's portfolio website.{% endblock %}
+
+{% block error_specific_styles %}
+/* 401 Specific Animation */
+.error-illustration {
+    position: relative;
+    height: 120px;
+    margin: 20px auto;
+}
+
+.user-icon {
+    position: absolute;
+    left: calc(50% - 30px);
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 50px;
+    color: #3498db;
+    animation: float-user 3s infinite ease-in-out;
+}
+
+.lock-icon {
+    position: absolute;
+    left: calc(50% + 30px);
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 40px;
+    color: #f39c12;
+    animation: pulse-lock 2s infinite alternate;
+}
+
+@keyframes float-user {
+    0%, 100% { transform: translateY(-50%); }
+    50% { transform: translateY(-65%); }
+}
+
+@keyframes pulse-lock {
+    0% { transform: translateY(-50%) scale(1); }
+    100% { transform: translateY(-50%) scale(1.1); }
+}
+
+.credential-form {
+    margin: 30px auto;
+    max-width: 350px;
+    background: rgba(243, 156, 18, 0.05);
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid rgba(243, 156, 18, 0.1);
+}
+
+[data-theme="dark"] .credential-form {
+    background: rgba(243, 156, 18, 0.03);
+}
+
+.credential-header {
+    text-align: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(243, 156, 18, 0.1);
+}
+
+.credential-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.form-control {
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 5px;
+    border: 1px solid rgba(243, 156, 18, 0.2);
+    background-color: var(--background-primary);
+    color: var(--text-primary);
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #f39c12;
+    box-shadow: 0 0 0 2px rgba(243, 156, 18, 0.2);
+}
+
+.login-button {
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+.login-button:hover {
+    box-shadow: 0 5px 15px rgba(243, 156, 18, 0.3);
+}
+
+.forgot-password {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    text-align: right;
+    display: block;
+    margin-top: 10px;
+}
+
+.forgot-password:hover {
+    color: #f39c12;
+    text-decoration: underline;
+}
+{% endblock %}
+
+{% block error_code %}<span>4</span><span>0</span><span>1</span>{% endblock %}
+{% block error_heading %}Authentication Required{% endblock %}
+
+{% block error_illustration %}
+<div class="error-illustration">
+    <i class="fas fa-user user-icon"></i>
+    <i class="fas fa-lock lock-icon"></i>
+</div>
+{% endblock %}
+
+{% block error_message %}
+You need to be logged in to access this resource. Please provide your credentials to continue.
+{% endblock %}
+
+{% block additional_content %}
+<div class="credential-form">
+    <div class="credential-header">
+        <h3 class="credential-title">Login</h3>
+    </div>
+    <form>
+        <div class="form-group">
+            <label class="form-label">Username</label>
+            <input type="text" class="form-control" placeholder="Enter your username">
+        </div>
+        <div class="form-group">
+            <label class="form-label">Password</label>
+            <input type="password" class="form-control" placeholder="Enter your password">
+        </div>
+        <button type="button" class="login-button">Sign In</button>
+        <a href="#" class="forgot-password">Forgot password?</a>
+    </form>
+</div>
+{% endblock %}
+
+{% block additional_actions %}
+<a href="{{ url_for('index') }}" class="secondary-btn">
+    <i class="fa fa-home"></i> Return Home
+</a>
+{% endblock %}
+
+{% block page_scripts %}
+// Add form submission handler
+document.querySelector('.login-button').addEventListener('click', function() {
+    // In a real scenario, this would submit the form to a backend auth endpoint
+    alert('This is a sample login form for demonstration purposes only.');
+});
+{% endblock %}

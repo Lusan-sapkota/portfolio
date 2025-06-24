@@ -1,0 +1,164 @@
+{% extends "error_base.html" %}
+
+{% block error_title %}500 - Server Error{% endblock %}
+{% block error_description %}An unexpected server error occurred on Lusan Sapkota's portfolio website.{% endblock %}
+
+{% block error_specific_styles %}
+/* Server Error Additional Styles */
+.error-illustration {
+    position: relative;
+    height: 100px;
+    margin: 20px auto;
+}
+
+.gear {
+    color: #f39c12;
+    font-size: 40px;
+    animation: spin 10s linear infinite;
+    filter: drop-shadow(0 0 10px rgba(243, 156, 18, 0.5));
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(0deg);
+    transform-origin: center;
+}
+
+.gear-small {
+    position: absolute;
+    font-size: 25px;
+    color: #e67e22;
+    filter: drop-shadow(0 0 8px rgba(230, 126, 34, 0.5));
+}
+
+.gear-left {
+    left: 50%;
+    margin-left: -80px;
+    animation: spin-reverse 8s linear infinite;
+}
+
+.gear-right {
+    left: 50%;
+    margin-left: 40px;
+    animation: spin-reverse 6s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes spin-reverse {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(-360deg); }
+}
+
+.server-status {
+    display: inline-block;
+    margin-top: 20px;
+    background: rgba(41, 128, 185, 0.1);
+    padding: 15px;
+    border-radius: 5px;
+    border-left: 4px solid #3498db;
+    text-align: left;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+[data-theme="dark"] .server-status {
+    background: rgba(41, 128, 185, 0.2);
+}
+
+.server-status-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    border-bottom: 1px solid rgba(41, 128, 185, 0.2);
+    padding-bottom: 5px;
+}
+
+.server-status-title {
+    font-weight: 600;
+    color: #3498db;
+    margin: 0;
+    font-size: 1rem;
+}
+
+.server-status-icon {
+    color: #e74c3c;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.server-status-message {
+    font-family: monospace;
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.server-status-refresh {
+    display: block;
+    text-align: right;
+    margin-top: 10px;
+    font-size: 0.8rem;
+    color: #3498db;
+    cursor: pointer;
+}
+
+.server-status-refresh:hover {
+    text-decoration: underline;
+}
+{% endblock %}
+
+{% block error_code %}<span>5</span><span>0</span><span>0</span>{% endblock %}
+{% block error_heading %}Server Error{% endblock %}
+
+{% block error_illustration %}
+<div class="error-illustration">
+    <i class="fas fa-cog gear"></i>
+    <i class="fas fa-cog gear-small gear-left"></i>
+    <i class="fas fa-cog gear-small gear-right"></i>
+</div>
+{% endblock %}
+
+{% block error_message %}
+Oops! Something went wrong on my servers. My technical team has been notified and is working to fix the issue.
+{% endblock %}
+
+{% block additional_content %}
+<div class="server-status">
+    <div class="server-status-header">
+        <span class="server-status-title">Server Status</span>
+        <span class="server-status-icon"><i class="fas fa-exclamation-circle"></i></span>
+    </div>
+    <p class="server-status-message">Error: Internal Server Exception</p>
+    <small class="server-status-refresh">Refreshing in <span id="countdown">30</span>s...</small>
+</div>
+{% endblock %}
+
+{% block additional_actions %}
+<a href="mailto:sapkotalusan@gmail.com" class="secondary-btn">
+    <i class="fa fa-envelope"></i> Report This Issue
+</a>
+{% endblock %}
+
+{% block page_scripts %}
+// Auto refresh countdown
+let countdownElement = document.getElementById('countdown');
+if (countdownElement) {
+    let seconds = 30;
+    const interval = setInterval(function() {
+        seconds--;
+        countdownElement.textContent = seconds;
+        if (seconds <= 0) {
+            clearInterval(interval);
+            location.reload();
+        }
+    }, 1000);
+}
+{% endblock %}

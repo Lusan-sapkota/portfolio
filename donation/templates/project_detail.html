@@ -1,0 +1,675 @@
+{% extends "base.html" %}
+
+{% block title %}Donate to {{ project.title }} - {{ seo_settings.site_title if seo_settings else 'Donation Platform' }}{% endblock %}
+
+{% block meta_description %}Support {{ project.title }} - {{ project.short_description or project.description[:150] }}. Help advance open source innovation with your contribution.{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('donation.static', filename='css/donation-style.css') }}">
+<style>
+    /* Project-specific enhancements */
+    .external-links a {
+        display: inline-flex;
+        align-items: center;
+        padding: 12px 24px;
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        border-radius: 30px;
+        text-decoration: none;
+        color: white;
+        font-weight: 600;
+        transition: var(--transition-smooth);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        margin: 8px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .external-links a i {
+        margin-right: 8px;
+        font-size: 1.1em;
+    }
+    
+    .external-links a:hover {
+        background: rgba(255, 255, 255, 0.25);
+        color: white;
+        transform: translateY(-3px);
+        border-color: rgba(255, 255, 255, 0.4);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* Enhanced badges */
+    .badge {
+        background: rgba(255, 255, 255, 0.2) !important;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        padding: 8px 16px !important;
+        font-weight: 600 !important;
+        transition: var(--transition-smooth);
+    }
+    
+    .badge:hover {
+        background: rgba(255, 255, 255, 0.3) !important;
+        transform: translateY(-2px);
+    }
+    
+    /* Project description styling */
+    .project-description-content {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: var(--text-color);
+    }
+    
+    .project-description-content p {
+        margin-bottom: 1.5rem;
+    }
+    
+    .project-main-image {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        transition: var(--transition-smooth);
+        margin-bottom: 30px;
+    }
+    
+    .project-main-image:hover {
+        transform: scale(1.02);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* Enhanced responsive layout */
+    @media (max-width: 768px) {
+        .external-links {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-top: 25px !important;
+        }
+        
+        .external-links a {
+            width: 100%;
+            max-width: 300px;
+            justify-content: center;
+            margin: 5px 0;
+        }
+        
+        .badge {
+            margin: 4px !important;
+        }
+        
+        .project-main-image {
+            height: 200px;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .badge {
+            font-size: 0.8rem !important;
+            padding: 6px 12px !important;
+        }
+        
+        .external-links a {
+            padding: 10px 20px;
+            font-size: 0.9rem;
+        }
+    }
+    
+    /* Form validation styles */
+    .enhanced-form-control.is-valid {
+        border-color: var(--accent-green);
+        box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+    }
+    
+    .enhanced-form-control.is-invalid {
+        border-color: #ef4444;
+        box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
+    }
+    
+    /* Loading state for button */
+    .enhanced-donate-btn.loading {
+        position: relative;
+        color: transparent;
+    }
+    
+    .enhanced-donate-btn.loading::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 20px;
+        height: 20px;
+        margin: -10px 0 0 -10px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-top-color: white;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+    
+    /* Enhanced tooltips */
+    [data-tooltip] {
+        position: relative;
+        cursor: help;
+    }
+    
+    [data-tooltip]:hover::before {
+        content: attr(data-tooltip);
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.9);
+        color: white;
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-size: 0.8rem;
+        white-space: nowrap;
+        z-index: 1000;
+        animation: fadeIn 0.3s ease;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateX(-50%) translateY(5px); }
+        to { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="project-page-container">
+    <div class="page-wrapper">
+        <!-- Project Hero -->
+        <section class="project-hero-section">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-8">
+                        <h1 class="display-4 fw-bold mb-3">{{ project.title }}</h1>
+                        <p class="lead mb-4">{{ project.short_description or project.description[:150] + '...' if project.description|length > 150 else project.description }}</p>
+                        <div class="d-flex align-items-center gap-3 flex-wrap">
+                            <span class="badge bg-light text-dark px-3 py-2 rounded-pill">
+                                <i class="fas fa-code"></i> Open Source
+                            </span>
+                            <span class="badge bg-light text-dark px-3 py-2 rounded-pill">
+                                <i class="fas fa-users"></i> {{ donations|length }} Supporters
+                            </span>
+                            <span class="badge bg-light text-dark px-3 py-2 rounded-pill">
+                                <i class="fas fa-calendar"></i> {{ project.created_at.strftime('%B %Y') }}
+                            </span>
+                        </div>
+                        
+                        <div class="external-links mt-4">
+                            {% if project.github_url %}
+                            <a href="{{ project.github_url }}" target="_blank" class="text-white text-decoration-none me-3">
+                                <i class="fab fa-github"></i> View Code
+                            </a>
+                            {% endif %}
+                            {% if project.demo_url %}
+                            <a href="{{ project.demo_url }}" target="_blank" class="text-white text-decoration-none">
+                                <i class="fas fa-external-link-alt"></i> Live Demo
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
+                        <div class="progress-display-card">
+                            <div class="enhanced-progress-amount">${{ "%.0f"|format(project.current_amount) }}</div>
+                            <div class="enhanced-progress-goal">of ${{ "%.0f"|format(project.goal_amount) }} goal</div>
+                            <div class="enhanced-progress-bar">
+                                <div class="enhanced-progress-fill" style="width: {{ project.get_progress_percentage() }}%"></div>
+                            </div>
+                            <div class="enhanced-progress-percentage">{{ "%.1f"|format(project.get_progress_percentage()) }}% funded</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <section class="py-5">
+            <div class="container">
+                <div class="row">
+                    <!-- Project Details -->
+                    <div class="col-lg-8">
+                        <div class="project-details-card">
+                            {% if project.image_url %}
+                            <div class="project-image-container">
+                                <img src="{{ project.image_url }}" alt="{{ project.title }}" class="project-main-image">
+                            </div>
+                            {% endif %}
+                            
+                            <div class="project-content-section">
+                                <h3><i class="fas fa-info-circle text-primary"></i> About This Project</h3>
+                                <div class="project-description-content">
+                                    {{ project.description|safe }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recent Donations -->
+                        {% if donations %}
+                        <div class="recent-donations-card">
+                            <h3><i class="fas fa-heart text-danger"></i> Recent Supporters</h3>
+                            {% for donation in donations[:10] %}
+                            <div class="donation-item-card">
+                                <div class="donation-item-content">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <strong>{{ donation.donor_name if not donation.is_anonymous else 'Anonymous Supporter' }}</strong>
+                                            <p class="mb-1 text-muted">Donated ${{ "%.2f"|format(donation.amount) }}</p>
+                                            {% if donation.message %}
+                                            <p class="mb-0 text-muted">"{{ donation.message }}"</p>
+                                            {% endif %}
+                                        </div>
+                                        <small class="text-muted">{{ donation.created_at.strftime('%B %d, %Y') }}</small>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Enhanced Donation Form -->
+                    <div class="col-lg-4">
+                        <div class="enhanced-donation-form">
+                            <h4 class="form-section-title"><i class="fas fa-heart text-primary"></i> Support This Project</h4>
+                            
+                            <form action="{{ url_for('donation.donate', project_id=project.id) }}" method="POST" id="donationForm">
+                                <!-- Currency Selection -->
+                                <div class="enhanced-form-group">
+                                    <label class="enhanced-form-label">
+                                        <i class="fas fa-money-bill-wave"></i> Currency
+                                    </label>
+                                    <select class="enhanced-form-control enhanced-select" name="currency" id="currencySelect" onchange="updatePaymentMethods()" required>
+                                        <option value="NPR" selected>NPR (₨) - Nepalese Rupee</option>
+                                        <option value="USD">USD ($) - US Dollar</option>
+                                    </select>
+                                </div>
+                                
+                                <!-- Amount Input -->
+                                <div class="enhanced-form-group">
+                                    <label class="enhanced-form-label">
+                                        <i class="fas fa-calculator"></i> Enter Amount
+                                    </label>
+                                    <div class="currency-input-group">
+                                        <span class="currency-symbol" id="currencySymbol">₨</span>
+                                        <input type="number" class="enhanced-form-control" name="amount" id="customAmount" 
+                                            placeholder="Enter amount" min="1" step="0.01" required
+                                            data-tooltip="Enter the amount you'd like to donate">
+                                    </div>
+                                    <small class="form-text text-muted">Minimum donation: <span id="minAmount">₨1</span></small>
+                                </div>
+                                
+                                <!-- Donor Information -->
+                                <div class="enhanced-form-group">
+                                    <label class="enhanced-form-label">
+                                        <i class="fas fa-user"></i> Your Name
+                                    </label>
+                                    <input type="text" class="enhanced-form-control" name="donor_name" 
+                                           placeholder="Enter your full name" required
+                                           data-tooltip="Your name will be displayed publicly unless you choose anonymous">
+                                </div>
+                                
+                                <div class="enhanced-form-group">
+                                    <label class="enhanced-form-label">
+                                        <i class="fas fa-envelope"></i> Email Address
+                                    </label>
+                                    <input type="email" class="enhanced-form-control" name="donor_email" 
+                                           placeholder="your@email.com" required
+                                           data-tooltip="I'll send you a donation confirmation and receipt">
+                                    <small class="form-text text-muted">Receipt will be sent here</small>
+                                </div>
+                                
+                                <div class="enhanced-form-group">
+                                    <label class="enhanced-form-label">
+                                        <i class="fas fa-phone"></i> Phone Number <span class="text-muted">(Optional)</span>
+                                    </label>
+                                    <input type="tel" class="enhanced-form-control" name="donor_phone" 
+                                           placeholder="+977-XXXXXXXXXX"
+                                           data-tooltip="For verification purposes only, won't be displayed publicly">
+                                    <small class="form-text text-muted">For verification only, not displayed publicly</small>
+                                </div>
+                            
+                                <!-- Message -->
+                                <div class="enhanced-form-group">
+                                    <label class="enhanced-form-label">
+                                        <i class="fas fa-comment-alt"></i> Message <span class="text-muted">(Optional)</span>
+                                    </label>
+                                    <textarea class="enhanced-form-control" name="message" rows="3" 
+                                            placeholder="Leave a message of support..."
+                                            data-tooltip="Your message will be displayed with your donation"></textarea>
+                                    <small class="form-text text-muted">Share your thoughts or motivation</small>
+                                </div>
+                                
+                                <!-- Anonymous Option -->
+                                <div class="enhanced-checkbox-container">
+                                    <input type="checkbox" class="enhanced-checkbox" name="is_anonymous" id="anonymous">
+                                    <label for="anonymous">
+                                        <i class="fas fa-user-secret"></i> Donate anonymously
+                                        <small class="d-block text-muted mt-1">Your name won't be displayed publicly</small>
+                                    </label>
+                                </div>
+                                
+                                <!-- Payment Method -->
+                                <div class="enhanced-form-group">
+                                    <label class="enhanced-form-label">
+                                        <i class="fas fa-credit-card"></i> Payment Method
+                                    </label>
+                                    <select class="enhanced-form-control enhanced-select" name="payment_method" id="paymentMethodSelect" required>
+                                        <option value="">Select payment method...</option>
+                                        {% for method in payment_methods %}
+                                        <option value="{{ method.method_type or method.display_name.lower().replace(' ', '_') }}" 
+                                                data-currency="{{ method.currency }}"
+                                                data-display-name="{{ method.display_name }}"
+                                                data-id="{{ method.id }}"
+                                                data-method-type="{{ method.method_type or 'custom' }}">
+                                            {{ method.display_name }}
+                                        </option>
+                                        {% endfor %}
+                                        
+                                        <!-- Fallback options if no payment methods in database -->
+                                        {% if not payment_methods %}
+                                        <!-- NPR Options -->
+                                        <option value="wallet" data-currency="NPR">Digital Wallet (eSewa, Khalti, IME Pay)</option>
+                                        <option value="bank_transfer" data-currency="NPR">Bank Transfer</option>
+                                        <!-- USD Options -->
+                                        <option value="wallet" data-currency="USD">Digital Wallet (PayPal)</option>
+                                        <option value="swift_transfer" data-currency="USD">Swift Transfer / Bank Transfer</option>
+                                        <option value="payoneer" data-currency="USD">Payoneer</option>
+                                        {% endif %}
+                                    </select>
+                                    {% if payment_methods %}
+                                    <small class="form-text text-muted">{{ payment_methods|length }} payment method(s) available</small>
+                                    {% endif %}
+                                </div>
+                                
+                                <button type="submit" class="enhanced-donate-btn">
+                                    <i class="fas fa-heart"></i> Donate Now
+                                </button>
+                                
+                                <p class="text-center text-muted mt-3 small">
+                                    <i class="fas fa-shield-alt"></i> Secure payment processing. You'll receive a confirmation email.
+                                </p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+<!-- Flash Messages -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div class="position-fixed top-0 end-0 p-3" style="z-index: 11; margin-top: 80px;">
+    {% for category, message in messages %}
+    <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function updatePaymentMethods() {
+        const currency = document.getElementById('currencySelect').value;
+        const currencySymbol = document.getElementById('currencySymbol');
+        const minAmountSpan = document.getElementById('minAmount');
+        const paymentSelect = document.getElementById('paymentMethodSelect');
+        
+        // Update currency symbol and minimum amount
+        if (currency === 'NPR') {
+            currencySymbol.textContent = '₨';
+            minAmountSpan.textContent = '₨1';
+        } else {
+            currencySymbol.textContent = '$';
+            minAmountSpan.textContent = '$1';
+        }
+        
+        // Store all options if not already stored
+        if (!paymentSelect.allOptions) {
+            paymentSelect.allOptions = Array.from(paymentSelect.options);
+        }
+        
+        // Clear current options (except the first "Select..." option)
+        while (paymentSelect.options.length > 1) {
+            paymentSelect.removeChild(paymentSelect.options[1]);
+        }
+        
+        // Add matching options for current currency
+        let visibleCount = 0;
+        let firstValidOption = null;
+        
+        paymentSelect.allOptions.forEach(option => {
+            const optionCurrency = option.dataset.currency;
+            
+            // Skip the default "Select..." option
+            if (!optionCurrency && option.value === '') {
+                return;
+            }
+            
+            if (optionCurrency === currency) {
+                const newOption = option.cloneNode(true);
+                paymentSelect.appendChild(newOption);
+                visibleCount++;
+                
+                if (!firstValidOption) {
+                    firstValidOption = newOption;
+                }
+            }
+        });
+        
+        // Auto-select the first available payment method
+        if (firstValidOption && visibleCount === 1) {
+            paymentSelect.value = firstValidOption.value;
+        } else {
+            paymentSelect.value = '';
+        }
+        
+        // Update helper text
+        const helperText = paymentSelect.parentNode.querySelector('.form-text');
+        if (helperText) {
+            helperText.textContent = `${visibleCount} payment method(s) available for ${currency}`;
+        }
+        
+        // Add visual feedback
+        paymentSelect.style.animation = 'pulse 0.5s ease-in-out';
+        setTimeout(() => {
+            paymentSelect.style.animation = '';
+        }, 500);
+    }
+    
+    // Enhanced form validation and user experience
+    document.addEventListener('DOMContentLoaded', function() {
+        updatePaymentMethods();
+        
+        // Add real-time validation
+        const form = document.getElementById('donationForm');
+        const inputs = form.querySelectorAll('input[required], select[required], textarea');
+        
+        inputs.forEach(input => {
+            input.addEventListener('blur', validateField);
+            input.addEventListener('input', function(e) {
+                clearValidationState(e);
+                if (e.target.type === 'number') {
+                    validateNumberInput(e.target);
+                }
+            });
+        });
+        
+        // Add loading state to submit button
+        form.addEventListener('submit', function(e) {
+            const submitBtn = form.querySelector('.enhanced-donate-btn');
+            const isValid = validateForm();
+            
+            if (isValid) {
+                submitBtn.classList.add('loading');
+                submitBtn.disabled = true;
+                
+                // Reset button after 10 seconds in case of issues
+                setTimeout(() => {
+                    submitBtn.classList.remove('loading');
+                    submitBtn.disabled = false;
+                }, 10000);
+            } else {
+                e.preventDefault();
+                showFormErrors();
+            }
+        });
+        
+        // Add hover effects to form elements
+        inputs.forEach(input => {
+            input.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-1px)';
+            });
+            
+            input.addEventListener('mouseleave', function() {
+                if (!this.matches(':focus')) {
+                    this.style.transform = '';
+                }
+            });
+        });
+    });
+    
+    function validateField(e) {
+        const field = e.target;
+        const value = field.value.trim();
+        
+        // Remove existing validation classes
+        field.classList.remove('is-valid', 'is-invalid');
+        
+        if (field.hasAttribute('required') && !value) {
+            field.classList.add('is-invalid');
+            addFieldError(field, 'This field is required');
+            return false;
+        }
+        
+        // Email validation
+        if (field.type === 'email' && value) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(value)) {
+                field.classList.add('is-invalid');
+                addFieldError(field, 'Please enter a valid email address');
+                return false;
+            }
+        }
+        
+        // Phone validation (optional)
+        if (field.type === 'tel' && value) {
+            const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
+            if (!phoneRegex.test(value.replace(/[\s\-\(\)]/g, ''))) {
+                field.classList.add('is-invalid');
+                addFieldError(field, 'Please enter a valid phone number');
+                return false;
+            }
+        }
+        
+        // Amount validation
+        if (field.type === 'number' && value) {
+            const amount = parseFloat(value);
+            if (amount <= 0) {
+                field.classList.add('is-invalid');
+                addFieldError(field, 'Amount must be greater than 0');
+                return false;
+            }
+            if (amount > 1000000) {
+                field.classList.add('is-invalid');
+                addFieldError(field, 'Amount seems too large. Please contact me for large donations.');
+                return false;
+            }
+        }
+        
+        field.classList.add('is-valid');
+        removeFieldError(field);
+        return true;
+    }
+    
+    function validateNumberInput(field) {
+        const value = parseFloat(field.value);
+        const currency = document.getElementById('currencySelect').value;
+        
+        if (value && value > 0) {
+            // Show live conversion or suggestions
+            const helperText = field.parentNode.parentNode.querySelector('.form-text');
+            if (helperText && currency === 'NPR' && value >= 1000) {
+                const usdEquivalent = (value / 133).toFixed(2); // Approximate conversion
+                helperText.innerHTML = `Approximately $${usdEquivalent} USD`;
+            } else if (helperText && currency === 'USD' && value >= 10) {
+                const nprEquivalent = (value * 133).toFixed(0); // Approximate conversion
+                helperText.innerHTML = `Approximately ₨${nprEquivalent} NPR`;
+            }
+        }
+    }
+    
+    function clearValidationState(e) {
+        const field = e.target;
+        field.classList.remove('is-valid', 'is-invalid');
+        removeFieldError(field);
+    }
+    
+    function addFieldError(field, message) {
+        removeFieldError(field);
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'field-error text-danger small mt-1';
+        errorDiv.textContent = message;
+        field.parentNode.appendChild(errorDiv);
+    }
+    
+    function removeFieldError(field) {
+        const existingError = field.parentNode.querySelector('.field-error');
+        if (existingError) {
+            existingError.remove();
+        }
+    }
+    
+    function validateForm() {
+        const form = document.getElementById('donationForm');
+        const requiredInputs = form.querySelectorAll('input[required], select[required]');
+        let isValid = true;
+        
+        requiredInputs.forEach(input => {
+            if (!validateField({ target: input })) {
+                isValid = false;
+            }
+        });
+        
+        return isValid;
+    }
+    
+    function showFormErrors() {
+        const firstInvalidField = document.querySelector('.is-invalid');
+        if (firstInvalidField) {
+            firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            firstInvalidField.focus();
+        }
+    }
+    
+    // Initialize currency change listener with animation
+    document.getElementById('currencySelect').addEventListener('change', function() {
+        this.style.animation = 'pulse 0.5s ease-in-out';
+        setTimeout(() => {
+            this.style.animation = '';
+        }, 500);
+        updatePaymentMethods();
+    });
+    
+    // Auto-hide flash messages
+    setTimeout(function() {
+        document.querySelectorAll('.alert').forEach(function(alert) {
+            alert.style.transition = 'opacity 0.5s';
+            alert.style.opacity = '0';
+            setTimeout(() => alert.remove(), 500);
+        });
+    }, 5000);
+</script>
+{% endblock %}

@@ -6,119 +6,323 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="Accept-CH" content="DPR, Viewport-Width, Width">
     
     <!-- Primary Meta Tags -->
-    <title>Lusan Sapkota | Full Stack Software Developer from Nepal</title>
-    <meta name="title" content="Lusan Sapkota | Full Stack Software Developer from Nepal">
-    <meta name="description" content="Full Stack Software Developer specializing in Python, JavaScript, React, Django, Flask, and AI/ML technologies. Portfolio showcasing projects, skills, and professional experience.">
-    <meta name="author" content="Lusan Sapkota">
-    <meta name="keywords" content="Lusan Sapkota, Full Stack Developer, Software Developer, Python Developer, JavaScript Developer, Web Developer, Nepal Developer, AI ML Developer, React Developer, Django Developer, Portfolio, Software Engineer, Coding, Programming, Nepali Developer, Tech Professional">
+    <title>{{ seo.title if seo else 'Lusan Sapkota | Full Stack Software Developer & AI/ML Engineer from Nepal | Python, JavaScript, React Expert' }}</title>
+    <meta name="title" content="{{ seo.title if seo else 'Lusan Sapkota | Full Stack Software Developer & AI/ML Engineer from Nepal | Python, JavaScript, React Expert' }}">
+    <meta name="description" content="{{ seo.meta_description if seo and seo.meta_description else 'Expert Full Stack Developer & AI/ML Engineer from Nepal. Specializing in Python, JavaScript, React, Django. 5+ years experience building scalable web applications and AI solutions.' }}">
+    <meta name="author" content="{{ personal.full_name if personal else 'Lusan Sapkota' }}">
+    <meta name="keywords" content="{{ seo.meta_keywords if seo and seo.meta_keywords else 'Lusan Sapkota, Full Stack Developer Nepal, Python Developer, AI Engineer, JavaScript Expert, React Developer, Django Developer, Web Development Nepal, Nepali Developer, Software Engineer' }}">
+    <meta name="subject" content="Full Stack Software Development & AI/ML Engineering Portfolio">
+    <meta name="copyright" content="Lusan Sapkota">
+    <meta name="topic" content="Software Development, AI/ML, Web Technologies">
+    <meta name="summary" content="Professional portfolio of Lusan Sapkota - Full Stack Developer and AI/ML Engineer from Nepal">
+    <meta name="classification" content="Technology, Software Development, Portfolio">
+    <meta name="designer" content="Lusan Sapkota">
+    <meta name="owner" content="Lusan Sapkota">
+    <meta name="url" content="https://www.lusansapkota.com.np">
+    <meta name="identifier-URL" content="https://www.lusansapkota.com.np">
+    <meta name="directory" content="submission">
+    <meta name="category" content="Technology, Software Development, AI, Machine Learning">
+    <meta name="coverage" content="Worldwide">
+    <meta name="distribution" content="Global">
+    <meta name="rating" content="General">
+    <meta name="revisit-after" content="7 days">
     
     <!-- Canonical URL -->
-    <link rel="canonical" href="https://www.lusansapkota.com.np/">
+    <link rel="canonical" href="{{ seo.canonical_url if seo and seo.canonical_url else 'https://www.lusansapkota.com.np/' }}">
+    
+    <!-- Alternate URLs -->
+    <link rel="alternate" hreflang="en" href="https://www.lusansapkota.com.np/">
+    <link rel="alternate" hreflang="x-default" href="https://www.lusansapkota.com.np/">
     
     <!-- Language and Geography -->
     <meta name="language" content="English">
-    <meta name="geo.region" content="NP">
-    <meta name="geo.placename" content="Kathmandu">
+    <meta name="geo.region" content="NP-3">
+    <meta name="geo.placename" content="Kathmandu, Nepal">
+    <meta name="geo.position" content="27.7172;85.3240">
+    <meta name="ICBM" content="27.7172, 85.3240">
+    <meta name="DC.title" content="Lusan Sapkota - Full Stack Developer Portfolio">
     
     <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://www.lusansapkota.com.np/">
-    <meta property="og:title" content="Lusan Sapkota | Full Stack Software Developer">
-    <meta property="og:description" content="Full Stack Software Developer specializing in Python, JavaScript, React, Django, Flask, and AI/ML technologies. View my portfolio of projects and professional experience.">
-    <meta property="og:image" content="https://www.lusansapkota.com.np/static/assets/images/profile.jpg">
+    <meta property="og:type" content="profile">
+    <meta property="og:url" content="{{ seo.og_url if seo and seo.og_url else 'https://www.lusansapkota.com.np/' }}">
+    <meta property="og:title" content="{{ seo.og_title if seo and seo.og_title else seo.title if seo else 'Lusan Sapkota | Full Stack Software Developer & AI/ML Engineer from Nepal' }}">
+    <meta property="og:description" content="{{ seo.og_description if seo and seo.og_description else seo.meta_description if seo else 'Expert Full Stack Developer & AI/ML Engineer from Nepal specializing in Python, JavaScript, React, Django. Expert in building scalable applications and AI solutions.' }}">
+    <meta property="og:image" content="{{ seo.og_image if seo and seo.og_image else url_for('static', filename='assets/images/profile.jpg', _external=True) }}">
+    <meta property="og:image:secure_url" content="{{ seo.og_image if seo and seo.og_image else url_for('static', filename='assets/images/profile.jpg', _external=True) }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Lusan Sapkota - Full Stack Software Developer from Nepal">
     <meta property="og:site_name" content="Lusan Sapkota Portfolio">
     <meta property="og:locale" content="en_US">
+    <meta property="profile:first_name" content="Lusan">
+    <meta property="profile:last_name" content="Sapkota">
+    <meta property="profile:username" content="lusansapkota">
+    <meta property="profile:gender" content="male">
     
     <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://www.lusansapkota.com.np/">
-    <meta property="twitter:title" content="Lusan Sapkota | Full Stack Developer">
-    <meta property="twitter:description" content="Full Stack Software Developer from Nepal specializing in Python, JavaScript, and modern web technologies. Check out my projects and skills.">
-    <meta property="twitter:image" content="https://www.lusansapkota.com.np/static/assets/images/profile.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="{{ seo.twitter_url if seo and seo.twitter_url else 'https://www.lusansapkota.com.np/' }}">
+    <meta name="twitter:title" content="{{ seo.twitter_title if seo and seo.twitter_title else seo.title if seo else 'Lusan Sapkota | Full Stack Developer & AI/ML Engineer' }}">
+    <meta name="twitter:description" content="{{ seo.twitter_description if seo and seo.twitter_description else seo.meta_description if seo else 'Expert Full Stack Developer from Nepal specializing in Python, JavaScript, React, Django, AI/ML, and modern web technologies. Building scalable applications and innovative solutions.' }}">
+    <meta name="twitter:image" content="{{ seo.twitter_image if seo and seo.twitter_image else url_for('static', filename='assets/images/profile.jpg', _external=True) }}">
+    <meta name="twitter:image:alt" content="Lusan Sapkota - Full Stack Software Developer Portfolio">
     <meta name="twitter:site" content="@LusanSapkota">
     <meta name="twitter:creator" content="@LusanSapkota">
+    <meta name="twitter:label1" content="Written by">
+    <meta name="twitter:data1" content="Lusan Sapkota">
+    <meta name="twitter:label2" content="Skills">
+    <meta name="twitter:data2" content="Python, JavaScript, React, AI/ML">
+    
+    <!-- LinkedIn -->
+    <meta property="og:see_also" content="https://www.linkedin.com/in/lusan-sapkota-a08194284/">
     
     <!-- Mobile App Meta Tags -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Lusan Sapkota">
-    <meta name="application-name" content="Lusan Sapkota">
+    <meta name="application-name" content="Lusan Sapkota Portfolio">
     <meta name="theme-color" content="#f39c12">
     <meta name="msapplication-TileColor" content="#f39c12">
     <meta name="msapplication-config" content="{{ url_for('static', filename='assets/logo/browserconfig.xml') }}">
     
-    <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='assets/logo/apple-touch-icon.png') }}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='assets/logo/favicon-32x32.png') }}">
-    <link rel="icon" type="image/png" sizes="192x192" href="{{ url_for('static', filename='assets/logo/android-chrome-192x192.png') }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='assets/logo/favicon-16x16.png') }}">
-    <link rel="manifest" href="{{ url_for('static', filename='assets/logo/site.webmanifest') }}">
-    <link rel="mask-icon" href="{{ url_for('static', filename='assets/logo/safari-pinned-tab.svg') }}" color="#f39c12">
-    <link rel="shortcut icon" href="{{ url_for('static', filename='assets/logo/favicon.ico') }}">
-    
+	<!-- Universal favicon -->
+	<link rel="icon" type="image/png" href="{{ url_for('static', filename='assets/logo/logo.png') }}" sizes="any">
+
+	<!-- For Apple devices -->
+	<link rel="apple-touch-icon" href="{{ url_for('static', filename='assets/logo/logo.png') }}">
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+
     <!-- Performance Optimization -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link rel="dns-prefetch" href="https://fonts.googleapis.com">
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+    <link rel="dns-prefetch" href="https://github.com">
+    <link rel="dns-prefetch" href="https://api.github.com">
     
     <!-- Robots Control -->
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="robots" content="{{ seo.robots if seo and seo.robots else 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1' }}">
+    <meta name="googlebot" content="{{ seo.robots if seo and seo.robots else 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1' }}">
+    <meta name="bingbot" content="{{ seo.robots if seo and seo.robots else 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1' }}">
+    
+    <!-- Verification Tags -->
+    <meta name="google-site-verification" content="">
+    <meta name="msvalidate.01" content="">
+    <meta name="yandex-verification" content="">
+    <meta name="facebook-domain-verification" content="">
+    
+    <!-- Additional SEO Tags -->
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="handheld-friendly" content="true">
+    <meta name="MobileOptimized" content="320">
     
     <!-- Font Family -->
     <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,520,600,700,800,900&display=swap&subset=devanagari,latin-ext" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <!-- Schema.org Structured Data -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Lusan Sapkota",
-      "url": "https://www.lusansapkota.com.np",
-      "image": "https://www.lusansapkota.com.np/static/assets/images/profile.jpg",
-      "sameAs": [
-        "https://github.com/Lusan-sapkota",
-        "https://www.linkedin.com/in/lusan-sapkota-a08194284/",
-        "https://twitter.com/LusanSapkota",
-        "https://www.instagram.com/sapkotalusan/",
-        "https://web.facebook.com/lusan.sapkota.1"
-      ],
-      "jobTitle": "Full Stack Software Developer",
-      "worksFor": {
-        "@type": "Organization",
-        "name": "Freelancer"
-      },
-      "alumniOf": [
+      "@graph": [
         {
-          "@type": "CollegeOrUniversity",
-          "name": "Texas International College",
-          "sameAs": "https://texasedu.edu.np/"
+          "@type": "Person",
+          "@id": "https://www.lusansapkota.com.np/#person",
+          "name": "Lusan Sapkota",
+          "url": "https://www.lusansapkota.com.np",
+          "image": {
+            "@type": "ImageObject",
+            "url": "https://www.lusansapkota.com.np/static/assets/images/profile.jpg",
+            "width": 400,
+            "height": 400
+          },
+          "sameAs": [
+            "https://github.com/Lusan-sapkota",
+            "https://www.linkedin.com/in/lusan-sapkota-a08194284/",
+            "https://twitter.com/LusanSapkota",
+            "https://www.instagram.com/sapkotalusan/",
+            "https://web.facebook.com/lusan.sapkota.1"
+          ],
+          "jobTitle": "Full Stack Software Developer & AI/ML Engineer",
+          "description": "Full Stack Software Developer and AI/ML Engineer from Nepal specializing in Python, JavaScript, and modern web technologies with expertise in graph-based models and algorithms.",
+          "worksFor": {
+            "@type": "Organization",
+            "name": "Freelancer",
+            "description": "Independent Software Development Consultant"
+          },
+          "alumniOf": [
+            {
+              "@type": "CollegeOrUniversity",
+              "name": "Texas International College",
+              "sameAs": "https://texasedu.edu.np/",
+              "location": {
+                "@type": "Place",
+                "name": "Kathmandu, Nepal"
+              }
+            }
+          ],
+          "knowsAbout": [
+            "Python Programming",
+            "JavaScript Development", 
+            "React.js",
+            "Next.js",
+            "Django Framework",
+            "Flask Framework",
+            "TypeScript",
+            "AI/ML Engineering",
+            "Graph Algorithms",
+            "Data Analysis",
+            "Full Stack Development",
+            "Web Development",
+            "Machine Learning",
+            "Deep Learning",
+            "Computer Vision",
+            "Natural Language Processing",
+            "Database Design",
+            "API Development",
+            "Cloud Computing",
+            "DevOps"
+          ],
+          "hasOccupation": {
+            "@type": "Occupation",
+            "name": "Software Developer",
+            "occupationLocation": {
+              "@type": "Country",
+              "name": "Nepal"
+            },
+            "estimatedSalary": {
+              "@type": "MonetaryAmountDistribution",
+              "name": "Available upon request"
+            }
+          },
+          "nationality": {
+            "@type": "Country",
+            "name": "Nepal"
+          },
+          "birthPlace": {
+            "@type": "Place",
+            "name": "Nepal"
+          },
+          "email": "sapkotalusan@gmail.com",
+          "telephone": "Available upon request",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Kathmandu",
+            "addressCountry": "Nepal"
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://www.lusansapkota.com.np/#website",
+          "url": "https://www.lusansapkota.com.np/",
+          "name": "Lusan Sapkota - Portfolio",
+          "description": "Professional portfolio of Lusan Sapkota, Full Stack Software Developer and AI/ML Engineer from Nepal",
+          "publisher": {
+            "@id": "https://www.lusansapkota.com.np/#person"
+          },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://www.lusansapkota.com.np/search?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+          },
+          "inLanguage": "en-US",
+          "copyrightYear": "2024",
+          "copyrightHolder": {
+            "@id": "https://www.lusansapkota.com.np/#person"
+          }
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://www.lusansapkota.com.np/#webpage",
+          "url": "https://www.lusansapkota.com.np/",
+          "name": "Lusan Sapkota | Full Stack Software Developer & AI/ML Engineer from Nepal",
+          "isPartOf": {
+            "@id": "https://www.lusansapkota.com.np/#website"
+          },
+          "about": {
+            "@id": "https://www.lusansapkota.com.np/#person"
+          },
+          "description": "Professional portfolio showcasing Full Stack Software Development and AI/ML Engineering projects, skills, and experience",
+          "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://www.lusansapkota.com.np/"
+              }
+            ]
+          },
+          "mainEntity": {
+            "@id": "https://www.lusansapkota.com.np/#person"
+          },
+          "datePublished": "2024-01-01T00:00:00+00:00",
+          "dateModified": "2024-12-23T00:00:00+00:00"
+        },
+        {
+          "@type": "ProfessionalService",
+          "@id": "https://www.lusansapkota.com.np/#service",
+          "name": "Full Stack Software Development Services",
+          "description": "Professional software development services including web applications, AI/ML solutions, and technical consulting",
+          "provider": {
+            "@id": "https://www.lusansapkota.com.np/#person"
+          },
+          "areaServed": {
+            "@type": "Place",
+            "name": "Worldwide"
+          },
+          "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Software Development Services",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Full Stack Web Development",
+                  "description": "Complete web application development using modern technologies"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "AI/ML Development",
+                  "description": "Machine learning and artificial intelligence solutions"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Technical Consulting",
+                  "description": "Expert technical advice and code review services"
+                }
+              }
+            ]
+          }
         }
-      ],
-      "knowsAbout": ["Python", "JavaScript", "React", "Django", "Flask", "AI/ML", "Full Stack Development", "Web Development"],
-      "description": "Full Stack Software Developer from Nepal specializing in Python, JavaScript, and modern web technologies with expertise in AI and ML, particularly in graph-based models and algorithms."
+      ]
     }
     </script>
     
-    <!-- Website Structured Data -->
+    <!-- Dynamic Schema.org from Database -->
+    {% if seo and seo.schema_markup %}
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "url": "https://www.lusansapkota.com.np/",
-      "name": "Lusan Sapkota - Portfolio",
-      "description": "Professional portfolio of Lusan Sapkota, Full Stack Software Developer from Nepal",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": "https://www.lusansapkota.com.np/search?q={search_term_string}",
-        "query-input": "required name=search_term_string"
-      }
-    }
+    {{ seo.schema_markup | safe }}
     </script>
+    {% endif %}
     
     <!-- Portfolio Projects Structured Data -->
     <script type="application/ld+json">
@@ -217,7 +421,7 @@
       "@type": "LocalBusiness",
       "name": "Lusan Sapkota - Freelance Developer",
       "image": "https://www.lusansapkota.com.np/static/assets/images/profile.jpg",
-      "telephone": "+977-9848189845",
+      "telephone": "Available upon request",
       "email": "sapkotalusan@gmail.com",
       "url": "https://www.lusansapkota.com.np",
       "address": {
@@ -242,24 +446,20 @@
     }
     </script>
     
-    <!-- CSS Stylesheets with preloading -->
-    <link rel="preload" href="{{ url_for('static', filename='assets/css/bootstrap.min.css') }}" as="style">
-    <link rel="preload" href="{{ url_for('static', filename='assets/css/font-awesome.min.css') }}" as="style">
-    <link rel="preload" href="{{ url_for('static', filename='assets/css/style.css') }}" as="style">
-    
-    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/font-awesome.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/flaticon.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/animate.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/owl.carousel.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/owl.theme.default.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/bootsnav.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/responsive.css') }}">
+	<!-- CDN CSS: Bootstrap & Font Awesome -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+	
+	<!-- Font Awesome for Icons -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
+	
+	<!-- AOS Animation Library -->
+	<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+	
+	<!-- Local CSS -->
+	<link rel="preload" href="{{ url_for('static', filename='assets/css/style.css') }}" as="style">
+	<link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style.css') }}">
 
-    <!-- font-awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    
+	    
     <!-- OpenGraph article data -->
     <meta property="article:author" content="Lusan Sapkota">
     <meta property="article:publisher" content="https://www.lusansapkota.com.np">
@@ -279,54 +479,695 @@
     <meta name="format-detection" content="address=yes">
     
     <!-- Prefetch for common resources -->
-    <link rel="prefetch" href="{{ url_for('static', filename='assets/download/Lusan.pdf') }}">
+    <link rel="prefetch" href="{{ url_for('static', filename='assets/download/Lusan_Sapkota_Resume.txt') }}">
     <link rel="prefetch" href="{{ url_for('static', filename='assets/images/portfolio/p1.png') }}">
 
-    <!-- Google Tag Manager -->
-	<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-	new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-	j=d.createElement(s);dl=l!='dataLayer'?'&l='+l:'';j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-	})(window,document,'script','dataLayer','GTM-XXXX');</script>
-    <!-- End Google Tag Manager -->
+    <!-- Google Tag Manager and toggle -->
+	<script>
+	(function(w, d, s, l, i) {
+		// Google Tag Manager setup
+		w[l] = w[l] || [];
+		w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+		var f = d.getElementsByTagName(s)[0],
+			j = d.createElement(s),
+			dl = l !== 'dataLayer' ? '&l=' + l : '';
+		j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+		f.parentNode.insertBefore(j, f);
+	})(window, document, 'script', 'dataLayer', 'GTM-XXXX');
+
+	// Theme setup and icon toggle
+	(function() {
+		const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+		const currentTheme = localStorage.getItem('theme') || (prefersDark.matches ? 'dark' : 'light');
+		document.documentElement.setAttribute('data-theme', currentTheme);
+
+		function updateThemeIcons(theme) {
+			const moonIcons = document.querySelectorAll('.fa-moon');
+			const sunIcons = document.querySelectorAll('.fa-sun');
+			moonIcons.forEach(icon => icon.classList.toggle('d-none', theme === 'dark'));
+			sunIcons.forEach(icon => icon.classList.toggle('d-none', theme === 'light'));
+		}
+
+		document.addEventListener('DOMContentLoaded', function() {
+			updateThemeIcons(currentTheme);
+		});
+
+		// Watch for system theme changes
+		prefersDark.addEventListener('change', function(e) {
+			if (!localStorage.getItem('theme')) {
+				const newTheme = e.matches ? 'dark' : 'light';
+				document.documentElement.setAttribute('data-theme', newTheme);
+				updateThemeIcons(newTheme);
+			}
+		});
+	})();
+	</script>
+
+	<!-- Custom Animation Styles -->
+	<style>
+		/* Custom Animation Keyframes */
+		@keyframes fadeInUp {
+			from {
+				opacity: 0;
+				transform: translateY(30px);
+			}
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+
+		@keyframes fadeInLeft {
+			from {
+				opacity: 0;
+				transform: translateX(-30px);
+			}
+			to {
+				opacity: 1;
+				transform: translateX(0);
+			}
+		}
+
+		@keyframes fadeInRight {
+			from {
+				opacity: 0;
+				transform: translateX(30px);
+			}
+			to {
+				opacity: 1;
+				transform: translateX(0);
+			}
+		}
+
+		@keyframes scaleIn {
+			from {
+				opacity: 0;
+				transform: scale(0.8);
+			}
+			to {
+				opacity: 1;
+				transform: scale(1);
+			}
+		}
+
+		@keyframes bounceIn {
+			0%, 20%, 40%, 60%, 80% {
+				transform: translateY(0);
+			}
+			10%, 30%, 50%, 70% {
+				transform: translateY(-10px);
+			}
+		}
+
+		@keyframes slideInFromTop {
+			from {
+				opacity: 0;
+				transform: translateY(-50px);
+			}
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+
+		@keyframes rotateIn {
+			from {
+				opacity: 0;
+				transform: rotate(-45deg) scale(0.8);
+			}
+			to {
+				opacity: 1;
+				transform: rotate(0deg) scale(1);
+			}
+		}
+
+		@keyframes pulse {
+			0%, 100% {
+				transform: scale(1);
+			}
+			50% {
+				transform: scale(1.05);
+			}
+		}
+
+		/* Enhanced Theme Transition */
+		.theme-transition * {
+			transition: all 0.3s ease !important;
+		}
+
+		/* Navbar Scroll Animation */
+		.navbar.scrolled {
+			background: rgba(255, 255, 255, 0.95) !important;
+			backdrop-filter: blur(15px);
+			box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+		}
+
+		[data-theme="dark"] .navbar.scrolled {
+			background: rgba(26, 26, 26, 0.95) !important;
+			box-shadow: 0 2px 20px rgba(255, 255, 255, 0.1);
+		}
+
+		/* Section Fade-in on Scroll */
+		section {
+			opacity: 1;
+			transform: translateY(0);
+			transition: all 0.6s ease;
+		}
+
+		/* Button Shine Effect */
+		.btn:hover, .subdomain-btn:hover, .newsletter-btn:hover {
+			overflow: hidden;
+			position: relative;
+		}
+
+		.btn:hover::after, .subdomain-btn:hover::after, .newsletter-btn:hover::after {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: -100%;
+			width: 100%;
+			height: 100%;
+			background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+			animation: shine 0.8s ease-in-out;
+		}
+
+		@keyframes shine {
+			0% { left: -100%; }
+			100% { left: 100%; }
+		}
+
+		/* Image Parallax Effect */
+		.single-about-img img {
+			transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+		}
+
+		.single-about-img:hover img {
+			transform: scale(1.05) rotate(2deg);
+		}
+
+		/* Card Stack Animation */
+		.education-card, .subdomain-card {
+			position: relative;
+			transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+		}
+
+		.education-card:hover, .subdomain-card:hover {
+			transform: translateY(-15px) rotateY(5deg);
+			box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+		}
+
+		/* Skill Bar Animation Enhancement */
+		.skill-progress-redesigned {
+			position: relative;
+			overflow: hidden;
+		}
+
+		.skill-progress-redesigned::after {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: -100%;
+			width: 100%;
+			height: 100%;
+			background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+			animation: progressShine 2s ease-in-out infinite;
+		}
+
+		@keyframes progressShine {
+			0%, 100% { left: -100%; }
+			50% { left: 100%; }
+		}
+
+		/* Text Reveal Animation */
+		.text-reveal {
+			overflow: hidden;
+			position: relative;
+		}
+
+		/* Elegant Cursor Animation */
+		.cursor-glow {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 20px;
+			height: 20px;
+			background: radial-gradient(circle, rgba(243, 156, 18, 0.8) 0%, rgba(243, 156, 18, 0.4) 40%, transparent 70%);
+			border-radius: 50%;
+			pointer-events: none;
+			z-index: 9999;
+			transform: translate(-50%, -50%);
+			transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+			opacity: 0;
+			mix-blend-mode: multiply;
+		}
+
+		[data-theme="dark"] .cursor-glow {
+			background: radial-gradient(circle, rgba(243, 156, 18, 0.6) 0%, rgba(243, 156, 18, 0.3) 40%, transparent 70%);
+			mix-blend-mode: screen;
+		}
+
+		.cursor-trail {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 6px;
+			height: 6px;
+			background: rgba(243, 156, 18, 0.6);
+			border-radius: 50%;
+			pointer-events: none;
+			z-index: 9998;
+			transform: translate(-50%, -50%);
+			opacity: 0;
+			transition: opacity 0.15s ease-out;
+		}
+
+		[data-theme="dark"] .cursor-trail {
+			background: rgba(243, 156, 18, 0.8);
+		}
+
+		/* Enhanced cursor on interactive elements */
+		.cursor-glow.enhanced {
+			width: 40px;
+			height: 40px;
+			background: radial-gradient(circle, rgba(243, 156, 18, 0.6) 0%, rgba(243, 156, 18, 0.2) 50%, transparent 80%);
+		}
+
+		[data-theme="dark"] .cursor-glow.enhanced {
+			background: radial-gradient(circle, rgba(243, 156, 18, 0.8) 0%, rgba(243, 156, 18, 0.3) 50%, transparent 80%);
+		}
+
+		/* Hide cursor effects on touch devices */
+		@media (hover: none) and (pointer: coarse) {
+			.cursor-glow,
+			.cursor-trail {
+				display: none !important;
+			}
+		}
+
+		/* Reduce motion for accessibility */
+		@media (prefers-reduced-motion: reduce) {
+			.cursor-glow,
+			.cursor-trail {
+				transition: none !important;
+				animation: none !important;
+			}
+		}
+
+		/* Resume Download Modal Styles */
+		#resumeDownloadModal .modal-content {
+			border: none;
+			border-radius: 15px;
+			box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+		}
+
+		#resumeDownloadModal .modal-header {
+			border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+			padding: 1.5rem 1.5rem 1rem;
+		}
+
+		#resumeDownloadModal .modal-title {
+			color: #f39c12;
+			font-weight: 600;
+		}
+
+		#resumeDownloadModal .modal-body {
+			padding: 1.5rem;
+		}
+
+		#resumeDownloadModal .modal-footer {
+			border-top: 1px solid rgba(0, 0, 0, 0.1);
+			padding: 1rem 1.5rem 1.5rem;
+		}
+
+		#resumeDownloadModal .btn {
+			border-radius: 8px;
+			padding: 0.6rem 1.5rem;
+			font-weight: 500;
+			transition: all 0.3s ease;
+		}
+
+		#resumeDownloadModal .btn-primary {
+			background: linear-gradient(135deg, #f39c12, #e67e22);
+			border: none;
+		}
+
+		#resumeDownloadModal .btn-primary:hover {
+			background: linear-gradient(135deg, #e67e22, #d35400);
+			transform: translateY(-2px);
+			box-shadow: 0 5px 15px rgba(243, 156, 18, 0.3);
+		}
+
+		#resumeDownloadModal .btn-secondary {
+			background-color: #6c757d;
+			border: none;
+		}
+
+		#resumeDownloadModal .btn-secondary:hover {
+			background-color: #5a6268;
+			transform: translateY(-2px);
+		}
+
+		#resumeDownloadModal .alert-info {
+			background-color: rgba(243, 156, 18, 0.1);
+			border-color: rgba(243, 156, 18, 0.3);
+			color: #856404;
+			border-radius: 8px;
+		}
+
+		[data-theme="dark"] #resumeDownloadModal .modal-content {
+			background-color: #2c2c2c;
+			color: #e0e0e0;
+		}
+
+		[data-theme="dark"] #resumeDownloadModal .modal-header,
+		[data-theme="dark"] #resumeDownloadModal .modal-footer {
+			border-color: rgba(255, 255, 255, 0.1);
+		}
+
+		[data-theme="dark"] #resumeDownloadModal .alert-info {
+			background-color: rgba(243, 156, 18, 0.2);
+			border-color: rgba(243, 156, 18, 0.4);
+			color: #ffd700;
+		}
+
+		[data-theme="dark"] #resumeDownloadModal .btn-close {
+			filter: invert(1);
+		}
+
+		.text-reveal::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: var(--primary-yellow);
+			transform: translateX(-100%);
+			animation: reveal 1s ease-in-out;
+		}
+
+		@keyframes reveal {
+			0% { transform: translateX(-100%); }
+			100% { transform: translateX(100%); }
+		}
+
+		/* Floating Elements */
+		.floating {
+			animation: floating 3s ease-in-out infinite;
+		}
+
+		@keyframes floating {
+			0%, 100% { transform: translateY(0px); }
+			50% { transform: translateY(-10px); }
+		}
+
+		/* Gradient Text Animation */
+		.gradient-text {
+			background: linear-gradient(45deg, var(--primary-yellow), var(--primary-yellow-dark), var(--warm-yellow));
+			background-size: 300% 300%;
+			background-clip: text;
+			-webkit-background-clip: text;
+			color: transparent;
+			animation: gradientShift 3s ease infinite;
+		}
+
+		@keyframes gradientShift {
+			0%, 100% { background-position: 0% 50%; }
+			50% { background-position: 100% 50%; }
+		}
+
+		/* Mobile Animation Optimizations */
+		@media (max-width: 768px) {
+			/* Reduce motion for mobile performance */
+			.hover-lift:hover {
+				transform: translateY(-3px);
+			}
+			
+			.education-card:hover, .subdomain-card:hover {
+				transform: translateY(-5px);
+			}
+			
+			/* Disable complex animations on mobile */
+			.parallax-element {
+				transform: none !important;
+			}
+		}
+
+		/* Accessibility: Respect prefers-reduced-motion */
+		@media (prefers-reduced-motion: reduce) {
+			* {
+				animation-duration: 0.01ms !important;
+				animation-iteration-count: 1 !important;
+				transition-duration: 0.01ms !important;
+				scroll-behavior: auto !important;
+			}
+			
+			.parallax-element {
+				transform: none !important;
+			}
+		}
+	</style>
+	
+	<!-- Google Analytics (GA4) -->
+	{% if seo.google_analytics_id %}
+	<script async src="https://www.googletagmanager.com/gtag/js?id={{ seo.google_analytics_id }}"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', '{{ seo.google_analytics_id }}', {
+			page_title: '{{ seo.title if seo else "Lusan Sapkota Portfolio" }}',
+			page_location: window.location.href,
+			send_page_view: true,
+			enhanced_measurement: true,
+			custom_map: {
+				'custom_dimension_1': 'page_category',
+				'custom_dimension_2': 'user_type'
+			}
+		});
+		
+		// Enhanced tracking for portfolio interactions
+		gtag('event', 'page_view', {
+			page_title: '{{ seo.title if seo else "Lusan Sapkota Portfolio" }}',
+			page_location: window.location.href,
+			content_group1: 'Portfolio',
+			content_group2: 'Homepage'
+		});
+	</script>
+	{% endif %}
+	
+	<!-- Google Tag Manager -->
+	{% if seo.google_tag_manager_id %}
+	<script>
+		(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+		new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+		j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+		'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+		})(window,document,'script','dataLayer','{{ seo.google_tag_manager_id }}');
+	</script>
+	{% endif %}
+	
+	<!-- Facebook Pixel -->
+	{% if seo.facebook_pixel_id %}
+	<script>
+		!function(f,b,e,v,n,t,s)
+		{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+		n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+		if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+		n.queue=[];t=b.createElement(e);t.async=!0;
+		t.src=v;s=b.getElementsByTagName(e)[0];
+		s.parentNode.insertBefore(t,s)}(window, document,'script',
+		'https://connect.facebook.net/en_US/fbevents.js');
+		fbq('init', '{{ seo.facebook_pixel_id }}');
+		fbq('track', 'PageView');
+	</script>
+	<noscript>
+		<img height="1" width="1" style="display:none"
+			 src="https://www.facebook.com/tr?id={{ seo.facebook_pixel_id }}&ev=PageView&noscript=1"/>
+	</noscript>
+	{% endif %}
+	
+	<!-- LinkedIn Insight Tag -->
+	<script type="text/javascript">
+		_linkedin_partner_id = "5849652";
+		window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];
+		window._linkedin_data_partner_ids.push(_linkedin_partner_id);
+		(function(l) {
+			if (!l){window.lintrk = function(a,b){window.lintrk.q.push([a,b])};
+			window.lintrk.q=[]}
+			var s = document.getElementsByTagName("script")[0];
+			var b = document.createElement("script");
+			b.type = "text/javascript";b.async = true;
+			b.src = "https://snap.licdn.com/li.lms-analytics/insight.min.js";
+			s.parentNode.insertBefore(b, s);
+		})(window.lintrk);
+	</script>
+	<noscript>
+		<img height="1" width="1" style="display:none;" alt="" src="https://px.ads.linkedin.com/collect/?pid=5849652&fmt=gif" />
+	</noscript>
+	
+	<!-- Performance and Error Monitoring -->
+	<script>
+		// Performance monitoring
+		window.addEventListener('load', function() {
+			if ('performance' in window) {
+				const perfData = {
+					loadTime: performance.timing.loadEventEnd - performance.timing.navigationStart,
+					domReady: performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart,
+					firstPaint: performance.getEntriesByType('paint')[0]?.startTime || 0
+				};
+				
+				// Send performance data if analytics is available
+				if (typeof gtag !== 'undefined') {
+					gtag('event', 'timing_complete', {
+						name: 'load',
+						value: Math.round(perfData.loadTime),
+						custom_parameter_1: Math.round(perfData.domReady),
+						custom_parameter_2: Math.round(perfData.firstPaint)
+					});
+				}
+			}
+		});
+		
+		// Error tracking
+		window.addEventListener('error', function(e) {
+			if (typeof gtag !== 'undefined') {
+				gtag('event', 'exception', {
+					description: e.message + ' at ' + e.filename + ':' + e.lineno,
+					fatal: false
+				});
+			}
+		});
+		
+		// Unhandled promise rejection tracking
+		window.addEventListener('unhandledrejection', function(e) {
+			if (typeof gtag !== 'undefined') {
+				gtag('event', 'exception', {
+					description: 'Unhandled Promise Rejection: ' + e.reason,
+					fatal: false
+				});
+			}
+		});
+	</script>
+	
+	<!-- Service Worker Registration for PWA -->
+	<script>
+		if ('serviceWorker' in navigator) {
+			window.addEventListener('load', function() {
+				navigator.serviceWorker.register('/sw.js')
+					.then(function(registration) {
+						console.log('ServiceWorker registration successful');
+					})
+					.catch(function(err) {
+						console.log('ServiceWorker registration failed');
+					});
+			});
+		}
+	</script>
+	
+	<!-- JSON-LD Rich Snippets for Enhanced SERP Appearance -->
+	<script type="application/ld+json">
+	{
+		"@context": "https://schema.org",
+		"@type": "FAQPage",
+		"mainEntity": [
+			{
+				"@type": "Question",
+				"name": "What technologies does Lusan Sapkota specialize in?",
+				"acceptedAnswer": {
+					"@type": "Answer",
+					"text": "Lusan Sapkota specializes in Python, JavaScript, TypeScript, React, Next.js, Django, Flask, AI/ML technologies, graph algorithms, and modern web development frameworks."
+				}
+			},
+			{
+				"@type": "Question", 
+				"name": "Where is Lusan Sapkota located?",
+				"acceptedAnswer": {
+					"@type": "Answer",
+					"text": "Lusan Sapkota is based in Kathmandu, Nepal and works with clients worldwide."
+				}
+			},
+			{
+				"@type": "Question",
+				"name": "What type of projects does Lusan Sapkota work on?",
+				"acceptedAnswer": {
+					"@type": "Answer",
+					"text": "Lusan works on full-stack web applications, AI/ML solutions, mobile applications, e-commerce platforms, and open-source projects featuring modern technologies."
+				}
+			}
+		]
+	}
+	</script>
 </head>
 
 	
 	<body>
+		<!-- Elegant Cursor Animation -->
+		<div class="cursor-glow" id="cursorGlow"></div>
+		
+		<!-- Page Loader -->
+		<div class="page-loader" id="pageLoader">
+			<div class="loader-spinner"></div>
+		</div>
+
 		<!-- top-area Start -->
 		<header class="top-area">
 			<div class="header-area">
 				<!-- Start Navigation -->
-			    <nav class="navbar navbar-default bootsnav navbar-fixed dark no-background">
-
-			        <div class="container">
-
-			            <!-- Start Header Navigation -->
-			            <div class="navbar-header">
-			                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
-			                    <i class="fa fa-bars"></i>
-			                </button>
-							<a href="{{ url_for('index') }}" class="navbar-brand">
-								<img src="{{ url_for('static', filename='assets/logo/logo.png') }}" alt="logo" width="60" height="50">
-							</a>							
-			            </div><!--/.navbar-header-->
-			            <!-- End Header Navigation -->
-
-			            <!-- Collect the nav links, forms, and other content for toggling -->
-			            <div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
-			                <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
-			                <li class=" smooth-menu active"></li>
-			                    <li class="smooth-menu"><a href="#about">About</a></li>
-			                    <li class="smooth-menu"><a href="#education">Education</a></li>
-			                    <li class="smooth-menu"><a href="#skills">Skills</a></li>
-			                    <li class="smooth-menu"><a href="#experience">Experience</a></li>
-			                    <li class="smooth-menu"><a href="#profiles">Profile</a></li>
-			                    <li class="smooth-menu"><a href="#portfolio">Portfolio</a></li>
-			                    <li class="smooth-menu"><a href="#contact">Contact</a></li>
-			                </ul><!--/.nav -->
-			            </div><!-- /.navbar-collapse -->
-			        </div><!--/.container-->
-			    </nav><!--/nav-->
-			    <!-- End Navigation -->
+				<nav class="navbar navbar-expand-lg navbar-light bootsnav">
+				  <div class="container">
+				    <!-- Logo -->
+				    <a href="{{ url_for('index') }}" class="navbar-brand">
+				      <img src="{{ url_for('static', filename='assets/logo/logo.png') }}" alt="logo" width="60" height="40" class="logo-animation">
+				    </a>
+				    
+				    <!-- Mobile Toggle Button -->
+				    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+				            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+				      <span class="navbar-toggler-icon"></span>
+				    </button>
+				    
+				    <!-- Navigation Links -->
+				    <div class="collapse navbar-collapse" id="navbarNav">
+				      <ul class="navbar-nav ms-auto">
+				        <li class="nav-item">
+				          <a class="nav-link smooth-menu" href="#subdomains">Platforms</a>
+				        </li>
+				        <li class="nav-item">
+				          <a class="nav-link smooth-menu" href="#about">About</a>
+				        </li>
+				        <li class="nav-item">
+				          <a class="nav-link smooth-menu" href="#education">Education</a>
+				        </li>
+				        <li class="nav-item">
+				          <a class="nav-link smooth-menu" href="#skills">Skills</a>
+				        </li>
+				        <li class="nav-item">
+				          <a class="nav-link smooth-menu" href="#experience">Experience</a>
+				        </li>
+				        <li class="nav-item">
+				          <a class="nav-link smooth-menu" href="#profiles">Profile</a>
+				        </li>
+				        <li class="nav-item">
+				          <a class="nav-link smooth-menu" href="#portfolio">Portfolio</a>
+				        </li>
+				        <li class="nav-item">
+				          <a class="nav-link smooth-menu" href="#testimonials">Testimonials</a>
+				        </li>
+				        <li class="nav-item">
+				          <a class="nav-link smooth-menu" href="#contact">Contact</a>
+				        </li>
+				        <li class="nav-item theme-toggle-wrapper">
+				          <button type="button" class="btn btn-link nav-link theme-toggle" id="theme-toggle">
+				            <i class="fas fa-moon"></i>
+				            <i class="fas fa-sun"></i>
+				          </button>
+				        </li>
+				      </ul>
+				    </div>
+				  </div>
+				</nav><!--/nav-->
+				<!-- End Navigation -->
 			</div><!--/.header-area-->
 
 		    <div class="clearfix"></div>
@@ -335,27 +1176,117 @@
 		<!-- top-area End -->
 	
 		<!--welcome-hero start -->
-		<section id="welcome-hero" class="welcome-hero">
+		<section id="welcome-hero" class="welcome-hero" data-aos="fade-up" data-aos-duration="1200">
 			<div class="container">
 				<div class="row">
 					<div class="col-md-12 text-center">
 						<div class="header-text">
-							<h2>hi <span>,</span> i am <br> Lusan <br> Sapkota <span>.</span>   </h2>
-							<p>Full Stack Software Developer from Nepal &#x1F1F3;&#x1F1F5;.
+							<h2 data-aos="fade-up" data-aos-delay="300">hi <span>,</span> i am <br> Lusan <br> Sapkota <span>.</span>   </h2>
+							<p data-aos="fade-up" data-aos-delay="600">Full Stack Software Developer from Nepal &#x1F1F3;&#x1F1F5;.
 							</p>
-							<a href="{{ url_for('static', filename='assets/download/Lusan.pdf') }}" download>Download Resume</a>
-							<a href="#contact">Hire Me</a>
+							<div data-aos="fade-up" data-aos-delay="900">
+								<a href="javascript:void(0)" class="hover-lift resume-download-btn" data-resume-url="{{ url_for('static', filename='assets/download/Lusan_Sapkota_Resume.txt') }}">Download Resume</a>
+								<a href="#contact" class="hover-lift">Hire Me</a>
+							</div>
 						</div><!--/.header-text-->
 					</div><!--/.col-->
 				</div><!-- /.row-->
 			</div><!-- /.container-->
 
+			<div class="scroll-indicator" data-aos="bounce-in" data-aos-delay="1200">
+				<i class="fas fa-chevron-down"></i>
+				<span class="scroll-indicator-text">Scroll</span>
+			</div>
 		</section><!--/.welcome-hero-->
 		<!--welcome-hero end -->
 
+		<!-- Subdomain Navigation Section Start -->
+		<section class="subdomain-nav" id="subdomains" data-aos="fade-up" data-aos-duration="800">
+			<div class="container">
+				<div class="subdomain-title" data-aos="fade-up" data-aos-delay="200">
+					<h2>Explore My Digital Ecosystem</h2>
+					<p>Discover specialized platforms designed to showcase different aspects of my work and expertise. Each subdomain offers a unique experience tailored to specific interests and professional needs.</p>
+				</div>
+				
+				<div class="subdomain-grid">
+					{% if subdomains %}
+						{% for key, subdomain in subdomains.items() %}
+						<div class="subdomain-card hover-lift" data-subdomain="{{ key }}" tabindex="0" role="button" aria-label="Navigate to {{ subdomain.title }}" data-aos="fade-up" data-aos-delay="{{ loop.index * 150 }}">
+							<div class="subdomain-icon">
+								<i class="{{ subdomain.icon }}"></i>
+							</div>
+							<h3>{{ subdomain.title }}</h3>
+							<p>{{ subdomain.description }}</p>
+							<a href="{{ url_for('{}.index'.format(key)) }}" class="subdomain-btn" data-subdomain="{{ key }}">
+								<span>
+									{% if key == 'wiki' %}Explore Wiki
+									{% elif key == 'git' %}View Code
+									{% elif key == 'donation' %}Support Work
+									{% elif key == 'store' %}Visit Store
+									{% else %}Visit {{ subdomain.title }}
+									{% endif %}
+								</span>
+								<i class="fas fa-arrow-right"></i>
+							</a>
+						</div>
+						{% endfor %}
+					{% else %}
+					<!-- Fallback static content if config is not available -->
+					<div class="subdomain-card hover-lift" onclick="navigateToWiki()" tabindex="0" role="button" aria-label="Navigate to Wiki platform" data-aos="fade-up" data-aos-delay="150">
+						<div class="subdomain-icon">
+							<i class="fas fa-book-open"></i>
+						</div>
+						<h3>Knowledge Wiki</h3>
+						<p>Comprehensive documentation, tutorials, and technical articles covering web development, app development, AI/ML, and cutting-edge technologies. A curated knowledge base for developers and tech enthusiasts.</p>
+						<a href="{{url_for('wiki.index')}}" class="subdomain-btn" onclick="navigateToWiki(); return false;">
+							<span>Explore Wiki</span>
+							<i class="fas fa-arrow-right"></i>
+						</a>
+					</div>
+					
+					<div class="subdomain-card hover-lift" onclick="navigateToGit()" tabindex="0" role="button" aria-label="Navigate to Git repositories" data-aos="fade-up" data-aos-delay="300">
+						<div class="subdomain-icon">
+							<i class="fab fa-git-alt"></i>
+						</div>
+						<h3>Code Repository</h3>
+						<p>Browse through my open-source projects, code samples, and collaborative development work. Featuring clean, well-documented code with modern development practices.</p>
+						<a href="{{url_for('git.index')}}" class="subdomain-btn" onclick="navigateToGit(); return false;">
+							<span>View Code</span>
+							<i class="fas fa-arrow-right"></i>
+						</a>
+					</div>
+					
+					<div class="subdomain-card hover-lift" onclick="navigateToDonation()" tabindex="0" role="button" aria-label="Navigate to Donation platform" data-aos="fade-up" data-aos-delay="450">
+						<div class="subdomain-icon">
+							<i class="fas fa-heart"></i>
+						</div>
+						<h3>Support Platform</h3>
+						<p>Support my open-source work and community contributions. Your donations help me create more valuable content, tools, and educational resources for the developer community.</p>
+						<a href="{{url_for('donation.index')}}" class="subdomain-btn" onclick="navigateToDonation(); return false;">
+							<span>Support Work</span>
+							<i class="fas fa-arrow-right"></i>
+						</a>
+					</div>
+					<div class="subdomain-card hover-lift" onclick="navigateToStore()" tabindex="0" role="button" aria-label="Navigate to Online Store" data-aos="fade-up" data-aos-delay="600">
+						<div class="subdomain-icon">
+							<i class="fas fa-shopping-cart"></i>
+						</div>
+						<h3>Online Store</h3>
+						<p>Browse and purchase digital products, courses, and exclusive content. Secure payments and instant delivery.</p>
+						<a href="{{ url_for('store.index') }}" class="subdomain-btn" onclick="navigateToStore(); return false;">
+							<span>Visit Store</span>
+							<i class="fas fa-arrow-right"></i>
+						</a>
+					</div>
+					{% endif %}
+				</div>
+			</div>
+		</section>
+		<!-- Subdomain Navigation Section End -->
+
 		<!--about start -->
-		<section id="about" class="about">
-			<div class="section-heading text-center">
+		<section id="about" class="about" data-aos="fade-up" data-aos-duration="800">
+			<div class="section-heading text-center" data-aos="fade-up" data-aos-delay="200">
 				<h2>about me</h2>
 			</div>
 			<div class="container">
@@ -373,7 +1304,7 @@
 									<div class="col-sm-4">
 										<div class="single-about-add-info">
 											<h3>phone</h3>
-											<p><a href="tel:+9779848189845">+977-9848189845</a></p>
+											<p><a href="tel:+9779848189845">Available upon request</a></p>
 											
 										</div>
 									</div>
@@ -392,11 +1323,6 @@
 								<div class="about-list-icon">
 									<ul>
 										<li>
-											<a href="https://web.facebook.com/lusan.sapkota.1">
-												<i  class="fab fa-facebook" aria-hidden="true"></i>
-											</a>
-										</li><!-- / li -->
-										<li>
 											<a href="https://github.com/Lusan-sapkota">
 												<i  class="fab fa-github" aria-hidden="true"></i>
 											</a>
@@ -404,7 +1330,7 @@
 										</li><!-- / li -->
 										<li>
 											<a href="https://x.com/LusanSapkota">
-												<i  class="fab fa-twitter" aria-hidden="true"></i>
+												<i  class="fab fa-x-twitter" aria-hidden="true"></i>
 											</a>
 											
 										</li><!-- / li -->
@@ -413,17 +1339,6 @@
 												<i  class="fab fa-linkedin" aria-hidden="true"></i>
 											</a>
 										</li><!-- / li -->
-										<li>
-											<a href="https://www.instagram.com/sapkotalusan/">
-												<i  class="fab fa-instagram" aria-hidden="true"></i>
-											</a>
-										</li><!-- / li -->
-										<li>
-											<a href="mailto:sapkotalusan@gmail.com">
-												<i  class="fa fa-envelope" aria-hidden="true"></i>
-											</a>
-										</li><!-- / li -->
-										
 										
 									</ul><!-- / ul -->
 								</div><!-- /.about-list-icon -->
@@ -438,983 +1353,997 @@
 		<!--about end -->
 		
 		<!--education start -->
-		<section id="education" class="education">
-			<div class="section-heading text-center">
-				<h2>education</h2>
-			</div>
+		<section id="education" class="education" data-aos="fade-up" data-aos-duration="800">
 			<div class="container">
-				<div class="education-horizontal-timeline">
+				<div class="section-heading text-center" data-aos="fade-up" data-aos-delay="200">
+					<h2>Education Journey</h2>
+					<p class="section-subtitle">Academic achievements and learning milestones</p>
+				</div>
+				
+				<div class="education-timeline">
 					<div class="row">
-						<div class="col-sm-4">
-							<div class="single-horizontal-timeline">
-								<div class="experience-time">
-									<h2>2023 - 2027</h2>
-									<h3>Bachelors <span>in </span> Information Technology</h3>
-								</div><!--/.experience-time-->
-								<div class="timeline-horizontal-border">
-									<i class="fa fa-circle" aria-hidden="true"></i>
-									<span class="single-timeline-horizontal"></span>
+						<div class="col-lg-4 col-md-6 mb-4">
+							<div class="education-card card-base hover-lift" data-aos="fade-up" data-aos-delay="400">
+								<div class="education-header">
+									<div class="education-year">2023 - 2027</div>
+									<div class="education-degree">
+										<i class="fas fa-graduation-cap"></i>
+										<h3>Bachelor's in IT</h3>
+									</div>
 								</div>
-								<div class="timeline">
-									<div class="timeline-content">
-										<h4 class="title">
-											Texas International College
-										</h4>
-										<h5>GPA -: running 3rd sem</h5>
-										<h5>Sifal, Kathmandu</h5>
-										<p class="description">
-											Lincoln University, in partnership with Texas affiliates, offers the BIT program, a unique blend of theoretical and practical knowledge. This curriculum is designed to equip students with the essential skills needed to thrive in the fast-evolving tech industry.
-										</p>
-									</div><!--/.timeline-content-->
-								</div><!--/.timeline-->
+								<div class="education-content">
+									<h4>Texas International College</h4>
+									<div class="education-details">
+										<span class="location"><i class="fas fa-map-marker-alt"></i> Sifal, Kathmandu</span>
+										<span class="gpa"><i class="fas fa-star"></i> Currently in 4th Semester</span>
+									</div>
+									<p>Lincoln University partnership program combining theoretical knowledge with practical skills for the evolving tech industry.</p>
+									<div class="education-tags">
+										<span class="edu-tag">Information Technology</span>
+										<span class="edu-tag">Software Development</span>
+									</div>
+								</div>
 							</div>
 						</div>
-						<div class="col-sm-4">
-							<div class="single-horizontal-timeline">
-								<div class="experience-time">
-									<h2>2021 - 2023</h2>
-									<h3> National Examination Board <span>(+2)</span></h3>
-								</div><!--/.experience-time-->
-								<div class="timeline-horizontal-border">
-									<i class="fa fa-circle" aria-hidden="true"></i>
-									<span class="single-timeline-horizontal"></span>
+
+						<div class="col-lg-4 col-md-6 mb-4">
+							<div class="education-card card-base hover-lift" data-aos="fade-up" data-aos-delay="550">
+								<div class="education-header">
+									<div class="education-year">2021 - 2023</div>
+									<div class="education-degree">
+										<i class="fas fa-certificate"></i>
+										<h3>Higher Secondary (+2)</h3>
+									</div>
 								</div>
-								<div class="timeline">
-									<div class="timeline-content">
-										<h4 class="title">
-											Mansalu World College
-										</h4>
-										<h5>GPA -: 3.48</h5>
-										<h5>Chuchepati, Kathmandu</h5>
-										<p class="description">
-											I chose Physical Science and Computer Science as my major subjects, aiming to build a robust foundation for a successful career in both disciplines. This program provides comprehensive knowledge, preparing me for diverse opportunities in the fields of technology and science.
-										</p>
-									</div><!--/.timeline-content-->
-								</div><!--/.timeline-->
+								<div class="education-content">
+									<h4>Mansalu World College</h4>
+									<div class="education-details">
+										<span class="location"><i class="fas fa-map-marker-alt"></i> Chuchepati, Kathmandu</span>
+										<span class="gpa"><i class="fas fa-star"></i> GPA: 3.48</span>
+									</div>
+									<p>Physical Science and Computer Science major, building a strong foundation for technology and science career paths.</p>
+									<div class="education-tags">
+										<span class="edu-tag">Physical Science</span>
+										<span class="edu-tag">Computer Science</span>
+									</div>
+								</div>
 							</div>
 						</div>
-						<div class="col-sm-4">
-							<div class="single-horizontal-timeline">
-								<div class="experience-time">
-									<h2>2001</h2>
-									<h3>Secondary Education Examination <span>(SEE)</span></h3>
-								</div><!--/.experience-time-->
-								<div class="timeline-horizontal-border">
-									<i class="fa fa-circle" aria-hidden="true"></i>
-									<span class="single-timeline-horizontal spacial-horizontal-line
-									"></span>
+
+						<div class="col-lg-4 col-md-12 mb-4">
+							<div class="education-card card-base hover-lift" data-aos="fade-up" data-aos-delay="700">
+								<div class="education-header">
+									<div class="education-year">2019 - 2021</div>
+									<div class="education-degree">
+										<i class="fas fa-school"></i>
+										<h3>Secondary Education (SEE)</h3>
+									</div>
 								</div>
-								<div class="timeline">
-									<div class="timeline-content">
-										<h4 class="title">
-											Chandikaswori Secondary Boarding School
-										</h4>
-										<h5>GPA -: 3.6</h5>
-										<h5>Gokarneshowr -2, Kathmandu</h5>
-										<p class="description">
-											I opted for Optional Mathematics as a major, recognizing its potential to provide valuable analytical skills and support my future endeavors in both academic and professional contexts.
-										</p>
-									</div><!--/.timeline-content-->
-								</div><!--/.timeline-->
+								<div class="education-content">
+									<h4>Chandikaswori Secondary Boarding School</h4>
+									<div class="education-details">
+										<span class="location"><i class="fas fa-map-marker-alt"></i> Gokarneshowr-2, Kathmandu</span>
+										<span class="gpa"><i class="fas fa-star"></i> GPA: 3.6</span>
+									</div>
+									<p>Optional Mathematics major, developing analytical skills and mathematical foundation for future academic pursuits.</p>
+									<div class="education-tags">
+										<span class="edu-tag">Mathematics</span>
+										<span class="edu-tag">Science</span>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-
 		</section><!--/.education-->
 		<!--education end -->
 
-		<section id="skills" class="skills">
-			<div class="skill-content">
-				<div class="section-heading text-center">
-					<h2>Skills</h2>
-				</div>
-				<div class="container">
-					<div class="row">
-						<!-- First Column -->
+		<!--skills start -->
+    <section id="skills" class="skills-redesigned" data-aos="fade-up" data-aos-duration="800">
+        <div class="container">
+            <!-- Section Header -->
+            <div class="skills-header">
+                <div class="section-heading text-center" data-aos="fade-up" data-aos-delay="200">
+                    <h2>Technical Skills</h2>
+                    <p class="section-subtitle">Expertise across the full development stack</p>
+                </div>
+            </div>
 
-						<div class="col-md-6">
-							<div class="section-heading text-center">
-								<h2>Languages</h2>
+            <!-- Skills Content -->
+            <div class="skills-redesigned-content">
+				<div class="skills-categories-grid">
+					<!-- Programming Languages -->
+					<div class="skill-category-redesigned">
+						<div class="category-header-redesigned">
+							<div class="category-icon-redesigned">
+								<i class="fas fa-code"></i>
 							</div>
-							<div class="single-skill-content">
-								<!-- Python -->
-								<div class="barWrapper">
-									<span class="progressText">
-										<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--python.svg')}}" alt="Python Logo" class="logo-icon-lan"> Python
-									</span>
-									<div class="single-progress-txt">
-										<div class="progress">
-											<div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="10" aria-valuemax="100"></div>
-										</div>
-										<h3>90%</h3>
-									</div>
-								</div>
-								<!-- JavaScript -->
-								<div class="barWrapper">
-									<span class="progressText">
-										<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--javascript.svg')}}" alt="JavaScript Logo" class="logo-icon-lan"> JavaScript
-									</span>
-									<div class="single-progress-txt">
-										<div class="progress">
-											<div class="progress-bar" role="progressbar" aria-valuenow="85" aria-valuemin="10" aria-valuemax="100"></div>
-										</div>
-										<h3>85%</h3>
-									</div>
-								</div>
-								<!-- HTML5 -->
-								<div class="barWrapper">
-									<span class="progressText">
-										<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--html-5.svg')}}" alt="HTML5 Logo" class="logo-icon-lan"> HTML5
-									</span>
-									<div class="single-progress-txt">
-										<div class="progress">
-											<div class="progress-bar" role="progressbar" aria-valuenow="97" aria-valuemin="10" aria-valuemax="100"></div>
-										</div>
-										<h3>97%</h3>
-									</div>
-								</div>
-								<!-- CSS3 Animation -->
-								<div class="barWrapper">
-									<span class="progressText">
-										<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--css-3.svg')}}" alt="CSS3 Logo" class="logo-icon-lan"> CSS3
-									</span>
-									<div class="single-progress-txt">
-										<div class="progress">
-											<div class="progress-bar" role="progressbar" aria-valuenow="85" aria-valuemin="10" aria-valuemax="100"></div>
-										</div>
-										<h3>85%</h3>
-									</div>
-								</div>
-								<!-- MySQL -->
-								<div class="barWrapper">
-									<span class="progressText">
-										<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--mysql-icon.svg')}}" alt="SQL Logo" class="logo-icon-lan"> SQL
-									</span>
-									<div class="single-progress-txt">
-										<div class="progress">
-											<div class="progress-bar" role="progressbar" aria-valuenow="85" aria-valuemin="10" aria-valuemax="100"></div>
-										</div>
-										<h3>85%</h3>
-									</div>
-								</div>
-								<!-- PHP -->
-								<div class="barWrapper">
-									<span class="progressText">
-										<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--php.svg')}}" alt="PHP Logo" class="logo-icon-lan"> PHP
-									</span>
-									<div class="single-progress-txt">
-										<div class="progress">
-											<div class="progress-bar" role="progressbar" aria-valuenow="75" aria-valuemin="10" aria-valuemax="100"></div>
-										</div>
-										<h3>75%</h3>
-									</div>
-								</div>
-							</div>
-							<!-- New Section for Other Tools -->
-						<div class="col-md-12">
-								<div class="section-heading text-center">
-									<h2>Explore my soft skills, tools, and current learning journey.</h2>
-								</div>
-								<div class="button-group row single-skill-content text-center">
-									<!-- Button 2: "What I'm Learning" -->
-									<button class="btn btn-success btn-lg" data-toggle="modal" data-target="#learningModal">
-										I'm Learning
-									</button>
-									<!-- Button 1: "Other Tools I Know" -->
-									<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#otherToolsModal">
-										Other tools
-									</button>
-									<!-- Button 3: "Soft Skills" -->
-									<button class="btn btn-lg custom-soft-skills" data-toggle="modal" data-target="#softSkillsModal">
-										Soft Skills
-									</button>
-
-								</div>
-								<div class="single-skill-content text-center">
-									<h1>Do click on the buttons above to learn more! (●'◡'●)</h1>
-								</div>
+							<h3>Programming Languages</h3>
 						</div>
-						
-						<div class="modal fade" id="softSkillsModal" aria-hidden="true" aria-labelledby="softSkillsModalToggleLabel" tabindex="-1">
-							<div class="modal-dialog modal-dialog-centered">
-								<div class="modal-content">
-									<!-- Modal Header -->
-									<div class="modal-header text-white" style="background-color: #f39c12;">
-										<h1 class="modal-title fs-4" id="softSkillsModalToggleLabel">
-											<i class="bi bi-person-badge"></i> Soft Skills
-										</h1>
-										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-									</div>
-									<!-- Modal Body -->
-									<div class="modal-body bg-light">
-										<p class="text-muted mb-4 text-center">
-											Here are the key soft skills that drive my professional success:
-										</p>
-										<div class="row">
-											<div class="col-6">
-												<ul class="list-group">
-													<li class="list-group-item"><i class="bi bi-lightbulb"></i> Problem Solving</li>
-													<li class="list-group-item"><i class="bi bi-brush"></i> Creativity</li>
-													<li class="list-group-item"><i class="bi bi-people"></i> Teamwork</li>
-													<li class="list-group-item"><i class="bi bi-arrow-repeat"></i> Adaptability</li>
-												</ul>
-											</div>
-											<div class="col-6">
-												<ul class="list-group">
-													<li class="list-group-item"><i class="bi bi-chat-dots"></i> Communication</li>
-													<li class="list-group-item"><i class="bi bi-clock-history"></i> Time Management</li>
-													<li class="list-group-item"><i class="bi bi-shield-check"></i> Leadership</li>
-													<li class="list-group-item"><i class="bi bi-hand-thumbs-up"></i> Emotional Intelligence</li>
-												</ul>
-											</div>
-										</div>
-									</div>
-									<!-- Modal Footer -->
-									<div class="modal-footer" style="background-color: #f39c12;">
-										<p class="w-100 mb-0 text-light text-center">Excelling in these skills helps me deliver value effectively!</p>
-									</div>
+						<div class="skills-list-redesigned">
+							<div class="skill-item-redesigned expert-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Python: High-level general-purpose programming language with clean syntax and extensive libraries">
+									Python
+								</div>
+								<div class="skill-level-redesigned">Expert</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="90"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned advanced-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="JavaScript: High-level scripting language for web development with dynamic typing and first-class functions">
+									JavaScript
+								</div>
+								<div class="skill-level-redesigned">Advanced</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="85"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned advanced-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="TypeScript: Strongly typed programming language that builds on JavaScript with type safety">
+									TypeScript
+								</div>
+								<div class="skill-level-redesigned">Advanced</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="80"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned expert-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="HTML5/CSS3: Markup and styling languages for creating web content and responsive design">
+									HTML5/CSS3
+								</div>
+								<div class="skill-level-redesigned">Expert</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="95"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned basic-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Go: Statically typed, compiled language designed for simplicity, efficiency, and concurrency">
+									Go
+								</div>
+								<div class="skill-level-redesigned">Basic</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="70"></div>
 								</div>
 							</div>
 						</div>
-						
+					</div>
 
-						<!-- Modal for Other Tools -->
-						<div class="modal fade" id="otherToolsModal" tabindex="-1" role="dialog" aria-labelledby="otherToolsModalLabel" aria-hidden="true">
-							<div class="modal-dialog" role="document">
-								<div class="modal-content">
-									<div class="modal-header bg-primary">
-										<h5 class="modal-title" id="otherToolsModalLabel">Other Tools I Know</h5>
-										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-											<span aria-hidden="true">&times;</span>
-										</button>
-									</div>
-									<div class="modal-body">
-										<div class="row single-skill-content">
-											<!-- Version Control -->
-											<div class="section-heading text-center">
-												<h2 class="text-primary">Version Control</h2>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--git-icon.svg') }}" alt="Git Logo" class="logo-icon">
-														<h5 class="card-title mt-3">Git</h5>
-													</div>
-												</div>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--github.svg') }}" alt="GitHub Logo" class="logo-icon">
-														<h5 class="card-title mt-3">GitHub</h5>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row single-skill-content">
-										
-											<!-- Designing Tools -->
-											<div class="section-heading text-center">
-												<h2 class="text-primary">Designing Tools</h2>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--figma.svg') }}" alt="Figma Logo" class="logo-icon">
-														<h5 class="card-title mt-3">Figma</h5>
-													</div>
-												</div>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--sketch.svg') }}" alt="Sketch Logo" class="logo-icon">
-														<h5 class="card-title mt-3">Sketch</h5>
-													</div>
-												</div>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--canva.svg') }}" alt="Canva Logo" class="logo-icon">
-														<h5 class="card-title mt-3">Canva</h5>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row single-skill-content">
-											<!-- Cloud Services -->
-											<div class="section-heading text-center">
-												<h2 class="text-primary">Cloud Services</h2>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--aws.svg') }}" alt="AWS Logo" class="logo-icon">
-														<h5 class="card-title mt-3">AWS</h5>
-													</div>
-												</div>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--oracle.svg') }}" alt="Firebase Logo" class="logo-icon">
-														<h5 class="card-title mt-3">Oracle</h5>
-													</div>
-												</div>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--digitalocean.svg') }}" alt="Firebase Logo" class="logo-icon">
-														<h5 class="card-title mt-3">Digital Ocean</h5>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row single-skill-content">
-											<!-- Backend as Service -->
-											<div class="section-heading text-center">
-												<h2 class="text-primary">Backend as Service</h2>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--appwrite.svg') }}" alt="Firebase Logo" class="logo-icon">
-														<h5 class="card-title mt-3">Appwrite</h5>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row single-skill-content">
-											<!-- Containers and CI/CD -->
-											<div class="section-heading text-center">
-												<h2 class="text-primary">Containers and CI/CD</h2>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--docker-icon.svg') }}" alt="Docker Logo" class="logo-icon">
-														<h5 class="card-title mt-3">Docker</h5>
-													</div>
-												</div>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--jenkins.svg') }}" alt="Jenkins Logo" class="logo-icon">
-														<h5 class="card-title mt-3">Jenkins</h5>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row single-skill-content">
-											<!-- Database Tools -->
-											<div class="section-heading text-center">
-												<h2 class="text-primary">Database Tools</h2>
-											</div>
-
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--postgresql.svg') }}" alt="PostgreSQL Logo" class="logo-icon">
-														<h5 class="card-title mt-3">PostgreSQL</h5>
-													</div>
-												</div>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--mysql-icon.svg') }}" alt="MySQL Logo" class="logo-icon">
-														<h5 class="card-title mt-3">MySQL</h5>
-													</div>
-												</div>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--mongodb.svg') }}" alt="MongoDB Logo" class="logo-icon">
-														<h5 class="card-title mt-3">MongoDB</h5>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row single-skill-content">
-											<!-- Database Tools -->
-											<div class="section-heading text-center">
-												<h2 class="text-primary">Web Development Tools</h2>
-											</div>
-
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--wordpress.svg') }}" alt="WordPress Logo" class="logo-icon">
-														<h5 class="card-title mt-3">WordPress</h5>
-													</div>
-												</div>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--shopify.svg') }}" alt="Shopify Logo" class="logo-icon">
-														<h5 class="card-title mt-3">Shopify</h5>
-													</div>
-												</div>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--wix.svg') }}" alt="Wix Logo" class="logo-icon">
-														<h5 class="card-title mt-3">Wix</h5>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row single-skill-content">
-											<!-- Miscellaneous -->
-											<div class="section-heading text-center">
-												<h2 class="text-primary">API Tools & Integration</h2>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--rest-api.svg') }}" alt="Rest Api Logo" class="logo-icon">
-														<h5 class="card-title mt-3">Rest Api</h5>
-													</div>
-												</div>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--swagger.svg') }}" alt="GraphQL Logo" class="logo-icon">
-														<h5 class="card-title mt-3">Swagger</h5>
-													</div>
-												</div>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--axios.svg') }}" alt="Axios Logo" class="logo-icon">
-														<h5 class="card-title mt-3">Axios</h5>
-													</div>
-												</div>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--postman.svg') }}" alt="Postman Logo" class="logo-icon">
-														<h5 class="card-title mt-3">Postman</h5>
-													</div>
-												</div>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--graphql.svg') }}" alt="GraphQL Logo" class="logo-icon">
-														<h5 class="card-title mt-3">GraphQL</h5>
-													</div>
-												</div>
-											</div>
-										</div>
-										
-									</div>
-									<div class="modal-footer bg-primary ">
-										<p class="w-100 mb-0 text-light text-center">Excelling in these tools helps me deliver my value effectively! You can Check Out <span data-toggle="modal" data-target="#learningModal" style="color: black;">What I'm Currently Learning as well</span></p>
-									</div>
+					<!-- Frontend Technologies -->
+					<div class="skill-category-redesigned">
+						<div class="category-header-redesigned">
+							<div class="category-icon-redesigned">
+								<i class="fas fa-paint-brush"></i>
+							</div>
+							<h3>Frontend Development</h3>
+						</div>
+						<div class="skills-list-redesigned">
+							<div class="skill-item-redesigned advanced-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="React: JavaScript library for building user interfaces with component-based architecture">
+									React
+								</div>
+								<div class="skill-level-redesigned">Advanced</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="80"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned advanced-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="React Native: Framework for building native mobile applications using React architecture">
+									React Native
+								</div>
+								<div class="skill-level-redesigned">Advanced</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="75"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned intermediate-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Ionic: Framework for building cross-platform mobile applications with web technologies">
+									Ionic
+								</div>
+								<div class="skill-level-redesigned">Intermediate</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="70"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned expert-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Bootstrap/Tailwind: CSS frameworks for responsive, mobile-first design with pre-built components">
+									Bootstrap/Tailwind
+								</div>
+								<div class="skill-level-redesigned">Expert</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="90"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned intermediate-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Vue.js: Progressive JavaScript framework for building user interfaces with reactive data binding">
+									Vue.js
+								</div>
+								<div class="skill-level-redesigned">Intermediate</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="65"></div>
 								</div>
 							</div>
 						</div>
-						
-						<!-- Modal for Learning -->
-						<div class="modal fade" id="learningModal" tabindex="-1" role="dialog" aria-labelledby="learningModalLabel" aria-hidden="true">
-							<div class="modal-dialog" role="document">
-								<div class="modal-content">
-									<div class="modal-header bg-success">
-										<h5 class="modal-title" id="learningModalLabel">What I'm Currently Learning</h5>
-										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-											<span aria-hidden="true">&times;</span>
-										</button>
-									</div>
-									<div class="modal-body">
-										<div class="row single-skill-content">
-											<!-- Version Control -->
-											<div class="section-heading text-center">
-												<h2 class="text-success">Languages</h2>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--typescript.svg') }}" alt="TypeScript Logo" class="logo-icon">
-														<h5 class="card-title mt-3">TypeScript</h5>
-													</div>
-												</div>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--csharp.svg') }}" alt="C# Logo" class="logo-icon">
-														<h5 class="card-title mt-3">C#</h5>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row single-skill-content">
-											<div class="section-heading text-center">
-												<h2 class="text-success">Framework</h2>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--dotnet.svg') }}" alt=".net Logo" class="logo-icon">
-														<h5 class="card-title mt-3">.net</h5>
-													</div>
-												</div>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--expressjs.svg') }}" alt="Expressjs Logo" class="logo-icon">
-														<h5 class="card-title mt-3">Express.js</h5>
-													</div>
-												</div>
-											</div>
-											
-										</div>
-										<div class="row single-skill-content">
-											<div class="section-heading text-center">
-												<h2 class="text-success">Library</h2>
-											</div>
-											<div class="col-sm-4 mb-4">
-												<div class="card text-center shadow-sm framework-card">
-													<div class="card-body">
-														<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--keras.svg') }}" alt="Figma Logo" class="logo-icon">
-														<h5 class="card-title mt-3">Keras</h5>
-													</div>
-												</div>
-											</div>
-											
-										</div>
+					</div>
 
-									</div>
-									<div class="modal-footer bg-success ">
-										<p class="w-100 mb-0 text-dark text-center" style="color: black;">I have the ability to learn multiple technologies and a passion for exploring new onesヾ(⌐■_■)ノ♪! You can Check Out <span data-toggle="modal" data-target="#otherToolsModal" style="color: blue;">What I already know as well</span></p>
-									</div>
+					<!-- Backend Technologies -->
+					<div class="skill-category-redesigned">
+						<div class="category-header-redesigned">
+							<div class="category-icon-redesigned">
+								<i class="fas fa-server"></i>
+							</div>
+							<h3>Backend Development</h3>
+						</div>
+						<div class="skills-list-redesigned">
+							<div class="skill-item-redesigned expert-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Flask: Lightweight micro-framework for building web applications in Python with minimal boilerplate">
+									Flask
+								</div>
+								<div class="skill-level-redesigned">Expert</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="90"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned advanced-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Django: High-level Python web framework with batteries-included architecture and ORM">
+									Django
+								</div>
+								<div class="skill-level-redesigned">Advanced</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="85"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned intermediate-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="FastAPI: Modern, high-performance Python web framework with automatic API documentation">
+									FastAPI
+								</div>
+								<div class="skill-level-redesigned">Intermediate</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="75"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned intermediate-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Node.js: JavaScript runtime for server-side programming with event-driven architecture">
+									Node.js
+								</div>
+								<div class="skill-level-redesigned">Intermediate</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="75"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned basic-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Gin: Lightweight web framework for Go with performance and minimalist design">
+									Gin
+								</div>
+								<div class="skill-level-redesigned">Basic</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="75"></div>
 								</div>
 							</div>
 						</div>
+					</div>
+
+					<!-- Database & DevOps -->
+					<div class="skill-category-redesigned">
+						<div class="category-header-redesigned">
+							<div class="category-icon-redesigned">
+								<i class="fas fa-database"></i>
+							</div>
+							<h3>Database & DevOps</h3>
 						</div>
-						
-						<!-- Second Column -->
-						<div class="row">
-							<!-- Frameworks Section -->
-							<div class="col-md-6">
-								<div class="section-heading text-center">
-									<h2 class="text-primary">Frameworks</h2>
+						<div class="skills-list-redesigned">
+							<div class="skill-item-redesigned advanced-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="MySQL: Relational database management system for structured data storage and retrieval">
+									MySQL
 								</div>
-								<div class="row single-skill-content">
-									<!-- Framework Cards -->
-									<div class="col-sm-6 mb-4">
-										<div class="card text-center shadow-sm framework-card">
-											<div class="card-body">
-												<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--capacitor-js.svg') }}" alt="Angular Logo" class="logo-icon">
-												<h5 class="card-title mt-3">Capacitor</h5>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-6 mb-4">
-										<div class="card text-center shadow-sm framework-card">
-											<div class="card-body">
-												<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--ionic-icon.svg') }}" alt="Ionic Logo" class="logo-icon">
-												<h5 class="card-title mt-3">Ionic Framework</h5>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-6 mb-4">
-										<div class="card text-center shadow-sm framework-card">
-											<div class="card-body">
-												<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--django-icon.svg') }}" alt="Django Logo" class="logo-icon">
-												<h5 class="card-title mt-3">Django</h5>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-6 mb-4">
-										<div class="card text-center shadow-sm framework-card">
-											<div class="card-body">
-												<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--flask.svg') }}" alt="Flask Logo" class="logo-icon">
-												<h5 class="card-title mt-3">Flask</h5>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-6 mb-4">
-										<div class="card text-center shadow-sm framework-card">
-											<div class="card-body">
-												<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--fastapi.svg') }}" alt="FastAPI Logo" class="logo-icon">
-												<h5 class="card-title mt-3">FastAPI</h5>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-6 mb-4">
-										<div class="card text-center shadow-sm framework-card">
-											<div class="card-body">
-												<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--redis.svg') }}" alt="Redis Logo" class="logo-icon">
-												<h5 class="card-title mt-3">Redis</h5>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-6 mb-4">
-										<div class="card text-center shadow-sm framework-card">
-											<div class="card-body">
-												<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--bootstrap.svg') }}" alt="Bootstrap Logo" class="logo-icon">
-												<h5 class="card-title mt-3">Bootstrap 5</h5>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-6 mb-4">
-										<div class="card text-center shadow-sm framework-card">
-											<div class="card-body">
-												<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--tailwindcss-icon.svg') }}" alt="Tailwind Logo" class="logo-icon">
-												<h5 class="card-title mt-3">Tailwind CSS</h5>
-											</div>
-										</div>
-									</div>
+								<div class="skill-level-redesigned">Advanced</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="85"></div>
 								</div>
 							</div>
-						
-							<!-- Libraries Section -->
-							<div class="col-md-6">
-								<div class="section-heading text-center">
-									<h2 class="text-success">Libraries</h2>
+							<div class="skill-item-redesigned intermediate-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="PostgreSQL: Advanced object-relational database with extensive features and extensibility">
+									PostgreSQL
 								</div>
-								<div class="row single-skill-content">
-									<!-- Library Cards -->
-									<div class="col-sm-6 mb-4">
-										<div class="card text-center shadow-sm library-card">
-											<div class="card-body">
-												<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--numpy.svg') }}" alt="NumPy Logo" class="logo-icon">
-												<h5 class="card-title mt-3">NumPy</h5>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-6 mb-4">
-										<div class="card text-center shadow-sm library-card">
-											<div class="card-body">
-												<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--pandas-icon.svg') }}" alt="Pandas Logo" class="logo-icon">
-												<h5 class="card-title mt-3">Pandas</h5>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-6 mb-4">
-										<div class="card text-center shadow-sm library-card">
-											<div class="card-body">
-												<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--scikitlearn.svg') }}" alt="Scikit-learn Logo" class="logo-icon">
-												<h5 class="card-title mt-3">Scikit-learn</h5>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-6 mb-4">
-										<div class="card text-center shadow-sm library-card">
-											<div class="card-body">
-												<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--tensorflow.svg') }}" alt="TensorFlow Logo" class="logo-icon">
-												<h5 class="card-title mt-3">TensorFlow</h5>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-6 mb-4">
-										<div class="card text-center shadow-sm library-card">
-											<div class="card-body">
-												<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--chartjs.svg') }}" alt="Chart.js Logo" class="logo-icon">
-												<h5 class="card-title mt-3">Chart.js</h5>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-6 mb-4">
-										<div class="card text-center shadow-sm library-card">
-											<div class="card-body">
-												<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--matplotlib.svg') }}" alt="Matplotlib Logo" class="logo-icon">
-												<h5 class="card-title mt-3">Matplotlib</h5>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-6 mb-4">
-										<div class="card text-center shadow-sm library-card">
-											<div class="card-body">
-												<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--pytorch.svg') }}" alt="PyTorch Logo" class="logo-icon">
-												<h5 class="card-title mt-3">PyTorch</h5>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-6 mb-4">
-										<div class="card text-center shadow-sm library-card">
-											<div class="card-body">
-												<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--sqlalchemy.svg') }}" alt="SQLAlchemy Logo" class="logo-icon">
-												<h5 class="card-title mt-3">SQLAlchemy</h5>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-6 mb-4">
-										<div class="card text-center shadow-sm library-card">
-											<div class="card-body">
-												<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--react.svg') }}" alt="React Logo" class="logo-icon">
-												<h5 class="card-title mt-3">React.js</h5>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-6 mb-4">
-										<div class="card text-center shadow-sm library-card">
-											<div class="card-body"></div>
-												<img src="{{ url_for('static', filename='assets/images/icon-logos/logos--jquery.svg') }}" alt="jQuery UI Logo" class="logo-icon">
-												<h5 class="card-title mt-3">jQuery UI</h5>
-											</div>
-										</div>
-									</div>
+								<div class="skill-level-redesigned">Intermediate</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="70"></div>
 								</div>
-								<h1 class="text-center">I can do more try me once!😁</h1>
 							</div>
-						</div>						
+							<div class="skill-item-redesigned intermediate-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Docker: Platform for containerization to simplify application deployment and management">
+									Docker
+								</div>
+								<div class="skill-level-redesigned">Intermediate</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="80"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned intermediate-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Azure: Microsoft's cloud computing platform for building, deploying, and managing applications">
+									Azure
+								</div>
+								<div class="skill-level-redesigned">Intermediate</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="85"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned intermediate-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="AWS: Amazon's comprehensive cloud computing platform with numerous services and tools">
+									AWS
+								</div>
+								<div class="skill-level-redesigned">Intermediate</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="75"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned intermediate-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Jenkins: Open-source automation server for continuous integration and continuous delivery">
+									Jenkins
+								</div>
+								<div class="skill-level-redesigned">Intermediate</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="75"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- AI/ML & Data Science -->
+					<div class="skill-category-redesigned">
+						<div class="category-header-redesigned">
+							<div class="category-icon-redesigned">
+								<i class="fas fa-brain"></i>
+							</div>
+							<h3>AI/ML & Data Science</h3>
+						</div>
+						<div class="skills-list-redesigned">
+							<div class="skill-item-redesigned advanced-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="TensorFlow: Open-source library for machine learning and neural network modeling">
+									TensorFlow
+								</div>
+								<div class="skill-level-redesigned">Advanced</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="75"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned expert-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="NumPy & Pandas: Essential libraries for numerical computing and data manipulation in Python">
+									NumPy & Pandas
+								</div>
+								<div class="skill-level-redesigned">Expert</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="85"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned advanced-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Scikit-learn: Machine learning library with comprehensive algorithms for classification and regression">
+									Scikit-learn
+								</div>
+								<div class="skill-level-redesigned">Advanced</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="80"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned intermediate-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="OpenCV: Computer vision library for image and video processing applications">
+									OpenCV
+								</div>
+								<div class="skill-level-redesigned">Intermediate</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="70"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned intermediate-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="XGBoost: Optimized gradient boosting library for high-performance machine learning">
+									XGBoost
+								</div>
+								<div class="skill-level-redesigned">Intermediate</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="70"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- Tools & Operating Systems -->
+					<div class="skill-category-redesigned">
+						<div class="category-header-redesigned">
+							<div class="category-icon-redesigned">
+								<i class="fas fa-tools"></i>
+							</div>
+							<h3>Tools & OS</h3>
+						</div>
+						<div class="skills-list-redesigned">
+							<div class="skill-item-redesigned advanced-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Linux: Family of open-source Unix-like operating systems with kernel-based architecture">
+									Linux
+								</div>
+								<div class="skill-level-redesigned">Advanced</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="90"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned advanced-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="VS Code: Lightweight but powerful source code editor with extensive extension ecosystem">
+									VS Code
+								</div>
+								<div class="skill-level-redesigned">Advanced</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="88"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned advanced-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Postman: API development environment for testing and documenting web services">
+									Postman
+								</div>
+								<div class="skill-level-redesigned">Advanced</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="82"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned intermediate-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Figma: Collaborative interface design tool for creating web and mobile UI/UX">
+									Figma
+								</div>
+								<div class="skill-level-redesigned">Intermediate</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="65"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned advanced-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Jetbrains: Suite of integrated development environments for various programming languages">
+									Jetbrains
+								</div>
+								<div class="skill-level-redesigned">Advanced</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="85"></div>
+								</div>
+							</div>
+							<div class="skill-item-redesigned advanced-redesigned">
+								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Git/Github: Distributed version control system for tracking code changes and collaboration">
+									Git/Github
+								</div>
+								<div class="skill-level-redesigned">Advanced</div>
+								<div class="skill-bar-redesigned">
+									<div class="skill-progress-redesigned" data-progress="85"></div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
-			</div>
-		</section>
-		
-		
+                
+                <!-- Familiar Tools & Concepts -->
+				<div class="familiar-tools-redesigned">
+					<div class="tools-header-redesigned">
+						<h4>Familiar Tools & Concepts</h4>
+						<p>Additional technologies and methodologies I work with </p>
+					</div>
+					
+					<div class="tools-grid-redesigned">
+						
+						<!-- Development Tools -->
+						<div class="tools-category-redesigned">
+							<div class="tools-category-header-redesigned">
+								<i class="fas fa-wrench"></i>
+								<h5>Development Tools</h5>
+							</div>
+							<div class="tools-list-redesigned">
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="My primary coding environment with powerful extensions that boost productivity">Visual Studio Code</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Professional-grade IDEs with intelligent coding assistance for multiple languages">Jetbrains</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Lightning-fast text editor perfect for quick edits and scripting">Sublime Text</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Interactive data science environment for visualization and analysis">Jupyter Notebook</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Command-line text editor that's surprisingly powerful for server-side editing">Nano</span>
+							</div>
+						</div>
+
+						<!-- Version Control -->
+						<div class="tools-category-redesigned">
+							<div class="tools-category-header-redesigned">
+								<i class="fab fa-git-alt"></i>
+								<h5>Version Control</h5>
+							</div>
+							<div class="tools-list-redesigned">
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Track code changes with branching, merging, and history management">Git</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Collaborative development platform for hosting repositories and managing workflows">GitHub</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Complete DevOps platform with CI/CD pipelines and integrated project management">GitLab</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Structured branching strategy for feature development, releases, and hotfixes">Git Flow</span>
+							</div>
+						</div>
+
+						<!-- Testing & Debugging -->
+						<div class="tools-category-redesigned">
+							<div class="tools-category-header-redesigned">
+								<i class="fas fa-bug"></i>
+								<h5>Testing & Debugging</h5>
+							</div>
+							<div class="tools-list-redesigned">
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Isolate and verify individual code components for reliable functionality">Unit Testing</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Python-focused testing framework with simple syntax and powerful assertions">Pytest</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Zero-config JavaScript testing with snapshot capabilities and mocking">Jest</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="API testing platform with request building, automated tests, and documentation">Postman</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Cloud-based cross-browser testing across 3000+ environments">LambdaTest</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Built-in browser toolset for inspecting, debugging, and profiling web apps">Chrome DevTools</span>
+							</div>
+						</div>
+
+						<!-- Package Managers -->
+						<div class="tools-category-redesigned">
+							<div class="tools-category-header-redesigned">
+								<i class="fas fa-cube"></i>
+								<h5>Package Managers</h5>
+							</div>
+							<div class="tools-list-redesigned">
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="World's largest software registry with 1.3M+ JavaScript packages">npm</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Python's preferred package installer with access to 350k+ libraries">pip</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Fast, reliable, and secure dependency management for JavaScript">yarn</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Cross-platform environment manager for data science and ML projects">conda</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Python dev workflow tool combining package and virtual environment management">pipenv</span>
+							</div>
+						</div>
+
+						<!-- Design & UI/UX -->
+						<div class="tools-category-redesigned">
+							<div class="tools-category-header-redesigned">
+								<i class="fas fa-palette"></i>
+								<h5>Design & UI/UX</h5>
+							</div>
+							<div class="tools-list-redesigned">
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Collaborative design platform for prototyping, wireframing and design systems">Figma</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Quick design tool for creating marketing materials and social media assets">Canva</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Google's unified design system for consistent, intuitive experiences">Material Design</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Mobile-first CSS framework with pre-built components and responsive layouts">Bootstrap</span>
+							</div>
+						</div>
+
+						<!-- Operating Systems -->
+						<div class="tools-category-redesigned">
+							<div class="tools-category-header-redesigned">
+								<i class="fas fa-desktop"></i>
+								<h5>Operating Systems</h5>
+							</div>
+							<div class="tools-list-redesigned">
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Developer-friendly Linux distro with vast package repository and strong community">Ubuntu</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Mainstream OS with broad application support and enterprise integration">Windows</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Unix-based system with elegant UI and powerful development capabilities">macOS</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Rock-solid Linux foundation known for stability and security">Debian</span>
+							</div>
+						</div>
+
+						<!-- Cloud Platforms -->
+						<div class="tools-category-redesigned">
+							<div class="tools-category-header-redesigned">
+								<i class="fas fa-cloud"></i>
+								<h5>Cloud Platforms</h5>
+							</div>
+							<div class="tools-list-redesigned">
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="AI-focused cloud platform with powerful data analytics and machine learning tools">Google Cloud</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Enterprise-grade infrastructure with autonomous database capabilities">Oracle</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Developer-friendly PaaS for quick deployments with simplified workflow">Heroku</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Developer-focused cloud platform with straightforward pricing and simplicity">DigitalOcean</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Specialized platform for frontend deployment with built-in CI/CD and previews">Vercel</span>
+							</div>
+						</div>
+
+						<!-- Development Concepts -->
+						<div class="tools-category-redesigned">
+							<div class="tools-category-header-redesigned">
+								<i class="fas fa-lightbulb"></i>
+								<h5>Development Concepts</h5>
+							</div>
+							<div class="tools-list-redesigned">
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Secure token-based authentication for stateless API authorization">JWT</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Industry-standard protocol for secure third-party authentication">OAuth 2.0</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Drop-in authentication solution with multi-provider support">Firebase Auth</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Self-hosted alternative to Firebase with auth, storage, and database services">Appwrite</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Powerful email API for transactional messages and campaigns">Mailgun</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Cloud communications platform for SMS, voice and video integration">Twilio</span>
+							</div>
+						</div>
+
+						<!-- Workflow & Orchestration -->
+						<div class="tools-category-redesigned">
+							<div class="tools-category-header-redesigned">
+								<i class="fas fa-project-diagram"></i>
+								<h5>Workflow & Orchestration</h5>
+							</div>
+							<div class="tools-list-redesigned">
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Container orchestration platform for automated deployment and scaling">Kubernetes</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Agile project management tool with customizable workflows and tracking">Jira</span>
+								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="All-in-one workspace for notes, wikis, projects, and team collaboration">Notion</span>
+							</div>
+						</div>
+
+
+					</div>
+
+					<!-- Call to Action -->
+					<div class="tools-cta-redesigned">
+						<h5>Ready to Collaborate?</h5>
+						<p>Let's discuss how these tools and skills can benefit your next project</p>
+						<a href="#contact" class="tools-cta-button-redesigned">
+							<i class="fas fa-handshake"></i>
+							Start Conversation
+						</a>
+					</div>
+				</div>
+
+            </div>
+        </section><!--/.skills-->
+		<!--skills end -->
 
 		<!--experience start -->
 		<section id="experience" class="experience">
-			<div class="section-heading text-center">
-				<h2>experience</h2>
-			</div>
 			<div class="container">
-				<div class="experience-content">
-						<div class="main-timeline">
-							<ul>
-								<li>
-									<div class="single-timeline-box fix">
-										<div class="row">
-											<div class="col-md-5">
-												<div class="experience-time text-right">
-													<h2>2024 - Present</h2>
-													<h3>Student & Freelancer</h3>
-												</div><!--/.experience-time-->
-											</div><!--/.col-->
-											<div class="col-md-offset-1 col-md-5">
-												<div class="timeline">
-													<div class="timeline-content">
-														<h4 class="title">
-															<span><i class="fa fa-circle" aria-hidden="true"></i></span>
-															Experiencing the technology
-														</h4>
-														<h5>mostly remote</h5>
-														<p class="description">
-															Still Learning but better than before. In terms of freelancing i am still majorly focusing on local projects i.e with clients in the same country. 
-														</p>
-													</div><!--/.timeline-content-->
-												</div><!--/.timeline-->
-											</div><!--/.col-->
+				<div class="section-heading text-center">
+					<h2>Professional Journey</h2>
+					<p class="section-subtitle">Building expertise through learning and practice</p>
+				</div>
+				
+				<div class="experience-timeline">
+					<div class="row justify-content-center">
+						<div class="col-lg-8">
+							<!-- Current Phase -->
+							<div class="timeline-item card-base">
+								<div class="timeline-content">
+									<div class="timeline-header">
+										<h3>Full Stack Developer & Student</h3>
+										<span class="timeline-date">2025 - Present</span>
+									</div>
+									<div class="timeline-location">
+										<i class="fas fa-map-marker-alt"></i>
+										Remote & Nepal
+									</div>
+									<div class="timeline-description">
+										<p>Advancing my skills in modern web technologies while working on diverse freelance projects. Specializing in Python web frameworks, JavaScript development, and exploring AI/ML applications in web development.</p>
+										<div class="timeline-skills">
+											<span class="skill-tag">Flask</span>
+											<span class="skill-tag">Django</span>
+											<span class="skill-tag">React</span>
+											<span class="skill-tag">FastAPI</span>
+											<span class="skill-tag">Docker</span>
+											<span class="skill-tag">Cloud Hosting</span>
 										</div>
-									</div><!--/.single-timeline-box-->
-								</li>
+									</div>
+								</div>
+							</div>
 
-								<li>
-									<div class="single-timeline-box fix">
-										<div class="row">
-											<div class="col-md-offset-1 col-md-5 experience-time-responsive">
-												<div class="experience-time">
-													<h2>
-														<span><i class="fa fa-circle" aria-hidden="true"></i></span>
-														2022 - 2024
-													</h2>
-													<h3>Student & Freelancer</h3>
-												</div><!--/.experience-time-->
-											</div><!--/.col-->
-											<div class="col-md-5">
-												<div class="timeline">
-													<div class="timeline-content text-right">
-														<h4 class="title">
-															Learning the latest technologies
-														</h4>
-														<h5>totaly remote</h5>
-														<p class="description">
-															At this time and phase i was learning the latest technologies with studies side by side. First 1 year of 2022 and three months of 2023 was gone is flash and with 2023 year i started major freelancing. I used to do local projects.
-														</p>
-													</div><!--/.timeline-content-->
-												</div><!--/.timeline-->
-											</div><!--/.col-->
-											<div class="col-md-offset-1 col-md-5 experience-time-main">
-												<div class="experience-time">
-													<h2>
-														<span><i class="fa fa-circle" aria-hidden="true"></i></span>
-														2022 - 2024
-													</h2>
-													<h3>Student & Freelancer</h3>
-												</div><!--/.experience-time-->
-											</div><!--/.col-->
+							<!-- Learning Phase -->
+							<div class="timeline-item card-base">
+								<div class="timeline-content">
+									<div class="timeline-header">
+										<h3>Student & Emerging Developer</h3>
+										<span class="timeline-date">2022 - 2024</span>
+									</div>
+									<div class="timeline-location">
+										<i class="fas fa-map-marker-alt"></i>
+										Remote Learning & Local Projects
+									</div>
+									<div class="timeline-description">
+										<p>Intensive learning phase focusing on modern web technologies while completing academic studies. Built foundation in full-stack development and started taking on local freelance projects.</p>
+										<div class="timeline-achievements">
+											<div class="achievement">
+												<i class="fas fa-check-circle"></i>
+												<span>Mastered Python web frameworks</span>
+											</div>
+											<div class="achievement">
+												<i class="fas fa-check-circle"></i>
+												<span>Completed multiple client projects</span>
+											</div>
+											<div class="achievement">
+												<i class="fas fa-check-circle"></i>
+												<span>Built responsive web applications</span>
+											</div>
 										</div>
-									</div><!--/.single-timeline-box-->
-								</li>
-							</ul>
-						</div><!--.main-timeline-->
-					</div><!--.experience-content-->
-
-					<div class="container text-center mt-5">
-						<p>
-							"I know this will not be enough experience to impress you, but try me, and you will see the results yourself."
-						</p>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
-			</div>
+				</div>
 
+				<div class="experience-cta text-center">
+					<div class="cta-content">
+						<h4>Ready to Create Something Amazing?</h4>
+						<p>"My journey is just beginning, but my passion and dedication to excellence will exceed your expectations."</p>
+						<a href="#contact" class="btn btn-primary">Let's Work Together</a>
+					</div>
+				</div>
+			</div>
 		</section><!--/.experience-->
 		<!--experience end -->
 
 		<!--profiles start -->
 		<section id="profiles" class="profiles">
-			<div class="profiles-details">
+			<div class="container">
 				<div class="section-heading text-center">
-					<h2>Profiles</h2>
+					<h2>Connect With Me</h2>
+					<p class="section-subtitle">Find me across various platforms</p>
 				</div>
-				<div class="container">
-					<div class="profiles-content">
-						<div class="row">
-							<!-- Github -->
-							<div class="col-sm-3">
-								<div class="single-profile">
-									<div class="profile-txt">
-										<a href="https://github.com/Lusan-sapkota" target="_blank"><i class="fab fa-github"></i></a>
-										<div class="profile-icon-name">Github</div>
-									</div>
-									<div class="single-profile-overlay">
-										<div class="profile-txt">
-											<a href="https://github.com/Lusan-sapkota" target="_blank"><i class="fab fa-github"></i></a>
-											<div class="profile-icon-name">Github</div>
-										</div>
-									</div>
+				
+				<div class="profiles-grid">
+					<div class="row justify-content-center">
+						<!-- Github -->
+						<div class="col-lg-3 col-md-6 mb-4">
+							<div class="profile-card card-base">
+								<div class="profile-icon">
+									<i class="fab fa-github"></i>
 								</div>
-							</div>
-		
-							<!-- LinkedIn -->
-							<div class="col-sm-3">
-								<div class="single-profile">
-									<div class="profile-txt">
-										<a href="https://www.linkedin.com/in/lusan-sapkota-a08194284/" target="_blank"><i class="fab fa-linkedin"></i></a>
-										<div class="profile-icon-name">LinkedIn</div>
-									</div>
-									<div class="single-profile-overlay">
-										<div class="profile-txt">
-											<a href="https://www.linkedin.com/in/lusan-sapkota-a08194284/" target="_blank"><i class="fab fa-linkedin"></i></a>
-											<div class="profile-icon-name">LinkedIn</div>
-										</div>
-									</div>
-								</div>
-							</div>
-		
-							<!-- HackerRank -->
-							<div class="col-sm-3">
-								<div class="single-profile">
-									<div class="profile-txt">
-										<a href="https://www.hackerrank.com/profile/sapkotalusan" target="_blank"><i class="fab fa-hackerrank"></i></a>
-										<div class="profile-icon-name">HackerRank</div>
-									</div>
-									<div class="single-profile-overlay">
-										<div class="profile-txt">
-											<a href="https://www.hackerrank.com/profile/sapkotalusan" target="_blank"><i class="fab fa-hackerrank"></i></a>
-											<div class="profile-icon-name">HackerRank</div>
-										</div>
-									</div>
-								</div>
-							</div>
-		
-							<!-- Instagram -->
-							<div class="col-sm-3">
-								<div class="single-profile profile-no-border">
-									<div class="profile-txt">
-										<a href="https://www.instagram.com/sapkotalusan/" target="_blank"><i class="fab fa-instagram"></i></a>
-										<div class="profile-icon-name">Instagram</div>
-									</div>
-									<div class="single-profile-overlay">
-										<div class="profile-txt">
-											<a href="https://www.instagram.com/sapkotalusan/" target="_blank"><i class="fab fa-instagram"></i></a>
-											<div class="profile-icon-name">Instagram</div>
-										</div>
-									</div>
+								<div class="profile-content">
+									<h4>GitHub</h4>
+									<p>Open source projects & code repositories</p>
+									<a href="https://github.com/Lusan-sapkota" target="_blank" class="profile-link">
+										View Profile <i class="fas fa-external-link-alt"></i>
+									</a>
 								</div>
 							</div>
 						</div>
-		
+
+						<!-- LinkedIn -->
+						<div class="col-lg-3 col-md-6 mb-4">
+							<div class="profile-card card-base">
+								<div class="profile-icon">
+									<i class="fab fa-linkedin"></i>
+								</div>
+								<div class="profile-content">
+									<h4>LinkedIn</h4>
+									<p>Professional network & career updates</p>
+									<a href="https://www.linkedin.com/in/lusan-sapkota-a08194284/" target="_blank" class="profile-link">
+										Connect <i class="fas fa-external-link-alt"></i>
+									</a>
+								</div>
+							</div>
+						</div>
+
+						<!-- HackerRank -->
+						<div class="col-lg-3 col-md-6 mb-4">
+							<div class="profile-card card-base">
+								<div class="profile-icon">
+									<i class="fab fa-hackerrank"></i>
+								</div>
+								<div class="profile-content">
+									<h4>HackerRank</h4>
+									<p>Coding challenges & algorithm solutions</p>
+									<a href="https://www.hackerrank.com/profile/sapkotalusan" target="_blank" class="profile-link">
+										View Solutions <i class="fas fa-external-link-alt"></i>
+									</a>
+								</div>
+							</div>
+						</div>
+
+						<!-- Instagram -->
+						<div class="col-lg-3 col-md-6 mb-4">
+							<div class="profile-card card-base">
+								<div class="profile-icon">
+									<i class="fab fa-instagram"></i>
+								</div>
+								<div class="profile-content">
+									<h4>Instagram</h4>
+									<p>Behind the scenes & personal moments</p>
+									<a href="https://www.instagram.com/sapkotalusan/" target="_blank" class="profile-link">
+										Follow <i class="fas fa-external-link-alt"></i>
+									</a>
+								</div>
+							</div>
+						</div>
+
+						<!-- X (Twitter) -->
+						<div class="col-lg-3 col-md-6 mb-4">
+							<div class="profile-card card-base">
+								<div class="profile-icon">
+									<i class="fab fa-x-twitter"></i>
+								</div>
+								<div class="profile-content">
+									<h4>X (Twitter)</h4>
+									<p>Tech thoughts & quick updates</p>
+									<a href="https://x.com/LusanSapkota" target="_blank" class="profile-link">
+										Follow <i class="fas fa-external-link-alt"></i>
+									</a>
+								</div>
+							</div>
+						</div>
+
+						<!-- YouTube -->
+						<div class="col-lg-3 col-md-6 mb-4">
+							<div class="profile-card card-base">
+								<div class="profile-icon">
+									<i class="fab fa-youtube"></i>
+								</div>
+								<div class="profile-content">
+									<h4>YouTube</h4>
+									<p>Coding tutorials & tech content</p>
+									<a href="https://www.youtube.com/@learn_with_lusan" target="_blank" class="profile-link">
+										Subscribe <i class="fas fa-external-link-alt"></i>
+									</a>
+								</div>
+							</div>
+						</div>
+
+						<!-- LeetCode -->
+						<div class="col-lg-3 col-md-6 mb-4">
+							<div class="profile-card card-base">
+								<div class="profile-icon">
+									<i class="fas fa-code"></i>
+								</div>
+								<div class="profile-content">
+									<h4>LeetCode</h4>
+									<p>Data structures & algorithm practice</p>
+									<a href="https://leetcode.com/u/sapkotalusan/" target="_blank" class="profile-link">
+										View Progress <i class="fas fa-external-link-alt"></i>
+									</a>
+								</div>
+							</div>
+						</div>
+
+						<!-- Discord -->
+						<div class="col-lg-3 col-md-6 mb-4">
+							<div class="profile-card card-base">
+								<div class="profile-icon">
+									<i class="fab fa-discord"></i>
+								</div>
+								<div class="profile-content">
+									<h4>Discord</h4>
+									<p>Community discussions & collaboration</p>
+									<a href="https://discord.gg/X9JzzRug" target="_blank" class="profile-link">
+										Connect <i class="fas fa-external-link-alt"></i>
+									</a>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</section><!--/.profiles-->
 		
-		<!--profiles end -->
+		<!--profiles end -->        <!--portfolio start -->
+        <section id="portfolio" class="portfolio">
+            <div class="container">
+                <div class="section-heading text-center">
+                    <h2>portfolio</h2>
+                    <p>Showcasing innovative projects that demonstrate expertise in full-stack development, AI/ML, and modern web technologies</p>
+                </div>
+                
+                <div class="portfolio-content">
+                    
+                    <!-- Portfolio Grid -->
+                    <div class="portfolio-grid card-grid">
+                        {% for project in portfolio_projects %}
+                        <div class="portfolio-item card-base" data-category="{{ project.category.name.lower().replace(' ', '-') if project.category else 'other' }}">
+                            <div class="portfolio-image">
+                                <img src="{{ project.image_url or url_for('static', filename='assets/images/portfolio/default-project.jpg') }}" alt="{{ project.title }}" />
+                                <div class="portfolio-overlay">
+                                    <div class="portfolio-links">
+                                        {% if project.github_url %}
+                                        <a href="{{ project.github_url }}" target="_blank" class="btn-portfolio btn-github">
+                                            <i class="fab fa-github"></i>
+                                        </a>
+                                        {% endif %}
+                                        {% if project.live_url %}
+                                        <a href="{{ project.live_url }}" target="_blank" class="btn-portfolio btn-preview">
+                                            <i class="fas fa-external-link-alt"></i>
+                                        </a>
+                                        {% endif %}
+                                        {% if project.commercial_url %}
+                                        <a href="{{ project.commercial_url }}" target="_blank" class="btn-portfolio btn-commercial">
+                                            <i class="fas fa-shopping-cart"></i>
+                                        </a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="portfolio-content">
+                                <h3 class="portfolio-title">{{ project.title }}</h3>
+                                <p class="portfolio-description">{{ project.description }}</p>
+                                <div class="portfolio-tech">
+                                    {% if project.technologies %}
+                                        {% for tech in project.technologies.split(',') %}
+                                        <span class="tech-tag">{{ tech.strip() }}</span>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                                {% if project.stars or project.forks %}
+                                <div class="portfolio-stats mt-3 text-center">
+                                    {% if project.stars %}
+                                    <span class="stat-item">
+                                        <i class="fas fa-star"></i> {{ project.stars }}
+                                    </span>
+                                    {% endif %}
+                                    {% if project.forks %}
+                                    <span class="stat-item">
+                                        <i class="fas fa-code-branch"></i> {{ project.forks }}
+                                    </span>
+                                    {% endif %}
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% else %}
+                        <!-- Fallback content if no projects in database -->
+                        <div class="portfolio-item card-base" data-category="web">
+                            <div class="portfolio-image">
+                                <img src="{{ url_for('static', filename='assets/images/portfolio/p1.png')}}" alt="Sample Project" />
+                                <div class="portfolio-overlay">
+                                    <div class="portfolio-links">
+                                        <a href="https://github.com/Lusan-sapkota" target="_blank" class="btn-portfolio btn-github">
+                                            <i class="fab fa-github"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="portfolio-content">
+                                <h3 class="portfolio-title">Sample Project</h3>
+                                <p class="portfolio-description">Portfolio projects will be displayed here once added to the database.</p>
+                                <div class="portfolio-tech">
+                                    <span class="tech-tag">Python</span>
+                                    <span class="tech-tag">Flask</span>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <!-- View More Button -->
+                    <div class="text-center mt-5">
+                        <a href="{{url_for('git.index')}}" target="_blank" class="btn btn-primary btn-lg">
+                            <i class="fas fa-code me-2"></i>
+                            View All Projects
+                       
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section><!--/.portfolio-->
+        <!--portfolio end -->
 
-		<!--portfolio start -->
-		<section id="portfolio" class="portfolio">
-			<div class="portfolio-details">
-				<div class="section-heading text-center">
-					<h2>portfolio</h2>
+
+		<!--testimonials start -->
+		<section id="testimonials" class="testimonials">
+		<div class="section-heading text-center">
+			<h2>what clients say</h2>
+			<p class="mt-2">Here's what some of my clients have to say about working with me</p>
+		</div>
+		<div class="testimonial-carousel-container container">
+			<div class="testimonial-carousel"> <!-- Fixed class name to match CSS -->
+			{% if testimonials %}
+				{% for testimonial in testimonials %}
+				<div class="testimonial-card">
+				<div class="testimonial-content">
+					<div class="testimonial-text">
+					<i class="fas fa-quote-left quote-icon"></i>
+					<p>{{ testimonial.testimonial_text }}</p>
+					</div>
+					<div class="testimonial-author">
+					<div class="author-info">
+						<h4>{{ testimonial.client_name }}</h4>
+						{% if testimonial.client_title and testimonial.client_company %}
+						<span class="author-position">{{ testimonial.client_title }} at {{ testimonial.client_company }}</span>
+						{% elif testimonial.client_title %}
+						<span class="author-position">{{ testimonial.client_title }}</span>
+						{% elif testimonial.client_company %}
+						<span class="author-position">{{ testimonial.client_company }}</span>
+						{% endif %}
+					</div>
+					<div class="testimonial-rating">
+						{% for i in range(testimonial.rating or 5) %}
+						<i class="fas fa-star"></i>
+						{% endfor %}
+					</div>
+					</div>
 				</div>
-				<div class="container">
-					<div class="portfolio-content">
-						<div class="isotope">
-							<div class="row">
+				</div>
+				{% endfor %}
+			{% else %}
+				<div class="no-testimonials">
+				<p>No testimonials available at the moment.</p>
+				</div>
+			{% endif %}
+			</div>
+			<div class="carousel-dots"></div>
+		</div>
+		</section><!--/.testimonials-->
+		<!--testimonials end -->
 
-								<div class="col-sm-5">
-									<div class="item">
-										<img src="{{ url_for('static', filename='assets/images/portfolio/p1.png')}}" alt="portfolio image"/>
-										<div class="isotope-overlay">
-											<a href="https://github.com/Lusan-sapkota/Ambulance-tracking-system" target="_blank">
-												Ambulance Tracking System
-											</a>
-										</div><!-- /.isotope-overlay -->
-									</div><!-- /.item -->
-									<div class="item">
-										<img src="{{ url_for('static', filename='assets/images/portfolio/p2.png')}}" alt="portfolio image"/>
-										<div class="isotope-overlay">
-											<a href="https://github.com/Lusan-sapkota/Face-Recognition-Based-Attendance-System" target="_blank">
-												Face Recognition Based Attendance System
-											</a>
-										</div><!-- /.isotope-overlay -->
-									</div><!-- /.item -->
-								</div><!-- /.col -->
-
-								<div class="col-sm-3" style="height: 520px;">
-									<div class="item" style="height: 520px;">
-										<img src="{{ url_for('static', filename='assets/images/portfolio/p3.png')}}" alt="portfolio image" style="height: 520px;"/>
-										<div class="isotope-overlay">
-											<a href="https://github.com/Lusan-sapkota/Task-Master" target="_blank">
-												Task Master
-											</a>
-										</div><!-- /.isotope-overlay -->
-									</div><!-- /.item -->
-								</div><!-- /.col -->
-
-								<div class="col-sm-4">
-									<div class="item">
-										<img src="{{ url_for('static', filename='assets/images/portfolio/p4.png')}}" alt="portfolio image"/>
-										<div class="isotope-overlay">
-											<a href="https://github.com/Lusan-sapkota/Jarvis" target="_blank">
-												Jarvis
-											</a>
-										</div><!-- /.isotope-overlay -->
-									</div><!-- /.item -->
-									<div class="item">
-										<img src="{{ url_for('static', filename='assets/images/portfolio/p5.png')}}" alt="portfolio image"/>
-										<div class="isotope-overlay">
-											<a href="https://github.com/Lusan-sapkota/Chat-History_Master" target="_blank">
-												Chat History Master
-											</a>
-										</div><!-- /.isotope-overlay -->
-									</div><!-- /.item -->
-								</div><!-- /.col -->
-							</div><!-- /.row -->
-						</div><!--/.isotope-->
-					</div><!--/.gallery-content-->
-				</div><!--/.container-->
-			</div><!--/.portfolio-details-->
-
-		</section><!--/.portfolio-->
-		<!--portfolio end -->
 
 		<!--contact start -->
 		<section id="contact" class="contact">
@@ -1427,15 +2356,14 @@
 						<div class="col-md-offset-1 col-md-5 col-sm-6">
 							<div class="single-contact-box">
 								<div class="contact-form">
-									<form action="https://api.web3forms.com/submit" method="POST" id="contact-form">
-										<input type="hidden" name="access_key" value="818bb4e1-1d81-49bf-8416-42591b05370a">
+									<form action="/contact/submit" method="POST" id="contact-form">
 										<div class="row">
-											<div class="col-sm-6 col-xs-12">
+											<div class="col-sm-12">
 												<div class="form-group">
 													<input type="text" class="form-control" id="name" placeholder="Name*" name="name" required>
 												</div><!--/.form-group-->
 											</div><!--/.col-->
-											<div class="col-sm-6 col-xs-12">
+											<div class="col-sm-12">
 												<div class="form-group">
 													<input type="email" class="form-control" id="email" placeholder="Email*" name="email" required>
 												</div><!--/.form-group-->
@@ -1451,7 +2379,8 @@
 										<div class="row">
 											<div class="col-sm-12">
 												<div class="form-group">
-													<input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+													<!-- Honeypot field for bot detection (hidden from users) -->
+													<input type="checkbox" name="botcheck" class="hidden" style="display: none;" tabindex="-1">
 												</div><!--/.form-group-->
 											</div><!--/.col-->
 										</div><!--/.row-->
@@ -1471,6 +2400,9 @@
 										</div><!--/.row-->
 									</form>
 									
+									<!-- Contact form response message -->
+									<div id="contact-message" style="margin-top: 15px; display: none;"></div>
+									
 								</div><!--/.contact-form-->
 							</div><!--/.single-contact-box-->
 						</div><!--/.col-->
@@ -1484,7 +2416,7 @@
 									<div class="contact-add-info">
 										<div class="single-contact-add-info">
 											<h3>phone</h3>
-											<p><a href="tel:+9779848189845">+977-9848189845</a></p>
+											<p><a href="tel:+9779848189845">Available upon request</a></p>
 										</div>
 										<div class="single-contact-add-info">
 											<h3>email</h3>
@@ -1492,17 +2424,15 @@
 										</div>
 										<div class="single-contact-add-info">
 											<h3>website</h3>
-											<p><a href="www.lusansapkota.com.np">www.lusansapkota.com.np</a></p>
+											<p><a href="https://www.lusansapkota.com.np/">www.lusansapkota.com.np</a></p>
 										</div>
 									</div>
 								</div><!--/.contact-adress-->
 								<div class="hm-foot-icon">
 									<ul>
-										<li><a href="https://web.facebook.com/lusan.sapkota.1"><i class="fab fa-facebook"></i></a></li><!--/li-->
 										<li><a href="https://github.com/Lusan-sapkota/"><i class="fab fa-github"></i></a></li><!--/li-->
-										<li><a href="https://x.com/LusanSapkota"><i class="fab fa-twitter"></i></a></li><!--/li-->
+										<li><a href="https://x.com/LusanSapkota"><i class="fab fa-x-twitter"></i></a></li><!--/li-->
 										<li><a href="https://www.linkedin.com/in/lusan-sapkota-a08194284/"><i class="fab fa-linkedin"></i></a></li><!--/li-->
-										<li><a href="https://www.instagram.com/sapkotalusan/"><i class="fab fa-instagram"></i></a></li><!--/li-->
 										<li><a href="mailto:sapkotalusan@gmail.com"><i class="fa fa-envelope" ></i></a></li><!--/li-->
 									</ul><!--/ul-->
 								</div><!--/.hm-foot-icon-->
@@ -1515,63 +2445,584 @@
 		</section><!--/.contact-->
 		<!--contact end -->
 
-		<!--footer-copyright start-->
-		<footer id="footer-copyright" class="footer-copyright">
-			<div class="container">
-				<div class="hm-footer-copyright text-center">
-					<p>
-						&copy; copyright lusan sapkota. <a href="https://www.lusansapkota.com.np/">lusansapkota.com.np</a>
-					</p><!--/p-->
-				</div><!--/.text-center-->
-			</div><!--/.container-->
+		<!-- Enhanced Footer Section -->
+		<footer class="footer">
+  <div class="container">
+    <div class="footer-content">
+      
+      <!-- Logo & Brand Section -->
+      <div class="footer-section">
+        <div class="footer-logo">
+          <img src="{{ url_for('static', filename='assets/logo/logo.png') }}" alt="Lusan Sapkota Logo">
+          <div class="footer-brand-text">Lusan Sapkota</div>
+          <div class="footer-tagline">Full-Stack Developer & Digital Innovation Enthusiast</div>
+        </div>
+      </div>
+      
+      <!-- Quick Links Grid -->
+      <div class="footer-links">
+        
+        <!-- Navigation Links -->
+        <div class="footer-column">
+          <h4>Navigation</h4>
+          <ul>
+            <li><a href="#subdomains"><i class="fas fa-chevron-right"></i>Platforms</a></li>
+            <li><a href="#about"><i class="fas fa-chevron-right"></i>About Me</a></li>
+            <li><a href="#education"><i class="fas fa-chevron-right"></i>Education</a></li>
+            <li><a href="#skills"><i class="fas fa-chevron-right"></i>Skills</a></li>
+            <li><a href="#experience"><i class="fas fa-chevron-right"></i>Experience</a></li>
+            <li><a href="#portfolio"><i class="fas fa-chevron-right"></i>Portfolio</a></li>
+            <li><a href="#testimonials"><i class="fas fa-chevron-right"></i>Testimonials</a></li>
+          </ul>
+        </div>
+        
+        <!-- Platform Links -->
+        <div class="footer-column">
+          <h4>Platforms</h4>
+          <ul>
+            <li><a href="{{url_for('wiki.index')}}" target="_blank"><i class="fas fa-book"></i>Wiki Platform</a></li>
+            <li><a href="{{url_for('git.index')}}" target="_blank"><i class="fab fa-git-alt"></i>Git Repository</a></li>
+            <li><a href="{{url_for('donation.index')}}" target="_blank"><i class="fas fa-heart"></i>Donation Hub</a></li>
+            <li><a href="{{ url_for('store.index') }}" target="_blank"><i class="fas fa-store"></i>Online Store</a></li>
+          </ul>
+        </div>
+        
+        <!-- Contact Information Section -->
+        <div class="footer-column">
+          <div class="footer-contact-section">
+            <h4>Contact Info</h4>
+            <ul class="contact-info-list">
+              
+              <!-- Email Section with Both Emails -->
+              <li class="contact-info-item">
 
-			<div id="scroll-Top">
-				<div class="return-to-top">
-					<i class="fa fa-angle-up " id="scroll-top" ></i>
-				</div>
-				
-			</div><!--/.scroll-Top-->
-			
-        </footer><!--/.footer-copyright-->
-		<!--footer-copyright end-->
-		
-		<!-- Include all js compiled plugins (below), or include individual files as needed -->
+                <div class="contact-details">
+				  <div class="contact-icon">
+                  	<i class="fas fa-envelope"></i>
+					<span class="contact-label">Email</span>
+                  </div>
+                  <div class="contact-value">
+                    <div class="email-list">
+					  <div class="email-item email-primary">
+                        <a href="mailto:sapkotalusan@gmail.com">sapkotalusan@gmail.com</a>
+                      </div>
+                      <div class="email-item email-secondary">
+                        <a href="mailto:contact@lusansapkota.com.np">contact@lusansapkota.com.np</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              
+              <!-- Phone Section -->
+              <li class="contact-info-item">
+                <div class="contact-details">
+				  <div class="contact-icon">
+                  	<i class="fas fa-phone"></i>
+					<span class="contact-label">Phone</span>
+                  </div>
+                  <div class="contact-value">
+                    <a href="tel:Available upon request">Available upon request</a>
+                  </div>
+                </div>
+              </li>
+              
+              <!-- Location Section -->
+              <li class="contact-info-item">
+                <div class="contact-details">
+				<div class="contact-icon">
+                  <i class="fas fa-map-marker-alt"></i>
+				    <span class="contact-label">Location</span>
+                </div>
+                  <div class="contact-value">
+                    Kathmandu, Nepal<br>
+                    <small style="opacity: 0.8;">Available for Remote Work</small>
+                  </div>
+                </div>
+              </li>
+              
+            </ul>
+          </div>
+        </div>
+        
+        <!-- Quick Actions -->
+        <div class="footer-column">
+          <h4>Quick Actions</h4>
+          <ul>
+            <li><a href="#contact"><i class="fas fa-paper-plane"></i>Send Message</a></li>
+            <li><a href="https://calendly.com/lusansapkota" target="_blank"><i class="fas fa-calendar"></i>Schedule Meeting</a></li>
+			<li><a href="javascript:void(0)" class="hover-lift resume-download-btn" data-resume-url="{{ url_for('static', filename='assets/download/Lusan_Sapkota_Resume.txt') }}"><i class="fas fa-download"></i>Download Resume</a></li>
+            <li><a href="/hire-me"><i class="fas fa-handshake"></i>Hire Me</a></li>
+            <li><a href="/privacy"><i class="fas fa-shield-alt"></i>Privacy Policy</a></li>
+          </ul>
+        </div>
+        
+      </div>
+      
+      <!-- Social Media -->
+      <div class="footer-social">
+        <h4>Connect With Me</h4>
+        <div class="social-links">
+          <a href="https://github.com/Lusan-sapkota" target="_blank" class="social-link" title="GitHub">
+            <i class="fab fa-github"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/lusan-sapkota-a08194284/" target="_blank" class="social-link" title="LinkedIn">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+          <a href="https://x.com/LusanSapkota" target="_blank" class="social-link" title="X(Twitter)">
+            <i class="fab fa-x-twitter"></i>
+          </a>
+          <a href="https://www.instagram.com/sapkotalusan/" target="_blank" class="social-link" title="Instagram">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="https://www.youtube.com/@learn_with_lusan" target="_blank" class="social-link" title="YouTube">
+            <i class="fab fa-youtube"></i>
+          </a>
+          <a href="https://discord.gg/X9JzzRug" target="_blank" class="social-link" title="Discord">
+            <i class="fab fa-discord"></i>
+          </a>
+        </div>
+      </div>
+      
+      <!-- Newsletter Signup -->
+      <div class="footer-newsletter">
+        <h4>Stay Updated</h4>
+        <p>Subscribe to get the latest updates on my projects and tutorials</p>
+        <form class="newsletter-form" id="newsletter-form" action="/newsletter/subscribe" method="POST">
+          <div class="form-group">
+            <input type="email" name="email" placeholder="Enter your email address" required>
+            <!-- Honeypot field for bot detection (hidden from users) -->
+            <input type="text" name="website" style="display: none;" tabindex="-1">
+          </div>
+          <button type="submit" class="newsletter-btn">Subscribe</button>
+        </form>
+        <div id="newsletter-message" style="margin-top: 10px; display: none;"></div>
+      </div>
+      
+    </div>
+  </div>
+  
+  <!-- Copyright Section -->
+  <div class="footer-copyright">
+    <div class="container">
+      <div class="footer-copyright-content"></div>
+        <p>&copy; {{ current_year }}  <a href="https://lusansapkota.com.np">Lusan Sapkota</a>. All rights reserved. | Crafted with <i class="fas fa-heart" style="color: #e74c3c;"></i> in Nepal</p>
+        <div class="footer-back-top">
+          <span class="back-to-top-text">Back to Top</span>
+          <a href="#welcome-hero" class="back-to-top-footer smooth-menu">
+            <i class="fas fa-chevron-up"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+		<!--footer end-->
 
-		<!-- jQuery -->
-		<script src="{{ url_for('static', filename='assets/js/jquery.js') }}"></script>
-
-		<!-- Modernizr -->
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
-
-		<!-- Bootstrap -->
-		<script src="{{ url_for('static', filename='assets/js/bootstrap.min.js') }}"></script>
-
-		<!-- Bootsnav JS -->
-		<script src="{{ url_for('static', filename='assets/js/bootsnav.js') }}"></script>
-
-		<!-- jQuery Sticky -->
-		<script src="{{ url_for('static', filename='assets/js/jquery.sticky.js') }}"></script>
-
-		<!-- Progress Bar JS -->
-		<script src="{{ url_for('static', filename='assets/js/progressbar.js') }}"></script>
-
-		<!-- Appear JS -->
-		<script src="{{ url_for('static', filename='assets/js/jquery.appear.js') }}"></script>
-
-		<!-- Owl Carousel -->
-		<script src="{{ url_for('static', filename='assets/js/owl.carousel.min.js') }}"></script>
-
-		<!-- jQuery Easing -->
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
-
-		<!-- Custom JS -->
+		<!-- CDN JS: Bootstrap, jQuery & AOS -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
+		<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 		<script src="{{ url_for('static', filename='assets/js/custom.js') }}"></script>
 
-		<!-- livereload extension  -->
-		<script src="http://localhost:35729/livereload.js"></script>
+		<!-- Page Animation Initialization -->
+		<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			// Initialize AOS (Animate On Scroll)
+			AOS.init({
+				duration: 800,
+				easing: 'ease-in-out',
+				once: true,
+				offset: 100,
+				delay: 100
+			});
 
+			// Page Loader
+			const pageLoader = document.getElementById('pageLoader');
+			if (pageLoader) {
+				window.addEventListener('load', function() {
+					setTimeout(function() {
+						pageLoader.classList.add('fade-out');
+						setTimeout(function() {
+							pageLoader.style.display = 'none';
+						}, 500);
+					}, 500);
+				});
+			}
 
-        
+			// Enhanced smooth scrolling for navigation links
+			document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+				anchor.addEventListener('click', function (e) {
+					e.preventDefault();
+					const target = document.querySelector(this.getAttribute('href'));
+					if (target) {
+						const headerOffset = 80;
+						const elementPosition = target.getBoundingClientRect().top;
+						const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+						window.scrollTo({
+							top: offsetPosition,
+							behavior: 'smooth'
+						});
+					}
+				});
+			});
+
+			// Navbar background change on scroll
+			const navbar = document.querySelector('.navbar');
+			if (navbar) {
+				window.addEventListener('scroll', function() {
+					if (window.scrollY > 50) {
+						navbar.classList.add('scrolled');
+					} else {
+						navbar.classList.remove('scrolled');
+					}
+				});
+			}
+
+			// Enhanced hover effects for cards
+			const cards = document.querySelectorAll('.subdomain-card, .education-card, .portfolio-item');
+			cards.forEach(card => {
+				card.addEventListener('mouseenter', function() {
+					this.style.transform = 'translateY(-10px) scale(1.02)';
+					this.style.boxShadow = '0 20px 40px rgba(0,0,0,0.15)';
+				});
+
+				card.addEventListener('mouseleave', function() {
+					this.style.transform = 'translateY(0) scale(1)';
+					this.style.boxShadow = '';
+				});
+			});
+
+			// Social icons hover animation
+			const socialIcons = document.querySelectorAll('.about-list-icon a');
+			socialIcons.forEach(icon => {
+				icon.addEventListener('mouseenter', function() {
+					this.style.transform = 'scale(1.3) rotate(15deg)';
+				});
+
+				icon.addEventListener('mouseleave', function() {
+					this.style.transform = 'scale(1) rotate(0deg)';
+				});
+			});
+
+			// Refresh AOS on window resize
+			window.addEventListener('resize', function() {
+				AOS.refresh();
+			});
+		});
+		</script>
+		
+		<!-- Subdomain Configuration for JavaScript -->
+		<script>
+			{% if subdomains %}
+			window.subdomainConfig = {{ subdomains | tojson }};
+			{% else %}
+			window.subdomainConfig = {};
+			{% endif %}
+		</script>
+		
+		<script>
+			document.addEventListener('DOMContentLoaded', function () {
+			// === Testimonial Carousel Logic ===
+			const carousel = document.querySelector('.testimonial-carousel');
+			const testimonialCards = document.querySelectorAll('.testimonial-card');
+			const dotsContainer = document.querySelector('.carousel-dots');
+
+			if (carousel && testimonialCards.length > 1 && dotsContainer) {
+				dotsContainer.innerHTML = '';
+				testimonialCards.forEach((_, index) => {
+				const dot = document.createElement('div');
+				dot.classList.add('carousel-dot');
+				if (index === 0) dot.classList.add('active');
+				dot.addEventListener('click', () => {
+					scrollToCard(index);
+				});
+				dotsContainer.appendChild(dot);
+				});
+
+				function scrollToCard(index) {
+				const cardWidth = testimonialCards[0].offsetWidth + 30; // include gap
+				carousel.scrollTo({
+					left: cardWidth * index,
+					behavior: 'smooth'
+				});
+				updateActiveDot(index);
+				}
+
+				function updateActiveDot(index) {
+				document.querySelectorAll('.carousel-dot').forEach((dot, i) => {
+					dot.classList.toggle('active', i === index);
+				});
+				}
+
+				let debounceTimeout;
+				carousel.addEventListener('scroll', () => {
+				clearTimeout(debounceTimeout);
+				debounceTimeout = setTimeout(() => {
+					const scrollPosition = carousel.scrollLeft;
+					const cardWidth = testimonialCards[0].offsetWidth + 30;
+					const activeIndex = Math.round(scrollPosition / cardWidth);
+					updateActiveDot(activeIndex);
+				}, 100);
+				});
+			}
+
+			// === Newsletter Form Submission ===
+			const form = $('#newsletter-form');
+			const messageDiv = $('#newsletter-message');
+
+			if (form.length) {
+				form.on('submit', function (e) {
+				e.preventDefault();
+
+				const submitBtn = form.find('.newsletter-btn');
+				const originalText = submitBtn.text();
+				const formData = new FormData(this);
+
+				submitBtn.text('Subscribing...').prop('disabled', true);
+				messageDiv.hide();
+
+				$.ajax({
+					url: form.attr('action'),
+					type: 'POST',
+					data: formData,
+					processData: false,
+					contentType: false,
+					success: function (response) {
+					messageDiv
+						.removeClass('alert-success alert-danger alert-info')
+						.addClass('alert alert-' + (response.status === 'error' ? 'danger' : response.status === 'info' ? 'info' : 'success'))
+						.text(response.message)
+						.show();
+
+					if (response.status === 'success') {
+						form[0].reset();
+					}
+					},
+					error: function () {
+					messageDiv
+						.removeClass('alert-success alert-info')
+						.addClass('alert alert-danger')
+						.text('An error occurred. Please try again.')
+						.show();
+					},
+					complete: function () {
+					submitBtn.text(originalText).prop('disabled', false);
+					setTimeout(function () {
+						messageDiv.fadeOut();
+					}, 5000);
+					}
+				});
+				});
+			}
+
+			// === Elegant Cursor Animation ===
+			(function() {
+				// Check if device supports hover (not touch device)
+				if (!window.matchMedia('(hover: none) and (pointer: coarse)').matches) {
+					const cursorGlow = document.getElementById('cursorGlow');
+					const trails = [];
+					const maxTrails = 8;
+					let isMoving = false;
+					let moveTimeout;
+
+					// Create trail elements
+					for (let i = 0; i < maxTrails; i++) {
+						const trail = document.createElement('div');
+						trail.className = 'cursor-trail';
+						document.body.appendChild(trail);
+						trails.push({
+							element: trail,
+							x: 0,
+							y: 0,
+							delay: i * 20
+						});
+					}
+
+					// Mouse move handler with throttling
+					let lastMoveTime = 0;
+					function handleMouseMove(e) {
+						const now = Date.now();
+						if (now - lastMoveTime < 16) return; // ~60fps throttling
+						lastMoveTime = now;
+
+						const x = e.clientX;
+						const y = e.clientY;
+
+						// Update main cursor glow
+						requestAnimationFrame(() => {
+							cursorGlow.style.transform = `translate(${x}px, ${y}px)`;
+							cursorGlow.style.opacity = '1';
+						});
+
+						// Update trails with smooth follow effect
+						trails.forEach((trail, index) => {
+							setTimeout(() => {
+								trail.x += (x - trail.x) * 0.15;
+								trail.y += (y - trail.y) * 0.15;
+								trail.element.style.transform = `translate(${trail.x}px, ${trail.y}px)`;
+								trail.element.style.opacity = Math.max(0, 1 - index * 0.15);
+							}, trail.delay);
+						});
+
+						isMoving = true;
+						clearTimeout(moveTimeout);
+						moveTimeout = setTimeout(() => {
+							isMoving = false;
+							// Fade out when not moving
+							cursorGlow.style.opacity = '0';
+							trails.forEach(trail => {
+								trail.element.style.opacity = '0';
+							});
+						}, 150);
+					}
+
+					// Enhanced cursor for interactive elements
+					function addInteractiveListeners() {
+						const interactiveElements = document.querySelectorAll('a, button, .btn, [role="button"], input, textarea, select, .navbar-toggler, .theme-toggle, .smooth-menu');
+						
+						interactiveElements.forEach(element => {
+							element.addEventListener('mouseenter', () => {
+								cursorGlow.classList.add('enhanced');
+							});
+							
+							element.addEventListener('mouseleave', () => {
+								cursorGlow.classList.remove('enhanced');
+							});
+						});
+					}
+
+					// Mouse leave handler
+					function handleMouseLeave() {
+						cursorGlow.style.opacity = '0';
+						trails.forEach(trail => {
+							trail.element.style.opacity = '0';
+						});
+					}
+
+					// Initialize event listeners
+					document.addEventListener('mousemove', handleMouseMove, { passive: true });
+					document.addEventListener('mouseleave', handleMouseLeave, { passive: true });
+					
+					// Add listeners after DOM is ready
+					if (document.readyState === 'loading') {
+						document.addEventListener('DOMContentLoaded', addInteractiveListeners);
+					} else {
+						addInteractiveListeners();
+					}
+
+					// Re-add listeners for dynamically loaded content
+					const observer = new MutationObserver(() => {
+						addInteractiveListeners();
+					});
+					observer.observe(document.body, { childList: true, subtree: true });
+
+					// Cleanup function
+					window.addEventListener('beforeunload', () => {
+						observer.disconnect();
+						document.removeEventListener('mousemove', handleMouseMove);
+						document.removeEventListener('mouseleave', handleMouseLeave);
+						trails.forEach(trail => trail.element.remove());
+					});
+				}
+			})();
+
+			// === Bootstrap Tooltips ===
+			const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+			tooltipTriggerList.map(function (tooltipTriggerEl) {
+				return new bootstrap.Tooltip(tooltipTriggerEl);
+			});
+
+			document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
+				el.style.cursor = 'pointer';
+			});
+
+			// === Resume Download Modal Logic ===
+			const resumeDownloadBtns = document.querySelectorAll('.resume-download-btn');
+			const resumeModal = new bootstrap.Modal(document.getElementById('resumeDownloadModal'));
+			const confirmDownloadBtn = document.getElementById('confirmDownload');
+			let currentResumeUrl = '';
+
+			// Add click event to all resume download buttons
+			resumeDownloadBtns.forEach(btn => {
+				btn.addEventListener('click', function(e) {
+					e.preventDefault();
+					currentResumeUrl = this.getAttribute('data-resume-url');
+					resumeModal.show();
+				});
+			});
+
+			// Handle confirm download
+			confirmDownloadBtn.addEventListener('click', function() {
+				if (currentResumeUrl) {
+					// Create temporary download link
+					const downloadLink = document.createElement('a');
+					downloadLink.href = currentResumeUrl;
+					downloadLink.download = 'Lusan_Sapkota_Resume.txt';
+					document.body.appendChild(downloadLink);
+					downloadLink.click();
+					document.body.removeChild(downloadLink);
+					
+					// Close modal
+					resumeModal.hide();
+					
+					// Reset URL
+					currentResumeUrl = '';
+					
+					// Optional: Show success message
+					setTimeout(() => {
+						// You could add a toast notification here if desired
+						console.log('Resume download initiated successfully');
+					}, 500);
+				}
+			});
+
+			// Reset URL when modal is hidden
+			document.getElementById('resumeDownloadModal').addEventListener('hidden.bs.modal', function() {
+				currentResumeUrl = '';
+			});
+		});
+		</script>
+
+		<!-- Resume Download Confirmation Modal -->
+		<div class="modal fade" id="resumeDownloadModal" tabindex="-1" aria-labelledby="resumeDownloadModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="resumeDownloadModalLabel">
+							<i class="fas fa-download me-2"></i>Download Resume
+						</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div class="text-center mb-3">
+							<i class="fas fa-file-alt fa-3x text-primary mb-3"></i>
+						</div>
+						<p class="text-center">
+							You are about to download a text resume that is auto-generated and regularly updated from my live portfolio website.
+						</p>
+						<p class="text-center mb-4">
+							Please confirm if you want to proceed.
+						</p>
+						<div class="alert alert-info" role="alert">
+							<i class="fas fa-info-circle me-2"></i>
+							<strong>Note:</strong> This resume is automatically synced with the latest information from my portfolio.
+						</div>
+					</div>
+					<div class="modal-footer justify-content-center">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+							<i class="fas fa-times me-2"></i>Cancel
+						</button>
+						<button type="button" class="btn btn-primary" id="confirmDownload">
+							<i class="fas fa-download me-2"></i>Download Resume
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+			
     </body>
 	
 </html>

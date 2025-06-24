@@ -1,0 +1,137 @@
+{% extends "error_base.html" %}
+
+{% block error_title %}418 - I'm a teapot{% endblock %}
+{% block error_description %}This server refuses to brew coffee because it is, in fact, a teapot. A playful error on Lusan Sapkota's portfolio website.{% endblock %}
+
+{% block error_specific_styles %}
+/* 418 Specific Animation */
+.error-illustration {
+    position: relative;
+    height: 150px;
+    margin: 30px auto;
+    width: 100%;
+    max-width: 300px;
+}
+
+.teapot-icon {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: clamp(50px, 10vw, 70px);
+    color: #f39c12;
+    animation: steam-teapot 4s infinite;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+}
+
+.coffee-icon {
+    position: absolute;
+    left: calc(50% + 35px);
+    top: calc(50% - 25px);
+    font-size: clamp(20px, 4vw, 30px);
+    color: #8B4513;
+    opacity: 0;
+    animation: coffee-denied 4s infinite;
+    filter: drop-shadow(0 2px 3px rgba(0,0,0,0.1));
+}
+
+.steam {
+    position: absolute;
+    left: calc(50% - 10px);
+    top: calc(50% - 30px);
+    font-size: clamp(12px, 3vw, 18px);
+    color: #95a5a6;
+    opacity: 0;
+    animation: steam-rise 4s infinite;
+}
+
+@keyframes steam-teapot {
+    0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
+    25% { transform: translate(-50%, -50%) rotate(-15deg); }
+    75% { transform: translate(-50%, -50%) rotate(15deg); }
+}
+
+@keyframes coffee-denied {
+    0%, 70%, 100% { opacity: 0; transform: translateX(0); }
+    75%, 85% { opacity: 1; transform: translateX(10px); }
+    90% { opacity: 0; transform: translateX(20px) translateY(20px) rotate(45deg); }
+}
+
+@keyframes steam-rise {
+    0%, 30%, 100% { opacity: 0; transform: translateY(0); }
+    40%, 60% { opacity: 0.8; transform: translateY(-20px); }
+    70% { opacity: 0; transform: translateY(-40px); }
+}
+
+.teapot-fact {
+    background: rgba(243, 156, 18, 0.08);
+    border-left: 4px solid #f39c12;
+    padding: 1.5rem;
+    margin-top: 2rem;
+    border-radius: 8px;
+    font-style: italic;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(243, 156, 18, 0.1);
+}
+
+.teapot-fact:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(243, 156, 18, 0.15);
+}
+
+.teapot-fact p {
+    position: relative;
+    z-index: 1;
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
+    line-height: 1.7;
+}
+
+.teapot-fact::after {
+    content: "☕";
+    position: absolute;
+    right: 15px;
+    bottom: 10px;
+    font-size: 3rem;
+    opacity: 0.1;
+    transform: rotate(15deg);
+}
+
+@media (max-width: 600px) {
+    .error-illustration {
+        height: 120px;
+    }
+    
+    .teapot-fact {
+        padding: 1rem;
+    }
+}
+{% endblock %}
+
+{% block error_code %}<span>4</span><span>1</span><span>8</span>{% endblock %}
+{% block error_heading %}I'm a teapot{% endblock %}
+
+{% block error_illustration %}
+<div class="error-illustration">
+    <i class="fas fa-coffee coffee-icon"></i>
+    <i class="fas fa-mug-hot teapot-icon"></i>
+    <i class="fas fa-wind steam"></i>
+</div>
+{% endblock %}
+
+{% block error_message %}
+The server refuses to brew coffee because it is, in fact, a teapot!
+{% endblock %}
+
+{% block additional_content %}
+<div class="teapot-fact">
+    <p>Fun fact: The 418 status code "I'm a teapot" comes from an April Fools' joke in 1998 called the "Hyper Text Coffee Pot Control Protocol" (HTCPCP). This whimsical HTTP status code has become an inside joke among web developers.</p>
+</div>
+{% endblock %}
+
+{% block additional_actions %}
+<a href="{{ url_for('index') }}#contact" class="secondary-btn">
+    <i class="fa fa-mug-hot"></i> Request Tea Instead
+</a>
+{% endblock %}

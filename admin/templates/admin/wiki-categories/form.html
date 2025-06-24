@@ -1,0 +1,111 @@
+{% extends "admin/base.html" %}
+
+{% block title %}{% if category %}Edit Category{% else %}Create Category{% endif %}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-tags"></i> 
+                    {% if category %}Edit Category: {{ category.name }}{% else %}Create New Category{% endif %}
+                </h5>
+            </div>
+            
+            <div class="card-body">
+                <form class="ajax-form" 
+                      action="{% if category %}{{ url_for('admin.wiki_categories_edit', category_id=category.id) }}{% else %}{{ url_for('admin.wiki_categories_create') }}{% endif %}" 
+                      method="POST">
+                    
+                    <!-- Name -->
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Category Name *</label>
+                        <input type="text" class="form-control" id="name" name="name" required
+                               value="{{ category.name if category else '' }}"
+                               data-max-length="255">
+                        <small class="form-text text-muted">Maximum 255 characters</small>
+                    </div>
+                    
+                    <!-- Description -->
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" name="description" rows="4"
+                                  data-max-length="1000">{{ category.description if category else '' }}</textarea>
+                        <small class="form-text text-muted">Brief description of this category (maximum 1000 characters)</small>
+                    </div>
+                    
+                    <!-- Parent Category -->
+                    <div class="mb-3">
+                        <label for="parent_id" class="form-label">Parent Category</label>
+                        <select class="form-select" id="parent_id" name="parent_id">
+                            <option value="">No Parent (Root Category)</option>
+                            {% for parent_category in categories %}
+                                <option value="{{ parent_category.id }}" 
+                                        {% if category and category.parent_id == parent_category.id %}selected{% endif %}>
+                                    {{ parent_category.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <small class="form-text text-muted">
+                            Choose a parent category to create a subcategory, or leave empty for a root category
+                        </small>
+                    </div>
+                    
+                    <!-- Category Stats (if editing) -->
+                    {% if category %}
+                    <div class="mb-3">
+                        <h6>Category Statistics</h6>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <ul class="list-unstyled">
+                                    <li><strong>Articles:</strong> {{ category.article_count }}</li>
+                                    <li><strong>Subcategories:</strong> {{ category.subcategories|length }}</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <ul class="list-unstyled">
+                                    <li><strong>Created:</strong> {{ category.created_at.strftime('%Y-%m-%d %H:%M') }}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        {% if category.subcategories %}
+                        <div class="mt-3">
+                            <h6>Subcategories</h6>
+                            <div class="d-flex flex-wrap gap-2">
+                                {% for subcategory in category.subcategories %}
+                                    <span class="badge bg-info">{{ subcategory.name }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        {% if category.article_count > 0 %}
+                        <div class="mt-3">
+                            <a href="{{ url_for('admin.articles', category=category.id) }}" 
+                               class="btn btn-outline-info btn-sm">
+                                <i class="fas fa-eye"></i> View Articles in this Category
+                            </a>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                    
+                    <!-- Action Buttons -->
+                    <hr>
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ url_for('admin.wiki_categories') }}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Back to Categories
+                        </a>
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-save"></i> 
+                            {% if category %}Update Category{% else %}Create Category{% endif %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

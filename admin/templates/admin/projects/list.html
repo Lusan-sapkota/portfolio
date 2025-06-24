@@ -1,0 +1,363 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Projects{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2><i class="fas fa-project-diagram"></i> Projects</h2>
+            <div>
+                <a href="{{ url_for('admin.projects_create') }}" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Add Project
+                </a>
+                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#bulkActionModal">
+                    <i class="fas fa-tasks"></i> Bulk Actions
+                </button>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <form method="GET" class="row g-3">
+                    <div class="col-md-3">
+                        <label for="category" class="form-label">Category</label>
+                        <select name="category" id="category" class="form-select">
+                            <option value="">All Categories</option>
+                            {% for category in categories %}
+                            <option value="{{ category.id }}" {% if request.args.get('category') == category.id|string %}selected{% endif %}>
+                                {{ category.name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="status" class="form-label">Status</label>
+                        <select name="status" id="status" class="form-select">
+                            <option value="">All Status</option>
+                            <option value="completed" {% if request.args.get('status') == 'completed' %}selected{% endif %}>Completed</option>
+                            <option value="in-progress" {% if request.args.get('status') == 'in-progress' %}selected{% endif %}>In Progress</option>
+                            <option value="maintenance" {% if request.args.get('status') == 'maintenance' %}selected{% endif %}>Maintenance</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="search" class="form-label">Search</label>
+                        <input type="text" name="search" id="search" class="form-control" placeholder="Search projects..." value="{{ request.args.get('search', '') }}">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">&nbsp;</label>
+                        <div>
+                            <button type="submit" class="btn btn-primary">Filter</button>
+                            <a href="{{ url_for('admin.projects') }}" class="btn btn-outline-secondary">Clear</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Projects Table -->
+        <div class="card">
+            <div class="card-body">
+                {% if projects %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th><input type="checkbox" id="selectAll"></th>
+                                <th>Image</th>
+                                <th>Title</th>
+                                <th>Category</th>
+                                <th>Status</th>
+                                <th>GitHub</th>
+                                <th>Featured</th>
+                                <th>Homepage</th>
+                                <th>Created</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for project in projects %}
+                            <tr>
+                                <td><input type="checkbox" class="project-checkbox" value="{{ project.id }}"></td>
+                                <td>
+                                    {% if project.image_url %}
+                                    <img src="{{ project.image_url }}" alt="{{ project.title }}" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;">
+                                    {% else %}
+                                    <div class="bg-light d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                        <i class="fas fa-image text-muted"></i>
+                                    </div>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <strong>{{ project.title }}</strong>
+                                    {% if project.description %}
+                                    <br><small class="text-muted">{{ project.description[:50] }}{% if project.description|length > 50 %}...{% endif %}</small>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if project.category %}
+                                    <span class="badge bg-secondary">{{ project.category.name }}</span>
+                                    {% else %}
+                                    <span class="text-muted">No Category</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <span class="badge bg-{% if project.status == 'completed' %}success{% elif project.status == 'in-progress' %}warning{% else %}info{% endif %}">
+                                        {{ project.status.title() }}
+                                    </span>
+                                </td>
+                                <td>
+                                    {% if project.github_url %}
+                                    <a href="{{ project.github_url }}" target="_blank" class="text-decoration-none">
+                                        <i class="fab fa-github"></i>
+                                        {% if project.stars %}<span class="badge bg-light text-dark">{{ project.stars }} ⭐</span>{% endif %}
+                                    </a>
+                                    {% else %}
+                                    <span class="text-muted">-</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input toggle-featured" type="checkbox" 
+                                               data-project-id="{{ project.id }}" 
+                                               {% if project.is_featured %}checked{% endif %}>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input toggle-homepage" type="checkbox" 
+                                               data-project-id="{{ project.id }}" 
+                                               {% if project.show_on_homepage %}checked{% endif %}>
+                                    </div>
+                                </td>
+                                <td>
+                                    <small>{{ project.created_at.strftime('%Y-%m-%d') }}</small>
+                                </td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <a href="{{ url_for('admin.projects_edit', id=project.id) }}" 
+                                           class="btn btn-outline-primary" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-outline-danger delete-project" 
+                                                data-project-id="{{ project.id }}" 
+                                                data-project-title="{{ project.title }}" title="Delete">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center py-5">
+                    <i class="fas fa-project-diagram fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">No projects found</h5>
+                    <p class="text-muted">Start by creating your first project!</p>
+                    <a href="{{ url_for('admin.projects_create') }}" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Add Project
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bulk Action Modal -->
+<div class="modal fade" id="bulkActionModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Bulk Actions</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="bulkActionForm">
+                    <div class="mb-3">
+                        <label for="bulkAction" class="form-label">Action</label>
+                        <select name="action" id="bulkAction" class="form-select" required>
+                            <option value="">Select action...</option>
+                            <option value="feature">Mark as Featured</option>
+                            <option value="unfeature">Remove from Featured</option>
+                            <option value="show_homepage">Show on Homepage</option>
+                            <option value="hide_homepage">Hide from Homepage</option>
+                            <option value="status_completed">Set Status: Completed</option>
+                            <option value="status_in_progress">Set Status: In Progress</option>
+                            <option value="status_maintenance">Set Status: Maintenance</option>
+                            <option value="delete" class="text-danger">Delete Selected</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <small class="text-muted">
+                            <span id="selectedCount">0</span> project(s) selected
+                        </small>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="executeBulkAction">Execute</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Project</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete the project "<span id="deleteProjectTitle"></span>"?</p>
+                <p class="text-danger"><strong>This action cannot be undone.</strong></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmDelete">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+    // Select All functionality
+    $('#selectAll').change(function() {
+        $('.project-checkbox').prop('checked', this.checked);
+        updateSelectedCount();
+    });
+    
+    $('.project-checkbox').change(function() {
+        updateSelectedCount();
+        $('#selectAll').prop('checked', $('.project-checkbox:checked').length === $('.project-checkbox').length);
+    });
+    
+    function updateSelectedCount() {
+        const count = $('.project-checkbox:checked').length;
+        $('#selectedCount').text(count);
+    }
+    
+    // Toggle featured status
+    $('.toggle-featured').change(function() {
+        const projectId = $(this).data('project-id');
+        const isFeatured = $(this).is(':checked');
+        
+        $.ajax({
+            url: `/admin/api/projects/${projectId}/toggle-featured`,
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            data: JSON.stringify({ featured: isFeatured }),
+            success: function(response) {
+                if (response.status !== 'success') {
+                    alert('Error updating featured status');
+                    location.reload();
+                }
+            },
+            error: function() {
+                alert('Error updating featured status');
+                location.reload();
+            }
+        });
+    });
+    
+    // Toggle homepage display
+    $('.toggle-homepage').change(function() {
+        const projectId = $(this).data('project-id');
+        const showOnHomepage = $(this).is(':checked');
+        
+        $.ajax({
+            url: `/admin/api/projects/${projectId}/toggle-homepage`,
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            data: JSON.stringify({ show_on_homepage: showOnHomepage }),
+            success: function(response) {
+                if (response.status !== 'success') {
+                    alert('Error updating homepage display status');
+                    location.reload();
+                }
+            },
+            error: function() {
+                alert('Error updating homepage display status');
+                location.reload();
+            }
+        });
+    });
+    
+    // Delete project
+    $('.delete-project').click(function() {
+        const projectId = $(this).data('project-id');
+        const projectTitle = $(this).data('project-title');
+        
+        $('#deleteProjectTitle').text(projectTitle);
+        $('#deleteModal').modal('show');
+        
+        $('#confirmDelete').off('click').on('click', function() {
+            $.ajax({
+                url: `/admin/projects/${projectId}/delete`,
+                method: 'POST',
+                success: function(response) {
+                    location.reload();
+                },
+                error: function() {
+                    alert('Error deleting project');
+                }
+            });
+        });
+    });
+    
+    // Bulk actions
+    $('#executeBulkAction').click(function() {
+        const selectedIds = $('.project-checkbox:checked').map(function() {
+            return $(this).val();
+        }).get();
+        
+        if (selectedIds.length === 0) {
+            alert('Please select at least one project');
+            return;
+        }
+        
+        const action = $('#bulkAction').val();
+        if (!action) {
+            alert('Please select an action');
+            return;
+        }
+        
+        if (action === 'delete' && !confirm('Are you sure you want to delete the selected projects? This cannot be undone.')) {
+            return;
+        }
+        
+        $.ajax({
+            url: '/admin/api/projects/bulk-action',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            data: JSON.stringify({
+                action: action,
+                project_ids: selectedIds
+            }),
+            success: function(response) {
+                $('#bulkActionModal').modal('hide');
+                location.reload();
+            },
+            error: function() {
+                alert('Error executing bulk action');
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

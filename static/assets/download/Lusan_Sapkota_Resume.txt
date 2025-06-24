@@ -1,0 +1,241 @@
+============================================================================
+                            LUSAN SAPKOTA
+                    Full Stack Software Developer
+============================================================================
+
+CONTACT INFORMATION
+-------------------
+Phone: Available upon request
+Email: sapkotalusan@gmail.com
+Website: https://www.lusansapkota.com.np
+Location: Kathmandu, Nepal 🇳🇵
+
+SOCIAL PROFILES
+---------------
+• GitHub: https://github.com/Lusan-sapkota
+• LinkedIn: https://www.linkedin.com/in/lusan-sapkota-a08194284/
+• X (Twitter): https://twitter.com/LusanSapkota
+• YouTube: https://www.youtube.com/@learn_with_lusan
+• LeetCode: https://leetcode.com/u/sapkotalusan/
+• HackerRank: https://www.hackerrank.com/profile/sapkotalusan
+• Instagram: https://www.instagram.com/sapkotalusan/
+• Discord: https://discord.gg/X9JzzRug
+
+PROFESSIONAL SUMMARY
+--------------------
+Passionate Full Stack Software Developer from Nepal specializing in Python, 
+JavaScript, TypeScript, Django, Flask, React, and modern web technologies. 
+Experienced in crafting dynamic, responsive websites and robust applications 
+with a deep understanding of both backend architecture and modern frontend 
+design. Expertise in AI/ML, particularly in graph-based models and algorithms, 
+driving data-driven insights and innovation. Committed to leveraging the latest 
+technologies and best practices to deliver user-centered solutions.
+
+EDUCATION
+---------
+Bachelor's in Information Technology (2023 - 2027)
+Texas International College (Lincoln University Partnership)
+Sifal, Kathmandu
+• Currently in 4th Semester
+• Focus: Information Technology, Software Development
+
+Higher Secondary Education (+2) (2021 - 2023)
+Mansalu World College
+Chuchepati, Kathmandu
+• GPA: 3.48
+• Major: Physical Science and Computer Science
+
+Secondary Education (SEE) (2019 - 2021)
+Chandikaswori Secondary Boarding School
+Gokarneshowr-2, Kathmandu
+• GPA: 3.6
+• Major: Optional Mathematics
+
+TECHNICAL SKILLS
+----------------
+
+Programming Languages:
+• Python (Expert - 90%)
+• JavaScript (Advanced - 85%)
+• TypeScript (Advanced - 80%)
+• HTML5/CSS3 (Expert - 95%)
+• Go (Basic - 70%)
+
+Frontend Development:
+• React (Advanced - 80%)
+• React Native (Advanced - 75%)
+• Ionic (Intermediate - 70%)
+• Bootstrap/Tailwind (Expert - 90%)
+• Vue.js (Intermediate - 65%)
+
+Backend Development:
+• Flask (Expert - 90%)
+• Django (Advanced - 85%)
+• FastAPI (Intermediate - 75%)
+• Node.js (Intermediate - 75%)
+• Gin (Basic - 75%)
+
+Database & DevOps:
+• MySQL (Advanced - 85%)
+• PostgreSQL (Intermediate - 70%)
+• Docker (Intermediate - 80%)
+• Azure (Intermediate - 85%)
+• AWS (Intermediate - 75%)
+• Jenkins (Intermediate - 75%)
+
+AI/ML & Data Science:
+• TensorFlow (Advanced - 75%)
+• NumPy & Pandas (Expert - 85%)
+• Scikit-learn (Advanced - 80%)
+• OpenCV (Intermediate - 70%)
+• XGBoost (Intermediate - 70%)
+
+Tools & Operating Systems:
+• Linux (Advanced - 90%)
+• VS Code (Advanced - 88%)
+• Postman (Advanced - 82%)
+• Figma (Intermediate - 65%)
+• Jetbrains (Advanced - 85%)
+• Git/Github (Advanced - 85%)
+
+FAMILIAR TOOLS & TECHNOLOGIES
+-----------------------------
+
+Development Tools:
+• Visual Studio Code, Jetbrains IDEs, Sublime Text
+• Jupyter Notebook, Nano
+
+Version Control:
+• Git, GitHub, GitLab, Git Flow
+
+Testing & Debugging:
+• Unit Testing, Pytest, Jest, Postman
+• LambdaTest, Chrome DevTools
+
+Package Managers:
+• npm, pip, yarn, conda, pipenv
+
+Design & UI/UX:
+• Figma, Canva, Material Design, Bootstrap
+
+Operating Systems:
+• Ubuntu, Windows, macOS, Debian
+
+Cloud Platforms:
+• Google Cloud, Oracle, Heroku, DigitalOcean, Vercel
+
+Development Concepts:
+• JWT, OAuth 2.0, Firebase Auth, Appwrite
+• Mailgun, Twilio
+
+Workflow & Orchestration:
+• Kubernetes, Jira, Notion
+
+PROFESSIONAL EXPERIENCE
+-----------------------
+
+Full Stack Developer & Student (2025 - Present)
+Remote & Nepal
+• Advancing skills in modern web technologies while working on diverse 
+  freelance projects
+• Specializing in Python web frameworks, JavaScript development, and 
+  exploring AI/ML applications in web development
+• Technologies: Flask, Django, React, FastAPI, Docker, Cloud Hosting
+
+Student & Emerging Developer (2022 - 2024)
+Remote Learning & Local Projects
+• Intensive learning phase focusing on modern web technologies while 
+  completing academic studies
+• Built foundation in full-stack development and started taking on local 
+  freelance projects
+• Achievements:
+  - Mastered Python web frameworks
+  - Completed multiple client projects
+  - Built responsive web applications
+
+KEY PROJECTS
+------------
+
+1. CaptainLedger
+   • Self-hosted expense manager with offline-first support, server sync, bank and loan tracking, and real-time currency conversion.
+   • Technologies: React Native, Flask
+   • GitHub: https://github.com/Lusan-sapkota/CaptainLedger
+
+2. GhostTalk
+   • Privacy-focused encrypted chat app with ephemeral messaging, public/private chat, and voice support.
+   • Technologies: Ionic React, Appwrite, Flask
+   • GitHub: https://github.com/Lusan-sapkota/GhostTalk
+
+3. Ambulance Tracking System working demo
+   • Real-time ambulance tracking system to optimize emergency response
+   • Technologies: Python, JavaScript, Html5, Css3
+   • GitHub: https://github.com/Lusan-sapkota/Ambulance-tracking-system
+
+4. Face Recognition Based Attendance System
+   • Automated attendance tracking using facial recognition technology
+   • Technologies: Python
+   • GitHub: https://github.com/Lusan-sapkota/Face-Recognition-Based-Attendance-System
+
+5. Jarvis
+   • Personal AI assistant with voice recognition capabilities
+   • Technologies: Python
+   • GitHub: https://github.com/Lusan-sapkota/Jarvis
+
+6. Dynamic Multi-Subdomain Personal Portfolio
+   • Built a dynamic multi-subdomain personal portfolio with integrated CMS, donation system, project showcase, and live content updates.
+   • Technologies: HTML5, CSS3, JavaScript, Flask
+   • GitHub: https://github.com/Lusan-sapkota/portfolio
+
+DIGITAL ECOSYSTEM
+-----------------
+
+Knowledge Wiki Platform
+• Comprehensive documentation, tutorials, and technical articles covering 
+  web development, app development, AI/ML, and cutting-edge technologies
+• A curated knowledge base for developers and tech enthusiasts
+
+Code Repository Platform
+• Open-source projects, code samples, and collaborative development work
+• Featuring clean, well-documented code with modern development practices
+
+Support Platform
+• Platform supporting open-source work and community contributions
+• Helps create valuable content, tools, and educational resources for the 
+  developer community
+
+Online Store
+• Digital products, courses, and exclusive content platform
+• Secure payments and instant delivery system
+
+LANGUAGES
+---------
+• English (Fluent)
+• Nepali (Native)
+• Hindi (Conversational)
+
+INTERESTS & HOBBIES
+------------------
+• Building developer tools and backend systems from scratch
+• Designing secure, self-hosted architectures
+• Exploring AI/ML integrations in real-world applications
+• Writing clean, maintainable code for open source projects
+• Documenting tech journeys and sharing practical insights
+• Tweaking systems for performance and automation
+• Participating in developer communities and indie dev culture
+• Solving algorithmic challenges and refining system design skills
+
+AVAILABILITY
+-----------
+Available for freelance projects and remote work opportunities.
+Working Hours: Monday-Friday, 9:00 AM - 6:00 PM (Nepal Time)
+
+REFERENCES
+----------
+Available upon request.
+
+============================================================================
+Last Updated: June 23, 2025
+Resume created from portfolio data at: https://www.lusansapkota.com.np
+This resume is auto-generated from my live portfolio.
+Kindly contact me for my concise resume.
+============================================================================

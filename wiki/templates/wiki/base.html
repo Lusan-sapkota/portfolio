@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en" itemscope itemtype="http://schema.org/WebPage">
+<head>
+    <!-- Essential Meta Tags -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta http-equiv="Accept-CH" content="DPR, Viewport-Width, Width">
+    
+    <!-- Primary Meta Tags -->
+    <title>{% block title %}{{ page_title if page_title else 'Lusan\'s Wiki | Knowledge Base & Technical Documentation' }}{% endblock %}</title>
+    <meta name="title" content="{% block meta_title %}{{ page_title if page_title else 'Lusan\'s Wiki | Knowledge Base & Technical Documentation' }}{% endblock %}">
+    <meta name="description" content="{% block meta_description %}{{ page_description if page_description else 'Comprehensive technical wiki covering software development, AI/ML, web technologies, programming tutorials, and tech insights by Lusan Sapkota - Full Stack Developer from Nepal.' }}{% endblock %}">
+    <meta name="author" content="Lusan Sapkota">
+    <meta name="keywords" content="{% block meta_keywords %}{{ page_keywords if page_keywords else 'Lusan Wiki, Technical Documentation, Programming Tutorials, AI ML Guides, Web Development Wiki, Software Engineering, Python Tutorials, JavaScript Guides, Nepal Tech Blog, Technology Knowledge Base, Developer Resources' }}{% endblock %}">
+    <meta name="subject" content="Technical Knowledge Base & Programming Documentation">
+    <meta name="copyright" content="Lusan Sapkota">
+    <meta name="topic" content="Software Development, Technology, Programming">
+    <meta name="summary" content="Technical wiki and knowledge base covering modern software development practices">
+    <meta name="classification" content="Education, Technology, Programming, Documentation">
+    <meta name="designer" content="Lusan Sapkota">
+    <meta name="owner" content="Lusan Sapkota">
+    <meta name="url" content="https://wiki.lusansapkota.com.np{{ request.path }}">
+    <meta name="identifier-URL" content="https://wiki.lusansapkota.com.np{{ request.path }}">
+    <meta name="category" content="Technology, Education, Programming, Software Development">
+    <meta name="coverage" content="Worldwide">
+    <meta name="distribution" content="Global">
+    <meta name="rating" content="General">
+    <meta name="revisit-after" content="3 days">
+    
+    <!-- Language and Geography -->
+    <meta name="language" content="English">
+    <meta name="geo.region" content="NP-3">
+    <meta name="geo.placename" content="Kathmandu, Nepal">
+    <meta name="geo.position" content="27.7172;85.3240">
+    <meta name="ICBM" content="27.7172, 85.3240">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://wiki.lusansapkota.com.np{{ request.path }}">
+    
+    <!-- Alternate URLs -->
+    <link rel="alternate" hreflang="en" href="https://wiki.lusansapkota.com.np{{ request.path }}">
+    <link rel="alternate" hreflang="x-default" href="https://wiki.lusansapkota.com.np{{ request.path }}">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+    <meta property="og:url" content="https://wiki.lusansapkota.com.np{{ request.path }}">
+    <meta property="og:title" content="{% block og_title %}{{ page_title if page_title else 'Lusan\'s Wiki | Technical Knowledge Base' }}{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}{{ page_description if page_description else 'Comprehensive technical documentation and programming tutorials covering modern software development, AI/ML, and web technologies.' }}{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}{{ page_image if page_image else url_for('static', filename='assets/images/wiki-preview.jpg', _external=True) }}{% endblock %}">
+    <meta property="og:image:secure_url" content="{% block og_image_secure %}{{ page_image if page_image else url_for('static', filename='assets/images/wiki-preview.jpg', _external=True) }}{% endblock %}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="{% block og_image_alt %}Lusan's Wiki - Technical Documentation{% endblock %}">
+    <meta property="og:site_name" content="Lusan's Wiki">
+    <meta property="og:locale" content="en_US">
+    <meta property="article:author" content="Lusan Sapkota">
+    <meta property="article:publisher" content="https://www.lusansapkota.com.np">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://wiki.lusansapkota.com.np{{ request.path }}">
+    <meta name="twitter:title" content="{% block twitter_title %}{{ page_title if page_title else 'Lusan\'s Wiki | Technical Knowledge Base' }}{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}{{ page_description if page_description else 'Comprehensive technical documentation covering software development, AI/ML, and modern web technologies.' }}{% endblock %}">
+    <meta name="twitter:image" content="{% block twitter_image %}{{ page_image if page_image else url_for('static', filename='assets/images/wiki-preview.jpg', _external=True) }}{% endblock %}">
+    <meta name="twitter:image:alt" content="{% block twitter_image_alt %}Lusan's Technical Wiki{% endblock %}">
+    <meta name="twitter:site" content="@LusanSapkota">
+    <meta name="twitter:creator" content="@LusanSapkota">
+    <meta name="twitter:label1" content="Written by">
+    <meta name="twitter:data1" content="Lusan Sapkota">
+    <meta name="twitter:label2" content="Category">
+    <meta name="twitter:data2" content="Technical Documentation">
+    
+    <!-- Mobile App Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Lusan's Wiki">
+    <meta name="application-name" content="Lusan's Wiki">
+    <meta name="theme-color" content="#2563eb">
+    <meta name="msapplication-TileColor" content="#2563eb">
+    
+    <!-- Performance Optimization -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    
+    <!-- Robots Control -->
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    
+    <!-- Additional SEO Tags -->
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="handheld-friendly" content="true">
+    <meta name="MobileOptimized" content="320">
+
+	<!-- Universal favicon -->
+	<link rel="icon" type="image/png" href="{{ url_for('static', filename='assets/logo/logo.png') }}" sizes="any">
+
+	<!-- For Apple devices -->
+	<link rel="apple-touch-icon" href="{{ url_for('static', filename='assets/logo/logo.png') }}">
+    
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://wiki.lusansapkota.com.np/#website",
+          "url": "https://wiki.lusansapkota.com.np/",
+          "name": "Lusan's Wiki",
+          "description": "Technical knowledge base and programming documentation",
+          "publisher": {
+            "@type": "Person",
+            "name": "Lusan Sapkota",
+            "url": "https://www.lusansapkota.com.np"
+          },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://wiki.lusansapkota.com.np/search?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+          },
+          "inLanguage": "en-US"
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://wiki.lusansapkota.com.np{{ request.path }}#webpage",
+          "url": "https://wiki.lusansapkota.com.np{{ request.path }}",
+          "name": "{% block schema_name %}{{ page_title if page_title else 'Technical Documentation' }}{% endblock %}",
+          "isPartOf": {
+            "@id": "https://wiki.lusansapkota.com.np/#website"
+          },
+          "description": "{% block schema_description %}{{ page_description if page_description else 'Technical documentation and programming tutorials' }}{% endblock %}",
+          "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://www.lusansapkota.com.np/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Wiki",
+                "item": "https://wiki.lusansapkota.com.np/"
+              }
+              {% block additional_breadcrumbs %}{% endblock %}
+            ]
+          },
+          "author": {
+            "@type": "Person",
+            "name": "Lusan Sapkota",
+            "url": "https://www.lusansapkota.com.np"
+          },
+          "datePublished": "{% block date_published %}2024-01-01{% endblock %}T00:00:00+00:00",
+          "dateModified": "2024-12-23T00:00:00+00:00"
+        }
+        {% block additional_schema %}{% endblock %}
+      ]
+    }
+    </script>
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    
+    <!-- Icons and Favicons -->
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='assets/logo/logo.png') }}" sizes="any">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='assets/logo/logo.png') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='assets/logo/logo.png') }}">
+    
+    <!-- Windows Tiles -->
+    <meta name="msapplication-config" content="{{ url_for('static', filename='assets/logo/browserconfig.xml') }}">
+
+    <!-- CDN CSS: Bootstrap, Font Awesome & Animate.css -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-..." crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha384-..." crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" crossorigin="anonymous">
+
+    <!-- Local CSS -->
+    <link rel="preload" href="{{ url_for('wiki.static', filename='css/wiki-style.css') }}" as="style">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/animate.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/responsive.css') }}">
+    <link rel="stylesheet" href="{{ url_for('wiki.static', filename='css/wiki-style.css') }}">
+    <script>
+    // Initialize theme before page renders
+    (function() {
+        const currentTheme = localStorage.getItem('theme') || 
+            (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        
+        // Ensure icons are reset on initial load
+        document.addEventListener('DOMContentLoaded', function() {
+            const moonIcons = document.querySelectorAll('.fa-moon');
+            const sunIcons = document.querySelectorAll('.fa-sun');
+            
+            moonIcons.forEach(icon => icon.classList.toggle('d-none', currentTheme === 'dark'));
+            sunIcons.forEach(icon => icon.classList.toggle('d-none', currentTheme === 'light'));
+        });
+    })();
+
+    // Handle system theme changes
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+        if (!localStorage.getItem('theme')) {
+            const newTheme = e.matches ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            updateThemeIcons(newTheme);
+        }
+    });
+    </script>
+
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar fixed-top">
+        <div class="container">
+            <!-- Logo -->
+            <a class="navbar-brand" href="{{ url_for('wiki.index') }}">
+                <img src="{{ url_for('static', filename='assets/logo/logo.png') }}" alt="Lusan Sapkota" height="40">
+                <span class="brand-text">Lusan's Knowledge Wiki</span>
+            </a>
+
+            <!-- Mobile Toggle -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Navigation Links -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link{% if request.endpoint == 'wiki.index' %} active{% endif %}" href="{{ url_for('wiki.index') }}">
+                            <i class="fas fa-book"></i> Wiki
+                        </a>
+                    </li>
+                    
+                    <!-- Explore -->
+                    <li class="nav-item">
+                        <a class="nav-link{% if request.endpoint == 'wiki.explore' %} active{% endif %}" href="{{ url_for('wiki.explore') }}">
+                            <i class="fas fa-compass"></i> Explore
+                        </a>
+                    </li>
+                    
+                    <!-- Search -->
+                    <li class="nav-item">
+                        <a class="nav-link{% if request.endpoint == 'wiki.search' %} active{% endif %}" href="{{ url_for('wiki.search') }}">
+                            <i class="fas fa-search"></i> Search
+                        </a>
+                    </li>
+                    
+                    <!-- Random Article -->
+                    <li class="nav-item">
+                        <a class="nav-link{% if request.endpoint == 'wiki.random' %} active{% endif %}" href="{{ url_for('wiki.random') }}">
+                            <i class="fas fa-random"></i> Random
+                        </a>
+                    </li>
+
+                    <!-- Main Site with Submenu -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="mainSiteDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-home"></i> Main Site
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="mainSiteDropdown">
+                            <li>
+                                <a class="dropdown-item" href="{{ url_for('index') }}" target="_blank">
+                                    <i class="fas fa-home"></i> Home
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ url_for('git.index') }}">
+                                    <i class="fas fa-code"></i> Projects
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ url_for('store.index') }}" target="_blank">
+                                    <i class="fas fa-store"></i> Store
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ url_for('donation.index') }}">
+                                    <i class="fas fa-heart"></i> Donate
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item theme-toggle-wrapper">
+                        <button type="button" class="btn btn-link nav-link theme-toggle" id="theme-toggle">
+                        <i class="fas fa-moon"></i>
+                        <i class="fas fa-sun"></i>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="row{% if request.endpoint in ['wiki.random', 'wiki.search'] %} full-width-content{% endif %}">
+                <!-- Sidebar -->
+                {% if request.endpoint not in ['wiki.explore'] %}
+                <div class="col-md-3">
+                    <div class="wiki-sidebar">
+                        {% if categories %}
+                            <div class="sidebar-header">
+                                <h5><i class="fas fa-list"></i> Categories</h5>
+                            </div>
+                            {% for category in categories %}
+                                <div class="wiki-category mb-3">
+                                    <div class="wiki-category-header" data-bs-toggle="collapse" href="#category{{ category.id }}" 
+                                         {% if category.id == active_category %}aria-expanded="true"{% endif %}>
+                                        <i class="fas fa-chevron-right"></i> {{ category.name }}
+                                    </div>
+                                    <div class="collapse {% if category.id == active_category %}show{% endif %}" id="category{{ category.id }}">
+                                        <div class="list-group">
+                                            {% for article in category.articles %}
+                                                <a href="{{ url_for('wiki.article', article_id=article.id) }}" 
+                                                   class="list-group-item list-group-item-action {% if request.path == url_for('wiki.article', article_id=article.id) %}active{% endif %}">
+                                                    {{ article.title }}
+                                                </a>
+                                            {% endfor %}
+                                            
+                                            {% for subcategory in category.subcategories %}
+                                                <div class="wiki-subcategory">
+                                                    <div class="wiki-subcategory-header" data-bs-toggle="collapse" href="#subcategory{{ subcategory.id }}"
+                                                         {% if subcategory.id == active_subcategory %}aria-expanded="true"{% endif %}>
+                                                        <i class="fas fa-chevron-right"></i> {{ subcategory.name }}
+                                                    </div>
+                                                    <div class="collapse {% if subcategory.id == active_subcategory %}show{% endif %}" id="subcategory{{ subcategory.id }}">
+                                                        <div class="list-group">
+                                                            {% for article in subcategory.articles %}
+                                                                <a href="{{ url_for('wiki.article', article_id=article.id) }}" 
+                                                                   class="list-group-item list-group-item-action {% if request.path == url_for('wiki.article', article_id=article.id) %}active{% endif %}">
+                                                                    {{ article.title }}
+                                                                </a>
+                                                            {% endfor %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- Main Content -->
+                <div class="{% if request.endpoint in ['wiki.explore'] %}col-12{% else %}col-md-9{% endif %}">
+                    <div class="wiki-content">
+                        {% block content %}{% endblock %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer-custom">
+    <div class="container">
+        <div class="footer-content-custom row align-items-center justify-content-between text-center text-md-start">
+        <div class="col-12 col-md-6 mb-3 mb-md-0">
+            <p class="footer-text-custom mb-0">&copy; {{ current_year|default(2025) }} Lusan Sapkota. All rights reserved.</p>
+        </div>
+        <div class="col-12 col-md-6 footer-socials-custom d-flex justify-content-center justify-content-md-end">
+          <a href="https://github.com/Lusan-sapkota" target="_blank" class="social-link" title="GitHub">
+            <i class="fab fa-github"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/lusan-sapkota-a08194284/" target="_blank" class="social-link" title="LinkedIn">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+          <a href="https://x.com/LusanSapkota" target="_blank" class="social-link" title="X(Twitter)">
+            <i class="fab fa-x-twitter"></i>
+          </a>
+          <a href="https://www.instagram.com/sapkotalusan/" target="_blank" class="social-link" title="Instagram">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="https://www.youtube.com/@learn_with_lusan" target="_blank" class="social-link" title="YouTube">
+            <i class="fab fa-youtube"></i>
+          </a>
+          <a href="https://discord.gg/X9JzzRug" target="_blank" class="social-link" title="Discord">
+            <i class="fab fa-discord"></i>
+          </a>
+        </div>
+        </div>
+    </div>
+    </footer>
+
+
+
+    <!-- CDN JS: Bootstrap & jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
+    
+    <script src="{{ url_for('static', filename='assets/js/custom.js') }}"></script>
+    <script src="{{ url_for('wiki.static', filename='js/wiki-script.js') }}"></script>
+
+    <!-- Analytics Integration -->
+    {% if seo and seo.google_analytics_id %}
+    <!-- Google Analytics (GA4) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ seo.google_analytics_id }}"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '{{ seo.google_analytics_id }}', {
+            page_title: document.title,
+            page_location: window.location.href,
+            custom_map: {
+                'custom_dimension_1': 'user_type',
+                'custom_dimension_2': 'page_category'
+            }
+        });
+        
+        // Enhanced tracking for wiki page views
+        gtag('event', 'page_view', {
+            page_title: document.title,
+            page_location: window.location.href,
+            content_group1: 'Wiki Knowledge Base',
+            custom_dimension_2: 'wiki'
+        });
+    </script>
+    {% endif %}
+
+    {% if seo and seo.google_tag_manager_id %}
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','{{ seo.google_tag_manager_id }}');</script>
+    {% endif %}
+
+    {% if seo and seo.facebook_pixel_id %}
+    <!-- Facebook Pixel -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '{{ seo.facebook_pixel_id }}');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id={{ seo.facebook_pixel_id }}&ev=PageView&noscript=1"
+    /></noscript>
+    {% endif %}
+
+    {% if seo and seo.linkedin_insight_tag %}
+    <!-- LinkedIn Insight Tag -->
+    <script type="text/javascript">
+        _linkedin_partner_id = "{{ seo.linkedin_insight_tag }}";
+        window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];
+        window._linkedin_data_partner_ids.push(_linkedin_partner_id);
+    </script><script type="text/javascript">
+        (function(l) {
+            if (!l){window.lintrk = function(a,b){window.lintrk.q.push([a,b])};
+            window.lintrk.q=[]}
+            var s = document.getElementsByTagName("script")[0];
+            var b = document.createElement("script");
+            b.type = "text/javascript";b.async = true;
+            b.src = "https://snap.licdn.com/li.lms-analytics/insight.min.js";
+            s.parentNode.insertBefore(b, s);})(window.lintrk);
+    </script>
+    <noscript>
+        <img height="1" width="1" style="display:none;" alt="" src="https://px.ads.linkedin.com/collect/?pid={{ seo.linkedin_insight_tag }}&fmt=gif" />
+    </noscript>
+    {% endif %}
+
+    <!-- Performance Monitoring -->
+    <script>
+        // Core Web Vitals monitoring
+        function sendToAnalytics(metric) {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', metric.name, {
+                    event_category: 'Web Vitals',
+                    value: Math.round(metric.name === 'CLS' ? metric.value * 1000 : metric.value),
+                    custom_parameter_1: metric.id,
+                    non_interaction: true,
+                });
+            }
+        }
+
+        // Load web vitals library
+        const script = document.createElement('script');
+        script.src = 'https://unpkg.com/web-vitals@3/dist/web-vitals.attribution.iife.js';
+        script.onload = function() {
+            webVitals.onCLS(sendToAnalytics);
+            webVitals.onFID(sendToAnalytics);
+            webVitals.onFCP(sendToAnalytics);
+            webVitals.onLCP(sendToAnalytics);
+            webVitals.onTTFB(sendToAnalytics);
+        };
+        document.head.appendChild(script);
+
+        // Enhanced error tracking for wiki pages
+        window.onerror = function(msg, url, lineNo, columnNo, error) {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'exception', {
+                    'description': msg + ' at ' + url + ':' + lineNo,
+                    'fatal': false,
+                    'page_location': window.location.href
+                });
+            }
+            return false;
+        };
+
+        // Service Worker registration for PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/static/sw.js')
+                    .then(function(registration) {
+                        console.log('ServiceWorker registration successful');
+                    })
+                    .catch(function(err) {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            });
+        }
+    </script>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>

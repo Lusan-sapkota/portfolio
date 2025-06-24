@@ -1,0 +1,245 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}{{ 'Edit Social Link' if link else 'Add Social Link' }}{% endblock %}
+
+{% block content %}
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">{{ 'Edit Social Link' if link else 'Add Social Link' }}</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="{{ url_for('admin.dashboard') }}">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('admin.social_links') }}">Social Links</a></li>
+                    <li class="breadcrumb-item active">{{ 'Edit' if link else 'Add' }}</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="container-fluid">
+        <form id="social-link-form" onsubmit="saveSocialLink(event)">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Social Link Details</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="platform">Platform *</label>
+                                        <select id="platform" name="platform" class="form-control" required onchange="updatePlatformDefaults()">
+                                            <option value="">Select Platform</option>
+                                            <option value="LinkedIn" {% if link and link.platform == 'LinkedIn' %}selected{% endif %}>LinkedIn</option>
+                                            <option value="GitHub" {% if link and link.platform == 'GitHub' %}selected{% endif %}>GitHub</option>
+                                            <option value="Twitter" {% if link and link.platform == 'Twitter' %}selected{% endif %}>Twitter</option>
+                                            <option value="Instagram" {% if link and link.platform == 'Instagram' %}selected{% endif %}>Instagram</option>
+                                            <option value="Facebook" {% if link and link.platform == 'Facebook' %}selected{% endif %}>Facebook</option>
+                                            <option value="YouTube" {% if link and link.platform == 'YouTube' %}selected{% endif %}>YouTube</option>
+                                            <option value="Behance" {% if link and link.platform == 'Behance' %}selected{% endif %}>Behance</option>
+                                            <option value="Dribbble" {% if link and link.platform == 'Dribbble' %}selected{% endif %}>Dribbble</option>
+                                            <option value="Medium" {% if link and link.platform == 'Medium' %}selected{% endif %}>Medium</option>
+                                            <option value="Dev.to" {% if link and link.platform == 'Dev.to' %}selected{% endif %}>Dev.to</option>
+                                            <option value="Stack Overflow" {% if link and link.platform == 'Stack Overflow' %}selected{% endif %}>Stack Overflow</option>
+                                            <option value="Discord" {% if link and link.platform == 'Discord' %}selected{% endif %}>Discord</option>
+                                            <option value="Telegram" {% if link and link.platform == 'Telegram' %}selected{% endif %}>Telegram</option>
+                                            <option value="WhatsApp" {% if link and link.platform == 'WhatsApp' %}selected{% endif %}>WhatsApp</option>
+                                            <option value="Email" {% if link and link.platform == 'Email' %}selected{% endif %}>Email</option>
+                                            <option value="Website" {% if link and link.platform == 'Website' %}selected{% endif %}>Personal Website</option>
+                                            <option value="Other" {% if link and link.platform == 'Other' %}selected{% endif %}>Other</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="username">Username/Handle</label>
+                                        <input type="text" id="username" name="username" class="form-control" value="{{ link.username if link else '' }}" placeholder="@username">
+                                        <small class="form-text text-muted">Optional: Your username on this platform</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="url">URL *</label>
+                                <input type="url" id="url" name="url" class="form-control" value="{{ link.url if link else '' }}" required placeholder="https://platform.com/yourprofile">
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="icon_class">Icon Class</label>
+                                        <input type="text" id="icon_class" name="icon_class" class="form-control" value="{{ link.icon_class if link else '' }}" placeholder="fab fa-linkedin">
+                                        <small class="form-text text-muted">Font Awesome icon class (auto-filled for popular platforms)</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="sort_order">Sort Order</label>
+                                        <input type="number" id="sort_order" name="sort_order" class="form-control" value="{{ link.sort_order if link else 0 }}" min="0">
+                                        <small class="form-text text-muted">Lower numbers appear first</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="is_active" name="is_active" {% if not link or link.is_active %}checked{% endif %}>
+                                    <label class="custom-control-label" for="is_active">Show this link on the website</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <!-- Preview -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Preview</h3>
+                        </div>
+                        <div class="card-body text-center">
+                            <div id="link-preview" class="mb-3">
+                                <i id="preview-icon" class="{{ link.icon_class if link else 'fas fa-link' }} fa-2x text-primary"></i>
+                                <p class="mt-2 mb-0" id="preview-platform">{{ link.platform if link else 'Platform' }}</p>
+                                <small class="text-muted" id="preview-username">{{ '@' + link.username if link and link.username else '' }}</small>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Actions -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Actions</h3>
+                        </div>
+                        <div class="card-body">
+                            <button type="submit" class="btn btn-primary btn-block">
+                                <i class="fas fa-save"></i> {{ 'Update Link' if link else 'Save Link' }}
+                            </button>
+                            <a href="{{ url_for('admin.social_links') }}" class="btn btn-secondary btn-block">
+                                <i class="fas fa-arrow-left"></i> Back to Social Links
+                            </a>
+                            {% if link %}
+                            <hr>
+                            <button type="button" class="btn btn-danger btn-block" onclick="deleteSocialLink()">
+                                <i class="fas fa-trash"></i> Delete Link
+                            </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+// Platform defaults for auto-filling
+const platformDefaults = {
+    'LinkedIn': { icon: 'fab fa-linkedin', baseUrl: 'https://linkedin.com/in/' },
+    'GitHub': { icon: 'fab fa-github', baseUrl: 'https://github.com/' },
+    'Twitter': { icon: 'fab fa-twitter', baseUrl: 'https://twitter.com/' },
+    'Instagram': { icon: 'fab fa-instagram', baseUrl: 'https://instagram.com/' },
+    'Facebook': { icon: 'fab fa-facebook', baseUrl: 'https://facebook.com/' },
+    'YouTube': { icon: 'fab fa-youtube', baseUrl: 'https://youtube.com/c/' },
+    'Behance': { icon: 'fab fa-behance', baseUrl: 'https://behance.net/' },
+    'Dribbble': { icon: 'fab fa-dribbble', baseUrl: 'https://dribbble.com/' },
+    'Medium': { icon: 'fab fa-medium', baseUrl: 'https://medium.com/@' },
+    'Dev.to': { icon: 'fab fa-dev', baseUrl: 'https://dev.to/' },
+    'Stack Overflow': { icon: 'fab fa-stack-overflow', baseUrl: 'https://stackoverflow.com/users/' },
+    'Discord': { icon: 'fab fa-discord', baseUrl: 'https://discord.gg/' },
+    'Telegram': { icon: 'fab fa-telegram', baseUrl: 'https://t.me/' },
+    'WhatsApp': { icon: 'fab fa-whatsapp', baseUrl: 'https://wa.me/' },
+    'Email': { icon: 'fas fa-envelope', baseUrl: 'mailto:' },
+    'Website': { icon: 'fas fa-globe', baseUrl: 'https://' }
+};
+function updatePlatformDefaults() {
+    const platform = document.getElementById('platform').value;
+    const iconField = document.getElementById('icon_class');
+    const urlField = document.getElementById('url');
+    if (platformDefaults[platform]) {
+        if (!iconField.value) {
+            iconField.value = platformDefaults[platform].icon;
+        }
+        if (!urlField.value) {
+            urlField.placeholder = platformDefaults[platform].baseUrl + 'yourprofile';
+        }
+    }
+    updatePreview();
+}
+function updatePreview() {
+    const platform = document.getElementById('platform').value;
+    const username = document.getElementById('username').value;
+    const iconClass = document.getElementById('icon_class').value;
+    document.getElementById('preview-platform').textContent = platform || 'Platform';
+    document.getElementById('preview-username').textContent = username ? '@' + username : '';
+    document.getElementById('preview-icon').className = (iconClass || 'fas fa-link') + ' fa-2x text-primary';
+}
+document.getElementById('platform').addEventListener('change', updatePreview);
+document.getElementById('username').addEventListener('input', updatePreview);
+document.getElementById('icon_class').addEventListener('input', updatePreview);
+function saveSocialLink(event) {
+    event.preventDefault();
+    const form = event.target;
+    const formData = new FormData(form);
+    const data = {};
+    for (let [key, value] of formData.entries()) {
+        if (key === 'is_active') {
+            data[key] = form.querySelector(`[name="${key}"]`).checked;
+        } else {
+            data[key] = value;
+        }
+    }
+    const url = '{{ url_for('admin.social_links_edit', id=link.id) if link else url_for('admin.social_links_create') }}';
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showNotification(data.message, 'success');
+            {% if not link %}
+            setTimeout(() => {
+                window.location.href = '{{ url_for('admin.social_links') }}';
+            }, 1500);
+            {% endif %}
+        } else {
+            showNotification('Error: ' + data.message, 'error');
+        }
+    })
+    .catch(error => {
+        showNotification('Error saving social link', 'error');
+    });
+}
+{% if link %}
+function deleteSocialLink() {
+    if (confirm('Delete this social link? This action cannot be undone.')) {
+        fetch('{{ url_for('admin.social_links_delete', id=link.id) }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showNotification('Social link deleted successfully', 'success');
+                window.location.href = '{{ url_for('admin.social_links') }}';
+            } else {
+                showNotification('Error: ' + data.message, 'error');
+            }
+        })
+        .catch(error => {
+            showNotification('Error deleting social link', 'error');
+        });
+    }
+}
+{% endif %}
+document.addEventListener('DOMContentLoaded', function() {
+    updatePreview();
+});
+</script>
+{% endblock %}

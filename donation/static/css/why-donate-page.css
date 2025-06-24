@@ -1,0 +1,975 @@
+/* ===== WHY DONATE PAGE SPECIFIC STYLES ===== */
+
+/* Hero Section */
+.why-hero {
+    background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%) !important;
+    transition: all 0.3s ease !important;
+    color: white;
+    padding: 120px 0 80px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 0 0 50px 50px;
+    margin-bottom: 2rem;
+}
+
+.why-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1), transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1), transparent 50%),
+        linear-gradient(45deg, rgba(0,0,0,0.1) 0%, transparent 50%, rgba(255,255,255,0.1) 100%);
+    pointer-events: none;
+    transition: all 0.3s ease !important;
+}
+
+.why-hero .container {
+    position: relative;
+    z-index: 2;
+}
+
+.why-hero h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    animation: slideInFromLeft 0.8s ease-out;
+    transition: all 0.3s ease !important;
+}
+
+.why-hero .lead {
+    font-size: 1.3rem;
+    opacity: 0.95;
+    line-height: 1.6;
+    animation: slideInFromRight 0.8s ease-out 0.2s both;
+    max-width: none;
+    transition: all 0.3s ease !important;
+}
+
+.why-hero img {
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease !important;
+    animation: fadeInScale 0.8s ease-out 0.4s both;
+}
+
+.why-hero img:hover {
+    transform: scale(1.05);
+}
+
+/* Project Overview */
+.project-overview {
+    background: var(--card-bg);
+    border-radius: 25px;
+    padding: 3rem;
+    margin-bottom: 3rem;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(243, 156, 18, 0.1) !important;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease !important;
+}
+
+.project-overview::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(135deg, #f39c12, #e67e22) !important;
+    transition: all 0.3s ease !important;
+}
+
+.project-overview h2 {
+    color: var(--text-primary);
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    position: relative;
+    transition: all 0.3s ease !important;
+}
+
+.project-overview h2::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 3px;
+    background: linear-gradient(135deg, #f39c12, #e67e22) !important;
+    margin-top: 0.5rem;
+    border-radius: 2px;
+    transition: all 0.3s ease !important;
+}
+
+.project-description {
+    color: var(--text-secondary);
+    line-height: 1.8;
+    font-size: 1.1rem;
+    transition: all 0.3s ease !important;
+}
+
+/* Urgency Banner */
+.urgency-banner {
+    background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%) !important;
+    color: white;
+    padding: 2.5rem;
+    border-radius: 20px;
+    text-align: center;
+    margin-bottom: 3rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 15px 40px rgba(230, 126, 34, 0.3) !important;
+    transition: all 0.3s ease !important;
+}
+
+.urgency-banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(255, 255, 255, 0.1), transparent, rgba(255, 255, 255, 0.1));
+    pointer-events: none;
+    transition: all 0.3s ease !important;
+}
+
+.urgency-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s ease !important;
+}
+
+.urgency-banner p {
+    font-size: 1.1rem;
+    opacity: 0.95;
+    line-height: 1.6;
+    transition: all 0.3s ease !important;
+}
+
+/* Benefit Cards */
+.benefit-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    border-left: 5px solid #f39c12 !important;
+    transition: all 0.4s cubic-bezier(0.075, 0.82, 0.165, 1) !important;
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+}
+
+.benefit-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, rgba(243, 156, 18, 0.1), transparent) !important;
+    border-radius: 50%;
+    transform: translate(50%, -50%);
+    transition: all 0.3s ease !important;
+}
+
+.benefit-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    border-left-color: #e67e22 !important;
+    transition: all 0.4s cubic-bezier(0.075, 0.82, 0.165, 1) !important;
+}
+
+.benefit-card:hover::before {
+    width: 150px;
+    height: 150px;
+    background: linear-gradient(135deg, rgba(243, 156, 18, 0.2), transparent) !important;
+    transition: all 0.3s ease !important;
+}
+
+.benefit-icon {
+    font-size: 3rem;
+    color: #f39c12 !important;
+    margin-bottom: 1.5rem;
+    transition: all 0.3s ease !important;
+}
+
+.benefit-card:hover .benefit-icon {
+    color: #e67e22 !important;
+    transform: scale(1.1);
+    transition: all 0.3s ease !important;
+}
+
+.benefit-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+    line-height: 1.3;
+    transition: all 0.3s ease !important;
+}
+
+.benefit-description {
+    color: var(--text-secondary);
+    line-height: 1.7;
+    font-size: 1rem;
+    transition: all 0.3s ease !important;
+}
+
+/* Impact Section */
+.impact-section {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+    padding: 80px 0;
+    margin: 4rem 0;
+    border-radius: 50px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease !important;
+}
+
+.impact-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 20%, rgba(243, 156, 18, 0.05), transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(230, 126, 34, 0.05), transparent 50%) !important;
+    pointer-events: none;
+    transition: all 0.3s ease !important;
+}
+
+.impact-section .container {
+    position: relative;
+    z-index: 2;
+}
+
+.impact-section h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 3rem;
+    color: var(--text-primary);
+    transition: all 0.3s ease !important;
+}
+
+.impact-item {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 2.5rem;
+    text-align: center;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    height: 100%;
+    transition: all 0.3s ease !important;
+    border: 1px solid rgba(243, 156, 18, 0.1) !important;
+}
+
+.impact-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    border-color: rgba(243, 156, 18, 0.3) !important;
+    transition: all 0.3s ease !important;
+}
+
+.impact-number {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #f39c12 !important;
+    margin-bottom: 0.5rem;
+    display: block;
+    transition: all 0.3s ease !important;
+}
+
+/* Alternative: If you want gradient text but visible, use this instead */
+.impact-number.gradient-text {
+    background: linear-gradient(135deg, #f39c12, #e67e22) !important;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    /* Fallback for browsers that don't support gradient text */
+    color: #f39c12 !important;
+}
+
+.impact-item h4 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+    transition: all 0.3s ease !important;
+}
+
+.impact-item p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    font-size: 0.95rem;
+    transition: all 0.3s ease !important;
+}
+
+/* Donation Levels */
+.donation-levels {
+    background: var(--card-bg);
+    border-radius: 25px;
+    padding: 3rem;
+    margin-bottom: 3rem;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(243, 156, 18, 0.1) !important;
+    transition: all 0.3s ease !important;
+}
+
+.donation-levels h2 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--text-primary);
+    transition: all 0.3s ease !important;
+}
+
+.level-item {
+    padding: 2rem;
+    border-radius: 15px;
+    margin-bottom: 1.5rem;
+    border: 2px solid rgba(243, 156, 18, 0.2) !important;
+    transition: all 0.3s ease !important;
+    background: rgba(243, 156, 18, 0.02) !important;
+    position: relative;
+    overflow: hidden;
+}
+
+.level-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(243, 156, 18, 0.1), rgba(230, 126, 34, 0.1)) !important;
+    transition: left 0.4s ease !important;
+    z-index: 0;
+}
+
+.level-item:hover {
+    border-color: #f39c12 !important;
+    transform: translateX(10px);
+    box-shadow: 0 8px 25px rgba(243, 156, 18, 0.2) !important;
+    transition: all 0.3s ease !important;
+}
+
+.level-item:hover::before {
+    left: 0;
+    transition: left 0.4s ease !important;
+}
+
+.level-item > * {
+    position: relative;
+    z-index: 1;
+}
+
+.level-amount {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #f39c12 !important;
+    margin-bottom: 0.5rem;
+    display: block;
+    transition: all 0.3s ease !important;
+}
+
+.level-description {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    font-size: 1rem;
+    transition: all 0.3s ease !important;
+}
+
+.btn-outline-primary {
+    background: transparent;
+    color: #f39c12 !important;
+    border: 2px solid #f39c12 !important;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: all 0.3s ease !important;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+
+
+/* Call to Action Section */
+.cta-section {
+    text-align: center;
+    padding: 80px 0;
+    background: linear-gradient(135deg, rgba(243, 156, 18, 0.05) 0%, rgba(230, 126, 34, 0.05) 100%) !important;
+    border-radius: 50px;
+    margin: 3rem 0;
+    transition: all 0.3s ease !important;
+}
+
+.cta-section h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: var(--text-primary);
+    transition: all 0.3s ease !important;
+}
+
+.cta-section .lead {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    max-width: 700px;
+    margin: 0 auto 2.5rem;
+    transition: all 0.3s ease !important;
+}
+
+.cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+    transition: all 0.3s ease !important;
+}
+
+.btn-donate-large {
+    background: linear-gradient(135deg, #f39c12, #e67e22) !important;
+    color: white;
+    border: none;
+    padding: 18px 35px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-decoration: none;
+    transition: all 0.3s ease !important;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 8px 25px rgba(243, 156, 18, 0.3) !important;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-donate-large::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.6s ease !important;
+}
+
+.btn-donate-large:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(243, 156, 18, 0.4) !important;
+    color: white;
+    text-decoration: none;
+    transition: all 0.3s ease !important;
+}
+
+.btn-donate-large:hover::before {
+    left: 100%;
+    transition: left 0.6s ease !important;
+}
+
+.btn-secondary-large {
+    background: transparent;
+    color: #f39c12 !important;
+    border: 2px solid #f39c12 !important;
+    padding: 16px 35px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-decoration: none;
+    transition: all 0.3s ease !important;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-secondary-large:hover {
+    background: #f39c12 !important;
+    color: white !important;
+    text-decoration: none;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(243, 156, 18, 0.3) !important;
+    transition: all 0.3s ease !important;
+}
+
+.cta-section .text-muted {
+    margin-top: 2rem;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    transition: all 0.3s ease !important;
+}
+
+.cta-section .text-muted i {
+    color: #f39c12 !important;
+    margin-right: 5px;
+    transition: all 0.3s ease !important;
+}
+
+/* Similar Projects Section */
+.similar-projects-section {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+    padding: 80px 0;
+    border-radius: 50px;
+    margin-top: 3rem;
+    transition: all 0.3s ease !important;
+}
+
+.similar-projects-section h2 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 3rem;
+    color: var(--text-primary);
+    transition: all 0.3s ease !important;
+}
+
+/* Project Stat Cards */
+.project-stat-card {
+    background: var(--card-bg);
+    border-radius: 15px;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(243, 156, 18, 0.1) !important;
+    transition: all 0.3s ease !important;
+    height: 100%;
+}
+
+.project-stat-card svg {
+    color: #f39c12 !important;
+}
+
+.project-stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+    border-color: rgba(243, 156, 18, 0.3) !important;
+    transition: all 0.3s ease !important;
+}
+
+.project-stat-card h5 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+    transition: all 0.3s ease !important;
+}
+
+.project-stat-card p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease !important;
+}
+
+.project-placeholder {
+    padding: 2rem;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease !important;
+}
+
+/* Simple Bootstrap Progress Bar Styling */
+.progress {
+    background-color: rgba(243, 156, 18, 0.15) !important;
+    border-radius: 10px !important;
+    transition: all 0.3s ease !important;
+}
+
+.progress-bar {
+    border-radius: 10px !important;
+    transition: all 0.3s ease !important;
+    font-weight: 600 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: white !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5) !important;
+}
+
+.progress-bar.bg-warning {
+    background: linear-gradient(135deg, #f39c12, #e67e22) !important;
+    transition: all 0.3s ease !important;
+}
+
+.progress-bar.bg-success {
+    background: linear-gradient(135deg, #28a745, #1e7e34) !important;
+    transition: all 0.3s ease !important;
+}
+
+.progress-bar.bg-info {
+    background: linear-gradient(135deg, #17a2b8, #138496) !important;
+    transition: all 0.3s ease !important;
+}
+
+/* Animations */
+@keyframes slideInFromLeft {
+    0% {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInFromRight {
+    0% {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInScale {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .why-hero h1 {
+        font-size: 3rem;
+        transition: all 0.3s ease !important;
+    }
+    
+    .project-overview,
+    .donation-levels {
+        padding: 2.5rem;
+        transition: all 0.3s ease !important;
+    }
+    
+    .benefit-card {
+        padding: 2rem;
+        transition: all 0.3s ease !important;
+    }
+}
+
+@media (max-width: 992px) {
+    .why-hero {
+        padding: 100px 0 60px;
+        transition: all 0.3s ease !important;
+    }
+    
+    .why-hero h1 {
+        font-size: 2.5rem;
+        transition: all 0.3s ease !important;
+    }
+    
+    .why-hero .lead {
+        font-size: 1.1rem;
+        transition: all 0.3s ease !important;
+    }
+    
+    .impact-section,
+    .cta-section {
+        padding: 60px 0;
+        border-radius: 40px;
+        transition: all 0.3s ease !important;
+    }
+    
+    .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+        transition: all 0.3s ease !important;
+    }
+    
+    .btn-donate-large,
+    .btn-secondary-large {
+        width: 100%;
+        max-width: 300px;
+        transition: all 0.3s ease !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .why-hero {
+        padding: 80px 0 50px;
+        border-radius: 0 0 30px 30px;
+        transition: all 0.3s ease !important;
+    }
+    
+    .why-hero h1 {
+        font-size: 2rem;
+        transition: all 0.3s ease !important;
+    }
+    
+    .why-hero .lead {
+        font-size: 1rem;
+        transition: all 0.3s ease !important;
+    }
+    
+    .project-overview,
+    .donation-levels {
+        padding: 2rem;
+        transition: all 0.3s ease !important;
+    }
+    
+    .benefit-card {
+        padding: 1.5rem;
+        transition: all 0.3s ease !important;
+    }
+    
+    .impact-item {
+        padding: 2rem;
+        transition: all 0.3s ease !important;
+    }
+    
+    .impact-number {
+        font-size: 2rem;
+        transition: all 0.3s ease !important;
+    }
+    
+    .level-item {
+        padding: 1.5rem;
+        transition: all 0.3s ease !important;
+    }
+    
+    .level-amount {
+        font-size: 1.5rem;
+        transition: all 0.3s ease !important;
+    }
+    
+    .impact-section,
+    .cta-section,
+    .similar-projects-section {
+        padding: 50px 0;
+        border-radius: 30px;
+        transition: all 0.3s ease !important;
+    }
+    
+    .cta-section h2 {
+        font-size: 2rem;
+        transition: all 0.3s ease !important;
+    }
+    
+    .btn-donate-large,
+    .btn-secondary-large {
+        padding: 15px 25px;
+        font-size: 1rem;
+        transition: all 0.3s ease !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .why-hero h1 {
+        font-size: 1.8rem;
+        transition: all 0.3s ease !important;
+    }
+    
+    .why-hero .lead {
+        font-size: 0.95rem;
+        transition: all 0.3s ease !important;
+    }
+    
+    .project-overview,
+    .donation-levels {
+        padding: 1.5rem;
+        transition: all 0.3s ease !important;
+    }
+    
+    .benefit-card {
+        padding: 1.2rem;
+        transition: all 0.3s ease !important;
+    }
+    
+    .benefit-icon {
+        font-size: 2.5rem;
+        transition: all 0.3s ease !important;
+    }
+    
+    .benefit-title {
+        font-size: 1.2rem;
+        transition: all 0.3s ease !important;
+    }
+    
+    .urgency-banner {
+        padding: 2rem;
+        transition: all 0.3s ease !important;
+    }
+    
+    .urgency-title {
+        font-size: 1.5rem;
+        transition: all 0.3s ease !important;
+    }
+    
+    .impact-item {
+        padding: 1.5rem;
+        transition: all 0.3s ease !important;
+    }
+    
+    .level-item {
+        padding: 1.2rem;
+        transition: all 0.3s ease !important;
+    }
+    
+    .cta-section h2 {
+        font-size: 1.8rem;
+        transition: all 0.3s ease !important;
+    }
+}
+
+/* Dark theme adjustments */
+[data-theme="dark"] .impact-section {
+    background: linear-gradient(135deg, #2d2d2d 0%, #3a3a3a 100%) !important;
+    transition: all 0.3s ease !important;
+}
+
+[data-theme="dark"] .cta-section {
+    background: linear-gradient(135deg, rgba(243, 156, 18, 0.1) 0%, rgba(230, 126, 34, 0.1) 100%) !important;
+    transition: all 0.3s ease !important;
+}
+
+[data-theme="dark"] .similar-projects-section {
+    background: linear-gradient(135deg, #2d2d2d 0%, #3a3a3a 100%) !important;
+    transition: all 0.3s ease !important;
+}
+
+[data-theme="dark"] .level-item {
+    background: rgba(243, 156, 18, 0.05) !important;
+    border-color: rgba(243, 156, 18, 0.3) !important;
+    transition: all 0.3s ease !important;
+}
+
+[data-theme="dark"] .level-item:hover {
+    background: rgba(243, 156, 18, 0.1) !important;
+    transition: all 0.3s ease !important;
+}
+
+/* Print styles */
+@media print {
+    .why-hero::before,
+    .urgency-banner::before,
+    .impact-section::before {
+        display: none;
+    }
+    
+    .cta-buttons {
+        display: none;
+    }
+    
+    .benefit-card:hover,
+    .impact-item:hover,
+    .level-item:hover {
+        transform: none;
+        box-shadow: none;
+    }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    .benefit-card,
+    .impact-item,
+    .level-item {
+        border-width: 2px;
+        border-color: #000;
+    }
+    
+    .btn-donate-large,
+    .btn-secondary-large {
+        border: 2px solid #000;
+    }
+}
+
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+/* Fix project stat card icons */
+.project-stat-card i {
+    color: #f39c12 !important;
+    transition: all 0.3s ease !important;
+}
+
+.project-stat-card:hover i {
+    color: #e67e22 !important;
+    transform: scale(1.1);
+    transition: all 0.3s ease !important;
+}
+
+/* Enhanced visibility for all text elements */
+.impact-item h4,
+.project-stat-card h5 {
+    color: var(--text-primary) !important;
+    font-weight: 600 !important;
+    transition: all 0.3s ease !important;
+}
+
+.impact-item p,
+.project-stat-card p {
+    color: var(--text-secondary) !important;
+    transition: all 0.3s ease !important;
+}
+
+/* Small text under progress bars */
+.text-muted {
+    color: var(--text-secondary) !important;
+    transition: all 0.3s ease !important;
+}
+
+/* Dark theme fixes for better visibility */
+[data-theme="dark"] .impact-number {
+    color: #f39c12 !important;
+    text-shadow: 0 2px 8px rgba(243, 156, 18, 0.5);
+    transition: all 0.3s ease !important;
+}
+
+[data-theme="dark"] .progress {
+    background-color: rgba(243, 156, 18, 0.2) !important;
+    transition: all 0.3s ease !important;
+}
+
+[data-theme="dark"] .project-stat-card h5 {
+    color: #ffffff !important;
+    transition: all 0.3s ease !important;
+}
+
+[data-theme="dark"] .project-stat-card p {
+    color: #cccccc !important;
+    transition: all 0.3s ease !important;
+}
+
+[data-theme="dark"] .text-muted {
+    color: #aaaaaa !important;
+    transition: all 0.3s ease !important;
+}
+
+/* Force visibility for troubleshooting */
+.impact-number,
+.progress-bar,
+.project-stat-card * {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* ...rest of your existing CSS stays the same... */

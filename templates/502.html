@@ -1,0 +1,223 @@
+{% extends "error_base.html" %}
+
+{% block error_title %}502 - Bad Gateway{% endblock %}
+{% block error_description %}The server received an invalid response from an upstream server on Lusan Sapkota's portfolio website.{% endblock %}
+
+{% block error_specific_styles %}
+/* 502 Specific Animation */
+.error-illustration {
+    position: relative;
+    height: 120px;
+    margin: 20px auto;
+}
+
+.server-icon {
+    position: absolute;
+    left: calc(50% - 50px);
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 40px;
+    color: #3498db;
+}
+
+.broken-link-icon {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 30px;
+    color: #e74c3c;
+    animation: broken-pulse 2s infinite alternate;
+}
+
+.server-icon-2 {
+    position: absolute;
+    left: calc(50% + 50px);
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 40px;
+    color: #f39c12;
+}
+
+.connection-line {
+    position: absolute;
+    top: 50%;
+    left: calc(50% - 40px);
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, #3498db, #e74c3c 50%, #f39c12);
+    opacity: 0.6;
+}
+
+@keyframes broken-pulse {
+    0% { transform: translate(-50%, -50%) scale(1); opacity: 0.7; }
+    100% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+}
+
+.gateway-status {
+    margin: 30px auto;
+    max-width: 500px;
+    background: rgba(52, 152, 219, 0.05);
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid rgba(52, 152, 219, 0.1);
+}
+
+[data-theme="dark"] .gateway-status {
+    background: rgba(52, 152, 219, 0.03);
+}
+
+.gateway-status-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(52, 152, 219, 0.1);
+}
+
+.gateway-status-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.gateway-icon {
+    color: #3498db;
+}
+
+.gateway-log {
+    background: rgba(0, 0, 0, 0.05);
+    padding: 15px;
+    border-radius: 5px;
+    font-family: monospace;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 15px;
+    max-height: 150px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+}
+
+[data-theme="dark"] .gateway-log {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.gateway-log-entry {
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+.log-time {
+    color: #3498db;
+    margin-right: 10px;
+}
+
+.log-error {
+    color: #e74c3c;
+}
+
+.gateway-actions {
+    display: flex;
+    justify-content: space-between;
+}
+
+.refresh-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(52, 152, 219, 0.1);
+    color: #3498db;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(52, 152, 219, 0.2);
+}
+
+.refresh-button:hover {
+    background: rgba(52, 152, 219, 0.2);
+}
+
+.refresh-icon {
+    animation: spin 1.5s linear infinite;
+    display: inline-block;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.retry-in {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+{% endblock %}
+
+{% block error_code %}<span>5</span><span>0</span><span>2</span>{% endblock %}
+{% block error_heading %}Bad Gateway{% endblock %}
+
+{% block error_illustration %}
+<div class="error-illustration">
+    <i class="fas fa-server server-icon"></i>
+    <div class="connection-line"></div>
+    <i class="fas fa-unlink broken-link-icon"></i>
+    <i class="fas fa-server server-icon-2"></i>
+</div>
+{% endblock %}
+
+{% block error_message %}
+My server received an invalid response from an upstream server while trying to fulfill your request.
+{% endblock %}
+
+{% block additional_content %}
+<div class="gateway-status">
+    <div class="gateway-status-header">
+        <h3 class="gateway-status-title"><i class="fas fa-exchange-alt gateway-icon"></i> Gateway Diagnostic</h3>
+    </div>
+    <div class="gateway-log">
+        <div class="gateway-log-entry"><span class="log-time">[{{ current_time }}]</span> Attempting to connect to upstream server...</div>
+        <div class="gateway-log-entry"><span class="log-time">[{{ current_time }}]</span> Connection established with upstream</div>
+        <div class="gateway-log-entry"><span class="log-time">[{{ current_time }}]</span> Sending request to process...</div>
+        <div class="gateway-log-entry"><span class="log-time">[{{ current_time }}]</span> <span class="log-error">ERROR: Received invalid response from upstream server</span></div>
+        <div class="gateway-log-entry"><span class="log-time">[{{ current_time }}]</span> <span class="log-error">ERROR: Cannot process response, status code: 502</span></div>
+        <div class="gateway-log-entry"><span class="log-time">[{{ current_time }}]</span> Closing connection to upstream server</div>
+        <div class="gateway-log-entry"><span class="log-time">[{{ current_time }}]</span> Retrying in 30 seconds...</div>
+    </div>
+    <div class="gateway-actions">
+        <button class="refresh-button"><i class="fas fa-sync refresh-icon"></i> Refresh Now</button>
+        <span class="retry-in">Auto-retry in <span id="retry-countdown">30</span>s</span>
+    </div>
+</div>
+{% endblock %}
+
+{% block additional_actions %}
+<a href="javascript:history.back()" class="secondary-btn">
+    <i class="fa fa-arrow-left"></i> Go Back
+</a>
+{% endblock %}
+
+{% block page_scripts %}
+// Auto refresh countdown
+let retrySeconds = 30;
+const retryCountdownElement = document.getElementById('retry-countdown');
+const retryInterval = setInterval(function() {
+    retrySeconds--;
+    retryCountdownElement.textContent = retrySeconds;
+    if (retrySeconds <= 0) {
+        clearInterval(retryInterval);
+        location.reload();
+    }
+}, 1000);
+
+// Manual refresh button
+document.querySelector('.refresh-button').addEventListener('click', function() {
+    location.reload();
+});
+{% endblock %}

@@ -1,0 +1,128 @@
+{% extends "error_base.html" %}
+
+{% block error_title %}400 - Bad Request{% endblock %}
+{% block error_description %}The request couldn't be processed due to invalid syntax on Lusan Sapkota's portfolio website.{% endblock %}
+
+{% block error_specific_styles %}
+/* Bad Request Specific Animation */
+.error-illustration {
+    position: relative;
+    height: 100px;
+    margin: 20px auto;
+}
+
+.document-icon {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 50px;
+    color: #f39c12;
+    animation: shake-document 3s infinite;
+}
+
+.warning-icon {
+    position: absolute;
+    left: calc(50% + 30px);
+    top: calc(50% - 30px);
+    font-size: 25px;
+    color: #e74c3c;
+    animation: pulse-warning 2s infinite;
+    transform-origin: center;
+}
+
+@keyframes shake-document {
+    0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
+    10%, 30%, 50%, 70%, 90% { transform: translate(-52%, -48%) rotate(-5deg); }
+    20%, 40%, 60%, 80% { transform: translate(-48%, -52%) rotate(5deg); }
+}
+
+@keyframes pulse-warning {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.2); opacity: 0.8; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.syntax-error {
+    display: inline-block;
+    margin-top: 20px;
+    font-family: monospace;
+    background: rgba(231, 76, 60, 0.1);
+    padding: 10px 20px;
+    border-radius: 5px;
+    position: relative;
+    border-left: 4px solid #e74c3c;
+    text-align: left;
+    max-width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+[data-theme="dark"] .syntax-error {
+    background: rgba(231, 76, 60, 0.2);
+}
+
+.syntax-error::before {
+    content: "×";
+    position: absolute;
+    left: -12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #e74c3c;
+    color: white;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.syntax-highlight {
+    color: #e74c3c;
+    text-decoration: underline wavy #e74c3c;
+}
+{% endblock %}
+
+{% block error_code %}<span>4</span><span>0</span><span>0</span>{% endblock %}
+{% block error_heading %}Bad Request{% endblock %}
+
+{% block error_illustration %}
+<div class="error-illustration">
+    <i class="fas fa-file-alt document-icon"></i>
+    <i class="fas fa-exclamation-triangle warning-icon"></i>
+</div>
+{% endblock %}
+
+{% block error_message %}
+The server cannot process your request due to a client error, such as invalid syntax or malformed request.
+{% endblock %}
+
+{% block additional_content %}
+<div class="syntax-error">
+    GET /api/user?<span class="syntax-highlight">id=abc&name=</span> HTTP/1.1
+</div>
+{% endblock %}
+
+{% block additional_actions %}
+<a href="javascript:history.back()" class="secondary-btn">
+    <i class="fa fa-redo"></i> Try Again
+</a>
+{% endblock %}
+
+{% block quick_links %}
+<a href="{{ url_for('index') }}" class="quick-link">
+    <i class="fas fa-home"></i> Home
+</a>
+<a href="{{ url_for('index') }}#contact" class="quick-link">
+    <i class="fas fa-paper-plane"></i> Contact
+</a>
+<a href="mailto:sapkotalusan@gmail.com" class="quick-link">
+    <i class="fas fa-envelope"></i> Email Support
+</a>
+<a href="https://github.com/Lusan-sapkota" target="_blank" class="quick-link">
+    <i class="fab fa-github"></i> GitHub
+</a>
+{% endblock %}

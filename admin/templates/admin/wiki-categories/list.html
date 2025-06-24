@@ -1,0 +1,111 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Wiki Categories{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="mb-0">
+                        <i class="fas fa-tags"></i> Wiki Categories
+                        <span class="badge bg-primary ms-2">{{ categories|length }}</span>
+                    </h5>
+                </div>
+                <a href="{{ url_for('admin.wiki_categories_create') }}" class="btn btn-success">
+                    <i class="fas fa-plus"></i> Add Category
+                </a>
+            </div>
+            
+            <div class="card-body">
+                {% if categories %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th>Parent Category</th>
+                                    <th>Articles</th>
+                                    <th>Created</th>
+                                    <th width="150">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for category in categories %}
+                                <tr>
+                                    <td>
+                                        <strong>{{ category.name }}</strong>
+                                        {% if category.subcategories %}
+                                            <br><small class="text-muted">
+                                                {{ category.subcategories|length }} subcategory(ies)
+                                            </small>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if category.description %}
+                                            <span>{{ category.description[:100] }}{% if category.description|length > 100 %}...{% endif %}</span>
+                                        {% else %}
+                                            <span class="text-muted">-</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if category.parent %}
+                                            <span class="badge bg-info">{{ category.parent.name }}</span>
+                                        {% else %}
+                                            <span class="text-muted">Root Category</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-primary">{{ category.article_count }}</span>
+                                        {% if category.article_count > 0 %}
+                                            <a href="{{ url_for('admin.articles', category=category.id) }}" 
+                                               class="btn btn-sm btn-outline-primary ms-1" 
+                                               data-bs-toggle="tooltip" title="View Articles">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <small class="text-muted">{{ category.created_at.strftime('%Y-%m-%d') }}</small>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a href="{{ url_for('admin.wiki_categories_edit', category_id=category.id) }}" 
+                                               class="btn btn-sm btn-outline-primary" 
+                                               data-bs-toggle="tooltip" title="Edit Category">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <form method="POST" action="{{ url_for('admin.wiki_categories_delete', category_id=category.id) }}" 
+                                                  class="ajax-form d-inline">
+                                                <button type="submit" class="btn btn-sm btn-outline-danger delete-confirm" 
+                                                        data-confirm-message="Are you sure you want to delete the category '{{ category.name }}'? This action cannot be undone."
+                                                        data-bs-toggle="tooltip" title="Delete Category">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="text-center py-5">
+                        <i class="fas fa-tags fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">No categories found</h5>
+                        <p class="text-muted mb-4">
+                            Start by creating your first category to organize your articles.
+                        </p>
+                        <a href="{{ url_for('admin.wiki_categories_create') }}" class="btn btn-success">
+                            <i class="fas fa-plus"></i> Create First Category
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

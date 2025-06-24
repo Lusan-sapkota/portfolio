@@ -1,0 +1,213 @@
+{% extends "base.html" %}
+
+{% block title %}Project Highlights - Donation{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('donation.static', filename='css/donation-style.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="highlights-page-container">
+    <!-- Enhanced Hero Section -->
+    <section class="highlights-hero-section">
+        <div class="container">
+            <h1 class="display-4 fw-bold mb-3">
+                <i class="fas fa-star me-3"></i>Project Highlights
+            </h1>
+            <p class="lead">
+                Celebrating successful projects, community achievements, and the impact I've made together
+            </p>
+            
+            <div class="hero-badges">
+                <div class="hero-achievement-badge">
+                    <i class="fas fa-trophy"></i>
+                    <span>Award Winning</span>
+                </div>
+                <div class="hero-achievement-badge">
+                    <i class="fas fa-users"></i>
+                    <span>Community Driven</span>
+                </div>
+                <div class="hero-achievement-badge">
+                    <i class="fas fa-rocket"></i>
+                    <span>Innovation Focus</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Projects Section -->
+    <section class="featured-projects-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Featured Success Stories</h2>
+                <p>Discover my most impactful projects that have made a real difference in the community</p>
+            </div>
+            
+            <div class="row">
+                {% for project in featured_projects %}
+                <div class="col-lg-6 mb-4">
+                    <div class="highlight-project-card">
+                        {% if project.image_url %}
+                        <div class="highlight-project-image">
+                            <img src="{{ project.image_url }}" alt="{{ project.title }}">
+                            <div class="project-status-badge">
+                                <i class="fas fa-fire"></i> Featured
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        <div class="highlight-project-body">
+                            <h5 class="highlight-project-title">{{ project.title }}</h5>
+                            <p class="highlight-project-description">
+                                {{ project.description[:200] }}{% if project.description|length > 200 %}...{% endif %}
+                            </p>
+                            
+                            <div class="highlight-project-meta">
+                                {% if project.current_amount and project.goal_amount %}
+                                <div class="project-funding-info">
+                                    <div class="funding-amount">
+                                        <i class="fas fa-heart text-danger me-2"></i>
+                                        ${{ "%.2f"|format(project.current_amount) }}
+                                    </div>
+                                    <div class="funding-goal">
+                                        of ${{ "%.2f"|format(project.goal_amount) }} goal
+                                    </div>
+                                </div>
+                                {% endif %}
+                                
+                                <div class="project-tech-stack">
+                                    {% if project.is_featured %}
+                                    <span class="tech-tag">Featured</span>
+                                    {% endif %}
+                                    {% if project.is_active %}
+                                    <span class="tech-tag">Active</span>
+                                    {% else %}
+                                    <span class="tech-tag">Completed</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <a href="{{ url_for('donation.project_detail', project_id=project.id) }}" class="highlight-learn-more-btn">
+                                <i class="fas fa-arrow-right"></i>
+                                Learn More
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Completed Projects Section -->
+    {% if completed_projects %}
+    <section class="completed-projects-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Completed Projects</h2>
+                <p>Projects that have reached their goals and delivered amazing results</p>
+            </div>
+            
+            <div class="row">
+                {% for project in completed_projects %}
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="completed-project-card">
+                        <div class="completed-project-header">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Fully Funded & Completed</span>
+                        </div>
+                        
+                        <div class="completed-project-body">
+                            <h6 class="completed-project-title">{{ project.title }}</h6>
+                            <p class="completed-project-description">
+                                {{ project.short_description or project.description[:120] }}{% if (project.short_description or project.description)|length > 120 %}...{% endif %}
+                            </p>
+                            
+                            {% if project.current_amount and project.goal_amount %}
+                            <div class="completed-project-stats">
+                                <div class="stat-item">
+                                    <div class="stat-value">{{ "%.0f"|format((project.current_amount / project.goal_amount * 100) if project.goal_amount > 0 else 100) }}%</div>
+                                    <div class="stat-label">Funded</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">${{ project.current_amount|int }}</div>
+                                    <div class="stat-label">Raised</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">{{ "Active" if project.is_active else "Completed" }}</div>
+                                    <div class="stat-label">Status</div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            
+                            <a href="{{ url_for('donation.project_detail', project_id=project.id) }}" class="highlight-learn-more-btn">
+                                <i class="fas fa-eye"></i>
+                                View Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Achievement Showcase -->
+    <section class="achievement-showcase">
+        <div class="container">
+            <div class="section-header">
+                <h2>My Achievements</h2>
+                <p>Numbers that tell the story of my impact and community growth</p>
+            </div>
+            
+            <div class="achievement-grid">
+                <div class="achievement-card">
+                    <i class="fas fa-project-diagram achievement-icon"></i>
+                    <div class="achievement-number">{{ featured_projects|length + (completed_projects|length if completed_projects else 0) }}</div>
+                    <div class="achievement-label">Total Projects</div>
+                </div>
+                
+                <div class="achievement-card">
+                    <i class="fas fa-check-circle achievement-icon"></i>
+                    <div class="achievement-number">{{ completed_projects|length if completed_projects else 0 }}</div>
+                    <div class="achievement-label">Completed</div>
+                </div>
+                
+                <div class="achievement-card">
+                    <i class="fas fa-star achievement-icon"></i>
+                    <div class="achievement-number">{{ (featured_projects|selectattr('is_featured')|list|length) + (completed_projects|selectattr('is_featured')|list|length if completed_projects else 0) }}</div>
+                    <div class="achievement-label">Featured Projects</div>
+                </div>
+                
+                <div class="achievement-card">
+                    <i class="fas fa-heart achievement-icon"></i>
+                    <div class="achievement-number">${{ "%.0f"|format((featured_projects|sum(attribute='current_amount') or 0) + (completed_projects|sum(attribute='current_amount') or 0)) if featured_projects or completed_projects else 0 }}</div>
+                    <div class="achievement-label">Funds Raised</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="highlights-cta-section">
+        <div class="container">
+            <h3>Ready to Make an Impact?</h3>
+            <p class="lead">
+                Join my community of supporters and help me build the next generation of amazing projects
+            </p>
+            
+            <div class="highlights-cta-buttons">
+                <a href="{{ url_for('donation.index') }}" class="highlights-cta-btn highlights-cta-btn-primary">
+                    <i class="fas fa-heart"></i>
+                    Support a Project
+                </a>
+                <a href="{{ url_for('donation.thanksgiving') }}" class="highlights-cta-btn">
+                    <i class="fas fa-users"></i>
+                    Meet My Community
+                </a>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

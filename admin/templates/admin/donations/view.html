@@ -1,0 +1,590 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Donation Details - Admin{% endblock %}
+
+{% block extra_css %}
+<style>
+    .donation-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 15px;
+        padding: 30px;
+        margin-bottom: 30px;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .donation-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 100%;
+        height: 200%;
+        background: rgba(255,255,255,0.1);
+        transform: rotate(45deg);
+    }
+    
+    .donation-id {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+    
+    .donation-amount {
+        font-size: 2.5rem;
+        font-weight: bold;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    .info-cards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 25px;
+        margin-bottom: 30px;
+    }
+    
+    .info-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .info-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+    
+    .info-card-header {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        color: white;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    
+    .info-card-header h5 {
+        margin: 0;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .info-card-body {
+        padding: 25px;
+    }
+    
+    .detail-group {
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #f0f0f0;
+    }
+    
+    .detail-group:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+    }
+    
+    .detail-group label {
+        font-weight: 600;
+        color: #666;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 5px;
+        display: block;
+    }
+    
+    .detail-value {
+        font-size: 1.1rem;
+        color: #333;
+        font-weight: 500;
+    }
+    
+    .currency {
+        color: #28a745;
+        font-weight: bold;
+    }
+    
+    .anonymous-section {
+        background: #fff3cd;
+        border: 1px solid #ffeaa7;
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+    }
+    
+    .project-progress {
+        margin-top: 15px;
+    }
+    
+    .progress {
+        height: 10px;
+        border-radius: 5px;
+        background: #f0f0f0;
+    }
+    
+    .progress-bar {
+        border-radius: 5px;
+        background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+    }
+    
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+        padding: 25px;
+        background: #f8f9fa;
+        border-radius: 15px;
+        margin-top: 30px;
+    }
+    
+    .action-buttons .btn {
+        padding: 12px 25px;
+        border-radius: 8px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+    }
+    
+    .quick-edit-section {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        margin-top: 25px;
+    }
+    
+    .edit-toggle {
+        cursor: pointer;
+        color: #007bff;
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: color 0.3s ease;
+    }
+    
+    .edit-toggle:hover {
+        color: #0056b3;
+        text-decoration: underline;
+    }
+    
+    .edit-form {
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #e9ecef;
+    }
+    
+    .badge-large {
+        font-size: 1rem;
+        padding: 8px 16px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="admin-content">
+    <!-- Donation Header -->
+    <div class="donation-header">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <div class="donation-id">#{{ donation.id }}</div>
+                <div class="donation-amount">
+                    {% if donation.currency == 'NPR' %}
+                        Rs. {{ "%.2f"|format(donation.verified_amount or donation.amount) }}
+                    {% else %}
+                        ${{ "%.2f"|format(donation.verified_amount or donation.amount) }}
+                    {% endif %}
+                </div>
+                <p class="mb-0">{{ donation.project.title if donation.project else 'No Project' }}</p>
+            </div>
+            <div class="col-md-4 text-end">
+                <span class="badge badge-{{ 'success' if donation.status == 'completed' else 'warning' if donation.status == 'pending' else 'danger' }} badge-large">
+                    {{ donation.status.title() }}
+                </span>
+                <div class="mt-3">
+                    <a href="{{ url_for('admin.donations') }}" class="btn btn-light">
+                        <i class="fas fa-arrow-left"></i> Back to Donations
+                    </a>
+                    <a href="{{ url_for('admin.donations_edit', id=donation.id) }}" class="btn btn-warning ms-2">
+                        <i class="fas fa-edit"></i> Edit
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Info Cards Grid -->
+    <div class="info-cards-grid">
+        <!-- Donation Information -->
+        <div class="info-card">
+            <div class="info-card-header">
+                <h5><i class="fas fa-donate"></i> Donation Information</h5>
+                <span class="edit-toggle" onclick="toggleAmountEdit()">
+                    <i class="fas fa-edit"></i> Edit Amounts
+                </span>
+            </div>
+            <div class="info-card-body">
+                <div class="detail-group">
+                    <label>Donation ID:</label>
+                    <div class="detail-value">#{{ donation.id }}</div>
+                </div>
+                <div class="detail-group">
+                    <label>Original Amount:</label>
+                    <div class="detail-value currency" id="originalAmountDisplay">
+                        {% if donation.currency == 'NPR' %}
+                            Rs. {{ "%.2f"|format(donation.amount) }}
+                        {% else %}
+                            ${{ "%.2f"|format(donation.amount) }}
+                        {% endif %}
+                    </div>
+                    <!-- Edit Form for Original Amount -->
+                    <div class="edit-form" id="originalAmountEdit" style="display: none;">
+                        <form method="POST" action="{{ url_for('admin.donations_update_amount', id=donation.id) }}">
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    {% if donation.currency == 'NPR' %}Rs.{% else %}${% endif %}
+                                </span>
+                                <input type="number" 
+                                       step="0.01" 
+                                       class="form-control" 
+                                       name="original_amount" 
+                                       value="{{ donation.amount }}"
+                                       placeholder="Original amount">
+                                <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                                <button type="button" class="btn btn-secondary btn-sm" onclick="toggleAmountEdit()">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="detail-group">
+                    <label>Verified Amount:</label>
+                    <div class="detail-value currency" id="verifiedAmountDisplay">
+                        {% if donation.currency == 'NPR' %}
+                            Rs. {{ "%.2f"|format(donation.verified_amount or donation.amount) }}
+                        {% else %}
+                            ${{ "%.2f"|format(donation.verified_amount or donation.amount) }}
+                        {% endif %}
+                        {% if not donation.verified_amount %}
+                        <small class="text-muted">(using original amount)</small>
+                        {% endif %}
+                    </div>
+                    <!-- Edit Form for Verified Amount -->
+                    <div class="edit-form" id="verifiedAmountEdit" style="display: none;">
+                        <form method="POST" action="{{ url_for('admin.donations_update_amount', id=donation.id) }}">
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    {% if donation.currency == 'NPR' %}Rs.{% else %}${% endif %}
+                                </span>
+                                <input type="number" 
+                                       step="0.01" 
+                                       class="form-control" 
+                                       name="verified_amount" 
+                                       value="{{ donation.verified_amount or donation.amount }}"
+                                       placeholder="Verified amount">
+                                <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                                <button type="button" class="btn btn-secondary btn-sm" onclick="toggleAmountEdit()">Cancel</button>
+                            </div>
+                            <small class="form-text text-muted">
+                                This is the actual amount received and will affect project totals
+                            </small>
+                        </form>
+                    </div>
+                </div>
+                <div class="detail-group">
+                    <label>Currency:</label>
+                    <div class="detail-value">{{ donation.currency }}</div>
+                </div>
+                <div class="detail-group">
+                    <label>Date Created:</label>
+                    <div class="detail-value">{{ donation.created_at.strftime('%B %d, %Y at %I:%M %p') if donation.created_at else 'N/A' }}</div>
+                </div>
+                {% if donation.updated_at and donation.updated_at != donation.created_at %}
+                <div class="detail-group">
+                    <label>Last Updated:</label>
+                    <div class="detail-value">{{ donation.updated_at.strftime('%B %d, %Y at %I:%M %p') }}</div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Payment Information -->
+        <div class="info-card">
+            <div class="info-card-header">
+                <h5><i class="fas fa-credit-card"></i> Payment Information</h5>
+            </div>
+            <div class="info-card-body">
+                <div class="detail-group">
+                    <label>Payment Method:</label>
+                    <div class="detail-value">{{ donation.payment_method.title() if donation.payment_method else 'N/A' }}</div>
+                </div>
+                <div class="detail-group">
+                    <label>Payment ID:</label>
+                    <div class="detail-value">{{ donation.payment_id if donation.payment_id else 'N/A' }}</div>
+                </div>
+                <div class="detail-group">
+                    <label>Status:</label>
+                    <div class="detail-value">
+                        <span class="badge badge-{{ 'success' if donation.status == 'completed' else 'warning' if donation.status == 'pending' else 'danger' }}">
+                            {{ donation.status.title() }}
+                        </span>
+                    </div>
+                </div>
+                {% if donation.admin_notes %}
+                <div class="detail-group">
+                    <label>Admin Notes:</label>
+                    <div class="detail-value">{{ donation.admin_notes }}</div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Donor Information -->
+        <div class="info-card">
+            <div class="info-card-header">
+                <h5><i class="fas fa-user"></i> Donor Information</h5>
+                <span class="edit-toggle" onclick="toggleAnonymousEdit()">
+                    <i class="fas fa-edit"></i> Edit Anonymous Status
+                </span>
+            </div>
+            <div class="info-card-body">
+                <div class="detail-group">
+                    <label>Anonymous Status:</label>
+                    <div class="detail-value" id="anonymousDisplay">
+                        {% if donation.is_anonymous %}
+                        <span class="badge badge-warning">Anonymous</span>
+                        {% else %}
+                        <span class="badge badge-info">Public</span>
+                        {% endif %}
+                    </div>
+                    <!-- Edit Form (Hidden by default) -->
+                    <div class="edit-form" id="anonymousEditForm" style="display: none;">
+                        <form method="POST" action="{{ url_for('admin.donations_update_anonymous', id=donation.id) }}">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="is_anonymous" id="anonymousCheck" {{ 'checked' if donation.is_anonymous else '' }}>
+                                <label class="form-check-label" for="anonymousCheck">
+                                    Make this donation anonymous
+                                </label>
+                            </div>
+                            <div class="mt-2">
+                                <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                                <button type="button" class="btn btn-secondary btn-sm" onclick="toggleAnonymousEdit()">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                {% if not donation.is_anonymous %}
+                <div class="detail-group">
+                    <label>Name:</label>
+                    <div class="detail-value">{{ donation.donor_name }}</div>
+                </div>
+                <div class="detail-group">
+                    <label>Email:</label>
+                    <div class="detail-value">
+                        <a href="mailto:{{ donation.donor_email }}">{{ donation.donor_email }}</a>
+                    </div>
+                </div>
+                {% if donation.donor_phone %}
+                <div class="detail-group">
+                    <label>Phone:</label>
+                    <div class="detail-value">{{ donation.donor_phone }}</div>
+                </div>
+                {% endif %}
+                {% else %}
+                <div class="anonymous-section">
+                    <i class="fas fa-user-secret fa-2x mb-2"></i>
+                    <p class="mb-0">This donation was made anonymously</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Project Information -->
+        {% if donation.project %}
+        <div class="info-card">
+            <div class="info-card-header">
+                <h5><i class="fas fa-heart"></i> Project Information</h5>
+            </div>
+            <div class="info-card-body">
+                <div class="detail-group">
+                    <label>Project:</label>
+                    <div class="detail-value">
+                        <a href="{{ url_for('admin.donation_project_edit', project_id=donation.project.id) }}">
+                            {{ donation.project.title }}
+                        </a>
+                    </div>
+                </div>
+                <div class="detail-group">
+                    <label>Description:</label>
+                    <div class="detail-value">
+                        {{ donation.project.short_description or donation.project.description[:150] + '...' }}
+                    </div>
+                </div>
+                <div class="detail-group">
+                    <label>Goal:</label>
+                    <div class="detail-value currency">${{ "%.2f"|format(donation.project.goal_amount) }}</div>
+                </div>
+                <div class="detail-group">
+                    <label>Current Amount:</label>
+                    <div class="detail-value currency">${{ "%.2f"|format(donation.project.current_amount) }}</div>
+                </div>
+                <div class="project-progress">
+                    <div class="progress">
+                        <div class="progress-bar" style="width: {{ donation.project.get_progress_percentage() }}%"></div>
+                    </div>
+                    <small class="text-muted mt-1 d-block">{{ "%.1f"|format(donation.project.get_progress_percentage()) }}% funded</small>
+                </div>
+                {% if donation.project.image_url %}
+                <div class="detail-group">
+                    <label>Project Image:</label>
+                    <div class="detail-value">
+                        <img src="{{ donation.project.image_url }}" alt="{{ donation.project.title }}" class="img-fluid rounded" style="max-height: 200px;">
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Message -->
+        {% if donation.message %}
+        <div class="info-card">
+            <div class="info-card-header">
+                <h5><i class="fas fa-comment"></i> Donor Message</h5>
+            </div>
+            <div class="info-card-body">
+                <blockquote class="blockquote">
+                    <p class="mb-0">"{{ donation.message }}"</p>
+                    <footer class="blockquote-footer mt-2">
+                        {{ 'Anonymous' if donation.is_anonymous else donation.donor_name }}
+                    </footer>
+                </blockquote>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+        <a href="{{ url_for('admin.donations_edit', id=donation.id) }}" class="btn btn-primary">
+            <i class="fas fa-edit"></i> Edit Donation
+        </a>
+        {% if donation.status != 'completed' %}
+        <button class="btn btn-success status-btn" data-id="{{ donation.id }}" data-status="completed">
+            <i class="fas fa-check"></i> Mark as Completed
+        </button>
+        {% endif %}
+        {% if donation.status != 'failed' %}
+        <button class="btn btn-danger status-btn" data-id="{{ donation.id }}" data-status="failed">
+            <i class="fas fa-times"></i> Mark as Failed
+        </button>
+        {% endif %}
+        {% if donation.status != 'pending' %}
+        <button class="btn btn-warning status-btn" data-id="{{ donation.id }}" data-status="pending">
+            <i class="fas fa-clock"></i> Mark as Pending
+        </button>
+        {% endif %}
+        <a href="{{ url_for('admin.donations') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-list"></i> Back to All Donations
+        </a>
+    </div>
+</div>
+
+<!-- Status Update Modal -->
+<div class="modal fade" id="statusModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Update Donation Status</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to update this donation status to <span id="newStatus"></span>?</p>
+                <p class="text-warning"><small>This action will affect project funding totals.</small></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirmStatusUpdate">Update Status</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Status update functionality
+    let updateData = null;
+    
+    document.querySelectorAll('.status-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            updateData = {
+                id: this.dataset.id,
+                status: this.dataset.status
+            };
+            document.getElementById('newStatus').textContent = updateData.status;
+            new bootstrap.Modal(document.getElementById('statusModal')).show();
+        });
+    });
+    
+    document.getElementById('confirmStatusUpdate').addEventListener('click', function() {
+        if (updateData) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = `/admin/donations/${updateData.id}/update-status`;
+            
+            const statusInput = document.createElement('input');
+            statusInput.type = 'hidden';
+            statusInput.name = 'status';
+            statusInput.value = updateData.status;
+            form.appendChild(statusInput);
+            
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
+});
+
+// Toggle anonymous status edit form
+function toggleAnonymousEdit() {
+    const display = document.getElementById('anonymousDisplay');
+    const form = document.getElementById('anonymousEditForm');
+    
+    if (form.style.display === 'none') {
+        form.style.display = 'block';
+        display.style.display = 'none';
+    } else {
+        form.style.display = 'none';
+        display.style.display = 'block';
+    }
+}
+
+// Toggle amount edit forms
+function toggleAmountEdit() {
+    const originalDisplay = document.getElementById('originalAmountDisplay');
+    const originalEdit = document.getElementById('originalAmountEdit');
+    const verifiedDisplay = document.getElementById('verifiedAmountDisplay');
+    const verifiedEdit = document.getElementById('verifiedAmountEdit');
+    
+    if (originalEdit.style.display === 'none') {
+        // Show edit forms
+        originalEdit.style.display = 'block';
+        originalDisplay.style.display = 'none';
+        verifiedEdit.style.display = 'block';
+        verifiedDisplay.style.display = 'none';
+    } else {
+        // Hide edit forms
+        originalEdit.style.display = 'none';
+        originalDisplay.style.display = 'block';
+        verifiedEdit.style.display = 'none';
+        verifiedDisplay.style.display = 'block';
+    }
+}
+</script>
+{% endblock %}

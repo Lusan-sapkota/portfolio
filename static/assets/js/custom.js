@@ -1,328 +1,446 @@
+// Define globally accessible functions
+function updateThemeIcons(theme) {
+    const moonIcons = document.querySelectorAll('.fa-moon');
+    const sunIcons = document.querySelectorAll('.fa-sun');
+    
+    moonIcons.forEach(icon => icon.classList.toggle('d-none', theme === 'dark'));
+    sunIcons.forEach(icon => icon.classList.toggle('d-none', theme === 'light'));
+}
+
 $(document).ready(function(){
-	"use strict";
+    "use strict";
+
+        // Initialize all components
+        initializeDarkMode();
+        initializeScrollEffects();
+        initializeSmoothScrolling();
+        initializeProgressBars();
+        initializeOwlCarousel();
+        initializeContactForm();
+        initializeAnimations();
+
+        // FIXED: Dark Mode Implementation
+        function initializeDarkMode() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            
+            // Set up theme toggle functionality
+            $('#theme-toggle, #mobile-theme-toggle').on('click', function(e) {
+                e.preventDefault();
+                
+                const current = document.documentElement.getAttribute('data-theme');
+                const newTheme = current === 'dark' ? 'light' : 'dark';
+                
+                // Add transition class
+                document.body.classList.add('theme-transitioning');
+                
+                // Apply new theme
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                
+                // Update icons
+                updateThemeIcons(newTheme);
+                
+                // Remove transition class
+                setTimeout(() => {
+                    document.body.classList.remove('theme-transitioning');
+                }, 300);
+            });
+        }
+
+        // ... rest of your existing code remains unchanged ...
 
     // 1. Scroll To Top 
-		$(window).on('scroll',function () {
-			if ($(this).scrollTop() > 600) {
-				$('.return-to-top').fadeIn();
-			} else {
-				$('.return-to-top').fadeOut();
-			}
-		});
-		$('.return-to-top').on('click',function(){
-				$('html, body').animate({
-				scrollTop: 0
-			}, 1500);
-			return false;
-		});
-	
-	
-	
-	// 2. Smooth Scroll spy
-		
-		$('.header-area').sticky({
-           topSpacing:0
+    function initializeScrollEffects() {
+        $(window).on('scroll', function () {
+            if ($(this).scrollTop() > 600) {
+                $('.return-to-top').fadeIn();
+            } else {
+                $('.return-to-top').fadeOut();
+            }
         });
-		
-		// IMPROVED: Enhanced smooth scrolling with faster animation
+        
+        $('.return-to-top').on('click', function(){
+            $('html, body').animate({
+                scrollTop: 0
+            }, 1500);
+            return false;
+        });
+    }
+
+    // 2. Smooth Scroll spy
+    function initializeSmoothScrolling() {
         $('.smooth-menu a, a.smooth-menu, a[href^="#"]').on('click', function(event) {
             if(this.hash !== "") {
                 event.preventDefault();
                 
-                // Get the target section
                 const targetId = this.hash;
                 const targetSection = $(targetId);
                 if(!targetSection.length) return;
                 
-                // Calculate offset for navbar
                 const navbar = $('nav.navbar');
                 const navbarHeight = navbar.length ? navbar.outerHeight() : 0;
                 
-                // Smoothly scroll to target with offset - faster animation (800ms instead of 1200ms)
                 $('html, body').animate({
                     scrollTop: targetSection.offset().top - navbarHeight
                 }, 800, 'easeInOutExpo');
                 
                 // Close mobile menu if open
                 const navbarCollapse = $('.navbar-collapse');
-                if (navbarCollapse.hasClass('in')) {
-                    navbarCollapse.removeClass('in');
+                if (navbarCollapse.hasClass('show')) {
+                    navbarCollapse.removeClass('show');
                 }
                 
-                // Update active state manually
                 $('.navbar-nav li').removeClass('active');
                 $(`a[href="${targetId}"]`).parent('li').addClass('active');
             }
         });
         
-        // IMPROVED: Better active section detection with more precision
+        // Better active section detection with improved logic
         $(window).on('scroll', function() {
             const scrollPosition = $(this).scrollTop();
-            const navbarHeight = $('nav.navbar').outerHeight();
+            const windowHeight = $(window).height();
+            const navbarHeight = $('nav.navbar').outerHeight() || 70;
             
-            // Use a small buffer to avoid multiple active sections
-            const buffer = 5;
+            let activeSection = null;
             
-            // Reset active state
-            $('.navbar-nav li').removeClass('active');
-            
-            // Find the current section and set as active
-            $('section').each(function() {
+            $('section[id]').each(function() {
                 const section = $(this);
-                const sectionTop = section.offset().top - navbarHeight - buffer;
+                const sectionTop = section.offset().top - navbarHeight - 50;
                 const sectionBottom = sectionTop + section.outerHeight();
+                const sectionId = section.attr('id');
                 
+                // Check if section is in viewport
                 if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
-                    const sectionId = section.attr('id');
-                    $(`.navbar-nav li a[href="#${sectionId}"]`).parent().addClass('active');
-                    return false; // Break the loop once we found the active section
+                    activeSection = sectionId;
                 }
-            });
-        });
-
-        // Remove the conflicting scrollspy initialization
-        // $('body').scrollspy({
-        //	target:'.navbar-collapse',
-        //	offset:0
-        // });
-
-	// 3. Progress-bar
-	
-		var dataToggleTooTip = $('[data-toggle="tooltip"]');
-		var progressBar = $(".progress-bar");
-		if (progressBar.length) {
-			progressBar.appear(function () {
-				dataToggleTooTip.tooltip({
-					trigger: 'manual'
-				}).tooltip('show');
-				progressBar.each(function () {
-					var each_bar_width = $(this).attr('aria-valuenow');
-					$(this).width(each_bar_width + '%');
-				});
-			});
-		}
-	
-	// 4. owl carousel
-	
-		// i. client (carousel)
-		
-			$('#client').owlCarousel({
-				items:7,
-				loop:true,
-				smartSpeed: 1000,
-				autoplay:true,
-				dots:false,
-				autoplayHoverPause:true,
-				responsive:{
-						0:{
-							items:2
-						},
-						415:{
-							items:2
-						},
-						600:{
-							items:4
-
-						},
-						1199:{
-							items:4
-						},
-						1200:{
-							items:7
-						}
-					}
-				});
-				
-				
-				$('.play').on('click',function(){
-					owl.trigger('play.owl.autoplay',[1000])
-				})
-				$('.stop').on('click',function(){
-					owl.trigger('stop.owl.autoplay')
-				})
-
-
-    // 5. welcome animation support
-
-        $(window).load(function(){
-        	$(".header-text h2,.header-text p").removeClass("animated fadeInUp").css({'opacity':'0'});
-            $(".header-text a").removeClass("animated fadeInDown").css({'opacity':'0'});
-        });
-
-        $(window).load(function(){
-        	$(".header-text h2,.header-text p").addClass("animated fadeInUp").css({'opacity':'0'});
-            $(".header-text a").addClass("animated fadeInDown").css({'opacity':'0'});
-        });
-
-    // Form validation and submission handling
-    $(document).ready(function() {
-        const contactForm = $('form#contact-form');
-        const submitButton = contactForm.find('button[type="submit"]');
-        const originalButtonText = submitButton.text();
-        
-        // Initialize form status container with better styling
-        if($('#form-status').length === 0) {
-            contactForm.after('<div id="form-status" class="mt-3" style="display:none;"></div>');
-        }
-        const formStatus = $('#form-status');
-        
-        // Clear previous validation on input focus
-        contactForm.find('input, textarea').on('focus', function() {
-            $(this).removeClass('is-invalid');
-            $(this).siblings('.invalid-feedback').remove();
-        });
-        
-        contactForm.on('submit', function(e) {
-            e.preventDefault();
-            
-            // Remove any previous validation messages
-            contactForm.find('.invalid-feedback').remove();
-            contactForm.find('.is-invalid').removeClass('is-invalid');
-            formStatus.html('').hide();
-            
-            // Validate form
-            let isValid = true;
-            const requiredFields = contactForm.find('input[required], textarea[required]');
-            
-            // Check each required field
-            requiredFields.each(function() {
-                const field = $(this);
-                const fieldValue = field.val().trim();
                 
-                if(!fieldValue) {
-                    isValid = false;
-                    field.addClass('is-invalid');
-                    // Insert feedback directly after the input
-                    $('<div class="invalid-feedback">This field is required</div>').insertAfter(field);
+                // Special case for last section
+                if (scrollPosition + windowHeight >= $(document).height() - 100) {
+                    activeSection = $('section[id]:last').attr('id');
                 }
             });
             
-            // Validate email format with more comprehensive regex
-            const emailInput = contactForm.find('input[type="email"]');
-            if(emailInput.length && emailInput.val().trim()) {
-                const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-                if(!emailPattern.test(emailInput.val().trim())) {
-                    isValid = false;
-                    emailInput.addClass('is-invalid');
-                    $('<div class="invalid-feedback">Please enter a valid email address</div>').insertAfter(emailInput);
-                }
+            // Update navbar active state
+            if (activeSection) {
+                $('.navbar-nav li').removeClass('active');
+                $(`.navbar-nav li a[href="#${activeSection}"]`).parent().addClass('active');
             }
-            
-            if(!isValid) {
-                // Show validation summary with close button
-                formStatus.html('<div class="alert alert-danger">' +
-                    '<i class="fa fa-exclamation-circle"></i> Please fix the highlighted errors' +
-                    '<button type="button" class="close-alert">&times;</button></div>').fadeIn();
-                
-                // Auto-dismiss after 8 seconds
-                startDismissTimer(formStatus);
-                
-                // Scroll to the first error
-                $('html, body').animate({
-                    scrollTop: contactForm.find('.is-invalid').first().offset().top - 100
-                }, 500);
-                return false;
-            }
-            
-            // Update button state and show loading indicator
-            submitButton.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Sending...');
-            
-            // Prepare form data correctly
-            const formData = new FormData(contactForm[0]);
-            
-            // Submit form via AJAX with proper FormData
-            $.ajax({
-                url: contactForm.attr('action'),
-                type: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                    // Success message with animation and close button
-                    formStatus.html('<div class="alert alert-success">' + 
-                        '<i class="fa fa-check-circle"></i> ' +
-                        'Thank you! Your message has been sent successfully.' +
-                        '<button type="button" class="close-alert">&times;</button></div>')
-                        .hide().fadeIn();
-                    
-                    // Auto-dismiss after 6 seconds
-                    startDismissTimer(formStatus);
-                    
-                    // Reset form
-                    contactForm[0].reset();
-                    
-                    // Reset button after delay
-                    setTimeout(function() {
-                        submitButton.prop('disabled', false).text(originalButtonText);
-                    }, 2000);
-                },
-                error: function(xhr, status, error) {
-                    // Detailed error message with close button
-                    let errorMessage = 'Sorry, there was a problem sending your message.';
-                    
-                    if(xhr.responseJSON && xhr.responseJSON.message) {
-                        errorMessage += ' Error: ' + xhr.responseJSON.message;
+        });
+        
+        // Initial active section check on page load
+        setTimeout(() => {
+            $(window).trigger('scroll');
+        }, 100);
+
+    }
+
+    // 3. FIXED: Progress-bar with Intersection Observer
+    function initializeProgressBars() {
+        const progressBars = $(".progress-bar");
+
+        if (progressBars.length) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const $bar = $(entry.target);
+                        const percentage = $bar.attr('aria-valuenow') || $bar.attr('data-percentage');
+                        
+                        if (percentage) {
+                            // Animate the progress bar
+                            $bar.css({
+                                width: percentage + '%'
+                            });
+                            
+                            // Add animation class
+                            $bar.addClass('animated');
+                        }
+                        
+                        observer.unobserve(entry.target);
                     }
-                    
-                    formStatus.html('<div class="alert alert-danger">' +
-                        '<i class="fa fa-times-circle"></i> ' + errorMessage + 
-                        '<button type="button" class="close-alert">&times;</button></div>').fadeIn();
-                    
-                    // Auto-dismiss after 8 seconds
-                    startDismissTimer(formStatus);
-                    
-                    // Reset button
-                    submitButton.prop('disabled', false).text(originalButtonText);
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            progressBars.each(function() {
+                $(this).css('width', '0%');
+                observer.observe(this);
+            });
+        }
+    }
+
+    // 4. FIXED: Owl Carousel with proper error handling
+    function initializeOwlCarousel() {
+        // Check if Owl Carousel is loaded
+        if (typeof $.fn.owlCarousel === 'function') {
+            const $clientCarousel = $('#client');
+            
+            if ($clientCarousel.length) {
+                $clientCarousel.owlCarousel({
+                    items: 7,
+                    loop: true,
+                    smartSpeed: 1000,
+                    autoplay: true,
+                    dots: false,
+                    autoplayHoverPause: true,
+                    responsive: {
+                        0: { items: 2 },
+                        415: { items: 2 },
+                        600: { items: 4 },
+                        1199: { items: 4 },
+                        1200: { items: 7 }
+                    }
+                });
+            }
+        } else {
+            console.warn('Owl Carousel is not loaded. Please include the Owl Carousel script.');
+        }
+    }
+
+    // 5. Contact Form Handling
+    function initializeContactForm() {
+        const contactForm = $('#contact-form');
+        const contactMessageDiv = $('#contact-message');
+
+        if (contactForm.length) {
+            contactForm.on('submit', function (e) {
+                e.preventDefault();
+
+                const submitBtn = contactForm.find('.contact-btn');
+                const originalText = submitBtn.text();
+                const formData = new FormData(this);
+
+                submitBtn.text('Sending...').prop('disabled', true);
+                contactMessageDiv.hide();
+
+                $.ajax({
+                    url: contactForm.attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        contactMessageDiv
+                            .removeClass('alert-success alert-danger alert-info')
+                            .addClass('alert alert-' + (response.status === 'error' ? 'danger' : response.status === 'info' ? 'info' : 'success'))
+                            .text(response.message)
+                            .show();
+
+                        if (response.status === 'success') {
+                            contactForm[0].reset();
+                        }
+                    },
+                    error: function () {
+                        contactMessageDiv
+                            .removeClass('alert-success alert-info')
+                            .addClass('alert alert-danger')
+                            .text('An error occurred while sending your message. Please try again.')
+                            .show();
+                    },
+                    complete: function () {
+                        submitBtn.text(originalText).prop('disabled', false);
+                        setTimeout(function () {
+                            contactMessageDiv.fadeOut();
+                        }, 8000);
+                    }
+                });
+            });
+        }
+    }
+
+    // 6. Initialize animations
+    function initializeAnimations() {
+        // Add page transition class
+        $('body').addClass('page-transition');
+        
+        setTimeout(() => {
+            $('body').addClass('loaded');
+        }, 100);
+        
+        // Initialize scroll animations
+        const animationObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-on-scroll');
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        $('.card-base, .section-heading, .portfolio-item').each(function() {
+            animationObserver.observe(this);
+        });
+    }
+
+    // Skills Section Enhanced Functionality
+    // Counter Animation for Stats
+    function animateCounters() {
+        $('.stat-number').each(function() {
+            const $this = $(this);
+            const countTo = parseInt($this.attr('data-count'));
+            
+            $({ countNum: 0 }).animate({
+                countNum: countTo
+            }, {
+                duration: 2000,
+                easing: 'swing',
+                step: function() {
+                    $this.text(Math.floor(this.countNum));
+                },
+                complete: function() {
+                    $this.text(this.countNum);
                 }
             });
         });
+    }
+    
+    // Skills Tab Switching
+    $('.skill-tab').on('click', function() {
+        const category = $(this).data('category');
         
-        // Additional visual feedback - highlight fields while typing
-        contactForm.find('input, textarea').on('input', function() {
-            const field = $(this);
-            if(field.val().trim()) {
-                field.addClass('is-valid').removeClass('is-invalid');
-            } else if(field.prop('required')) {
-                field.removeClass('is-valid');
+        // Update active tab
+        $('.skill-tab').removeClass('active');
+        $(this).addClass('active');
+        
+        // Update active content
+        $('.skill-category-content').removeClass('active');
+        $('#' + category).addClass('active');
+        
+        // Animate progress bars after content is shown
+        setTimeout(() => {
+            animateProgressBars();
+        }, 100);
+    });
+    
+    // Progress Bar Animation
+    function animateProgressBars() {
+        $('.skill-progress-bar').each(function() {
+            const width = $(this).data('width');
+            $(this).css('width', '0%').animate({
+                width: width + '%'
+            }, 1500);
+        });
+    }
+    
+    // Intersection Observer for Skills Section
+    const skillsObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // Animate counters
+                animateCounters();
+                
+                // Animate progress bars
+                setTimeout(() => {
+                    animateProgressBars();
+                }, 500);
+                
+                // Add animation classes to skill cards
+                $('.skill-card').each(function(index) {
+                    setTimeout(() => {
+                        $(this).addClass('animate-in');
+                    }, index * 100);
+                });
+                
+                skillsObserver.unobserve(entry.target);
             }
         });
+    }, {
+        threshold: 0.2
     });
+    
+    // Observe skills section
+    const skillsSection = document.querySelector('#skills');
+    if (skillsSection) {
+        skillsObserver.observe(skillsSection);
+    }
+    
+    // Skill Card Hover Effects
+    $('.skill-card').on('mouseenter', function() {
+        $(this).find('.skill-progress-bar').addClass('pulse');
+    }).on('mouseleave', function() {
+        $(this).find('.skill-progress-bar').removeClass('pulse');
+    });
+    
+    // Initialize progress bars for default active tab
+    setTimeout(() => {
+        animateProgressBars();
+    }, 1000);
 });
 
-// Function to start auto-dismiss timer
+// Add pulse animation CSS dynamically
+const pulseCSS = `
+.skill-progress-bar.pulse::after {
+    animation: shimmer 1s infinite;
+}
+`;
+
+const style = document.createElement('style');
+style.textContent = pulseCSS;
+document.head.appendChild(style);
+
+// Handle system theme changes
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+    if (!localStorage.getItem('theme')) {
+        const newTheme = e.matches ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        updateThemeIcons(newTheme);
+    }
+});
+
+// Utility functions
 function startDismissTimer(element) {
     const dismissTimeout = setTimeout(function() {
         element.fadeOut(500);
-    }, 6000); // 6 seconds before auto-dismiss
+    }, 6000);
     
-    // Store the timeout ID on the element so we can cancel if user manually closes
     element.data('dismissTimeout', dismissTimeout);
 }
 
 // Handle close button click for alerts
 $(document).on('click', '.close-alert', function() {
-    // Find the parent alert
     const alert = $(this).closest('.alert').parent();
-    
-    // Clear any existing timeout to prevent duplicated fadeouts
     const timeout = alert.data('dismissTimeout');
+    
     if (timeout) {
         clearTimeout(timeout);
     }
     
-    // Fade out the alert
     alert.fadeOut(500);
-    
-    // Prevent event bubbling
     return false;
 });
 
-// Handle validation summary dismiss in case it has one
-$(document).on('click', '.alert', function() {
-    const alert = $(this);
-    const timeout = alert.data('dismissTimeout');
-    if (timeout) {
-        clearTimeout(timeout);
+// Initialize theme before page renders
+(function() {
+    const currentTheme = localStorage.getItem('theme') || 
+        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', currentTheme);
+})();
+
+// Skills Redesigned Animation
+$(document).ready(function() {
+    
+    // Animate progress bars when skills section comes into view
+    function animateSkillBars() {
+        $('.skill-progress-redesigned').each(function() {
+            const progress = $(this).data('progress');
+            $(this).css('width', progress + '%');
+        });
     }
-    alert.fadeOut(500);
+    
+    // Intersection Observer for skills section
+    const skillsObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                setTimeout(animateSkillBars, 300);
+                skillsObserver.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.2
+    });
+    
+    // Observe skills section
+    const skillsSection = document.querySelector('.skills-redesigned');
+    if (skillsSection) {
+        skillsObserver.observe(skillsSection);
+    }
 });

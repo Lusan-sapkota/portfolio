@@ -1,0 +1,222 @@
+{% extends 'wiki/base.html' %}
+
+{% block title %}{{ article.title }} - Lusan's Wiki{% endblock %}
+
+{% block content %}
+<div class="article-container">
+    <!-- Article Header -->
+    <div class="article-header">
+        <div class="breadcrumb-nav">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('wiki.index') }}">Home</a></li>
+                    {% if article.category %}
+                    <li class="breadcrumb-item"><a href="#" onclick="return false;">{{ article.category.name }}</a></li>
+                    {% endif %}
+                    <li class="breadcrumb-item active" aria-current="page">{{ article.title }}</li>
+                </ol>
+            </nav>
+        </div>
+        
+        <div class="article-title-section">
+            <h1 class="article-title">{{ article.title }}</h1>
+            {% if article.summary %}
+            <p class="article-summary">{{ article.summary }}</p>
+            {% endif %}
+        </div>
+        
+        <div class="article-meta">
+            <div class="meta-items">
+                <div class="meta-item">
+                    <i class="fas fa-calendar"></i>
+                    <span>Published: {{ article.created_at.strftime('%B %d, %Y') if article.created_at else 'Unknown' }}</span>
+                </div>
+                {% if article.updated_at and article.updated_at != article.created_at %}
+                <div class="meta-item">
+                    <i class="fas fa-edit"></i>
+                    <span>Updated: {{ article.updated_at.strftime('%B %d, %Y') }}</span>
+                </div>
+                {% endif %}
+                {% if article.author %}
+                <div class="meta-item">
+                    <i class="fas fa-user"></i>
+                    <span>Author: {{ article.author }}</span>
+                </div>
+                {% endif %}
+                {% if article.views %}
+                <div class="meta-item">
+                    <i class="fas fa-eye"></i>
+                    <span>{{ article.views }} views</span>
+                </div>
+                {% endif %}
+                {% if article.category %}
+                <div class="meta-item">
+                    <i class="fas fa-folder"></i>
+                    <span class="category-tag">{{ article.category.name }}</span>
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="article-actions-article">
+                <button class="btn btn-sm" onclick="window.print()">
+                    <i class="fas fa-print"></i> Print
+                </button>
+                <button class="btn btn-sm" onclick="shareArticle()">
+                    <i class="fas fa-share"></i> Share
+                </button>
+                <button class="btn btn-sm" onclick="bookmarkArticle()">
+                    <i class="fas fa-bookmark"></i> Bookmark
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Article Content -->
+    <div class="article-content">
+        <div class="content-wrapper">
+            {% if article.content %}
+                {{ article.content|safe }}
+            {% else %}
+                <p class="text-muted">No content available for this article.</p>
+            {% endif %}
+        </div>
+        
+        <!-- Tags -->
+        {% if article.tags %}
+        <div class="article-tags">
+            <h5><i class="fas fa-tags"></i> Tags</h5>
+            <div class="tags-container">
+                {% for tag in article.tags.split(',') %}
+                <span class="tag">{{ tag.strip() }}</span>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Article Footer -->
+    <div class="article-footer">
+
+        <!-- Navigation to Previous / Next Article -->
+        <div class="footer-navigation gx-3 gy-4">
+            <div class="col-md-6 text-md-start text-center">
+                <div class="nav-item prev-article">
+                    {% if prev_article %}
+                    <div class="nav-title mt-1">
+                        <a href="{{ url_for('wiki.article', article_id=prev_article.id) }}">
+                            <i class="fas fa-chevron-left me-2"></i> {{ prev_article.title }}
+                        </a>
+                    </div>
+                    {% else %}
+                    <div class="nav-title mt-1 text-muted">
+                        <i class="fas fa-chevron-left me-2"></i> No previous article
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-md-6 text-md-end text-center">
+                <div class="nav-item next-article">
+                    {% if next_article %}
+                    <div class="nav-title mt-1">
+                        <a href="{{ url_for('wiki.article', article_id=next_article.id) }}">
+                            {{ next_article.title }} <i class="fas fa-chevron-right ms-2"></i>
+                        </a>
+                    </div>
+                    {% else %}
+                    <div class="nav-title mt-1 text-muted">
+                        No next article <i class="fas fa-chevron-right ms-2"></i>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Actions: Back Buttons + Social Share -->
+        <div class="footer-actions mt-5 py-4 px-3 border-top">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 article-footer-actions">
+            
+            <!-- Back Buttons -->
+            <div class="back-buttons d-flex flex-wrap gap-2">
+                <a href="{{ url_for('wiki.index') }}" class="btn btn-outline-secondary shadow-sm">
+                <i class="fas fa-home me-1"></i> Back to Home
+                </a>
+                {% if article.category %}
+                <a href="#" onclick="history.back(); return false;" class="btn btn-outline-secondary shadow-sm">
+                <i class="fas fa-arrow-left me-1"></i> Back to Category
+                </a>
+                {% endif %}
+            </div>
+
+            <!-- Social Share -->
+            <div class="social-share d-flex align-items-center gap-2">
+                <a href="#" onclick="shareOnTwitter(); return false;" class="social-link" title="Share on Twitter">
+                <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" onclick="shareOnFacebook(); return false;" class="social-link" title="Share on Facebook">
+                <i class="fab fa-facebook"></i>
+                </a>
+                <a href="#" onclick="shareOnLinkedIn(); return false;" class="social-link" title="Share on LinkedIn">
+                <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="#" onclick="copyLink(); return false;" class="social-link" title="Copy Link">
+                <i class="fas fa-link"></i>
+                </a>
+                <button class="social-link" onclick="scrollToTop()">
+                    <i class="fas fa-chevron-up"></i>
+                </button>
+            </div>
+
+            </div>
+    </div>
+
+    </div>
+
+</div>
+
+<script>
+function shareArticle() {
+    if (navigator.share) {
+        navigator.share({
+            title: '{{ article.title }}',
+            text: '{{ article.summary or "Check out this article from Lusan\'s Wiki" }}',
+            url: window.location.href
+        });
+    } else {
+        copyLink();
+    }
+}
+
+function bookmarkArticle() {
+    // Simple bookmark functionality - could be enhanced with local storage
+    alert('Bookmark feature coming soon!');
+}
+
+function shareOnTwitter() {
+    const url = encodeURIComponent(window.location.href);
+    const text = encodeURIComponent('{{ article.title }}');
+    window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank');
+}
+
+function shareOnFacebook() {
+    const url = encodeURIComponent(window.location.href);
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+}
+
+function shareOnLinkedIn() {
+    const url = encodeURIComponent(window.location.href);
+    const title = encodeURIComponent('{{ article.title }}');
+    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}&title=${title}`, '_blank');
+}
+
+function copyLink() {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+        alert('Link copied to clipboard!');
+    });
+}
+
+function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+</script>
+{% endblock %}

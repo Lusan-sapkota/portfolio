@@ -1,0 +1,24 @@
+{% extends 'git/base.html' %}
+
+{% block title %}{{ project.title }}{% endblock %}
+
+{% block content %}
+<h2>{{ project.title }}</h2>
+<p>{{ project.description }}</p>
+
+{% if project.technologies %}
+  <p><strong>Technologies:</strong> {{ project.technologies }}</p>
+{% endif %}
+
+{% if project.github_url %}
+  <p><a href="{{ project.github_url }}" target="_blank">View on GitHub</a></p>
+{% endif %}
+
+{% if project.live_url %}
+  <p><a href="{{ project.live_url }}" target="_blank">Live Demo</a></p>
+{% endif %}
+
+{% if project.commercial_url %}
+  <p><a href="{{ project.commercial_url }}" target="_blank">Commercial Product</a></p>
+{% endif %}
+{% endblock %}

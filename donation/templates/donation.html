@@ -1,0 +1,255 @@
+{% extends "base.html" %}
+
+{% block title %}{{ seo_settings.site_title if seo_settings else 'Support My Projects - Donation' }}{% endblock %}
+
+{% block meta_description %}{{ seo_settings.meta_description if seo_settings else 'Support open source innovation and amazing projects that benefit the developer community.' }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('donation.static', filename='css/donation-page.css') }}">
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="donation-hero-section">
+    <div class="container">
+        <h1 class="donation-hero-title">{{ personal_info.title if personal_info else 'Support Open Source Innovation' }}</h1>
+        <p class="donation-hero-subtitle">
+            {{ personal_info.bio if personal_info else 'Help me build amazing projects that benefit the developer community. Your contribution makes a real difference in advancing technology for everyone.' }}
+        </p>
+        
+        <!-- Hero Stats -->
+        <div class="donation-hero-stats">
+            <div class="hero-stat">
+                <p class="hero-stat-number">{{ project_count or 0 }}</p>
+                <span class="hero-stat-label">Active Projects</span>
+            </div>
+            <div class="hero-stat" >
+                <p class="hero-stat-number">{{ total_raised or '$0 / Rs.0' }}</p>
+                <span class="hero-stat-label">Total Raised</span>
+            </div>
+            <div class="hero-stat">
+                <span class="hero-stat-number">{{ supporter_count or 0 }}</span>
+                <span class="hero-stat-label">Supporters</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Projects -->
+{% if featured_projects %}
+<section class="py-5">
+    <div class="container">
+        <h2 class="donation-section-title">Featured Projects</h2>
+        <p class="donation-section-subtitle">Discover my most impactful projects that are making a difference</p>
+        <div class="row">
+            {% for project in featured_projects %}
+            <div class="col-lg-6 col-md-6 mb-4">
+                <div class="donation-project-card">
+                    {% if project.image_url %}
+                    <div class="donation-project-image" style="background-image: url('{{ project.image_url }}')">
+                        <div class="donation-project-badge">Featured</div>
+                    </div>
+                    {% endif %}
+                    <div class="donation-project-content">
+                        <h3 class="donation-project-title">{{ project.title }}</h3>
+                        <p class="donation-project-description">{{ project.short_description or project.description[:150] + '...' }}</p>
+                        
+                        <div class="donation-project-actions">
+                            <a href="{{ url_for('donation.project_detail', project_id=project.id) }}" class="donation-btn-primary">
+                                <i class="fas fa-heart"></i> Donate Now
+                            </a>
+                            <a href="{{ url_for('donation.why_donate', project_id=project.id) }}" class="donation-btn-outline">
+                                <i class="fas fa-info-circle"></i> Why Donate?
+                            </a>
+                            {% if project.github_url %}
+                            <a href="{{ project.github_url }}" target="_blank" class="donation-github-link">
+                                <i class="fab fa-github"></i> View Code
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- All Projects -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="donation-section-title">All Projects</h2>
+        <p class="donation-section-subtitle">Explore all my innovative projects that need your support</p>
+        <div class="row">
+            {% for project in all_projects %}
+            {% if not project.is_featured %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="donation-project-card">
+                    {% if project.image_url %}
+                    <div class="donation-project-image" style="background-image: url('{{ project.image_url }}')"></div>
+                    {% endif %}
+                    <div class="donation-project-content">
+                        <h3 class="donation-project-title">{{ project.title }}</h3>
+                        <p class="donation-project-description">{{ project.short_description or project.description[:100] + '...' }}</p>
+                        
+                        <div class="donation-project-actions">
+                            <a href="{{ url_for('donation.project_detail', project_id=project.id) }}" class="donation-btn-primary">
+                                <i class="fas fa-arrow-right"></i> Learn More
+                            </a>
+                            <a href="{{ url_for('donation.why_donate', project_id=project.id) }}" class="donation-btn-outline">
+                                <i class="fas fa-question-circle"></i> Why Donate?
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Recent Activity -->
+{% if recent_donations %}
+<section class="donation-activity-section">
+    <div class="container">
+        <h2 class="donation-section-title">Recent Support</h2>
+        <p class="donation-section-subtitle">See how my amazing community is supporting innovation</p>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="donation-activity-feed">
+                    {% for donation in recent_donations[:5] %}
+                    <div class="donation-activity-item">
+                        <span class="donation-activity-donor">{{ donation.donor_name if not donation.is_anonymous else 'Anonymous' }}</span>
+                        donated <span class="donation-activity-amount">${{ "%.2f"|format(donation.amount) }}</span>
+                        to <span class="donation-activity-project">{{ donation.project.title }}</span>
+                        <span class="donation-activity-date">{{ donation.created_at.strftime('%B %d, %Y') }}</span>
+                        {% if donation.message %}
+                        <div class="donation-activity-message">"{{ donation.message }}"</div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Newsletter Subscription -->
+<section class="donation-newsletter-section">
+    <div class="container">
+        <div class="text-center mb-4">
+            <h2 class="donation-section-title">Stay Updated</h2>
+            <p class="donation-section-subtitle">Get notified about new projects and updates</p>
+        </div>
+        
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+                <form action="{{ url_for('donation.subscribe_newsletter') }}" method="POST" class="donation-newsletter-form">
+                    <div class="donation-form-group">
+                        <input type="email" name="email" class="donation-form-control" placeholder="Your Email Address" required>
+                    </div>
+                    <div class="donation-form-group">
+                        <input type="text" name="interests" class="donation-form-control" placeholder="Interests (e.g., Web Development, AI, Mobile Apps)">
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="donation-submit-btn">
+                            <i class="fas fa-envelope"></i> Subscribe to Newsletter
+                        </button>
+                    </div>
+                    <div id="newsletter-message" style="margin-top: 15px; display: none;"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Flash Messages -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div class="donation-flash-messages">
+    {% for category, message in messages %}
+    <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Auto-hide flash messages after 5 seconds
+    setTimeout(function() {
+        const alerts = document.querySelectorAll('.alert');
+        alerts.forEach(function(alert) {
+            alert.style.transition = 'opacity 0.5s';
+            alert.style.opacity = '0';
+            setTimeout(function() {
+                alert.remove();
+            }, 500);
+        });
+    }, 5000);
+    
+    // Newsletter form handling
+    document.addEventListener('DOMContentLoaded', function() {
+        const newsletterForm = document.querySelector('.donation-newsletter-form');
+        if (newsletterForm) {
+            newsletterForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const submitBtn = this.querySelector('button[type="submit"]');
+                const messageDiv = document.getElementById('newsletter-message');
+                const originalText = submitBtn.innerHTML;
+                
+                // Show loading state
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Subscribing...';
+                submitBtn.disabled = true;
+                messageDiv.style.display = 'none';
+                
+                // Submit form
+                fetch(this.action, {
+                    method: 'POST',
+                    body: new FormData(this)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const alertType = data.status === 'error' ? 'danger' : 
+                                    data.status === 'info' ? 'info' : 'success';
+                    
+                    messageDiv.className = `alert alert-${alertType}`;
+                    messageDiv.textContent = data.message;
+                    messageDiv.style.display = 'block';
+                    
+                    if (data.status === 'success') {
+                        this.reset();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    messageDiv.className = 'alert alert-danger';
+                    messageDiv.textContent = 'An error occurred. Please try again.';
+                    messageDiv.style.display = 'block';
+                })
+                .finally(() => {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                    
+                    // Auto-hide message after 5 seconds
+                    setTimeout(() => {
+                        messageDiv.style.opacity = '0';
+                        setTimeout(() => {
+                            messageDiv.style.display = 'none';
+                            messageDiv.style.opacity = '1';
+                        }, 300);
+                    }, 5000);
+                });
+            });
+        }
+    });
+</script>
+{% endblock %}

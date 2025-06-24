@@ -1,0 +1,150 @@
+{% extends "error_base.html" %}
+
+{% block error_title %}404 - Page Not Found{% endblock %}
+{% block error_description %}The page you're looking for cannot be found on Lusan Sapkota's portfolio website.{% endblock %}
+
+{% block error_specific_styles %}
+/* 404 Specific Animation */
+.error-illustration {
+    position: relative;
+    height: 150px;
+    margin: 30px auto;
+    width: 100%;
+    max-width: 300px;
+}
+
+.search-icon {
+    position: absolute;
+    left: calc(50% - 20px);
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: clamp(40px, 8vw, 60px);
+    color: #3498db;
+    animation: search-move 3s infinite alternate;
+}
+
+.question-icon {
+    position: absolute;
+    left: calc(50% + 25px);
+    top: calc(50% - 15px);
+    font-size: clamp(30px, 6vw, 45px);
+    color: #e74c3c;
+    opacity: 0;
+    animation: question-appear 3s infinite;
+}
+
+@keyframes search-move {
+    0%, 100% { transform: translate(-50%, -50%) rotate(-20deg); }
+    50% { transform: translate(-50%, -50%) rotate(20deg); }
+}
+
+@keyframes question-appear {
+    0%, 30%, 80%, 100% { opacity: 0; transform: scale(0.5); }
+    40%, 70% { opacity: 1; transform: scale(1); }
+}
+
+.sitemap-suggestion {
+    background: rgba(52, 152, 219, 0.08);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-top: 2rem;
+    text-align: left;
+    border: 1px solid rgba(52, 152, 219, 0.15);
+    transition: all 0.3s ease;
+}
+
+.sitemap-suggestion:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(52, 152, 219, 0.1);
+}
+
+.sitemap-suggestion h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: clamp(1.1rem, 3vw, 1.3rem);
+    margin-bottom: 1rem;
+    color: #3498db;
+}
+
+.links-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    list-style: none;
+}
+
+.links-list li {
+    transition: all 0.2s ease;
+}
+
+.links-list li:hover {
+    transform: translateX(5px);
+}
+
+.links-list a {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: var(--text-color);
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
+    padding: 0.5rem 0;
+}
+
+.links-list a:hover {
+    color: #3498db;
+}
+
+.links-list i {
+    color: #3498db;
+    font-size: 0.9em;
+}
+
+@media (max-width: 600px) {
+    .error-illustration {
+        height: 120px;
+    }
+    
+    .sitemap-suggestion {
+        padding: 1rem;
+    }
+    
+    .links-list {
+        grid-template-columns: 1fr;
+    }
+}
+{% endblock %}
+
+{% block error_code %}<span>4</span><span>0</span><span>4</span>{% endblock %}
+{% block error_heading %}Page Not Found{% endblock %}
+
+{% block error_illustration %}
+<div class="error-illustration">
+    <i class="fas fa-search search-icon"></i>
+    <i class="fas fa-question-circle question-icon"></i>
+</div>
+{% endblock %}
+
+{% block error_message %}
+The page you're looking for doesn't exist or has been moved.
+{% endblock %}
+
+{% block additional_content %}
+<div class="sitemap-suggestion">
+    <h3><i class="fas fa-sitemap"></i> Available Pages</h3>
+    <ul class="links-list">
+        <li><a href="{{ url_for('index') }}"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="{{ url_for('index') }}#about"><i class="fas fa-user"></i> About</a></li>
+        <li><a href="{{ url_for('index') }}#skills"><i class="fas fa-code"></i> Skills</a></li>
+        <li><a href="{{ url_for('index') }}#projects"><i class="fas fa-project-diagram"></i> Projects</a></li>
+        <li><a href="{{ url_for('index') }}#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+    </ul>
+</div>
+{% endblock %}
+
+{% block additional_actions %}
+<a href="javascript:history.back()" class="secondary-btn">
+    <i class="fa fa-arrow-left"></i> Go Back
+</a>
+{% endblock %}

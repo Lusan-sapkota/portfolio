@@ -1,0 +1,184 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Articles Management{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="mb-0">
+                        <i class="fas fa-book"></i> Articles Management
+                        <span class="badge bg-primary ms-2">{{ articles.total }}</span>
+                    </h5>
+                </div>
+                <a href="{{ url_for('admin.articles_create') }}" class="btn btn-success">
+                    <i class="fas fa-plus"></i> Add Article
+                </a>
+            </div>
+            
+            <div class="card-body">
+                <!-- Search and Filter Form -->
+                <form method="GET" class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" name="search" value="{{ search_query or '' }}" 
+                               placeholder="Search articles by title, content, or tags...">
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-select" name="category">
+                            <option value="">All Categories</option>
+                            {% for category in categories %}
+                                <option value="{{ category.id }}" {% if current_category == category.id %}selected{% endif %}>
+                                    {{ category.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-outline-primary w-100">
+                            <i class="fas fa-search"></i> Search
+                        </button>
+                    </div>
+                </form>
+                
+                <!-- Articles Table -->
+                {% if articles.items %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Category</th>
+                                    <th>Tags</th>
+                                    <th>Views</th>
+                                    <th>Created</th>
+                                    <th>Updated</th>
+                                    <th width="200">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for article in articles.items %}
+                                <tr>
+                                    <td>
+                                        <strong>{{ article.title }}</strong>
+                                        {% if article.summary %}
+                                            <br><small class="text-muted">{{ article.summary[:100] }}{% if article.summary|length > 100 %}...{% endif %}</small>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if article.category %}
+                                            <span class="badge bg-info">{{ article.category.name }}</span>
+                                        {% else %}
+                                            <span class="text-muted">-</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if article.tags %}
+                                            {% for tag in article.tags.split(',') %}
+                                                {% if tag.strip() %}
+                                                    <span class="badge bg-secondary me-1">{{ tag.strip() }}</span>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% else %}
+                                            <span class="text-muted">-</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-primary">{{ article.views }}</span>
+                                    </td>
+                                    <td>
+                                        <small class="text-muted">{{ article.created_at.strftime('%Y-%m-%d') }}</small>
+                                    </td>
+                                    <td>
+                                        <small class="text-muted">{{ article.updated_at.strftime('%Y-%m-%d') }}</small>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a href="/wiki/{{ article.id }}" target="_blank" class="btn btn-sm btn-outline-info" 
+                                               data-bs-toggle="tooltip" title="View Article">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a href="{{ url_for('admin.articles_edit', article_id=article.id) }}" 
+                                               class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" title="Edit Article">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <form method="POST" action="{{ url_for('admin.articles_delete', article_id=article.id) }}" 
+                                                  class="ajax-form d-inline">
+                                                <button type="submit" class="btn btn-sm btn-outline-danger delete-confirm" 
+                                                        data-confirm-message="Are you sure you want to delete the article '{{ article.title }}'?"
+                                                        data-bs-toggle="tooltip" title="Delete Article">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Pagination -->
+                    {% if articles.pages > 1 %}
+                        <nav aria-label="Articles pagination">
+                            <ul class="pagination justify-content-center">
+                                {% if articles.has_prev %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{ url_for('admin.articles', page=articles.prev_num, category=current_category, search=search_query) }}">
+                                            Previous
+                                        </a>
+                                    </li>
+                                {% endif %}
+                                
+                                {% for page_num in articles.iter_pages() %}
+                                    {% if page_num %}
+                                        {% if page_num != articles.page %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="{{ url_for('admin.articles', page=page_num, category=current_category, search=search_query) }}">
+                                                    {{ page_num }}
+                                                </a>
+                                            </li>
+                                        {% else %}
+                                            <li class="page-item active">
+                                                <span class="page-link">{{ page_num }}</span>
+                                            </li>
+                                        {% endif %}
+                                    {% else %}
+                                        <li class="page-item disabled">
+                                            <span class="page-link">…</span>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                                
+                                {% if articles.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{ url_for('admin.articles', page=articles.next_num, category=current_category, search=search_query) }}">
+                                            Next
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    {% endif %}
+                {% else %}
+                    <div class="text-center py-5">
+                        <i class="fas fa-book fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">No articles found</h5>
+                        <p class="text-muted mb-4">
+                            {% if search_query or current_category %}
+                                No articles match your current search criteria.
+                            {% else %}
+                                Start by creating your first article.
+                            {% endif %}
+                        </p>
+                        <a href="{{ url_for('admin.articles_create') }}" class="btn btn-success">
+                            <i class="fas fa-plus"></i> Create First Article
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

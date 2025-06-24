@@ -1,0 +1,211 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Testimonials{% endblock %}
+
+{% block content %}
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">Testimonials</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="{{ url_for('admin.dashboard') }}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Testimonials</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="container-fluid">
+        <!-- Actions -->
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <a href="{{ url_for('admin.testimonials_create') }}" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Add Testimonial
+                </a>
+            </div>
+        </div>
+
+        <!-- Filter -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Filters</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <form method="GET" class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="featured">Featured</label>
+                            <select name="featured" id="featured" class="form-control">
+                                <option value="">All</option>
+                                <option value="1" {{ 'selected' if request.args.get('featured') == '1' }}>Featured</option>
+                                <option value="0" {{ 'selected' if request.args.get('featured') == '0' }}>Not Featured</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="rating">Minimum Rating</label>
+                            <select name="rating" id="rating" class="form-control">
+                                <option value="">All</option>
+                                <option value="5" {{ 'selected' if request.args.get('rating') == '5' }}>5 Stars</option>
+                                <option value="4" {{ 'selected' if request.args.get('rating') == '4' }}>4+ Stars</option>
+                                <option value="3" {{ 'selected' if request.args.get('rating') == '3' }}>3+ Stars</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="search">Search</label>
+                            <input type="text" name="search" id="search" class="form-control" placeholder="Name, company, content..." value="{{ request.args.get('search', '') }}">
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-search"></i> Filter
+                        </button>
+                        <a href="{{ url_for('admin.testimonials') }}" class="btn btn-secondary">
+                            <i class="fas fa-times"></i> Clear
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Testimonials List -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Testimonials ({{ testimonials|length }})</h3>
+            </div>
+            <div class="card-body">
+                {% if testimonials %}
+                    <div class="row">
+                        {% for testimonial in testimonials %}
+                        <div class="col-md-6 mb-4">
+                            <div class="card h-100 {{ 'border-warning' if testimonial.is_featured else '' }}">
+                                {% if testimonial.is_featured %}
+                                <div class="card-header bg-warning text-dark">
+                                    <i class="fas fa-star"></i> Featured Testimonial
+                                </div>
+                                {% endif %}
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center mb-3">
+                                        {% if testimonial.client_image %}
+                                        <img src="{{ testimonial.client_image }}" alt="{{ testimonial.client_name }}" class="rounded-circle me-3" width="50" height="50">
+                                        {% else %}
+                                        <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                                            <i class="fas fa-user text-white"></i>
+                                        </div>
+                                        {% endif %}
+                                        <div>
+                                            <h6 class="mb-0">{{ testimonial.client_name }}</h6>
+                                            <small class="text-muted">{{ testimonial.client_title }}{% if testimonial.client_company %} at {{ testimonial.client_company }}{% endif %}</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-2">
+                                        {% for i in range(1, 6) %}
+                                            {% if i <= testimonial.rating %}
+                                                <i class="fas fa-star text-warning"></i>
+                                            {% else %}
+                                                <i class="far fa-star text-muted"></i>
+                                            {% endif %}
+                                        {% endfor %}
+                                        <small class="text-muted">({{ testimonial.rating }}/5)</small>
+                                    </div>
+                                    
+                                    <p class="card-text">{{ testimonial.testimonial_text|truncate(150) }}</p>
+                                    
+                                    {% if testimonial.project_related %}
+                                    <small class="text-muted">
+                                        <i class="fas fa-project-diagram"></i> Related to: {{ testimonial.project_related }}
+                                    </small>
+                                    {% endif %}
+                                </div>
+                                <div class="card-footer">
+                                    <div class="btn-group w-100">
+                                        <a href="{{ url_for('admin.testimonials_edit', id=testimonial.id) }}" class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </a>
+                                        <button type="button" class="btn btn-sm btn-outline-warning" onclick="toggleFeatured({{ testimonial.id }})">
+                                            <i class="fas fa-star"></i> {{ 'Unfeature' if testimonial.is_featured else 'Feature' }}
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteTestimonial({{ testimonial.id }})">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="text-center py-5">
+                        <i class="fas fa-quote-right fa-3x text-muted mb-3"></i>
+                        <h4>No Testimonials</h4>
+                        <p class="text-muted">Add client testimonials to build trust and showcase your work quality.</p>
+                        <a href="{{ url_for('admin.testimonials_create') }}" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Add First Testimonial
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function toggleFeatured(id) {
+    fetch(`/admin/api/testimonials/${id}/toggle-featured`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showNotification(data.message, 'success');
+            location.reload();
+        } else {
+            showNotification('Error: ' + data.message, 'error');
+        }
+    })
+    .catch(error => {
+        showNotification('Error updating testimonial', 'error');
+    });
+}
+
+function deleteTestimonial(id) {
+    if (confirm('Delete this testimonial? This action cannot be undone.')) {
+        fetch(`/admin/testimonials/${id}/delete`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showNotification('Testimonial deleted successfully', 'success');
+                location.reload();
+            } else {
+                showNotification('Error: ' + data.message, 'error');
+            }
+        })
+        .catch(error => {
+            showNotification('Error deleting testimonial', 'error');
+        });
+    }
+}
+</script>
+{% endblock %}

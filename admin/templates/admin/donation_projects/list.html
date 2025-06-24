@@ -1,0 +1,256 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Donation Projects - Admin{% endblock %}
+
+{% block content %}
+<div class="admin-content">
+    <div class="admin-header">
+        <div class="admin-header-left">
+            <h1 class="admin-title">
+                <i class="fas fa-heart"></i>
+                Donation Projects
+            </h1>
+            <p class="admin-subtitle">Manage projects available for donations</p>
+        </div>
+        <div class="admin-header-right">
+            <a href="{{ url_for('admin.donation_project_new') }}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Add Project
+            </a>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="admin-filters">
+        <form method="GET" class="filter-form">
+            <div class="filter-group">
+                <label>Status:</label>
+                <select name="status" class="form-control">
+                    <option value="">All Statuses</option>
+                    <option value="active" {% if current_status == 'active' %}selected{% endif %}>Active</option>
+                    <option value="inactive" {% if current_status == 'inactive' %}selected{% endif %}>Inactive</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Featured:</label>
+                <select name="featured" class="form-control">
+                    <option value="">All Projects</option>
+                    <option value="true" {% if current_featured == 'true' %}selected{% endif %}>Featured</option>
+                    <option value="false" {% if current_featured == 'false' %}selected{% endif %}>Not Featured</option>
+                </select>
+            </div>
+            <div class="filter-actions">
+                <button type="submit" class="btn btn-outline-primary">Filter</button>
+                <a href="{{ url_for('admin.donation_projects') }}" class="btn btn-outline-secondary">Clear</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Bulk Actions -->
+    <div class="bulk-actions" style="display: none;">
+        <div class="bulk-actions-bar">
+            <span class="bulk-selected-count">0 projects selected</span>
+            <div class="bulk-actions-buttons">
+                <button class="btn btn-outline-success bulk-action" data-action="feature">
+                    <i class="fas fa-star"></i> Feature
+                </button>
+                <button class="btn btn-outline-warning bulk-action" data-action="unfeature">
+                    <i class="far fa-star"></i> Unfeature
+                </button>
+                <button class="btn btn-outline-primary bulk-action" data-action="activate">
+                    <i class="fas fa-check"></i> Activate
+                </button>
+                <button class="btn btn-outline-secondary bulk-action" data-action="deactivate">
+                    <i class="fas fa-times"></i> Deactivate
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Projects Table -->
+    <div class="admin-table-container">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th width="50">
+                        <input type="checkbox" id="select-all">
+                    </th>
+                    <th>Title</th>
+                    <th>Goal</th>
+                    <th>Raised</th>
+                    <th>Progress</th>
+                    <th>Status</th>
+                    <th>Featured</th>
+                    <th>Donations</th>
+                    <th>Created</th>
+                    <th width="150">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for project in projects %}
+                <tr>
+                    <td>
+                        <input type="checkbox" class="row-select" value="{{ project.id }}">
+                    </td>
+                    <td>
+                        <div class="item-info">
+                            {% if project.image_url %}
+                            <img src="{{ project.image_url }}" alt="{{ project.title }}" class="item-avatar">
+                            {% else %}
+                            <div class="item-avatar item-avatar-placeholder">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            {% endif %}
+                            <div class="item-details">
+                                <div class="item-title">{{ project.title }}</div>
+                                <div class="item-subtitle">{{ project.short_description or (project.description[:50] + '...' if project.description|length > 50 else project.description) }}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="currency">${{ "%.2f"|format(project.goal_amount) }}</span>
+                    </td>
+                    <td>
+                        <span class="currency">${{ "%.2f"|format(project.current_amount) }}</span>
+                    </td>
+                    <td>
+                        <div class="progress-container">
+                            <div class="progress">
+                                <div class="progress-bar bg-success" style="width: {{ project.get_progress_percentage() }}%"></div>
+                            </div>
+                            <small>{{ "%.1f"|format(project.get_progress_percentage()) }}%</small>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="badge badge-{{ 'success' if project.is_active else 'secondary' }}">
+                            {{ 'Active' if project.is_active else 'Inactive' }}
+                        </span>
+                    </td>
+                    <td>
+                        {% if project.is_featured %}
+                        <span class="badge badge-warning">
+                            <i class="fas fa-star"></i> Featured
+                        </span>
+                        {% else %}
+                        <span class="text-muted">-</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <span class="badge badge-info">{{ project.donations.count() }}</span>
+                    </td>
+                    <td>
+                        <span class="date">{{ project.created_at.strftime('%Y-%m-%d') if project.created_at else 'N/A' }}</span>
+                    </td>
+                    <td>
+                        <div class="action-buttons">
+                            <a href="{{ url_for('admin.donation_project_edit', project_id=project.id) }}" 
+                               class="btn btn-sm btn-outline-primary" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <button class="btn btn-sm btn-outline-danger delete-btn" 
+                                    data-id="{{ project.id }}" 
+                                    data-title="{{ project.title }}" title="Delete">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="10" class="text-center text-muted py-4">
+                        <i class="fas fa-heart fa-2x mb-2"></i>
+                        <p>No donation projects found</p>
+                        <a href="{{ url_for('admin.donation_project_new') }}" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Create First Project
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete "<span id="deleteItemName"></span>"?</p>
+                <p class="text-danger"><small>This action cannot be undone. Projects with existing donations cannot be deleted.</small></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmDelete">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize table functionality
+    initializeTable();
+    
+    // Delete functionality
+    let deleteId = null;
+    
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            deleteId = this.dataset.id;
+            document.getElementById('deleteItemName').textContent = this.dataset.title;
+            new bootstrap.Modal(document.getElementById('deleteModal')).show();
+        });
+    });
+    
+    document.getElementById('confirmDelete').addEventListener('click', function() {
+        if (deleteId) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = `/admin/donation-projects/${deleteId}/delete`;
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
+    
+    // Bulk actions for donation projects
+    document.querySelectorAll('.bulk-action').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const action = this.dataset.action;
+            const selected = getSelectedIds();
+            
+            if (selected.length === 0) {
+                showNotification('Please select at least one project', 'warning');
+                return;
+            }
+            
+            let endpoint = '';
+            let data = { ids: selected };
+            
+            if (action === 'feature') {
+                endpoint = '/admin/api/donation-projects/bulk-toggle-featured';
+                data.featured = true;
+            } else if (action === 'unfeature') {
+                endpoint = '/admin/api/donation-projects/bulk-toggle-featured';
+                data.featured = false;
+            } else if (action === 'activate') {
+                endpoint = '/admin/api/donation-projects/bulk-toggle-active';
+                data.active = true;
+            } else if (action === 'deactivate') {
+                endpoint = '/admin/api/donation-projects/bulk-toggle-active';
+                data.active = false;
+            }
+            
+            if (endpoint) {
+                performBulkAction(endpoint, data);
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

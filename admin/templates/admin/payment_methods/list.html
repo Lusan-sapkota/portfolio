@@ -1,0 +1,143 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Payment Methods{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="fas fa-credit-card"></i> Payment Methods</h2>
+    <a href="{{ url_for('admin.payment_methods_create') }}" class="btn btn-primary">
+        <i class="fas fa-plus"></i> Add Payment Method
+    </a>
+</div>
+
+<!-- Filters -->
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="GET" class="row g-3">
+            <div class="col-md-4">
+                <label class="form-label">Currency</label>
+                <select name="currency" class="form-control">
+                    <option value="">All Currencies</option>
+                    <option value="NPR" {% if current_currency == 'NPR' %}selected{% endif %}>NPR</option>
+                    <option value="USD" {% if current_currency == 'USD' %}selected{% endif %}>USD</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">&nbsp;</label>
+                <div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-filter"></i> Filter
+                    </button>
+                    <a href="{{ url_for('admin.payment_methods') }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-times"></i> Clear
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Payment Methods -->
+<div class="row">
+    {% for method in methods %}
+    <div class="col-lg-6 mb-4">
+        <div class="card {{ 'border-success' if method.is_active else 'border-danger' }}">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <span class="badge bg-{{ 'primary' if method.currency == 'NPR' else 'info' }}">{{ method.currency }}</span>
+                    {{ method.display_name }}
+                </h5>
+                <div class="btn-group btn-group-sm">
+                    <a href="{{ url_for('admin.payment_methods_edit', id=method.id) }}" class="btn btn-outline-warning">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <button class="btn btn-outline-danger" onclick="deleteMethod({{ method.id }})">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <p><strong>Method:</strong> {{ method.method_name|title }}</p>
+                        <p><strong>Status:</strong> 
+                            <span class="badge bg-{{ 'success' if method.is_active else 'danger' }}">
+                                {{ 'Active' if method.is_active else 'Inactive' }}
+                            </span>
+                        </p>
+                        
+                        {% if method.account_info %}
+                        <div class="mb-3">
+                            <strong>Account Info:</strong>
+                            <div class="bg-light p-2 rounded mt-1" style="font-family: monospace; font-size: 0.9em;">
+                                {{ method.account_info|safe }}
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        {% if method.instructions %}
+                        <div class="mb-3">
+                            <strong>Instructions:</strong>
+                            <div class="text-muted mt-1">
+                                {{ method.instructions[:100] }}{% if method.instructions|length > 100 %}...{% endif %}
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        <small class="text-muted">
+                            Sort Order: {{ method.sort_order }} | 
+                            Created: {{ method.created_at.strftime('%b %d, %Y') }}
+                        </small>
+                    </div>
+                    
+                    {% if method.qr_code_url %}
+                    <div class="col-md-4 text-center">
+                        <img src="{{ method.qr_code_url }}" alt="QR Code" class="img-fluid" style="max-height: 120px; border-radius: 8px;">
+                        <p class="small text-muted mt-1">QR Code</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% if not methods %}
+<div class="card">
+    <div class="card-body text-center py-5">
+        <i class="fas fa-credit-card fa-3x text-muted mb-3"></i>
+        <h5>No payment methods configured</h5>
+        <p class="text-muted">Add payment methods to allow donors to complete their donations.</p>
+        <a href="{{ url_for('admin.payment_methods_create') }}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Add First Payment Method
+        </a>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function deleteMethod(id) {
+    if (confirm('Are you sure you want to delete this payment method? This action cannot be undone.')) {
+        fetch(`/admin/payment-methods/${id}/delete`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                location.reload();
+            } else {
+                alert('Error deleting payment method');
+            }
+        })
+        .catch(error => {
+            alert('Error deleting payment method');
+        });
+    }
+}
+</script>
+{% endblock %}

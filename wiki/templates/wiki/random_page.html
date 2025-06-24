@@ -1,0 +1,458 @@
+{% extends 'wiki/base.html' %}
+
+{% block title %}Random Discovery - Lusan's Wiki{% endblock %}
+
+{% block content %}
+<div class="random-hero">
+    <div class="hero-content">
+        <h1 class="hero-title">
+            <i class="fas fa-dice"></i>
+            Random Discovery
+        </h1>
+        <p class="hero-subtitle">Explore knowledge through serendipity - discover articles you might never have found!</p>
+        
+        <!-- Random Actions -->
+        <div class="hero-actions">
+            <a href="{{ url_for('wiki.random') }}" class="btn btn-primary btn-lg">
+                <i class="fas fa-random"></i> Shuffle Again
+            </a>
+            <a href="{{ url_for('wiki.random_article') }}" class="btn btn-outline-light btn-lg">
+                <i class="fas fa-star"></i> Random Article
+            </a>
+            <a href="{{ url_for('wiki.index') }}" class="btn btn-outline-light btn-lg">
+                <i class="fas fa-home"></i> Back to Home
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="wiki-container full-width">
+    <div class="wiki-main-content">
+    {% if articles %}
+    <!-- Featured Random Articles Grid -->
+    <section class="random-articles mb-5">
+        <div class="section-header">
+            <h2><i class="fas fa-sparkles"></i> Random Knowledge Gems</h2>
+            <p class="text-muted">Each refresh brings new discoveries from my knowledge base</p>
+        </div>
+        
+        <div class="random-grid">
+            {% for article in articles %}
+            <div class="random-article-card" data-aos="fade-up" data-aos-delay="{{ loop.index0 * 100 }}">
+                <div class="card-badge">
+                    <i class="fas fa-star"></i>
+                    Random Pick #{{ loop.index }}
+                </div>
+                
+                <div class="article-preview">
+                    {% if article.category %}
+                    <span class="category-indicator">
+                        {{ article.category.name }}
+                    </span>
+                    {% endif %}
+                    
+                    <h3 class="article-title">{{ article.title }}</h3>
+                     <p class="article-excerpt">{{ article.get_excerpt(200) }}</p>
+                    
+                    <div class="article-meta">
+                        <div class="meta-info">
+                            <span class="meta-item">
+                                <i class="fas fa-calendar"></i>
+                                {{ article.created_at.strftime('%b %d, %Y') if article.created_at else 'Unknown' }}
+                            </span>
+                            {% if article.views %}
+                            <span class="meta-item">
+                                <i class="fas fa-eye"></i>
+                                {{ article.views }} views
+                            </span>
+                            {% endif %}
+                            <span class="meta-item">
+                                <i class="fas fa-clock"></i>
+                                {{ (article.content|length / 200)|round|int }} min read
+                            </span>
+                        </div>
+                        
+                        {% if article.tags %}
+                        <div class="article-tags-preview">
+                            {% for tag in article.tags.split(',')[:3] %}
+                            <span class="tag-mini">{{ tag.strip() }}</span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="article-actions">
+                    <a href="{{ url_for('wiki.article', article_id=article.id) }}" class="btn btn-primary gap-2">
+                        <i class="fas fa-book-open"></i> Read Article
+                    </a>
+                    <button class="btn btn-outline-secondary btn-sm" onclick="bookmarkArticle('{{ article.id }}')">
+                        <i class="fas fa-bookmark"></i>
+                    </button>
+                    <button class="btn btn-outline-secondary btn-sm" onclick="shareArticle('{{ article.id }}', '{{ article.title|e }}')">
+                        <i class="fas fa-share"></i>
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Refresh Button -->
+        <div class="text-center mt-4">
+            <button class="btn btn-warning btn-lg" onclick="refreshRandomArticles()">
+                <i class="fas fa-sync-alt"></i> Discover More Random Articles
+            </button>
+        </div>
+    </section>
+    {% else %}
+    <!-- No Articles Available -->
+    <div class="no-articles-random">
+        <div class="text-center">
+            <i class="fas fa-book-open fa-5x text-muted mb-4"></i>
+            <h3>No Articles Available</h3>
+            <p class="text-muted">There are no articles in the wiki yet. Start by creating some content!</p>
+            <a href="{{ url_for('wiki.index') }}" class="btn btn-primary">
+                <i class="fas fa-home"></i> Go to Home
+            </a>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Random Discovery Tips -->
+    <section class="discovery-tips">
+        <div class="section-header">
+            <h2><i class="fas fa-lightbulb"></i> Random Discovery Tips</h2>
+            <p class="text-muted">Make the most of your random exploration</p>
+        </div>
+        
+        <div class="tips-grid">
+            <div class="tip-card">
+                <div class="tip-icon">
+                    <i class="fas fa-bookmark"></i>
+                </div>
+                <h5>Bookmark Interesting Finds</h5>
+                <p>Save articles that catch your interest for later reading and reference.</p>
+            </div>
+            
+            <div class="tip-card">
+                <div class="tip-icon">
+                    <i class="fas fa-link"></i>
+                </div>
+                <h5>Follow Article Links</h5>
+                <p>Explore related topics and references within articles for deeper learning.</p>
+            </div>
+            
+            <div class="tip-card">
+                <div class="tip-icon">
+                    <i class="fas fa-history"></i>
+                </div>
+                <h5>Keep a Reading History</h5>
+                <p>Track your random discoveries to build your personal knowledge journey.</p>
+            </div>
+            
+            <div class="tip-card">
+                <div class="tip-icon">
+                    <i class="fas fa-share-alt"></i>
+                </div>
+                <h5>Share Discoveries</h5>
+                <p>Share interesting random finds with others to spread knowledge.</p>
+            </div>
+        </div>
+    </section>
+</div>
+
+<style>
+.random-hero {
+    background: linear-gradient(135deg, var(--warning-color) 0%, var(--primary-color) 100%);
+    color: white;
+    padding: 4rem 0;
+    margin-bottom: 3rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.random-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="stars" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23stars)"/></svg>');
+    pointer-events: none;
+}
+
+.random-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.random-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.random-article-card {
+    background: var(--surface-color);
+    border: 2px solid var(--border-color);
+    border-radius: 1rem;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    position: relative;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.random-article-card:hover {
+    transform: translateY(-8px) rotate(1deg);
+    box-shadow: 0 15px 35px rgba(243, 156, 18, 0.2);
+    border-color: var(--primary-color);
+}
+
+.card-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: var(--danger-color);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    z-index: 2;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.article-preview {
+    padding: 2rem;
+    padding-top: 3rem;
+}
+
+.category-indicator {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.article-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+    line-height: 1.3;
+}
+
+.article-meta {
+    margin-bottom: 1.5rem;
+}
+
+.meta-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.meta-item i {
+    color: var(--primary-color);
+}
+
+.article-tags-preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.tag-mini {
+    background: var(--light-color);
+    color: var(--text-color);
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.5rem;
+    font-size: 0.75rem;
+    border: 1px solid var(--border-color);
+}
+
+.article-actions {
+    padding: 1.5rem 2rem;
+    background: var(--light-color);
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.tip-card {
+    background: var(--background-color);
+    border: 2px solid var(--border-color);
+    border-radius: 1rem;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.tip-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary-color);
+    box-shadow: 0 10px 25px rgba(243, 156, 18, 0.1);
+}
+
+.tip-icon {
+    background: var(--primary-color);
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    font-size: 1.5rem;
+}
+
+.tip-card h5 {
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+}
+
+.tip-card p {
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+.no-articles-random {
+    min-height: 50vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .random-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .random-article-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .tips-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .article-actions {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .article-actions .btn {
+        width: 100%;
+    }
+}
+</style>
+
+<script>
+function refreshRandomArticles() {
+    // Add loading animation
+    const button = event.target;
+    const originalContent = button.innerHTML;
+    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Discovering...';
+    button.disabled = true;
+    
+    // Refresh the page after a short delay for better UX
+    setTimeout(() => {
+        window.location.reload();
+    }, 1000);
+}
+
+function bookmarkArticle(articleId) {
+    // Simple bookmark functionality
+    const bookmarks = JSON.parse(localStorage.getItem('wiki-bookmarks') || '[]');
+    if (!bookmarks.includes(articleId)) {
+        bookmarks.push(articleId);
+        localStorage.setItem('wiki-bookmarks', JSON.stringify(bookmarks));
+        
+        // Show success message
+        const button = event.target.closest('button');
+        const originalIcon = button.querySelector('i').className;
+        button.querySelector('i').className = 'fas fa-check';
+        button.classList.add('btn-success');
+        button.classList.remove('btn-outline-secondary');
+        
+        setTimeout(() => {
+            button.querySelector('i').className = originalIcon;
+            button.classList.remove('btn-success');
+            button.classList.add('btn-outline-secondary');
+        }, 2000);
+    }
+}
+
+function shareArticle(articleId, title) {
+    const url = `${window.location.origin}/wiki/article/${articleId}`;
+    
+    if (navigator.share) {
+        navigator.share({
+            title: title,
+            text: `Check out this random discovery: ${title}`,
+            url: url
+        });
+    } else {
+        // Fallback: copy to clipboard
+        navigator.clipboard.writeText(url).then(() => {
+            const button = event.target.closest('button');
+            const originalIcon = button.querySelector('i').className;
+            button.querySelector('i').className = 'fas fa-check';
+            button.classList.add('btn-success');
+            button.classList.remove('btn-outline-secondary');
+            
+            setTimeout(() => {
+                button.querySelector('i').className = originalIcon;
+                button.classList.remove('btn-success');
+                button.classList.add('btn-outline-secondary');
+            }, 2000);
+        });
+    }
+}
+
+// Add AOS (Animate On Scroll) effect
+document.addEventListener('DOMContentLoaded', function() {
+    // Simple fade-in animation for cards
+    const cards = document.querySelectorAll('.random-article-card');
+    cards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        
+        setTimeout(() => {
+            card.style.transition = 'all 0.6s ease';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, index * 100);
+    });
+});
+</script>
+{% endblock %}

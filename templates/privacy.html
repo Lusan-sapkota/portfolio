@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Privacy Policy - Lusan Sapkota</title>
+    <meta name="description" content="Privacy Policy for Lusan Sapkota's digital platforms and services. Learn how I handle your data across all my subdomains.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='assets/logo/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='assets/logo/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ url_for('static', filename='assets/logo/android-chrome-192x192.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='assets/logo/favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='assets/logo/site.webmanifest') }}">
+    <link rel="mask-icon" href="{{ url_for('static', filename='assets/logo/safari-pinned-tab.svg') }}" color="#f39c12">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='assets/logo/logo.png') }}">
+    
+    <!-- CSS -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style.css') }}">
+    
+    <!-- Additional CSS for Privacy Page -->
+    <style>
+        .privacy-page {
+            padding: 120px 0 80px;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+        }
+        
+        [data-theme="dark"] .privacy-page {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+        }
+        
+        .privacy-header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 40px 0;
+            position: relative;
+        }
+        
+        .privacy-header::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+        }
+        
+        .privacy-header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .privacy-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .privacy-content {
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-lg);
+            padding: 50px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(243, 156, 18, 0.1);
+        }
+        
+        [data-theme="dark"] .privacy-content {
+            background: rgba(45, 45, 45, 0.95);
+            border-color: rgba(243, 156, 18, 0.2);
+        }
+        
+        .privacy-section {
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid rgba(243, 156, 18, 0.1);
+        }
+        
+        .privacy-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        
+        .section-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 35px;
+            height: 35px;
+            background: var(--gradient-primary);
+            color: var(--white);
+            border-radius: 50%;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        .privacy-section h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .privacy-section h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary-yellow);
+            margin: 25px 0 15px;
+        }
+        
+        .privacy-section p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+        
+        .privacy-section ul {
+            margin: 15px 0;
+            padding-left: 20px;
+        }
+        
+        .privacy-section li {
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+        
+        .highlight-box {
+            background: rgba(243, 156, 18, 0.1);
+            border-left: 4px solid var(--primary-yellow);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin: 20px 0;
+        }
+        
+        [data-theme="dark"] .highlight-box {
+            background: rgba(243, 156, 18, 0.05);
+        }
+        
+        .highlight-box p {
+            margin: 0;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        .contact-privacy {
+            background: var(--gradient-primary);
+            color: var(--white);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            margin-top: 40px;
+        }
+        
+        .contact-privacy h3 {
+            color: var(--white);
+            margin-bottom: 15px;
+        }
+        
+        .contact-privacy p {
+            color: var(--white);
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+        
+        .privacy-contact-btn {
+            background: var(--white);
+            color: var(--primary-yellow);
+            padding: 12px 30px;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all var(--transition);
+        }
+        
+        .privacy-contact-btn:hover {
+            color: var(--primary-yellow);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .last-updated {
+            background: rgba(243, 156, 18, 0.1);
+            padding: 15px 20px;
+            border-radius: var(--border-radius);
+            margin-bottom: 30px;
+            text-align: center;
+            border: 1px solid rgba(243, 156, 18, 0.2);
+        }
+        
+        .last-updated strong {
+            color: var(--primary-yellow);
+        }
+        
+        .external-link {
+            color: var(--primary-yellow);
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 1px solid transparent;
+            transition: all var(--transition);
+        }
+        
+        .external-link:hover {
+            color: var(--primary-yellow);
+            border-bottom-color: var(--primary-yellow);
+        }
+        
+        .external-link i {
+            margin-left: 5px;
+            font-size: 0.8rem;
+        }
+        
+        .back-to-home {
+            text-align: center;
+            margin-top: 40px;
+        }
+        
+        .back-home-btn {
+            background: var(--gradient-primary);
+            color: var(--white);
+            padding: 15px 30px;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all var(--transition);
+        }
+        
+        .back-home-btn:hover {
+            color: var(--white);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(243, 156, 18, 0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .privacy-page {
+                padding: 100px 0 60px;
+            }
+            
+            .privacy-header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .privacy-content {
+                padding: 30px 20px;
+            }
+            
+            .privacy-section h2 {
+                font-size: 1.3rem;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .section-number {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Go Back Button -->
+    <a href="javascript:history.back()" class="back-home-btn" title="Go Back" style="position: fixed; top: 20px; left: 20px; z-index: 999; padding: 10px 20px;">
+        <i class="fa fa-arrow-left" style="color: white;"></i>
+    </a>
+     
+
+    <!-- Privacy Policy Content -->
+    <section class="privacy-page">
+        <div class="container">
+            
+            <!-- Header -->
+            <div class="privacy-header">
+                <h1>Privacy Policy</h1>
+                <p class="privacy-subtitle">
+                    Your privacy is important to Me. This policy explains how I collect, use, and protect your information across all my digital platforms.
+                </p>
+            </div>
+            
+            <!-- Content -->
+            <div class="privacy-content">
+                
+                <!-- Last Updated -->
+                <div class="last-updated">
+                    <p><strong>Last Updated:</strong> June 17, 2025</p>
+                </div>
+                
+                <!-- 1. Introduction -->
+                <div class="privacy-section">
+                    <h2>
+                        <span class="section-number">1</span>
+                        Introduction
+                    </h2>
+                    <p>
+                        Welcome to the privacy policy for <strong>Lusan Sapkota's</strong> digital ecosystem. This policy applies to all my platforms and subdomains including:
+                    </p>
+                    <ul>
+                        <li><strong>lusansapkota.com.np</strong> - Main portfolio website</li>
+                        <li><strong>wiki.lusansapkota.com.np</strong> - Knowledge base platform</li>
+                        <li><strong>git.lusansapkota.com.np</strong> - Code repository platform</li>
+                        <li><strong>store.lusansapkota.com.np</strong> - Digital products store</li>
+                        <li><strong>donation.lusansapkota.com.np</strong> - Donation platform</li>
+                    </ul>
+                    <p>
+                        By using any of my services, you agree to the collection and use of information in accordance with this policy.
+                    </p>
+                </div>
+                
+                <!-- 2. Data Collected -->
+                <div class="privacy-section">
+                    <h2>
+                        <span class="section-number">2</span>
+                        Data I Collect
+                    </h2>
+                    <p>I collect minimal personal information to provide you with the best possible experience:</p>
+                    
+                    <h3>Information You Provide:</h3>
+                    <ul>
+                        <li><strong>Email Address:</strong> When you subscribe to my newsletter or contact Me</li>
+                        <li><strong>Name:</strong> Optional, when you introduce yourself in contact forms</li>
+                        <li><strong>Messages:</strong> Content you send through my contact forms</li>
+                        <li><strong>Donation Information:</strong> Optional name and email for donation receipts</li>
+                    </ul>
+                    
+                    <h3>Automatically Collected:</h3>
+                    <ul>
+                        <li><strong>Website Analytics:</strong> Page views, visit duration, browser type (anonymized)</li>
+                        <li><strong>Cookies:</strong> For theme preferences and essential site functionality</li>
+                        <li><strong>IP Address:</strong> For security and analytics (not stored permanently)</li>
+                    </ul>
+                </div>
+                
+                <!-- 3. Use of Data -->
+                <div class="privacy-section">
+                    <h2>
+                        <span class="section-number">3</span>
+                        How I Use Your Data
+                    </h2>
+                    <p>Your information is used exclusively for the following purposes:</p>
+                    <ul>
+                        <li><strong>Communication:</strong> Responding to your inquiries and messages</li>
+                        <li><strong>Newsletter:</strong> Sending updates about new projects and tutorials (opt-in only)</li>
+                        <li><strong>Site Improvement:</strong> Understanding how visitors use my platforms</li>
+                        <li><strong>Security:</strong> Protecting against spam and malicious activities</li>
+                        <li><strong>Legal Compliance:</strong> Meeting any applicable legal requirements</li>
+                    </ul>
+                    
+                    <div class="highlight-box">
+                        <p><strong>I Never:</strong> Sell, rent, or share your personal information with third parties for marketing purposes.</p>
+                    </div>
+                </div>
+                
+                <!-- 4. Analytics & Cookies -->
+                <div class="privacy-section">
+                    <h2>
+                        <span class="section-number">4</span>
+                        Analytics & Cookies
+                    </h2>
+                    <p>I use analytics tools to understand how my websites are used and to improve user experience:</p>
+                    
+                    <h3>Analytics Services:</h3>
+                    <ul>
+                        <li><strong>Google Analytics:</strong> For traffic analysis and user behavior insights (anonymized data)</li>
+                        <li><strong>Privacy-Focused Analytics:</strong> I prioritize tools that respect user privacy</li>
+                    </ul>
+                    
+                    <h3>Cookies I Use:</h3>
+                    <ul>
+                        <li><strong>Essential Cookies:</strong> For site functionality and security</li>
+                        <li><strong>Preference Cookies:</strong> To remember your theme choice (dark/light mode)</li>
+                        <li><strong>Analytics Cookies:</strong> To understand site usage patterns</li>
+                    </ul>
+                    
+                    <p>You can disable cookies in your browser settings, though some site features may not work properly.</p>
+                </div>
+                
+                <!-- 5. Contact Forms & Newsletter -->
+                <div class="privacy-section">
+                    <h2>
+                        <span class="section-number">5</span>
+                        Contact Forms & Newsletter
+                    </h2>
+                    <h3>Contact Forms:</h3>
+                    <p>When you contact Me through my forms:</p>
+                    <ul>
+                        <li>Your email and message are stored securely</li>
+                        <li>I use this information solely to respond to your inquiry</li>
+                        <li>Messages are kept for reference but not shared with third parties</li>
+                        <li>You can request deletion of your messages at any time</li>
+                    </ul>
+                    
+                    <h3>Newsletter Subscription:</h3>
+                    <p>My newsletter service:</p>
+                    <ul>
+                        <li>Is completely opt-in (you must actively subscribe)</li>
+                        <li>Sends updates about new projects, tutorials, and platform updates</li>
+                        <li>Includes an unsubscribe link in every email</li>
+                        <li>Your email is never shared with external parties</li>
+                    </ul>
+                </div>
+                
+                <!-- 6. Store Subdomain -->
+                <div class="privacy-section">
+                    <h2>
+                        <span class="section-number">6</span>
+                        Store Platform (store.lusansapkota.com.np)
+                    </h2>
+                    <p>My digital store operates through trusted third-party payment processors:</p>
+                    
+                    <div class="highlight-box">
+                        <p><strong>Important:</strong> I do not directly process payments or store financial information.</p>
+                    </div>
+                    
+                    <h3>Payment Processing:</h3>
+                    <ul>
+                        <li><strong>Gumroad:</strong> Primary platform for digital product sales</li>
+                        <li><strong>PayPal:</strong> Payment option used on gumroad</li>
+                    </ul>
+                    
+                    <p>
+                        When you make a purchase, you are redirected to these secure platforms. Please review their privacy policies:
+                    </p>
+                    <ul>
+                        <li><a href="https://gumroad.com/privacy" target="_blank" class="external-link">Gumroad Privacy Policy <i class="fas fa-external-link-alt"></i></a></li>
+                        <li><a href="https://www.paypal.com/privacy" target="_blank" class="external-link">PayPal Privacy Policy <i class="fas fa-external-link-alt"></i></a></li>
+                    </ul>
+                </div>
+                
+                <!-- 7. Donation Subdomain -->
+                <div class="privacy-section">
+                    <h2>
+                        <span class="section-number">7</span>
+                        Donation Platform (donation.lusansapkota.com.np)
+                    </h2>
+                    <p>My donation platform supports various payment methods for voluntary contributions:</p>
+                    
+                    <h3>Donation Methods:</h3>
+                    <ul>
+                        <li><strong>Digital Wallets:</strong> eSewa, Khalti, IME Pay (Nepal)</li>
+                        <li><strong>International:</strong> Payoneer, Wise</li>
+                        <li><strong>Bank Transfer:</strong> Direct bank deposit options</li>
+                    </ul>
+                    
+                    <h3>Data Handling:</h3>
+                    <ul>
+                        <li>Donations are processed through respective payment platforms</li>
+                        <li>I may collect optional donor name and email for acknowledgment</li>
+                        <li>No financial information is stored on my servers</li>
+                        <li>Donation records are kept for tax and transparency purposes</li>
+                    </ul>
+                    
+                    <div class="highlight-box">
+                        <p><strong>Cryptocurrency Note:</strong> Cryptocurrency donations are not accepted due to legal restrictions in Nepal. Please consider using other available donation methods.</p>
+
+                    </div>
+                </div>
+                
+                <!-- 8. Data Security -->
+                <div class="privacy-section">
+                    <h2>
+                        <span class="section-number">8</span>
+                        Data Security
+                    </h2>
+                    <p>I implement appropriate security measures to protect your personal information:</p>
+                    
+                    <h3>Security Measures:</h3>
+                    <ul>
+                        <li><strong>Encryption:</strong> All data transmission is encrypted using SSL/HTTPS</li>
+                        <li><strong>Secure Hosting:</strong> My websites are hosted on secure, reputable platforms</li>
+                        <li><strong>Access Control:</strong> Limited access to personal data on a need-to-know basis</li>
+                        <li><strong>Regular Updates:</strong> Software and security patches are applied promptly</li>
+                        <li><strong>No Financial Storage:</strong> I never store credit card or payment information</li>
+                    </ul>
+                    
+                    <p>
+                        While I strive to protect your personal information, no method of transmission over the internet is 100% secure. I cannot guarantee absolute security but continuously work to improve my security measures.
+                    </p>
+                </div>
+                
+                <!-- 9. Third-Party Services -->
+                <div class="privacy-section">
+                    <h2>
+                        <span class="section-number">9</span>
+                        Third-Party Services
+                    </h2>
+                    <p>My platforms integrate with various third-party services to provide enhanced functionality:</p>
+                    
+                    <h3>Service Providers:</h3>
+                    <ul>
+                        <li><strong>Payment Processors:</strong> Gumroad, PayPal, Stripe, eSewa, Khalti</li>
+                        <li><strong>Analytics:</strong> Google Analytics, privacy-focused alternatives</li>
+                        <li><strong>Email Services:</strong> Secure email providers for newsletters and communication</li>
+                        <li><strong>Content Delivery:</strong> CDN services for faster website loading</li>
+                        <li><strong>Social Media:</strong> Integration with GitHub, LinkedIn, Twitter for professional profiles</li>
+                    </ul>
+                    
+                    <p>
+                        Each service has its own privacy policy. I recommend reviewing their policies when you interact with these services through my platforms.
+                    </p>
+                </div>
+                
+                <!-- 10. Your Rights -->
+                <div class="privacy-section">
+                    <h2>
+                        <span class="section-number">10</span>
+                        Your Rights
+                    </h2>
+                    <p>You have several rights regarding your personal information:</p>
+                    
+                    <h3>Your Rights Include:</h3>
+                    <ul>
+                        <li><strong>Access:</strong> Request information about what personal data I have about you</li>
+                        <li><strong>Correction:</strong> Ask Me to correct any inaccurate personal information</li>
+                        <li><strong>Deletion:</strong> Request removal of your personal information from my systems</li>
+                        <li><strong>Unsubscribe:</strong> Opt-out of newsletters and marketing communications</li>
+                        <li><strong>Data Portability:</strong> Request a copy of your data in a structured format</li>
+                        <li><strong>Objection:</strong> Object to certain types of data processing</li>
+                    </ul>
+                    
+                    <div class="highlight-box">
+                        <p><strong>To exercise your rights:</strong> Contact Me using the information provided at the end of this policy. I will respond as soon as possible.</p>
+                    </div>
+                </div>
+                
+                <!-- 11. Legal & Location -->
+                <div class="privacy-section">
+                    <h2>
+                        <span class="section-number">11</span>
+                        Legal Framework & Jurisdiction
+                    </h2>
+                    <p>My privacy practices are governed by the following legal framework:</p>
+                    
+                    <h3>Jurisdiction:</h3>
+                    <ul>
+                        <li><strong>Primary Jurisdiction:</strong> Nepal</li>
+                        <li><strong>Compliance:</strong> Nepalese privacy and data protection laws</li>
+                        <li><strong>International Users:</strong> I respect international privacy standards where applicable</li>
+                    </ul>
+                    
+                    <h3>Special Considerations:</h3>
+                    <ul>
+                        <li><strong>Cryptocurrency:</strong> Crypto-related services are subject to evolving regulations in Nepal</li>
+                        <li><strong>Cross-Border Data:</strong> Some services may involve data processing outside Nepal</li>
+                        <li><strong>Legal Requests:</strong> I may disclose information if legally required by authorities</li>
+                    </ul>
+                    
+                    <div class="highlight-box">
+                        <p><strong>Note:</strong> Cryptocurrency donation is disabled based on current legal status in Nepal.</p>
+                    </div>
+                </div>
+                
+                <!-- 12. Contact Information -->
+                <div class="privacy-section">
+                    <h2>
+                        <span class="section-number">12</span>
+                        Contact Me About Privacy
+                    </h2>
+                    <p>
+                        If you have any questions, concerns, or requests regarding this privacy policy or how I handle your personal information, please contact Me:
+                    </p>
+                    
+                    <div class="contact-privacy">
+                        <h3>Privacy Officer</h3>
+                        <p>Lusan Sapkota - Full-Stack Developer</p>
+                        
+                        <div style="margin: 20px 0;">
+                            <p><strong>Email:</strong> contact@lusansapkota.com.np</p>
+                            <p><strong>Personal Email:</strong> sapkotalusan@gmail.com</p>
+                            <p><strong>Location:</strong> Kathmandu, Nepal</p>
+                        </div>
+                        
+                        <a href="{{ url_for('index') }}#contact" class="privacy-contact-btn">
+                            <i class="fas fa-envelope"></i>
+                            Send Privacy Inquiry
+                        </a>
+                    </div>
+                    
+                    <p style="margin-top: 20px;">
+                        <strong>Response Time:</strong> I aim to respond to all privacy-related inquiries within 1-2 days. For urgent matters, please indicate "URGENT - PRIVACY" in your subject line.
+                    </p>
+                </div>
+                
+            </div>
+            
+            <!-- Back to Home -->
+            <div class="back-to-home">
+                <a href="{{ url_for('index') }}" class="back-home-btn">
+                    <i class="fas fa-home"></i>
+                    Back to Portfolio
+                </a>
+            </div>
+            
+        </div>
+    </section>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='assets/js/jquery-2.1.4.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/custom.js') }}"></script>
+</body>
+</html>

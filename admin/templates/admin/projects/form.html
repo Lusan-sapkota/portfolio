@@ -1,0 +1,284 @@
+{% extends "admin/base.html" %}
+
+{% block title %}{% if project %}Edit Project{% else %}Add Project{% endif %}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0">
+                    <i class="fas fa-project-diagram"></i>
+                    {% if project %}Edit Project: {{ project.title }}{% else %}Add New Project{% endif %}
+                </h4>
+            </div>
+            <div class="card-body">
+                <form method="POST" id="projectForm">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                <label for="title" class="form-label">Title <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="title" name="title" 
+                                       value="{{ project.title if project else '' }}" required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="status" class="form-label">Status</label>
+                                <select class="form-select" id="status" name="status">
+                                    <option value="completed" {% if project and project.status == 'completed' %}selected{% endif %}>Completed</option>
+                                    <option value="in-progress" {% if project and project.status == 'in-progress' %}selected{% endif %}>In Progress</option>
+                                    <option value="maintenance" {% if project and project.status == 'maintenance' %}selected{% endif %}>Maintenance</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" name="description" rows="4" 
+                                  placeholder="Describe your project...">{{ project.description if project else '' }}</textarea>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="category_id" class="form-label">Category</label>
+                                <select class="form-select" id="category_id" name="category_id">
+                                    <option value="">Select category...</option>
+                                    {% for category in categories %}
+                                    <option value="{{ category.id }}" 
+                                            {% if project and project.category_id == category.id %}selected{% endif %}>
+                                        {{ category.name }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="technologies" class="form-label">Technologies</label>
+                                <input type="text" class="form-control" id="technologies" name="technologies" 
+                                       value="{{ project.technologies if project else '' }}"
+                                       placeholder="e.g., Python, Flask, JavaScript">
+                                <small class="form-text text-muted">Comma-separated list of technologies</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="image_url" class="form-label">Image URL</label>
+                        <input type="url" class="form-control" id="image_url" name="image_url" 
+                               value="{{ project.image_url if project else '' }}"
+                               placeholder="https://example.com/image.jpg">
+                        <small class="form-text text-muted">URL to project screenshot or preview image</small>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="github_url" class="form-label">GitHub URL</label>
+                                <input type="url" class="form-control" id="github_url" name="github_url" 
+                                       value="{{ project.github_url if project else '' }}"
+                                       placeholder="https://github.com/username/repo">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="live_url" class="form-label">Live Demo URL</label>
+                                <input type="url" class="form-control" id="live_url" name="live_url" 
+                                       value="{{ project.live_url if project else '' }}"
+                                       placeholder="https://your-project.com">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="commercial_url" class="form-label">Commercial Product URL</label>
+                        <input type="url" class="form-control" id="commercial_url" name="commercial_url" 
+                               value="{{ project.commercial_url if project else '' }}"
+                               placeholder="https://your-commercial-product.com">
+                        <small class="form-text text-muted">URL to the commercial version or product page</small>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="is_featured" name="is_featured" 
+                                       {% if project and project.is_featured %}checked{% endif %}>
+                                <label class="form-check-label" for="is_featured">
+                                    Featured Project
+                                </label>
+                                <small class="form-text text-muted d-block">Featured projects appear prominently on the homepage</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="is_opensource" name="is_opensource" 
+                                       {% if not project or project.is_opensource %}checked{% endif %}>
+                                <label class="form-check-label" for="is_opensource">
+                                    Open Source
+                                </label>
+                                <small class="form-text text-muted d-block">Mark if this is an open source project</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="show_on_homepage" name="show_on_homepage" 
+                                       {% if project and project.show_on_homepage %}checked{% endif %}>
+                                <label class="form-check-label" for="show_on_homepage">
+                                    Show on Homepage
+                                </label>
+                                <small class="form-text text-muted d-block">Display this project on the main homepage</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% if project and project.github_url %}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">GitHub Stats</label>
+                                <div class="d-flex gap-3">
+                                    <span class="badge bg-warning">⭐ {{ project.stars or 0 }} Stars</span>
+                                    <span class="badge bg-info">🍴 {{ project.forks or 0 }} Forks</span>
+                                </div>
+                                <small class="form-text text-muted">
+                                    Last updated: {{ project.github_data_updated.strftime('%Y-%m-%d %H:%M') if project.github_data_updated else 'Never' }}
+                                </small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">&nbsp;</label>
+                                <div>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm" id="refreshGitHubData">
+                                        <i class="fab fa-github"></i> Refresh GitHub Data
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ url_for('admin.projects') }}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Back to Projects
+                            </a>
+                            <div>
+                                {% if project %}
+                                <button type="button" class="btn btn-outline-danger me-2" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                                {% endif %}
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save"></i> 
+                                    {% if project %}Update Project{% else %}Create Project{% endif %}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if project %}
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Project</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete the project "{{ project.title }}"?</p>
+                <p class="text-danger"><strong>This action cannot be undone.</strong></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form method="POST" action="{{ url_for('admin.projects_delete', id=project.id) }}" style="display: inline;">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+    // Form submission with AJAX
+    $('#projectForm').on('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        const isEdit = {{ 'true' if project else 'false' }};
+        const url = isEdit ? window.location.href : '{{ url_for("admin.projects_create") }}';
+        
+        // Convert FormData to regular object for JSON
+        const data = {};
+        formData.forEach((value, key) => {
+            if (key === 'is_featured' || key === 'is_opensource' || key === 'show_on_homepage') {
+                data[key] = $('#' + key).is(':checked');
+            } else {
+                data[key] = value;
+            }
+        });
+        
+        $.ajax({
+            url: url,
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            data: JSON.stringify(data),
+            success: function(response) {
+                if (response.status === 'success') {
+                    window.location.href = '{{ url_for("admin.projects") }}';
+                } else {
+                    alert(response.message || 'Error saving project');
+                }
+            },
+            error: function(xhr) {
+                let message = 'Error saving project';
+                if (xhr.responseJSON && xhr.responseJSON.message) {
+                    message = xhr.responseJSON.message;
+                }
+                alert(message);
+            }
+        });
+    });
+    
+    {% if project and project.github_url %}
+    // Refresh GitHub data
+    $('#refreshGitHubData').click(function() {
+        const btn = $(this);
+        btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Refreshing...');
+        
+        $.ajax({
+            url: '{{ url_for("admin.projects_refresh_github", id=project.id) }}',
+            method: 'POST',
+            success: function(response) {
+                if (response.status === 'success') {
+                    location.reload();
+                } else {
+                    alert(response.message || 'Error refreshing GitHub data');
+                    btn.prop('disabled', false).html('<i class="fab fa-github"></i> Refresh GitHub Data');
+                }
+            },
+            error: function() {
+                alert('Error refreshing GitHub data');
+                btn.prop('disabled', false).html('<i class="fab fa-github"></i> Refresh GitHub Data');
+            }
+        });
+    });
+    {% endif %}
+});
+</script>
+{% endblock %}

@@ -1,0 +1,976 @@
+{% extends 'wiki/base.html' %}
+
+{% block title %}Lusan's Knowledge Hub - Discover, Learn, Grow{% endblock %}
+
+{% block head %}
+<style>
+    /* Beautiful and Elegant Wiki Index Styles with Yellow Gradients */
+    
+    /* Main container adjustments */
+    .wiki-main-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1rem;
+    }
+    
+    /* Hero Section - Minimalist and Elegant */
+    .elegant-hero {
+        background: transparent;
+        color: var(--text-color);
+        padding: 4rem 0 3rem;
+        margin-bottom: 4rem;
+        text-align: center;
+        position: relative;
+    }
+    
+    .hero-content {
+        max-width: 700px;
+        margin: 0 auto;
+        padding: 0 1rem;
+    }
+    
+    .hero-welcome {
+        font-size: 1rem;
+        color: var(--text-muted);
+        margin-bottom: 0.5rem;
+        font-weight: 400;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+    
+    .hero-title {
+        font-size: 3.5rem;
+        font-weight: 300;
+        margin-bottom: 1rem;
+        color: var(--text-color);
+        line-height: 1.2;
+        letter-spacing: -1px;
+        background: linear-gradient(135deg, var(--text-color) 0%, #f39c12 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.2rem;
+        color: var(--text-muted);
+        margin-bottom: 2.5rem;
+        line-height: 1.6;
+        font-weight: 300;
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .hero-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 3rem;
+    }
+    
+    .btn-elegant {
+        padding: 1rem 2.5rem;
+        border-radius: 12px;
+        font-weight: 500;
+        text-decoration: none;
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.95rem;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .btn-elegant-primary {
+        background: var(--gradient-surface);
+        color: #1a1a1a;
+        box-shadow: 0 4px 20px rgba(241, 196, 15, 0.3);
+    }
+    
+    .btn-elegant-outline {
+        color: var(--text-color);
+        border: 2px solid var(--primary-color);
+        background: transparent;
+        transition: all  0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    /* Stats Section - Enhanced with Yellow Accents */
+    .stats-section {
+        margin: 4rem 0 5rem;
+        padding: 3rem 0;
+        border-top: 1px solid var(--border-color);
+        border-bottom: 1px solid var(--border-color);
+        background: linear-gradient(135deg, rgba(241, 196, 15, 0.02) 0%, rgba(243, 156, 18, 0.05) 100%);
+        border-radius: 20px;
+        position: relative;
+    }
+    
+    .stats-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%);
+        border-radius: 20px 20px 0 0;
+    }
+    
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 2rem;
+        max-width: 700px;
+        margin: 0 auto;
+        text-align: center;
+    }
+    
+    .stat-item {
+        padding: 1.5rem;
+        background: var(--surface-color);
+        border-radius: 15px;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 1px solid var(--border-color);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .stat-item::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(241, 196, 15, 0.1), transparent);
+        transition: all 0.6s cubic-bezier(0.075, 0.82, 0.165, 1);
+    }
+    
+    .stat-item:hover::before {
+        left: 100%;
+    }
+    
+    .stat-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 40px rgba(241, 196, 15, 0.2);
+        border-color: #f1c40f;
+    }
+    
+    .stat-item i {
+        font-size: 2rem;
+        background: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 0.8rem;
+        display: block;
+    }
+    
+    .stat-number {
+        font-size: 2.2rem;
+        font-weight: 300;
+        color: var(--text-color);
+        margin-bottom: 0.5rem;
+        display: block;
+        line-height: 1;
+    }
+    
+    .stat-label {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        font-weight: 400;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    
+    /* Featured Content Section - Enhanced */
+    .featured-section {
+        margin: 6rem 0;
+    }
+    
+    .section-header {
+        text-align: center;
+        margin-bottom: 4rem;
+        position: relative;
+        width: 100%;
+    }
+    
+    .section-title {
+        font-size: 2.5rem;
+        font-weight: 300;
+        color: var(--text-color);
+        margin-bottom: 1rem;
+        letter-spacing: -0.5px;
+        position: relative;
+        display: inline-block;
+        width: 100%;
+    }
+    
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 3px;
+        background: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%);
+        border-radius: 2px;
+    }
+    
+    .section-subtitle {
+        font-size: 1.1rem;
+        color: var(--text-muted);
+        max-width: 500px;
+        margin: 0 auto;
+        line-height: 1.6;
+        font-weight: 300;
+    }
+    
+    /* Featured Articles Grid - Enhanced */
+    .featured-container {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+    
+    .featured-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 2.5rem;
+        margin-bottom: 4rem;
+    }
+    
+    .featured-article {
+        background: var(--surface-color);
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+    
+    .featured-article::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%);
+        transform: scaleX(0);
+        transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .featured-article:hover::before {
+        transform: scaleX(1);
+    }
+    
+    .featured-article:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 60px rgba(241, 196, 15, 0.15);
+        border-color: #f1c40f;
+    }
+    
+    [data-theme="dark"] .featured-article:hover {
+        box-shadow: 0 20px 60px rgba(241, 196, 15, 0.1);
+    }
+    
+    .article-content {
+        padding: 2.5rem;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .category-badge {
+        background: linear-gradient(135deg, rgba(241, 196, 15, 0.1) 0%, rgba(243, 156, 18, 0.15) 100%);
+        color: #e67e22;
+        padding: 0.4rem 1rem;
+        border-radius: 25px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        display: inline-block;
+        margin: 0 auto 1.5rem auto;
+        border: 1px solid rgba(241, 196, 15, 0.3);
+        width: fit-content;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .article-title {
+        font-size: 1.4rem;
+        font-weight: 400;
+        color: var(--text-color);
+        margin-bottom: 1rem;
+        line-height: 1.4;
+        text-align: center;
+    }
+    
+    .article-title a {
+        color: inherit;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    
+    .article-title a:hover {
+        background: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .article-excerpt {
+        color: var(--text-muted);
+        line-height: 1.6;
+        flex-grow: 1;
+        margin-bottom: 2rem;
+        font-size: 0.95rem;
+        text-align: center;
+        font-weight: 300;
+    }
+    
+    .article-footer {
+        text-align: center;
+        margin-top: auto;
+    }
+    
+    .btn-read-more {
+        border: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%) 2px solid;
+        color: var(--text-muted);
+        background: transparent;
+        padding: 0.8rem 2rem;
+        border-radius: 12px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+        box-shadow: 0 4px 20px rgba(241, 196, 15, 0.3);
+    }
+    
+    /* Categories Overview - Enhanced with Yellow Theme */
+    .categories-section {
+        margin: 6rem 0;
+        padding: 4rem 0;
+        background: linear-gradient(135deg, rgba(241, 196, 15, 0.02) 0%, rgba(243, 156, 18, 0.05) 100%);
+        border-radius: 25px;
+        border: 1px solid rgba(241, 196, 15, 0.1);
+        position: relative;
+    }
+    
+    .categories-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%);
+        border-radius: 25px 25px 0 0;
+    }
+    
+    .categories-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+    
+    .categories-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 2rem;
+        margin-top: 3rem;
+    }
+    
+    .category-card {
+        background: var(--surface-color);
+        border: 1px solid var(--border-color);
+        border-radius: 15px;
+        padding: 2rem;
+        text-align: center;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        text-decoration: none;
+        color: inherit;
+        display: block;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .category-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(241, 196, 15, 0.1), transparent);
+        transition: 0.6s;
+    }
+    
+    .category-card:hover::before {
+        left: 100%;
+    }
+    
+    .category-card:hover {
+        transform: translateY(-5px);
+        border-color: #f1c40f;
+        text-decoration: none;
+        color: inherit;
+        box-shadow: 0 15px 50px rgba(241, 196, 15, 0.2);
+    }
+    
+    .category-icon {
+        font-size: 2.5rem;
+        background: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 1rem;
+        display: block;
+    }
+    
+    .category-name {
+        font-size: 1.2rem;
+        font-weight: 400;
+        color: var(--text-color);
+        margin-bottom: 0.5rem;
+    }
+    
+    .category-count {
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        font-weight: 300;
+    }
+    
+    /* Quick Actions Section - New */
+    .quick-actions-section {
+        margin: 6rem 0;
+        text-align: center;
+    }
+    
+    .quick-actions-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+        max-width: 900px;
+        margin: 3rem auto 0;
+    }
+    
+    .quick-action-card {
+        background: var(--surface-color);
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
+        padding: 3rem 2rem;
+        text-align: center;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .quick-action-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%);
+        transform: scaleX(0);
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .quick-action-card:hover::before {
+        transform: scaleX(1);
+    }
+    
+    .quick-action-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 60px rgba(241, 196, 15, 0.15);
+        border-color: #f1c40f;
+    }
+    
+    .action-icon {
+        font-size: 3rem;
+        background: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 1.5rem;
+        display: block;
+    }
+    
+    .action-title {
+        font-size: 1.3rem;
+        font-weight: 400;
+        color: var(--text-color);
+        margin-bottom: 1rem;
+    }
+    
+    .action-description {
+        color: var(--text-muted);
+        margin-bottom: 2rem;
+        line-height: 1.6;
+        font-weight: 300;
+    }
+    
+    .action-button {
+        background: transparent;
+        border: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%);
+        color: var(--text-muted);
+        padding: 0.8rem 2rem;
+        border-radius: 12px;
+        font-weight: 500;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+        box-shadow: 0 4px 20px rgba(241, 196, 15, 0.3);
+    }
+    
+    /* View All Button */
+    .view-all-container {
+        text-align: center;
+        margin-top: 4rem;
+    }
+    
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 5rem 2rem;
+        max-width: 500px;
+        margin: 0 auto;
+        background: linear-gradient(135deg, rgba(241, 196, 15, 0.02) 0%, rgba(243, 156, 18, 0.05) 100%);
+        border-radius: 20px;
+        border: 1px solid rgba(241, 196, 15, 0.1);
+    }
+    
+    .empty-state h2 {
+        font-size: 2rem;
+        font-weight: 300;
+        color: var(--text-color);
+        margin-bottom: 1rem;
+    }
+    
+    .empty-state p {
+        color: var(--text-muted);
+        margin-bottom: 2rem;
+        line-height: 1.6;
+        font-weight: 300;
+    }
+    
+    /* Responsive Design - Comprehensive */
+    @media (max-width: 1024px) {
+        .wiki-main-container {
+            padding: 0 1.5rem;
+        }
+        
+        .featured-container,
+        .categories-container {
+            padding: 0 1rem;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .hero-title {
+            font-size: 2.5rem;
+        }
+        
+        .hero-actions {
+            flex-direction: column;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        
+        .btn-elegant {
+            width: 100%;
+            max-width: 300px;
+            justify-content: center;
+            padding: 0.9rem 2rem;
+        }
+        
+        .featured-grid,
+        .categories-grid,
+        .quick-actions-grid {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+        
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+        }
+        
+        .article-content {
+            padding: 2rem;
+        }
+        
+        .wiki-main-container {
+            padding: 0 1rem;
+        }
+        
+        .categories-section,
+        .stats-section {
+            margin: 4rem 0;
+        }
+        
+        .quick-action-card {
+            padding: 2rem 1.5rem;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .elegant-hero {
+            padding: 3rem 0 2rem;
+        }
+        
+        .hero-title {
+            font-size: 2rem;
+        }
+        
+        .hero-subtitle {
+            font-size: 1rem;
+        }
+        
+        .stats-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        
+        .categories-container {
+            padding: 0 1rem;
+        }
+        
+        .wiki-main-container {
+            padding: 0 0.8rem;
+        }
+        
+        .featured-grid {
+            gap: 1.2rem;
+        }
+        
+        .article-content {
+            padding: 1.5rem;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+        }
+        
+        .category-badge {
+            font-size: 0.7rem;
+            padding: 0.3rem 0.8rem;
+        }
+        
+        .btn-elegant {
+            max-width: 280px;
+            padding: 0.8rem 1.8rem;
+        }
+        
+        .categories-section,
+        .stats-section {
+            padding: 2rem 0;
+            margin: 3rem 0;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .hero-title {
+            font-size: 1.8rem;
+        }
+        
+        .article-content {
+            padding: 1.2rem;
+        }
+        
+        .btn-elegant {
+            padding: 0.7rem 1.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .quick-action-card {
+            padding: 1.5rem 1rem;
+        }
+        
+        .action-icon {
+            font-size: 2.5rem;
+        }
+        
+        .stat-item {
+            padding: 1rem;
+        }
+        
+        .category-card {
+            padding: 1.5rem;
+        }
+    }
+    
+    @media (max-width: 360px) {
+        .hero-title {
+            font-size: 1.6rem;
+        }
+        
+        .article-content {
+            padding: 1rem;
+        }
+        
+        .btn-elegant {
+            padding: 0.6rem 1.2rem;
+            font-size: 0.85rem;
+        }
+        
+        .wiki-main-container {
+            padding: 0 0.5rem;
+        }
+    }
+    
+    /* Dark mode adjustments */
+    [data-theme="dark"] .categories-section,
+    [data-theme="dark"] .stats-section,
+    [data-theme="dark"] .empty-state {
+        background: linear-gradient(135deg, rgba(241, 196, 15, 0.03) 0%, rgba(243, 156, 18, 0.06) 100%);
+    }
+    
+    [data-theme="dark"] .category-card:hover,
+    [data-theme="dark"] .quick-action-card:hover {
+        box-shadow: 0 15px 50px rgba(241, 196, 15, 0.1);
+    }
+    
+    /* Animation for elements */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .featured-article,
+    .category-card,
+    .quick-action-card,
+    .stat-item {
+        animation: fadeInUp 0.6s ease-out;
+        animation-fill-mode: both;
+    }
+    
+    .featured-article:nth-child(1) { animation-delay: 0.1s; }
+    .featured-article:nth-child(2) { animation-delay: 0.2s; }
+    .featured-article:nth-child(3) { animation-delay: 0.3s; }
+    .featured-article:nth-child(4) { animation-delay: 0.4s; }
+    .featured-article:nth-child(5) { animation-delay: 0.5s; }
+    .featured-article:nth-child(6) { animation-delay: 0.6s; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="wiki-main-container">
+    <!-- Elegant Hero Section -->
+    <div class="elegant-hero">
+        <div class="hero-content">
+            <p class="hero-welcome">Welcome to</p>
+            <h1 class="hero-title">Lusan's Knowledge Hub</h1>
+            <p class="hero-subtitle">
+                A curated collection of insights, tutorials, and ideas. 
+                Explore knowledge that transforms perspectives and ignites curiosity.
+            </p>
+            
+            <div class="hero-actions">
+                <a href="{{ url_for('wiki.search') }}" class="btn-elegant btn-elegant-primary">
+                    <i class="fas fa-search"></i>
+                    Explore Articles
+                </a>
+                <a href="{{ url_for('wiki.random') }}" class="btn-elegant btn-elegant-outline">
+                    <i class="fas fa-random"></i>
+                    Random Discovery
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Section -->
+    {% if articles or categories %}
+    <div class="stats-section">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <i class="fas fa-file-alt"></i>
+                <span class="stat-number">{{ articles|length }}</span>
+                <div class="stat-label">Articles</div>
+            </div>
+            <div class="stat-item">
+                <i class="fas fa-tags"></i>
+                <span class="stat-number">{{ categories|length }}</span>
+                <div class="stat-label">Categories</div>
+            </div>
+            <div class="stat-item">
+                <i class="fas fa-clock"></i>
+                <span class="stat-number">5</span>
+                <div class="stat-label">Min Read</div>
+            </div>
+            <div class="stat-item">
+                <i class="fas fa-lightbulb"></i>
+                <span class="stat-number">∞</span>
+                <div class="stat-label">Ideas</div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Featured Articles Section -->
+    {% if articles %}
+    <section class="featured-section">
+        <div class="section-header">
+            <h2 class="section-title">Featured Articles</h2>
+            <p class="section-subtitle">
+                Discover the most valuable insights and comprehensive guides carefully selected for you.
+            </p>
+        </div>
+        
+        <div class="featured-container">
+            <div class="featured-grid">
+                {% for article in articles[:6] %}
+                <article class="featured-article">
+                    <div class="article-content">
+                        {% if article.category %}
+                        <div class="category-badge">{{ article.category.name }}</div>
+                        {% endif %}
+                        
+                        <h3 class="article-title">
+                            <a href="{{ url_for('wiki.article', article_id=article.id) }}" style="text-decoration: none; color: inherit;">
+                                {{ article.title }}
+                            </a>
+                        </h3>
+                        
+                        <div class="article-excerpt">
+                            {{ article.summary or (article.content[:150] + '...' if article.content and article.content|length > 150 else (article.content or 'Discover new insights and knowledge...')) }}
+                        </div>
+                        
+                        <div class="article-footer">
+                            <a href="{{ url_for('wiki.article', article_id=article.id) }}" class="btn-read-more">
+                                Read More
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+            
+            {% if articles|length > 6 %}
+            <div class="view-all-container">
+                <a href="{{ url_for('wiki.search') }}" class="btn-elegant btn-elegant-primary">
+                    <i class="fas fa-th-large"></i>
+                    View All Articles
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Categories Overview Section -->
+    {% if categories %}
+    <section class="categories-section">
+        <div class="categories-container">
+            <div class="section-header">
+                <h2 class="section-title">Explore Categories</h2>
+                <p class="section-subtitle">
+                    Navigate through organized topics and find exactly what you're looking for.
+                </p>
+            </div>
+            
+            <div class="categories-grid">
+                {% for category in categories %}
+                <a href="{{ url_for('wiki.search', category=category.name) }}" class="category-card">
+                    <i class="category-icon fas fa-folder"></i>
+                    <div class="category-name">{{ category.name }}</div>
+                    <div class="category-count">{{ category.article_count }} articles</div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Quick Actions Section -->
+    <section class="quick-actions-section">
+        <div class="section-header">
+            <h2 class="section-title">Quick Actions</h2>
+            <p class="section-subtitle">
+                Jump right into exploring and discovering new knowledge
+            </p>
+        </div>
+        
+        <div class="quick-actions-grid">
+            <div class="quick-action-card">
+                <i class="action-icon fas fa-search"></i>
+                <h3 class="action-title">Search Knowledge</h3>
+                <p class="action-description">
+                    Find specific articles, topics, or information using my powerful search functionality.
+                </p>
+                <a href="{{ url_for('wiki.search') }}" class="action-button">
+                    Start Searching
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+            
+            <div class="quick-action-card">
+                <i class="action-icon fas fa-random"></i>
+                <h3 class="action-title">Random Discovery</h3>
+                <p class="action-description">
+                    Let serendipity guide you to unexpected insights and fascinating topics.
+                </p>
+                <a href="{{ url_for('wiki.random') }}" class="action-button">
+                    Surprise Me
+                    <i class="fas fa-dice"></i>
+                </a>
+            </div>
+            
+            <div class="quick-action-card">
+                <i class="action-icon fas fa-bookmark"></i>
+                <h3 class="action-title">Latest Updates</h3>
+                <p class="action-description">
+                    Stay up-to-date with the newest articles and recently updated content.
+                </p>
+                <a href="{{ url_for('wiki.explore', sort='recent', filter='published', limit=10) }}" class="action-button">
+                    View Latest
+                    <i class="fas fa-clock"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Empty State -->
+    {% if not articles and not categories %}
+    <section class="featured-section">
+        <div class="empty-state">
+            <h2>Welcome to the Knowledge Hub</h2>
+            <p>
+                Your journey of discovery begins here. Soon this space will be filled with valuable insights, 
+                tutorials, and ideas that will inspire and educate.
+            </p>
+            <a href="{{ url_for('wiki.search') }}" class="btn-elegant btn-elegant-primary">
+                <i class="fas fa-plus"></i>
+                Start Exploring
+            </a>
+        </div>
+    </section>
+    {% endif %}
+</div>
+{% endblock %}

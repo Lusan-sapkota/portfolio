@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Admin Dashboard{% endblock %} - Portfolio CMS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('admin.static', filename='css/admin-style.css') }}">
+    	<!-- Universal favicon -->
+	<link rel="icon" type="image/png" href="{{ url_for('static', filename='assets/logo/logo.png') }}" sizes="any">
+
+	<!-- For Apple devices -->
+	<link rel="apple-touch-icon" href="{{ url_for('static', filename='assets/logo/logo.png') }}">
+
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="admin-body">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ url_for('admin.dashboard') }}">
+                <i class="fas fa-cog"></i> Portfolio CMS
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'admin.dashboard' %}active{% endif %}" href="{{ url_for('admin.dashboard') }}">
+                            <i class="fas fa-dashboard"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle {% if 'projects' in request.endpoint or 'categories' in request.endpoint %}active{% endif %}" href="#" id="projectsDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-project-diagram"></i> Projects
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ url_for('admin.projects') }}">All Projects</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('admin.projects_create') }}">Add Project</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{{ url_for('admin.categories') }}">Categories</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('admin.categories_create') }}">Add Category</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if 'skills' in request.endpoint %}active{% endif %}" href="{{ url_for('admin.skills') }}">
+                            <i class="fas fa-code"></i> Skills
+                        </a>
+                    </li>
+                    <!-- Wiki section temporarily disabled until routes are implemented
+
+                    -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle {% if 'personal' in request.endpoint or 'experience' in request.endpoint or 'education' in request.endpoint or 'testimonial' in request.endpoint %}active{% endif %}" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user"></i> Profile
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ url_for('admin.personal_info') }}">Personal Info</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('admin.social_links') }}">Social Links</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('admin.experience') }}">Experience</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('admin.education') }}">Education</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('admin.testimonials') }}">Testimonials</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle {% if 'contacts' in request.endpoint or 'newsletter' in request.endpoint %}active{% endif %}" href="#" id="contactsDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-envelope"></i> Communications
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ url_for('admin.contacts') }}">Contact Submissions</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('admin.newsletter') }}">Newsletter Subscribers</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('admin.export_newsletter') }}"><i class="fas fa-download"></i> Export Newsletter</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle {% if 'donation' in request.endpoint or 'payment' in request.endpoint or 'thanksgiving' in request.endpoint %}active{% endif %}" href="#" id="donationsDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-heart"></i> Donations
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ url_for('admin.donation_projects') }}">Donation Projects</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('admin.donations') }}">All Donations</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{{ url_for('admin.payment_methods') }}">Payment Methods</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('admin.thanksgiving_settings') }}">Thanksgiving Settings</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('admin.donation_settings') }}">Donation Settings</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if 'seo' in request.endpoint %}active{% endif %}" href="{{ url_for('admin.seo_settings') }}">
+                            <i class="fas fa-search"></i> SEO
+                        </a>
+                    </li>
+                </ul>
+                
+                <ul class="navbar-nav">
+                    <!-- Session Timer (compact display) -->
+                    <li class="nav-item d-flex align-items-center me-3">
+                        <span class="navbar-text text-light small">
+                            <i class="fas fa-clock"></i> Session: <span id="session-timer-compact" class="text-warning">--:--</span>
+                        </span>
+                    </li>
+                    
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle"></i> Admin
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li class="px-3 py-2 border-bottom">
+                                <small class="text-muted d-block">Session Status</small>
+                                <div class="d-flex justify-content-between align-items-center mt-1">
+                                    <span id="session-timer-dropdown" class="badge bg-success">--:--</span>
+                                    <button type="button" id="extend-session-btn-dropdown" class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-clock"></i> Extend
+                                    </button>
+                                </div>
+                                <div id="session-warning-dropdown" class="alert alert-warning alert-sm mt-2 d-none">
+                                    <small><i class="fas fa-exclamation-triangle"></i> Session expiring soon!</small>
+                                </div>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="/" target="_blank"><i class="fas fa-external-link-alt"></i> View Site</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{{ url_for('admin.logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid py-4">
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="row mb-4">
+                    <div class="col-12">
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('admin.static', filename='js/admin-script.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

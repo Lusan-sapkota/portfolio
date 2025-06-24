@@ -1,0 +1,343 @@
+{% extends "admin/base.html" %}
+
+{% block title %}{% if seo %}Edit SEO Settings{% else %}Add SEO Settings{% endif %}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0">
+                    <i class="fas fa-search"></i>
+                    {% if seo %}Edit SEO Settings: {{ seo.page_name.title() }}{% else %}Add New SEO Settings{% endif %}
+                </h4>
+            </div>
+            <div class="card-body">
+                <form method="POST" id="seoForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="page_name" class="form-label">Page Name <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="page_name" name="page_name" 
+                                       value="{{ seo.page_name if seo else '' }}" required
+                                       placeholder="e.g., home, about, contact, projects"
+                                       {% if seo %}readonly{% endif %}>
+                                <small class="form-text text-muted">Unique identifier for the page</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="robots" class="form-label">Robots Directive</label>
+                                <select class="form-select" id="robots" name="robots">
+                                    <option value="index, follow" {% if not seo or seo.robots == 'index, follow' %}selected{% endif %}>index, follow</option>
+                                    <option value="noindex, follow" {% if seo and seo.robots == 'noindex, follow' %}selected{% endif %}>noindex, follow</option>
+                                    <option value="index, nofollow" {% if seo and seo.robots == 'index, nofollow' %}selected{% endif %}>index, nofollow</option>
+                                    <option value="noindex, nofollow" {% if seo and seo.robots == 'noindex, nofollow' %}selected{% endif %}>noindex, nofollow</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="title" class="form-label">
+                            Page Title 
+                            <span class="text-muted">(<span id="titleCount">{{ seo.title|length if seo and seo.title else 0 }}</span>/60)</span>
+                        </label>
+                        <input type="text" class="form-control" id="title" name="title" 
+                               value="{{ seo.title if seo else '' }}" maxlength="60"
+                               placeholder="Compelling page title for search results">
+                        <small class="form-text text-muted">Appears as the clickable headline in search results. Keep under 60 characters.</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="meta_description" class="form-label">
+                            Meta Description 
+                            <span class="text-muted">(<span id="descCount">{{ seo.meta_description|length if seo and seo.meta_description else 0 }}</span>/160)</span>
+                        </label>
+                        <textarea class="form-control" id="meta_description" name="meta_description" rows="3" 
+                                  maxlength="160" placeholder="Brief description of the page content for search engines...">{{ seo.meta_description if seo else '' }}</textarea>
+                        <small class="form-text text-muted">Appears under the title in search results. Keep between 150-160 characters.</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="meta_keywords" class="form-label">Meta Keywords</label>
+                        <input type="text" class="form-control" id="meta_keywords" name="meta_keywords" 
+                               value="{{ seo.meta_keywords if seo else '' }}"
+                               placeholder="keyword1, keyword2, keyword3">
+                        <small class="form-text text-muted">Comma-separated keywords. Note: Most search engines don't use this anymore.</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="canonical_url" class="form-label">Canonical URL</label>
+                        <input type="url" class="form-control" id="canonical_url" name="canonical_url" 
+                               value="{{ seo.canonical_url if seo else '' }}"
+                               placeholder="https://yoursite.com/page">
+                        <small class="form-text text-muted">Preferred URL for this page to prevent duplicate content issues.</small>
+                    </div>
+
+                    <!-- Open Graph Section -->
+                    <div class="border rounded p-3 mb-4" style="background-color: #f8f9fa;">
+                        <h5><i class="fab fa-facebook"></i> Open Graph (Social Media)</h5>
+                        
+                        <div class="mb-3">
+                            <label for="og_title" class="form-label">
+                                OG Title 
+                                <span class="text-muted">(<span id="ogTitleCount">{{ seo.og_title|length if seo and seo.og_title else 0 }}</span>/60)</span>
+                            </label>
+                            <input type="text" class="form-control" id="og_title" name="og_title" 
+                                   value="{{ seo.og_title if seo else '' }}" maxlength="60"
+                                   placeholder="Title for social media shares (can be different from page title)">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="og_description" class="form-label">
+                                OG Description 
+                                <span class="text-muted">(<span id="ogDescCount">{{ seo.og_description|length if seo and seo.og_description else 0 }}</span>/200)</span>
+                            </label>
+                            <textarea class="form-control" id="og_description" name="og_description" rows="3" 
+                                      maxlength="200" placeholder="Description for social media shares...">{{ seo.og_description if seo else '' }}</textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="og_image" class="form-label">OG Image</label>
+                            <input type="url" class="form-control" id="og_image" name="og_image" 
+                                   value="{{ seo.og_image if seo else '' }}"
+                                   placeholder="https://yoursite.com/image.jpg">
+                            <small class="form-text text-muted">Image for social media shares. Recommended size: 1200x630px.</small>
+                        </div>
+                    </div>
+
+                    <!-- Schema Markup Section -->
+                    <div class="border rounded p-3 mb-4" style="background-color: #f8f9fa;">
+                        <h5><i class="fas fa-code"></i> Schema Markup (JSON-LD)</h5>
+                        
+                        <div class="mb-3">
+                            <label for="schema_markup" class="form-label">Structured Data</label>
+                            <textarea class="form-control" id="schema_markup" name="schema_markup" rows="6" 
+                                      style="font-family: monospace; font-size: 12px;"
+                                      placeholder='{"@context": "https://schema.org", "@type": "WebPage", "name": "Page Name"}'>{{ seo.schema_markup if seo else '' }}</textarea>
+                            <small class="form-text text-muted">
+                                JSON-LD structured data for rich results. 
+                                <a href="https://schema.org/" target="_blank">Learn more about Schema.org</a> |
+                                <a href="https://search.google.com/test/rich-results" target="_blank">Test with Google</a>
+                            </small>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="is_active" name="is_active" 
+                               {% if not seo or seo.is_active %}checked{% endif %}>
+                        <label class="form-check-label" for="is_active">
+                            Active
+                        </label>
+                        <small class="form-text text-muted d-block">Inactive SEO settings won't be applied to the page</small>
+                    </div>
+
+                    <!-- Live Preview -->
+                    <div class="border rounded p-3 mb-4" style="background-color: #f0f8ff;">
+                        <h5><i class="fas fa-eye"></i> Live Preview</h5>
+                        
+                        <div class="mb-3">
+                            <h6>Google Search Preview</h6>
+                            <div class="border rounded p-3" style="background-color: white;">
+                                <div class="text-primary" style="font-size: 18px; line-height: 1.2;" id="previewTitle">
+                                    {{ seo.title if seo and seo.title else 'Page Title' }}
+                                </div>
+                                <div class="text-success small" id="previewUrl">{{ request.url_root }}{{ seo.page_name if seo else 'page' }}</div>
+                                <div class="text-muted small mt-1" id="previewDescription">
+                                    {{ seo.meta_description if seo and seo.meta_description else 'Meta description will appear here...' }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <h6>Social Media Preview</h6>
+                            <div class="border rounded p-3" style="background-color: white; max-width: 500px;">
+                                <div id="previewOgImage" style="display: {% if seo and seo.og_image %}block{% else %}none{% endif %};">
+                                    <img id="previewOgImageSrc" src="{{ seo.og_image if seo else '' }}" 
+                                         class="img-fluid mb-2" style="max-height: 200px; object-fit: cover; width: 100%;">
+                                </div>
+                                <div class="fw-bold" id="previewOgTitle">
+                                    {{ seo.og_title or seo.title if seo else 'OG Title' }}
+                                </div>
+                                <div class="text-muted small" id="previewOgDescription">
+                                    {{ seo.og_description or seo.meta_description if seo else 'OG description...' }}
+                                </div>
+                                <div class="text-muted small">{{ request.url_root.replace('http://', '').replace('https://', '').rstrip('/') }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ url_for('admin.seo_settings') }}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Back to SEO Settings
+                            </a>
+                            <div>
+                                {% if seo %}
+                                <button type="button" class="btn btn-outline-danger me-2" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                                {% endif %}
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save"></i> 
+                                    {% if seo %}Update SEO Settings{% else %}Create SEO Settings{% endif %}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if seo %}
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete SEO Settings</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete the SEO settings for "{{ seo.page_name }}"?</p>
+                <p class="text-danger"><strong>This action cannot be undone.</strong></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form method="POST" action="{{ url_for('admin.seo_delete', id=seo.id) }}" style="display: inline;">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+    // Character counters
+    $('#title').on('input', function() {
+        const count = this.value.length;
+        $('#titleCount').text(count);
+        $('#titleCount').parent().removeClass('text-danger text-warning').addClass(
+            count > 60 ? 'text-danger' : count > 50 ? 'text-warning' : ''
+        );
+        updatePreview();
+    });
+    
+    $('#meta_description').on('input', function() {
+        const count = this.value.length;
+        $('#descCount').text(count);
+        $('#descCount').parent().removeClass('text-danger text-warning').addClass(
+            count > 160 ? 'text-danger' : count > 150 ? 'text-warning' : ''
+        );
+        updatePreview();
+    });
+    
+    $('#og_title').on('input', function() {
+        const count = this.value.length;
+        $('#ogTitleCount').text(count);
+        updatePreview();
+    });
+    
+    $('#og_description').on('input', function() {
+        const count = this.value.length;
+        $('#ogDescCount').text(count);
+        updatePreview();
+    });
+    
+    // Update preview
+    $('#page_name, #og_image').on('input', updatePreview);
+    
+    function updatePreview() {
+        const title = $('#title').val() || 'Page Title';
+        const description = $('#meta_description').val() || 'Meta description will appear here...';
+        const pageName = $('#page_name').val() || 'page';
+        const ogTitle = $('#og_title').val() || title;
+        const ogDescription = $('#og_description').val() || description;
+        const ogImage = $('#og_image').val();
+        
+        // Update search preview
+        $('#previewTitle').text(title);
+        $('#previewUrl').text('{{ request.url_root }}' + pageName);
+        $('#previewDescription').text(description);
+        
+        // Update social preview
+        $('#previewOgTitle').text(ogTitle);
+        $('#previewOgDescription').text(ogDescription);
+        
+        if (ogImage) {
+            $('#previewOgImageSrc').attr('src', ogImage);
+            $('#previewOgImage').show();
+        } else {
+            $('#previewOgImage').hide();
+        }
+    }
+    
+    // Validate JSON Schema
+    $('#schema_markup').on('blur', function() {
+        const value = this.value.trim();
+        if (value) {
+            try {
+                JSON.parse(value);
+                $(this).removeClass('is-invalid').addClass('is-valid');
+            } catch (e) {
+                $(this).removeClass('is-valid').addClass('is-invalid');
+            }
+        } else {
+            $(this).removeClass('is-valid is-invalid');
+        }
+    });
+    
+    // Form submission with AJAX
+    $('#seoForm').on('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        const isEdit = {{ 'true' if seo else 'false' }};
+        const url = isEdit ? window.location.href : '{{ url_for("admin.seo_create") }}';
+        
+        // Convert FormData to regular object for JSON
+        const data = {};
+        formData.forEach((value, key) => {
+            if (key === 'is_active') {
+                data[key] = $('#' + key).is(':checked');
+            } else {
+                data[key] = value;
+            }
+        });
+        
+        $.ajax({
+            url: url,
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            data: JSON.stringify(data),
+            success: function(response) {
+                if (response.status === 'success') {
+                    window.location.href = '{{ url_for("admin.seo_settings") }}';
+                } else {
+                    alert(response.message || 'Error saving SEO settings');
+                }
+            },
+            error: function(xhr) {
+                let message = 'Error saving SEO settings';
+                if (xhr.responseJSON && xhr.responseJSON.message) {
+                    message = xhr.responseJSON.message;
+                }
+                alert(message);
+            }
+        });
+    });
+    
+    // Initial preview update
+    updatePreview();
+});
+</script>
+{% endblock %}

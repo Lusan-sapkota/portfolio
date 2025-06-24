@@ -1,0 +1,229 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Skills{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2><i class="fas fa-code"></i> Skills</h2>
+            <a href="{{ url_for('admin.skills_create') }}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Add Skill
+            </a>
+        </div>
+
+        <!-- Filters -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <form method="GET" class="row g-3">
+                    <div class="col-md-3">
+                        <label for="category" class="form-label">Category</label>
+                        <select name="category" id="category" class="form-select">
+                            <option value="">All Categories</option>
+                            <option value="programming" {% if request.args.get('category') == 'programming' %}selected{% endif %}>Programming</option>
+                            <option value="frontend" {% if request.args.get('category') == 'frontend' %}selected{% endif %}>Frontend</option>
+                            <option value="backend" {% if request.args.get('category') == 'backend' %}selected{% endif %}>Backend</option>
+                            <option value="database" {% if request.args.get('category') == 'database' %}selected{% endif %}>Database</option>
+                            <option value="devops" {% if request.args.get('category') == 'devops' %}selected{% endif %}>DevOps</option>
+                            <option value="tools" {% if request.args.get('category') == 'tools' %}selected{% endif %}>Tools</option>
+                            <option value="other" {% if request.args.get('category') == 'other' %}selected{% endif %}>Other</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="featured" class="form-label">Featured</label>
+                        <select name="featured" id="featured" class="form-select">
+                            <option value="">All Skills</option>
+                            <option value="1" {% if request.args.get('featured') == '1' %}selected{% endif %}>Featured Only</option>
+                            <option value="0" {% if request.args.get('featured') == '0' %}selected{% endif %}>Non-Featured</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="search" class="form-label">Search</label>
+                        <input type="text" name="search" id="search" class="form-control" placeholder="Search skills..." value="{{ request.args.get('search', '') }}">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">&nbsp;</label>
+                        <div>
+                            <button type="submit" class="btn btn-primary">Filter</button>
+                            <a href="{{ url_for('admin.skills') }}" class="btn btn-outline-secondary">Clear</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Skills Grid -->
+        <div class="card">
+            <div class="card-body">
+                {% if skills %}
+                <div class="row g-3" id="skillsContainer">
+                    {% for skill in skills %}
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="card skill-card h-100">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <div class="d-flex align-items-center">
+                                        {% if skill.icon %}
+                                        <i class="{{ skill.icon }} me-2" style="font-size: 1.5rem;"></i>
+                                        {% endif %}
+                                        <h6 class="card-title mb-0">{{ skill.name }}</h6>
+                                    </div>
+                                    {% if skill.is_featured %}
+                                    <span class="badge bg-warning">
+                                        <i class="fas fa-star"></i>
+                                    </span>
+                                    {% endif %}
+                                </div>
+                                
+                                {% if skill.category %}
+                                <span class="badge bg-secondary mb-2">{{ skill.category.title() }}</span>
+                                {% endif %}
+                                
+                                <div class="mb-2">
+                                    <small class="text-muted">Proficiency:</small>
+                                    <div class="progress" style="height: 6px;">
+                                        <div class="progress-bar" role="progressbar" 
+                                             style="width: {{ skill.proficiency or 0 }}%"
+                                             aria-valuenow="{{ skill.proficiency or 0 }}" 
+                                             aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <small class="text-muted">{{ skill.proficiency or 0 }}%</small>
+                                </div>
+                                
+                                {% if skill.years_experience %}
+                                <small class="text-muted d-block mb-2">
+                                    <i class="fas fa-clock"></i> {{ skill.years_experience }} years
+                                </small>
+                                {% endif %}
+                                
+                                {% if skill.description %}
+                                <p class="card-text small text-muted">
+                                    {{ skill.description[:80] }}{% if skill.description|length > 80 %}...{% endif %}
+                                </p>
+                                {% endif %}
+                            </div>
+                            <div class="card-footer bg-transparent">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input toggle-featured" type="checkbox" 
+                                               data-skill-id="{{ skill.id }}" 
+                                               {% if skill.is_featured %}checked{% endif %}>
+                                        <label class="form-check-label small">Featured</label>
+                                    </div>
+                                    <div class="btn-group btn-group-sm">
+                                        <a href="{{ url_for('admin.skills_edit', id=skill.id) }}" 
+                                           class="btn btn-outline-primary" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-outline-danger delete-skill" 
+                                                data-skill-id="{{ skill.id }}" 
+                                                data-skill-name="{{ skill.name }}" title="Delete">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center py-5">
+                    <i class="fas fa-code fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">No skills found</h5>
+                    <p class="text-muted">Add your skills to showcase your expertise!</p>
+                    <a href="{{ url_for('admin.skills_create') }}" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Add Skill
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Skill</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete the skill "<span id="deleteSkillName"></span>"?</p>
+                <p class="text-danger"><strong>This action cannot be undone.</strong></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmDelete">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.skill-card {
+    transition: transform 0.2s;
+}
+.skill-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+    // Toggle featured status
+    $('.toggle-featured').change(function() {
+        const skillId = $(this).data('skill-id');
+        const isFeatured = $(this).is(':checked');
+        
+        $.ajax({
+            url: `/admin/api/skills/${skillId}/toggle-featured`,
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            data: JSON.stringify({ featured: isFeatured }),
+            success: function(response) {
+                if (response.status !== 'success') {
+                    alert('Error updating featured status');
+                    location.reload();
+                }
+            },
+            error: function() {
+                alert('Error updating featured status');
+                location.reload();
+            }
+        });
+    });
+    
+    // Delete skill
+    $('.delete-skill').click(function() {
+        const skillId = $(this).data('skill-id');
+        const skillName = $(this).data('skill-name');
+        
+        $('#deleteSkillName').text(skillName);
+        $('#deleteModal').modal('show');
+        
+        $('#confirmDelete').off('click').on('click', function() {
+            $.ajax({
+                url: `/admin/skills/${skillId}/delete`,
+                method: 'POST',
+                success: function(response) {
+                    location.reload();
+                },
+                error: function() {
+                    alert('Error deleting skill');
+                }
+            });
+        });
+    });
+});
+</script>
+{% endblock %}
