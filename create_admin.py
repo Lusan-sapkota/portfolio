@@ -5,6 +5,9 @@ Quick admin user creation
 import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+admin_user = os.environ.get('ADMIN_USER')
+admin_password = os.environ.get('ADMIN_PASSWORD')
+admin_email = os.environ.get('ADMIN_EMAIL')
 
 def create_admin_user():
     try:
@@ -19,7 +22,7 @@ def create_admin_user():
             # Check for existing admin
             admin = User.query.filter_by(username='admin').first()
             if admin:
-                print("✅ Admin user already exists!")
+                print("Admin user already exists!")
                 print(f"   Username: admin")
                 print(f"   Email: {admin.email}")
                 print(f"   Admin: {admin.is_admin}")
@@ -27,8 +30,8 @@ def create_admin_user():
             
             # Create new admin
             admin = User(
-                username='admin',
-                email='contact@lusansapkota.com.np',
+                username=admin_user,
+                email=admin_email,
                 is_admin=True
             )
             admin.set_password('admin123')
@@ -36,16 +39,9 @@ def create_admin_user():
             db.session.add(admin)
             db.session.commit()
             
-            print("✅ Admin user created successfully!")
-            print()
-            print("🔑 Admin Login Credentials:")
-            print(f"   URL: /admin")
-            print(f"   Username: admin")
-            print(f"   Password: admin123")
-            print(f"   Email: contact@lusansapkota.com.np")
-            
+            print("Admin user created successfully!")
     except Exception as e:
-        print(f"❌ Error: {e}")
+        print(f"Error: {e}")
         import traceback
         traceback.print_exc()
 
