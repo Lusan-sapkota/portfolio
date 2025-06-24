@@ -56,6 +56,14 @@
                     </div>
                     
                     <div class="mb-3">
+                        <label class="form-label">SWIFT/BIC Code</label>
+                        <input type="text" name="swift_code" class="form-control" 
+                               value="{{ method.swift_code if method else '' }}" 
+                               placeholder="e.g., ABCDNPKA001">
+                        <small class="form-text text-muted">SWIFT code for international bank transfers (optional)</small>
+                    </div>
+                    
+                    <div class="mb-3">
                         <label class="form-label">QR Code URL</label>
                         <input type="url" name="qr_code_url" class="form-control" 
                                value="{{ method.qr_code_url if method else '' }}" 
@@ -71,7 +79,7 @@
                     </div>
                     
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="mb-3">
                                 <label class="form-label">Sort Order</label>
                                 <input type="number" name="sort_order" class="form-control" 
@@ -79,7 +87,7 @@
                                 <small class="form-text text-muted">Lower numbers appear first</small>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="mb-3">
                                 <div class="form-check mt-4">
                                     <input type="checkbox" name="is_active" class="form-check-input" id="is_active"
@@ -87,6 +95,18 @@
                                     <label class="form-check-label" for="is_active">
                                         Active (visible to donors)
                                     </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <div class="form-check mt-4">
+                                    <input type="checkbox" name="is_verification_pending" class="form-check-input" id="is_verification_pending"
+                                           {% if method and method.is_verification_pending %}checked{% endif %}>
+                                    <label class="form-check-label" for="is_verification_pending">
+                                        <span class="text-warning">Verification Pending</span>
+                                    </label>
+                                    <small class="form-text text-muted d-block">For PayPal/Payoneer verification</small>
                                 </div>
                             </div>
                         </div>

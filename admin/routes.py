@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, url_for, flash, jsonify, session, current_app
+from flask import render_template, request, redirect, url_for, flash, jsonify, session, current_app, send_file, make_response
 from functools import wraps
 from models import (User, Project, ProjectCategory, ContactSubmission, NewsletterSubscriber, 
                    SeoSettings, PersonalInfo, SocialLink, Skill, Experience, Education, Testimonial,
@@ -12,6 +12,10 @@ import os
 import time
 import re
 import logging
+import json
+import csv
+import io
+import zipfile
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 
@@ -1894,9 +1898,11 @@ def payment_methods_create():
             method_name=request.form['method_name'],
             display_name=request.form['display_name'],
             account_info=request.form.get('account_info', ''),
+            swift_code=request.form.get('swift_code', ''),
             qr_code_url=request.form.get('qr_code_url', ''),
             instructions=request.form.get('instructions', ''),
             is_active=bool(request.form.get('is_active')),
+            is_verification_pending=bool(request.form.get('is_verification_pending')),
             sort_order=int(request.form.get('sort_order', 0))
         )
         
@@ -1925,9 +1931,11 @@ def payment_methods_edit(id):
         method.method_name = request.form['method_name']
         method.display_name = request.form['display_name']
         method.account_info = request.form.get('account_info', '')
+        method.swift_code = request.form.get('swift_code', '')
         method.qr_code_url = request.form.get('qr_code_url', '')
         method.instructions = request.form.get('instructions', '')
         method.is_active = bool(request.form.get('is_active'))
+        method.is_verification_pending = bool(request.form.get('is_verification_pending'))
         method.sort_order = int(request.form.get('sort_order', 0)) if request.form.get('sort_order') else 0
         
         db.session.commit()
@@ -2081,6 +2089,181 @@ def api_extend_session():
             'message': 'Session extended successfully',
             'time_remaining': session_timeout
         })
-        
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
+
+# ============ DATA BACKUP AND EXPORT ============
+@admin_bp.route('/data-management')
+@admin_required
+def data_management():
+    """Data backup and export management page"""
+    return render_template('admin/data_management.html')
+
+@admin_bp.route('/export/full-backup')
+@admin_required
+def export_full_backup():
+    """Export full database backup as JSON"""
+    try:
+        backup_data = {}
+        
+        # Export all models
+        models_to_export = [
+            User, Project, ProjectCategory, ContactSubmission, NewsletterSubscriber,
+            SeoSettings, PersonalInfo, SocialLink, Skill, Experience, Education,
+            Testimonial, DonationProject, Donation, PaymentMethod, ThanksgivingSettings,
+            DonationSettings, WikiArticle, WikiCategory
+        ]
+        
+        for model in models_to_export:
+            table_name = model.__tablename__
+            records = []
+            
+            for record in model.query.all():
+                record_dict = {}
+                for column in model.__table__.columns:
+                    value = getattr(record, column.name)
+                    if isinstance(value, datetime):
+                        value = value.isoformat()
+                    record_dict[column.name] = value
+                records.append(record_dict)
+            
+            backup_data[table_name] = records
+        
+        # Add metadata
+        backup_data['_metadata'] = {
+            'export_date': datetime.utcnow().isoformat(),
+            'version': '1.0',
+            'total_tables': len(models_to_export)
+        }
+        
+        # Create response
+        output = io.StringIO()
+        json.dump(backup_data, output, indent=2, default=str)
+        output.seek(0)
+        
+        response = make_response(output.getvalue())
+        response.headers['Content-Type'] = 'application/json'
+        response.headers['Content-Disposition'] = f'attachment; filename=portfolio_backup_{datetime.now().strftime("%Y%m%d_%H%M%S")}.json'
+        
+        flash('Full backup exported successfully!', 'success')
+        return response
+        
+    except Exception as e:
+        flash(f'Error creating backup: {str(e)}', 'danger')
+        return redirect(url_for('admin.data_management'))
+
+@admin_bp.route('/export/donations-csv')
+@admin_required
+def export_donations_csv():
+    """Export donations as CSV file"""
+    try:
+        output = io.StringIO()
+        writer = csv.writer(output)
+        
+        # Write headers
+        writer.writerow([
+            'ID', 'Donor Name', 'Email', 'Amount', 'Currency', 'Message',
+            'Status', 'Project Title', 'Payment Method', 'Transaction ID',
+            'Created At', 'Updated At'
+        ])
+        
+        # Write data
+        donations = Donation.query.all()
+        for donation in donations:
+            project_title = donation.project.title if donation.project else 'General Donation'
+            writer.writerow([
+                donation.id,
+                donation.donor_name or 'Anonymous',
+                donation.donor_email,
+                donation.amount,
+                donation.currency,
+                donation.message or '',
+                donation.status,
+                project_title,
+                donation.payment_method or '',
+                donation.transaction_id or '',
+                donation.created_at.isoformat() if donation.created_at else '',
+                donation.updated_at.isoformat() if donation.updated_at else ''
+            ])
+        
+        output.seek(0)
+        response = make_response(output.getvalue())
+        response.headers['Content-Type'] = 'text/csv'
+        response.headers['Content-Disposition'] = f'attachment; filename=donations_{datetime.now().strftime("%Y%m%d_%H%M%S")}.csv'
+        
+        flash('Donations exported successfully!', 'success')
+        return response
+        
+    except Exception as e:
+        flash(f'Error exporting donations: {str(e)}', 'danger')
+        return redirect(url_for('admin.data_management'))
+
+@admin_bp.route('/export/contacts-csv')
+@admin_required
+def export_contacts_csv():
+    """Export contact submissions as CSV file"""
+    try:
+        output = io.StringIO()
+        writer = csv.writer(output)
+        
+        # Write headers
+        writer.writerow(['ID', 'Name', 'Email', 'Subject', 'Message', 'Status', 'Created At'])
+        
+        # Write data
+        contacts = ContactSubmission.query.all()
+        for contact in contacts:
+            writer.writerow([
+                contact.id,
+                contact.name,
+                contact.email,
+                contact.subject,
+                contact.message,
+                contact.status,
+                contact.created_at.isoformat() if contact.created_at else ''
+            ])
+        
+        output.seek(0)
+        response = make_response(output.getvalue())
+        response.headers['Content-Type'] = 'text/csv'
+        response.headers['Content-Disposition'] = f'attachment; filename=contacts_{datetime.now().strftime("%Y%m%d_%H%M%S")}.csv'
+        
+        flash('Contacts exported successfully!', 'success')
+        return response
+        
+    except Exception as e:
+        flash(f'Error exporting contacts: {str(e)}', 'danger')
+        return redirect(url_for('admin.data_management'))
+
+@admin_bp.route('/export/newsletter-csv')
+@admin_required
+def export_newsletter_csv():
+    """Export newsletter subscribers as CSV file"""
+    try:
+        output = io.StringIO()
+        writer = csv.writer(output)
+        
+        # Write headers
+        writer.writerow(['ID', 'Email', 'Interests', 'Status', 'Subscribed At'])
+        
+        # Write data
+        subscribers = NewsletterSubscriber.query.all()
+        for subscriber in subscribers:
+            writer.writerow([
+                subscriber.id,
+                subscriber.email,
+                subscriber.interests or '',
+                'Active' if subscriber.is_active else 'Inactive',
+                subscriber.created_at.isoformat() if subscriber.created_at else ''
+            ])
+        
+        output.seek(0)
+        response = make_response(output.getvalue())
+        response.headers['Content-Type'] = 'text/csv'
+        response.headers['Content-Disposition'] = f'attachment; filename=newsletter_{datetime.now().strftime("%Y%m%d_%H%M%S")}.csv'
+        
+        flash('Newsletter subscribers exported successfully!', 'success')
+        return response
+        
+    except Exception as e:
+        flash(f'Error exporting newsletter: {str(e)}', 'danger')
+        return redirect(url_for('admin.data_management'))

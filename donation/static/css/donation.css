@@ -1,0 +1,49 @@
+/* Featured project badge */
+.donation-project-card {
+    position: relative;
+}
+
+.featured-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: linear-gradient(45deg, #ffd700, #ffb347);
+    color: #000;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    z-index: 10;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.featured-badge i {
+    margin-right: 3px;
+}
+
+/* Enhanced donation activity styling */
+.donation-activity-donor {
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.donation-activity-amount {
+    font-weight: bold;
+    color: #27ae60;
+    background: rgba(39, 174, 96, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.donation-activity-project {
+    font-weight: 500;
+    color: #8e44ad;
+}
+
+.donation-activity-message {
+    font-style: italic;
+    color: #7f8c8d;
+    margin-top: 5px;
+    padding-left: 15px;
+    border-left: 3px solid #ecf0f1;
+}
