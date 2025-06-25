@@ -1,5 +1,7 @@
 // Admin Dashboard JavaScript
 $(document).ready(function() {
+    console.log('Admin script loaded, jQuery version:', $.fn.jquery);
+    
     // Initialize tooltips
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
@@ -7,6 +9,7 @@ $(document).ready(function() {
     });
     
     // Initialize session timer
+    console.log('Initializing session timer...');
     initSessionTimer();
     
     // Auto-hide alerts after 5 seconds
@@ -285,16 +288,22 @@ let warningShown = false;
 let lastActivityTime = Date.now();
 
 function initSessionTimer() {
+    console.log('initSessionTimer called');
+    
     // Check if session timer elements exist
-    if (!$('#session-timer-compact').length) {
+    const timerElement = $('#session-timer-compact');
+    console.log('Timer element found:', timerElement.length > 0);
+    
+    if (!timerElement.length) {
+        console.warn('Session timer element not found');
         return;
     }
     
     // Get initial session time
+    console.log('Fetching initial session time...');
     fetchSessionTime();
     
-    // Start the timer
-    sessionTimer = setInterval(updateSessionTimer, 1000);
+    // Timer will be started in fetchSessionTime after successful response
     
     // Bind extend session buttons
     $('#extend-session-btn-dropdown').on('click', extendSession);
@@ -312,21 +321,30 @@ function initSessionTimer() {
 }
 
 function fetchSessionTime() {
+    console.log('Fetching session time from API...');
     $.ajax({
         url: '/admin/api/session-status',
         method: 'GET',
         success: function(response) {
+            console.log('Session status response:', response);
             if (response.status === 'active' || response.status === 'warning') {
                 sessionTimeRemaining = response.time_remaining;
                 lastActivityTime = Date.now();
                 warningShown = false;
                 updateSessionDisplay();
+                
+                // Start the timer only after successful response
+                if (!sessionTimer) {
+                    console.log('Starting session timer...');
+                    sessionTimer = setInterval(updateSessionTimer, 1000);
+                }
             } else if (response.status === 'expired') {
+                console.log('Session expired');
                 handleSessionExpired();
             }
         },
         error: function(xhr) {
-            console.error('Failed to fetch session status:', xhr.status);
+            console.error('Failed to fetch session status:', xhr.status, xhr.responseText);
             // If I get a 401/403, the session is likely expired
             if (xhr.status === 401 || xhr.status === 403) {
                 handleSessionExpired();

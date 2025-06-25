@@ -47,11 +47,11 @@
     <meta property="og:url" content="https://wiki.lusansapkota.com.np{{ request.path }}">
     <meta property="og:title" content="{% block og_title %}{{ page_title if page_title else 'Lusan\'s Wiki | Technical Knowledge Base' }}{% endblock %}">
     <meta property="og:description" content="{% block og_description %}{{ page_description if page_description else 'Comprehensive technical documentation and programming tutorials covering modern software development, AI/ML, and web technologies.' }}{% endblock %}">
-    <meta property="og:image" content="{% block og_image %}{{ page_image if page_image else url_for('static', filename='assets/images/wiki-preview.jpg', _external=True) }}{% endblock %}">
-    <meta property="og:image:secure_url" content="{% block og_image_secure %}{{ page_image if page_image else url_for('static', filename='assets/images/wiki-preview.jpg', _external=True) }}{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}{{ page_image if page_image else url_for('static', filename='assets/images/profile.jpg', _external=True) }}{% endblock %}">
+    <meta property="og:image:secure_url" content="{% block og_image_secure %}{{ page_image if page_image else url_for('static', filename='assets/images/profile.jpg', _external=True) }}{% endblock %}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="{% block og_image_alt %}Lusan's Wiki - Technical Documentation{% endblock %}">
+    <meta property="og:image:alt" content="{% block og_image_alt %}Lusan Sapkota - Technical Knowledge Wiki{% endblock %}">
     <meta property="og:site_name" content="Lusan's Wiki">
     <meta property="og:locale" content="en_US">
     <meta property="article:author" content="Lusan Sapkota">
@@ -62,8 +62,8 @@
     <meta name="twitter:url" content="https://wiki.lusansapkota.com.np{{ request.path }}">
     <meta name="twitter:title" content="{% block twitter_title %}{{ page_title if page_title else 'Lusan\'s Wiki | Technical Knowledge Base' }}{% endblock %}">
     <meta name="twitter:description" content="{% block twitter_description %}{{ page_description if page_description else 'Comprehensive technical documentation covering software development, AI/ML, and modern web technologies.' }}{% endblock %}">
-    <meta name="twitter:image" content="{% block twitter_image %}{{ page_image if page_image else url_for('static', filename='assets/images/wiki-preview.jpg', _external=True) }}{% endblock %}">
-    <meta name="twitter:image:alt" content="{% block twitter_image_alt %}Lusan's Technical Wiki{% endblock %}">
+    <meta name="twitter:image" content="{% block twitter_image %}{{ page_image if page_image else url_for('static', filename='assets/images/profile.jpg', _external=True) }}{% endblock %}">
+    <meta name="twitter:image:alt" content="{% block twitter_image_alt %}Lusan Sapkota - Technical Wiki{% endblock %}">
     <meta name="twitter:site" content="@LusanSapkota">
     <meta name="twitter:creator" content="@LusanSapkota">
     <meta name="twitter:label1" content="Written by">
@@ -192,9 +192,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" crossorigin="anonymous">
 
     <!-- Local CSS -->
-    <link rel="preload" href="{{ url_for('wiki.static', filename='css/wiki-style.css') }}" as="style">
-    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style.css') }}">
-    <link rel="stylesheet" href="{{ url_for('wiki.static', filename='css/wiki-style.css') }}">
+    <link rel="preload" href="{{ url_for('wiki.static', filename='css/wiki-style.css', _external=True, _scheme='https') }}" as="style">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style.css', _external=True, _scheme='https') }}">
+    <link rel="stylesheet" href="{{ url_for('wiki.static', filename='css/wiki-style.css', _external=True, _scheme='https') }}">
     <script>
     // Initialize theme before page renders
     (function() {
@@ -243,28 +243,28 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link{% if request.endpoint == 'wiki.index' %} active{% endif %}" href="{{ url_for('wiki.index') }}">
+                        <a class="nav-link{% if (request.endpoint == 'wiki.index') or (g.get('endpoint') == 'wiki.index') %} active{% endif %}" href="{{ url_for('wiki.index') }}">
                             Wiki
                         </a>
                     </li>
                     
                     <!-- Explore -->
                     <li class="nav-item">
-                        <a class="nav-link{% if request.endpoint == 'wiki.explore' %} active{% endif %}" href="{{ url_for('wiki.explore') }}">
+                        <a class="nav-link{% if (request.endpoint == 'wiki.explore') or (g.get('endpoint') == 'wiki.explore') %} active{% endif %}" href="{{ url_for('wiki.explore') }}">
                             Explore
                         </a>
                     </li>
                     
                     <!-- Search -->
                     <li class="nav-item">
-                        <a class="nav-link{% if request.endpoint == 'wiki.search' %} active{% endif %}" href="{{ url_for('wiki.search') }}">
+                        <a class="nav-link{% if (request.endpoint == 'wiki.search') or (g.get('endpoint') == 'wiki.search') %} active{% endif %}" href="{{ url_for('wiki.search') }}">
                             Search
                         </a>
                     </li>
                     
                     <!-- Random Article -->
                     <li class="nav-item">
-                        <a class="nav-link{% if request.endpoint == 'wiki.random' %} active{% endif %}" href="{{ url_for('wiki.random') }}">
+                        <a class="nav-link{% if (request.endpoint == 'wiki.random') or (g.get('endpoint') == 'wiki.random') %} active{% endif %}" href="{{ url_for('wiki.random') }}">
                             Random
                         </a>
                     </li>
@@ -276,13 +276,13 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="mainSiteDropdown">
                             <li>
-                                <a class="dropdown-item" href="{{ url_for('index') }}" target="_blank">
+                                <a class="dropdown-item" href="https://lusansapkota.com.np" target="_blank">
                                     Home
                                 </a>
                             </li>
                             <li>
                                 <a class="dropdown-item" href="{{ url_for('git.index') }}">
-                                    Projects
+                                    Git
                                 </a>
                             </li>
                             <li>
@@ -411,7 +411,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     
     <script src="{{ url_for('static', filename='assets/js/custom.js') }}"></script>
-    <script src="{{ url_for('wiki.static', filename='js/wiki-script.js') }}"></script>
+    <script src="{{ url_for('wiki.static', filename='js/wiki-script.js', _external=True, _scheme='https') }}"></script>
 
     <!-- Analytics Integration -->
     {% if seo and seo.google_analytics_id %}

@@ -9,12 +9,14 @@
     <meta http-equiv="Accept-CH" content="DPR, Viewport-Width, Width">
     
     <!-- Primary Meta Tags -->
-    <title>{{ seo.title if seo else 'Lusan Sapkota | Full Stack Software Developer & AI/ML Engineer from Nepal | Python, JavaScript, React Expert' }}</title>
-    <meta name="title" content="{{ seo.title if seo else 'Lusan Sapkota | Full Stack Software Developer & AI/ML Engineer from Nepal | Python, JavaScript, React Expert' }}">
-    <meta name="description" content="{{ seo.meta_description if seo and seo.meta_description else 'Expert Full Stack Developer & AI/ML Engineer from Nepal. Specializing in Python, JavaScript, React, Django. 5+ years experience building scalable web applications and AI solutions.' }}">
-    <meta name="author" content="{{ personal.full_name if personal else 'Lusan Sapkota' }}">
-    <meta name="keywords" content="{{ seo.meta_keywords if seo and seo.meta_keywords else 'Lusan Sapkota, Full Stack Developer Nepal, Python Developer, AI Engineer, JavaScript Expert, React Developer, Django Developer, Web Development Nepal, Nepali Developer, Software Engineer' }}">
-    <meta name="subject" content="Full Stack Software Development & AI/ML Engineering Portfolio">
+	<title>{{ seo.title if seo else 'Lusan Sapkota | Full Stack Developer & AI/ML Engineer from Nepal' }}</title>
+
+	<meta name="title" content="{{ seo.title if seo else 'Lusan Sapkota | Full Stack Developer & AI/ML Engineer from Nepal' }}">
+	<meta name="description" content="{{ seo.meta_description if seo and seo.meta_description else 'Hi, I’m Lusan — a Full Stack Developer from Nepal with 3.5+ years of experience. I build powerful websites, smart apps, and AI-driven tools that work beautifully across devices.' }}">
+	<meta name="author" content="{{ personal.full_name if personal else 'Lusan Sapkota' }}">
+	<meta name="keywords" content="{{ seo.meta_keywords if seo and seo.meta_keywords else 'Lusan Sapkota, Full Stack Developer, AI Engineer, Web Developer Nepal, Python, React, React Native, Mobile App Developer, Software Engineer, Machine Learning, Ionic, Django' }}">
+	<meta name="subject" content="Professional Portfolio of Lusan Sapkota | Full Stack Development, AI/ML Solutions, Mobile App Development">
+
     <meta name="copyright" content="Lusan Sapkota">
     <meta name="topic" content="Software Development, AI/ML, Web Technologies">
     <meta name="summary" content="Professional portfolio of Lusan Sapkota - Full Stack Developer and AI/ML Engineer from Nepal">
@@ -2237,12 +2239,26 @@
                             </div>
                             <div class="portfolio-content">
                                 <h3 class="portfolio-title">{{ project.title }}</h3>
-                                <p class="portfolio-description">{{ project.description }}</p>
+                                <p class="portfolio-description">
+                                    {% if project.description %}
+                                        {% set description = project.description %}
+                                        {% if description|length > 120 %}
+                                            {{ description[:120] }}...
+                                        {% else %}
+                                            {{ description }}
+                                        {% endif %}
+                                    {% else %}
+                                        No description available.
+                                    {% endif %}
+                                </p>
                                 <div class="portfolio-tech">
                                     {% if project.technologies %}
-                                        {% for tech in project.technologies.split(',') %}
+                                        {% for tech in project.technologies.split(',')[:4] %}
                                         <span class="tech-tag">{{ tech.strip() }}</span>
                                         {% endfor %}
+                                        {% if project.technologies.split(',')|length > 4 %}
+                                        <span class="tech-tag tech-more">+{{ project.technologies.split(',')|length - 4 }} more</span>
+                                        {% endif %}
                                     {% endif %}
                                 </div>
                                 {% if project.stars or project.forks %}
@@ -2259,6 +2275,16 @@
                                     {% endif %}
                                 </div>
                                 {% endif %}
+                                <!-- Learn More Button -->
+                                <div class="portfolio-actions mt-3">
+                                    <a href="https://git.lusansapkota.com.np/project/{{ project.id }}" 
+                                       class="btn-learn-more" 
+                                       target="_blank" 
+                                       rel="noopener noreferrer">
+                                        <i class="fas fa-info-circle"></i>
+                                        Learn More
+                                    </a>
+                                </div>
                             </div>
                         </div>
                         {% else %}

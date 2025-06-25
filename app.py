@@ -20,6 +20,9 @@ load_dotenv()
 
 app = Flask(__name__)
 
+# Fix Flask routing for subdomains
+app.url_map.strict_slashes = False
+
 # Add custom Jinja2 filters
 @app.template_filter('nl2br')
 def nl2br_filter(text):
@@ -29,17 +32,68 @@ def nl2br_filter(text):
     from markupsafe import Markup
     return Markup(text.replace('\n', '<br>\n'))
 
-# Configure rate limiting
-limiter = Limiter(
-    key_func=get_remote_address,
-    app=app,
-    default_limits=["1000 per hour"]
-)
+@app.template_filter('markdown')
+def markdown_filter(text):
+    """Convert markdown to HTML"""
+    if not text:
+        return text
+    import markdown
+    from markupsafe import Markup
+    # Use safe extensions and configurations
+    md = markdown.Markdown(extensions=[
+        'codehilite',  # Syntax highlighting for code blocks
+        'fenced_code',  # Support for fenced code blocks
+        'tables',  # Support for tables
+        'toc',  # Table of contents
+        'nl2br',  # Convert newlines to <br>
+    ], extension_configs={
+        'codehilite': {
+            'css_class': 'highlight',
+            'use_pygments': True,
+        }
+    })
+    return Markup(md.convert(text))
+
+# Configure rate limiting based on environment
+debug_mode = os.getenv('DEBUG', 'False').lower() == 'true'
+redis_url = os.getenv('REDIS_URL')
+
+if debug_mode:
+    # Development environment - use in-memory storage (Flask default)
+    print("DEBUG: Using in-memory storage for Flask-Limiter (development)")
+    limiter = Limiter(
+        key_func=get_remote_address,
+        app=app,
+        default_limits=["1000 per hour"]
+    )
+elif redis_url:
+    # Production with Redis - use Redis storage
+    print("PRODUCTION: Using Redis storage for Flask-Limiter")
+    limiter = Limiter(
+        key_func=get_remote_address,
+        app=app,
+        default_limits=["1000 per hour"],
+        storage_uri=redis_url
+    )
+else:
+    # Production without Redis - use file-based storage
+    print("PRODUCTION: Using file-based storage for Flask-Limiter")
+    import tempfile
+    storage_path = os.path.join(tempfile.gettempdir(), 'flask_limiter')
+    limiter = Limiter(
+        key_func=get_remote_address,
+        app=app,
+        default_limits=["1000 per hour"],
+        storage_uri=f"file://{storage_path}"
+    )
 
 # Configure app
 app.secret_key = os.getenv('SECRET_KEY') # Used by Flask-Login, can also be JWT_SECRET_KEY
 app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', app.secret_key) # Added: Use a dedicated JWT secret key
 jwt = JWTManager(app) # Added
+
+# Force HTTPS URLs in production
+app.config['PREFERRED_URL_SCHEME'] = 'https'
 
 if os.getenv('SERVER_NAME'):
     app.config['SERVER_NAME'] = os.getenv('SERVER_NAME')  
@@ -87,10 +141,16 @@ print(f"DEBUG: SERVER_NAME environment variable is: '{server_name_env}'") # Cruc
 
 if server_name_env:
     print("DEBUG: Registering wiki, git, and donation with subdomains.")
+    print(f"DEBUG: SERVER_NAME is set to: {server_name_env}")
     app.register_blueprint(wiki_bp, subdomain='wiki')
     app.register_blueprint(git_bp, subdomain='git')
     app.register_blueprint(donation_bp, subdomain='donation')
-    app.register_blueprint(store_bp, subdomain='store')  
+    app.register_blueprint(store_bp, subdomain='store')
+    
+    # Debug: Print all registered routes
+    print("DEBUG: Registered routes after subdomain setup:")
+    for rule in app.url_map.iter_rules():
+        print(f"  {rule.rule} -> {rule.endpoint} (subdomain: {rule.subdomain})")
 else:
     print("DEBUG: Registering wiki, git, and donation with URL prefixes for local development.")
     app.register_blueprint(wiki_bp, url_prefix='/wiki')
@@ -101,9 +161,211 @@ else:
 # Import models here (after db initialization)
 from models import *
 
+@app.before_request
+def handle_subdomain_routing():
+    """Handle subdomain routing manually"""
+    host = request.headers.get('Host', '')
+    path = request.path
+    print(f"DEBUG: Request - Host: {host}, Path: {path}, URL: {request.url}")
+    print(f"DEBUG: Flask SERVER_NAME: {app.config.get('SERVER_NAME')}")
+    
+    # Extract subdomain from host
+    if host.startswith('wiki.'):
+        # Import wiki functions
+        from wiki.routes import index as wiki_index, search as wiki_search, article as wiki_article, random as wiki_random, random_article as wiki_random_article, explore as wiki_explore
+        
+        if path == '/':
+            print("DEBUG: Routing to wiki index")
+            # Set the endpoint for template context
+            from flask import g
+            g.endpoint = 'wiki.index'
+            return wiki_index()
+        elif path == '/search':
+            print("DEBUG: Routing to wiki search")
+            from flask import g
+            g.endpoint = 'wiki.search'
+            return wiki_search()
+        elif path.startswith('/article/'):
+            article_id = path.split('/')[-1]
+            try:
+                print(f"DEBUG: Routing to wiki article {article_id}")
+                from flask import g
+                g.endpoint = 'wiki.article'
+                return wiki_article(int(article_id))
+            except ValueError:
+                pass
+        elif path == '/random':
+            print("DEBUG: Routing to wiki random")
+            from flask import g
+            g.endpoint = 'wiki.random'
+            return wiki_random()
+        elif path == '/random-article':
+            print("DEBUG: Routing to wiki random article")
+            from flask import g
+            g.endpoint = 'wiki.random_article'
+            return wiki_random_article()
+        elif path == '/explore':
+            print("DEBUG: Routing to wiki explore")
+            from flask import g
+            g.endpoint = 'wiki.explore'
+            return wiki_explore()
+    
+    elif host.startswith('git.'):
+        # Import git functions
+        from git.routes import index as git_index, search as git_search, project as git_project, api_projects as git_api_projects, github_cache_stats, clear_github_cache, force_refresh_project
+        
+        if path == '/':
+            print("DEBUG: Routing to git index")
+            return git_index()
+        elif path == '/search':
+            print("DEBUG: Routing to git search")
+            return git_search()
+        elif path.startswith('/project/'):
+            project_id = path.split('/')[-1]
+            try:
+                print(f"DEBUG: Routing to git project {project_id}")
+                return git_project(int(project_id))
+            except ValueError:
+                pass
+        elif path == '/api/projects':
+            print("DEBUG: Routing to git api projects")
+            return git_api_projects()
+        elif path == '/api/github/cache-stats':
+            return github_cache_stats()
+        elif path == '/api/github/clear-cache':
+            return clear_github_cache()
+        elif path.startswith('/api/github/force-refresh/'):
+            project_id = path.split('/')[-1]
+            try:
+                return force_refresh_project(int(project_id))
+            except ValueError:
+                pass
+    
+    elif host.startswith('donation.'):
+        # Import donation functions
+        from donation.routes import (index as donation_index, project_detail as donation_project_detail, 
+                                   donate as donation_donate, donation_success, subscribe_newsletter as donation_subscribe_newsletter,
+                                   api_projects as donation_api_projects, api_project as donation_api_project, 
+                                   api_donations as donation_api_donations, highlights as donation_highlights,
+                                   thanksgiving as donation_thanksgiving, why_donate as donation_why_donate,
+                                   api_donate as donation_api_donate, payment_instructions as donation_payment_instructions)
+        
+        if path == '/':
+            print("DEBUG: Routing to donation index")
+            from flask import g
+            g.endpoint = 'donation.index'
+            return donation_index()
+        elif path.startswith('/project/'):
+            project_id = path.split('/')[-1]
+            try:
+                print(f"DEBUG: Routing to donation project {project_id}")
+                from flask import g
+                g.endpoint = 'donation.project_detail'
+                return donation_project_detail(int(project_id))
+            except ValueError:
+                pass
+        elif path.startswith('/donate/'):
+            project_id = path.split('/')[-1]
+            try:
+                print(f"DEBUG: Routing to donation donate {project_id}")
+                from flask import g
+                g.endpoint = 'donation.donate'
+                return donation_donate(int(project_id))
+            except ValueError:
+                pass
+        elif path.startswith('/success/'):
+            donation_id = path.split('/')[-1]
+            try:
+                print(f"DEBUG: Routing to donation success {donation_id}")
+                from flask import g
+                g.endpoint = 'donation.donation_success'
+                return donation_success(int(donation_id))
+            except ValueError:
+                pass
+        elif path == '/subscribe':
+            print("DEBUG: Routing to donation subscribe")
+            from flask import g
+            g.endpoint = 'donation.subscribe_newsletter'
+            return donation_subscribe_newsletter()
+        elif path == '/api/projects':
+            print("DEBUG: Routing to donation api projects")
+            from flask import g
+            g.endpoint = 'donation.api_projects'
+            return donation_api_projects()
+        elif path.startswith('/api/project/'):
+            project_id = path.split('/')[-1]
+            try:
+                print(f"DEBUG: Routing to donation api project {project_id}")
+                from flask import g
+                g.endpoint = 'donation.api_project'
+                return donation_api_project(int(project_id))
+            except ValueError:
+                pass
+        elif path.startswith('/api/donations/'):
+            project_id = path.split('/')[-1]
+            try:
+                print(f"DEBUG: Routing to donation api donations {project_id}")
+                from flask import g
+                g.endpoint = 'donation.api_donations'
+                return donation_api_donations(int(project_id))
+            except ValueError:
+                pass
+        elif path == '/highlights':
+            print("DEBUG: Routing to donation highlights")
+            from flask import g
+            g.endpoint = 'donation.highlights'
+            return donation_highlights()
+        elif path == '/thanksgiving':
+            print("DEBUG: Routing to donation thanksgiving")
+            from flask import g
+            g.endpoint = 'donation.thanksgiving'
+            return donation_thanksgiving()
+        elif path.startswith('/why-donate/'):
+            project_id = path.split('/')[-1]
+            try:
+                print(f"DEBUG: Routing to donation why-donate {project_id}")
+                from flask import g
+                g.endpoint = 'donation.why_donate'
+                return donation_why_donate(int(project_id))
+            except ValueError:
+                pass
+        elif path == '/api/donate':
+            print("DEBUG: Routing to donation api donate")
+            from flask import g
+            g.endpoint = 'donation.api_donate'
+            return donation_api_donate()
+        elif path.startswith('/payment/'):
+            donation_id = path.split('/')[-1]
+            try:
+                print(f"DEBUG: Routing to donation payment {donation_id}")
+                from flask import g
+                g.endpoint = 'donation.payment_instructions'
+                return donation_payment_instructions(int(donation_id))
+            except ValueError:
+                pass
+    
+    elif host.startswith('store.'):
+        from store.routes import index as store_index
+        if path == '/':
+            print("DEBUG: Routing to store index")
+            return store_index()
+    
+    # For main domain or if no subdomain route matches, continue to normal routing
+    print("DEBUG: No subdomain routing applied, continuing to normal Flask routing")
+    return None
+
+# Manual subdomain routes (since Flask subdomain routing isn't working properly)
+# REMOVED: All manual subdomain routes have been removed to avoid conflicts with @app.before_request handler
+
 # Main routes
 @app.route('/')
 def index():
+    # Add debugging to see what host is being received
+    host = request.headers.get('Host', '')
+    print(f"DEBUG: Main index route called with Host: {host}")
+    print(f"DEBUG: Request URL: {request.url}")
+    print(f"DEBUG: Request endpoint: {request.endpoint}")
+    
     try:
         # Fetch portfolio data from database
         from models import (Project, ProjectCategory, SeoSettings, PersonalInfo, 

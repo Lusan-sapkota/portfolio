@@ -16,3 +16,5 @@ Flask-Caching
 Flask-Limiter
 redis
 bs4
+markdown
+pygments

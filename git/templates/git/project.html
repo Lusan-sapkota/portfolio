@@ -1,24 +1,643 @@
 {% extends 'git/base.html' %}
 
-{% block title %}{{ project.title }}{% endblock %}
+{% block title %}{{ project.title }} - Project Details{% endblock %}
+
+{% block extra_css %}
+<style>
+/* Sunshine color palette */
+:root {
+  --sunshine-yellow: #FFD700;
+  --sunshine-orange: #FF8C00;
+  --sunshine-dark: #FF6B00;
+  --sunshine-light: #FFE082;
+  --sunshine-cream: #FFF8E1;
+  --sunshine-text: #333333;
+  --sunshine-text-light: #666666;
+}
+
+/* Project detail container */
+.sunshine-project-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--sunshine-cream);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(255, 140, 0, 0.1);
+}
+
+/* Project header with gradient */
+.sunshine-project-header {
+    background: linear-gradient(135deg, var(--sunshine-orange), var(--sunshine-dark));
+    color: white;
+    padding: 3rem 2rem;
+    border-radius: 20px;
+    margin-bottom: 2rem;
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(255, 140, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.sunshine-project-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+    transform: rotate(30deg);
+}
+
+.sunshine-project-title {
+    font-size: 2.8rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    position: relative;
+    z-index: 1;
+}
+
+/* Meta information bubbles */
+.sunshine-meta-container {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+}
+
+.sunshine-meta-bubble {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.25);
+    padding: 0.75rem 1.25rem;
+    border-radius: 30px;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.sunshine-meta-bubble:hover {
+    background: rgba(255, 255, 255, 0.35);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+/* Main content layout */
+.sunshine-content-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
+    align-items: start;
+}
+
+.sunshine-main-content {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(255, 140, 0, 0.08);
+    border: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+.sunshine-sidebar {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(255, 140, 0, 0.08);
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    height: fit-content;
+    position: sticky;
+    top: 2rem;
+}
+
+/* Section titles with sunburst effect */
+.sunshine-section-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: var(--sunshine-dark);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 3px solid var(--sunshine-yellow);
+    position: relative;
+}
+
+.sunshine-section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: var(--sunshine-orange);
+}
+
+.sunshine-section-title i {
+    color: var(--sunshine-orange);
+    font-size: 1.4rem;
+}
+
+/* Description text */
+.sunshine-description {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--sunshine-text);
+    margin-bottom: 2.5rem;
+    text-align: justify;
+}
+
+/* Technology tags */
+.sunshine-tech-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+}
+
+.sunshine-tech-tag {
+    background: linear-gradient(45deg, var(--sunshine-orange), var(--sunshine-dark));
+    color: white;
+    padding: 0.75rem 1rem;
+    border-radius: 25px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.sunshine-tech-tag::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: 0.5s;
+}
+
+.sunshine-tech-tag:hover::before {
+    left: 100%;
+}
+
+.sunshine-tech-tag:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(255, 140, 0, 0.4);
+}
+
+/* Stats container */
+.sunshine-stats-container {
+    display: flex;
+    justify-content: space-around;
+    margin: 2.5rem 0;
+    padding: 2rem;
+    background: linear-gradient(135deg, #FFF8E1, #FFECB3);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.sunshine-stat-item {
+    text-align: center;
+    position: relative;
+}
+
+.sunshine-stat-number {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--sunshine-dark);
+    display: block;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.sunshine-stat-label {
+    font-size: 0.9rem;
+    color: var(--sunshine-text-light);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 600;
+    margin-top: 0.5rem;
+}
+
+/* Status badges */
+.sunshine-status-badge {
+    padding: 0.6rem 1.2rem;
+    border-radius: 25px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 2px solid transparent;
+}
+
+.sunshine-status-completed {
+    background: linear-gradient(135deg, #C8E6C9, #A5D6A7);
+    color: #1B5E20;
+    border-color: #A5D6A7;
+}
+
+.sunshine-status-in-progress {
+    background: linear-gradient(135deg, #FFF9C4, #FFF59D);
+    color: #F57F17;
+    border-color: #FFF59D;
+}
+
+.sunshine-status-maintenance {
+    background: linear-gradient(135deg, #B3E5FC, #81D4FA);
+    color: #01579B;
+    border-color: #81D4FA;
+}
+
+/* Action buttons */
+.sunshine-action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.sunshine-action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 1.25rem;
+    border: none;
+    border-radius: 15px;
+    text-decoration: none;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.sunshine-action-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transition: 0.5s;
+}
+
+.sunshine-action-btn:hover::before {
+    left: 100%;
+}
+
+.sunshine-btn-github {
+    background: linear-gradient(135deg, #333, #555);
+    color: white;
+    border: 2px solid transparent;
+}
+
+.sunshine-btn-github:hover {
+    background: linear-gradient(135deg, #24292e, #444);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.sunshine-btn-live {
+    background: linear-gradient(135deg, var(--sunshine-yellow), var(--sunshine-orange));
+    color: white;
+    border: 2px solid transparent;
+}
+
+.sunshine-btn-live:hover {
+    background: linear-gradient(135deg, var(--sunshine-orange), var(--sunshine-dark));
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(255, 140, 0, 0.3);
+}
+
+.sunshine-btn-commercial {
+    background: linear-gradient(135deg, #FF5722, #E64A19);
+    color: white;
+    border: 2px solid transparent;
+}
+
+.sunshine-btn-commercial:hover {
+    background: linear-gradient(135deg, #E64A19, #BF360C);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(255, 87, 34, 0.3);
+}
+
+/* Project image */
+.sunshine-project-image {
+    width: 100%;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(255, 140, 0, 0.15);
+    transition: transform 0.3s ease;
+    margin-top: 1.5rem;
+    border: 3px solid white;
+}
+
+.sunshine-project-image:hover {
+    transform: scale(1.02) rotate(1deg);
+    box-shadow: 0 15px 35px rgba(255, 140, 0, 0.25);
+}
+
+/* Info box */
+.sunshine-info-box {
+    margin-top: 2rem;
+    padding: 2rem;
+    background: linear-gradient(135deg, #FFF8E1, #FFECB3);
+    border-radius: 15px;
+    border-left: 5px solid var(--sunshine-orange);
+}
+
+.sunshine-info-title {
+    margin-bottom: 1.5rem;
+    color: var(--sunshine-dark);
+    font-weight: 700;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.sunshine-info-content {
+    font-size: 0.95rem;
+    color: var(--sunshine-text);
+    line-height: 1.6;
+}
+
+.sunshine-info-content p {
+    margin-bottom: 0.75rem;
+}
+
+.sunshine-info-content strong {
+    color: var(--sunshine-dark);
+    font-weight: 600;
+}
+
+/* Back button */
+.sunshine-back-container {
+    text-align: center;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 2px solid rgba(255, 215, 0, 0.3);
+}
+
+.sunshine-back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1.25rem 2.5rem;
+    background: linear-gradient(135deg, var(--sunshine-orange), var(--sunshine-dark));
+    color: white;
+    text-decoration: none;
+    border-radius: 15px;
+    font-weight: 700;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    box-shadow: 0 5px 15px rgba(255, 140, 0, 0.3);
+}
+
+.sunshine-back-btn:hover {
+    background: linear-gradient(135deg, var(--sunshine-dark), #FF4500);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(255, 140, 0, 0.4);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .sunshine-content-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .sunshine-sidebar {
+        position: static;
+    }
+}
+
+@media (max-width: 768px) {
+    .sunshine-project-container {
+        padding: 1rem;
+    }
+    
+    .sunshine-project-header {
+        padding: 2rem 1.5rem;
+    }
+    
+    .sunshine-project-title {
+        font-size: 2.2rem;
+    }
+    
+    .sunshine-meta-container {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: center;
+    }
+    
+    .sunshine-tech-grid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 0.5rem;
+    }
+    
+    .sunshine-main-content,
+    .sunshine-sidebar {
+        padding: 1.5rem;
+    }
+    
+    .sunshine-stats-container {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .sunshine-project-title {
+        font-size: 1.8rem;
+    }
+    
+    .sunshine-tech-grid {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    }
+    
+    .sunshine-action-btn,
+    .sunshine-back-btn {
+        padding: 1rem 1.5rem;
+        font-size: 0.85rem;
+    }
+}
+</style>
+{% endblock %}
 
 {% block content %}
-<h2>{{ project.title }}</h2>
-<p>{{ project.description }}</p>
-
-{% if project.technologies %}
-  <p><strong>Technologies:</strong> {{ project.technologies }}</p>
-{% endif %}
-
-{% if project.github_url %}
-  <p><a href="{{ project.github_url }}" target="_blank">View on GitHub</a></p>
-{% endif %}
-
-{% if project.live_url %}
-  <p><a href="{{ project.live_url }}" target="_blank">Live Demo</a></p>
-{% endif %}
-
-{% if project.commercial_url %}
-  <p><a href="{{ project.commercial_url }}" target="_blank">Commercial Product</a></p>
-{% endif %}
+<div class="sunshine-project-container">
+    <!-- Project Header -->
+    <div class="sunshine-project-header">
+        <h1 class="sunshine-project-title">{{ project.title }}</h1>
+        
+        <div class="sunshine-meta-container">
+            {% if project.status %}
+            <div class="sunshine-meta-bubble">
+                <i class="fas fa-info-circle"></i>
+                <span class="sunshine-status-badge sunshine-status-{{ project.status }}">{{ project.status.replace('-', ' ').title() }}</span>
+            </div>
+            {% endif %}
+            
+            {% if project.category %}
+            <div class="sunshine-meta-bubble">
+                <i class="fas fa-folder"></i>
+                <span>{{ project.category.name }}</span>
+            </div>
+            {% endif %}
+            
+            {% if project.is_opensource %}
+            <div class="sunshine-meta-bubble">
+                <i class="fas fa-code"></i>
+                <span>Open Source</span>
+            </div>
+            {% endif %}
+            
+            {% if project.created_at %}
+            <div class="sunshine-meta-bubble">
+                <i class="fas fa-calendar"></i>
+                <span>{{ project.created_at.strftime('%B %Y') }}</span>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Project Content -->
+    <div class="sunshine-content-grid">
+        <!-- Main Content -->
+        <div class="sunshine-main-content">
+            <h2 class="sunshine-section-title">
+                <i class="fas fa-file-alt"></i> Project Description
+            </h2>
+            <div class="sunshine-description">
+                {% if project.description %}
+                    {{ project.description|nl2br|safe }}
+                {% else %}
+                    <p>No description available for this project.</p>
+                {% endif %}
+            </div>
+            
+            {% if project.technologies %}
+            <h3 class="sunshine-section-title">
+                <i class="fas fa-cogs"></i> Technologies Used
+            </h3>
+            <div class="sunshine-tech-grid">
+                {% for tech in project.technologies.split(',') %}
+                <span class="sunshine-tech-tag">{{ tech.strip() }}</span>
+                {% endfor %}
+            </div>
+            {% endif %}
+            
+            {% if project.stars or project.forks or project.last_updated %}
+            <div class="sunshine-stats-container">
+                {% if project.stars %}
+                <div class="sunshine-stat-item">
+                    <span class="sunshine-stat-number">{{ project.stars }}</span>
+                    <span class="sunshine-stat-label">Stars</span>
+                </div>
+                {% endif %}
+                
+                {% if project.forks %}
+                <div class="sunshine-stat-item">
+                    <span class="sunshine-stat-number">{{ project.forks }}</span>
+                    <span class="sunshine-stat-label">Forks</span>
+                </div>
+                {% endif %}
+                
+                {% if project.last_updated %}
+                <div class="sunshine-stat-item">
+                    <span class="sunshine-stat-number">{{ project.last_updated.strftime('%b %Y') }}</span>
+                    <span class="sunshine-stat-label">Last Updated</span>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+        
+        <!-- Sidebar -->
+        <div class="sunshine-sidebar">
+            <h3 class="sunshine-section-title">
+                <i class="fas fa-link"></i> Quick Actions
+            </h3>
+            
+            <div class="sunshine-action-buttons">
+                {% if project.github_url %}
+                <a href="{{ project.github_url }}" target="_blank" rel="noopener noreferrer" class="sunshine-action-btn sunshine-btn-github">
+                    <i class="fab fa-github"></i>
+                    View Source Code
+                </a>
+                {% endif %}
+                
+                {% if project.live_url %}
+                <a href="{{ project.live_url }}" target="_blank" rel="noopener noreferrer" class="sunshine-action-btn sunshine-btn-live">
+                    <i class="fas fa-external-link-alt"></i>
+                    Live Demo
+                </a>
+                {% endif %}
+                
+                {% if project.commercial_url %}
+                <a href="{{ project.commercial_url }}" target="_blank" rel="noopener noreferrer" class="sunshine-action-btn sunshine-btn-commercial">
+                    <i class="fas fa-shopping-cart"></i>
+                    Commercial Product
+                </a>
+                {% endif %}
+            </div>
+            
+            {% if project.image_url %}
+            <div style="margin-top: 2rem;">
+                <h4 class="sunshine-section-title">
+                    <i class="fas fa-image"></i> Project Preview
+                </h4>
+                <img src="{{ project.image_url }}" alt="{{ project.title }}" class="sunshine-project-image">
+            </div>
+            {% endif %}
+            
+            <!-- Additional Info -->
+            <div class="sunshine-info-box">
+                <h5 class="sunshine-info-title">
+                    <i class="fas fa-info"></i> Project Information
+                </h5>
+                <div class="sunshine-info-content">
+                    <p><strong>Type:</strong> {{ "Open Source" if project.is_opensource else "Proprietary" }}</p>
+                    {% if project.category %}
+                    <p><strong>Category:</strong> {{ project.category.name }}</p>
+                    {% endif %}
+                    <p><strong>Status:</strong> {{ project.status.replace('-', ' ').title() if project.status else 'Unknown' }}</p>
+                    {% if project.created_at %}
+                    <p><strong>Created:</strong> {{ project.created_at.strftime('%B %d, %Y') }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Navigation -->
+    <div class="sunshine-back-container">
+        <a href="{{ url_for('git.index') }}" class="sunshine-back-btn">
+            <i class="fas fa-arrow-left"></i>
+            Back to Projects
+        </a>
+    </div>
+</div>
 {% endblock %}

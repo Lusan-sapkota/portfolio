@@ -5,7 +5,7 @@
 {% block meta_description %}Thank you for supporting my open source projects. Your contribution makes a real difference in advancing technology for everyone.{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('donation.static', filename='css/donation-style.css') }}">
+<link rel="stylesheet" href="{{ url_for('donation.static', filename='css/donation-style.css', _external=True, _scheme='https') }}">
 <style>
     .success-section {
         background: var(--gradient-hero);
@@ -252,7 +252,7 @@
                     <p>Get notified about new projects and progress updates</p>
                 </div>
                 
-                <form action="{{ url_for('donation.subscribe_newsletter') }}" method="POST" class="newsletter-form">
+                <form action="{{ url_for('donation.subscribe_newsletter', _external=True, _scheme='https') }}" method="POST" class="newsletter-form">
                     <div class="form-group">
                         <input type="email" name="email" class="form-control" placeholder="Your Email Address" required>
                     </div>

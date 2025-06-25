@@ -16,28 +16,14 @@ def index():
     seo_settings = SeoSettings.query.filter_by(page_name='donation').first()
     personal_info = PersonalInfo.query.first()
     
-    # Get donation projects and regular projects - combine both for comprehensive display
+    # Get only DonationProjects (specific donation campaigns)
     try:
-        from models import Project
+        # Get DonationProjects that are specifically set up for donations
+        featured_projects = DonationProject.query.filter_by(is_active=True, is_featured=True).all()
+        all_projects = DonationProject.query.filter_by(is_active=True).all()
         
-        # Get DonationProjects (specific donation campaigns)
-        donation_featured = DonationProject.query.filter_by(is_active=True, is_featured=True).all()
-        donation_all = DonationProject.query.filter_by(is_active=True).all()
-        
-        # Get regular Projects that can also accept donations
-        regular_featured = Project.query.filter_by(is_featured=True).all()
-        regular_all = Project.query.all()
-        
-        # Combine both types for comprehensive project lists
-        featured_projects = donation_featured + regular_featured
-        all_projects = donation_all + regular_all
-        
-        # Remove duplicates if any (unlikely but safe)
-        featured_projects = list({p.id: p for p in featured_projects}.values())
-        all_projects = list({p.id: p for p in all_projects}.values())
-        
-        logger.info(f"Loaded {len(donation_all)} DonationProjects + {len(regular_all)} regular Projects")
-        logger.info(f"Featured: {len(donation_featured)} donation + {len(regular_featured)} regular")
+        logger.info(f"Loaded {len(all_projects)} active DonationProjects")
+        logger.info(f"Featured: {len(featured_projects)} DonationProjects")
         
         # Get recent donations for activity feed - only completed donations
         recent_donations = Donation.query.filter_by(status='completed')\
@@ -409,20 +395,18 @@ def highlights():
     
     # Calculate real-time statistics for achievements
     try:
-        # Get all donation projects and regular projects
+        # Get only donation projects (not regular projects for donation stats)
         all_donation_projects = DonationProject.query.filter_by(is_active=True).all()
-        all_regular_projects = Project.query.all()
         
-        # Total project count (both donation and regular projects)
-        total_projects = len(all_donation_projects) + len(all_regular_projects)
+        # Total project count (only donation projects)
+        total_projects = len(all_donation_projects)
         
         # Count completed donation projects
         completed_count = len(completed_projects)
         
-        # Count featured projects (both donation and regular)
+        # Count featured donation projects
         featured_donation_count = len(featured_projects)
-        featured_regular_count = Project.query.filter_by(is_featured=True).count()
-        total_featured = featured_donation_count + featured_regular_count
+        total_featured = featured_donation_count
         
         # Calculate total raised in different currencies
         total_usd = db.session.query(db.func.sum(Donation.amount)).filter(

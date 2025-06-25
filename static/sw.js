@@ -96,8 +96,11 @@ self.addEventListener('fetch', event => {
 async function handleDocumentRequest(request) {
     try {
         const networkResponse = await fetch(request);
-        const cache = await caches.open(DYNAMIC_CACHE);
-        cache.put(request, networkResponse.clone());
+        // Only cache GET requests
+        if (request.method === 'GET') {
+            const cache = await caches.open(DYNAMIC_CACHE);
+            cache.put(request, networkResponse.clone());
+        }
         return networkResponse;
     } catch (error) {
         const cachedResponse = await caches.match(request);
