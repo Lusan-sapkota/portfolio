@@ -72,6 +72,7 @@
     <meta name="twitter:data2" content="Technical Documentation">
     
     <!-- Mobile App Meta Tags -->
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Lusan's Wiki">
@@ -193,8 +194,6 @@
     <!-- Local CSS -->
     <link rel="preload" href="{{ url_for('wiki.static', filename='css/wiki-style.css') }}" as="style">
     <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/animate.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/responsive.css') }}">
     <link rel="stylesheet" href="{{ url_for('wiki.static', filename='css/wiki-style.css') }}">
     <script>
     // Initialize theme before page renders
@@ -245,55 +244,55 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
                         <a class="nav-link{% if request.endpoint == 'wiki.index' %} active{% endif %}" href="{{ url_for('wiki.index') }}">
-                            <i class="fas fa-book"></i> Wiki
+                            Wiki
                         </a>
                     </li>
                     
                     <!-- Explore -->
                     <li class="nav-item">
                         <a class="nav-link{% if request.endpoint == 'wiki.explore' %} active{% endif %}" href="{{ url_for('wiki.explore') }}">
-                            <i class="fas fa-compass"></i> Explore
+                            Explore
                         </a>
                     </li>
                     
                     <!-- Search -->
                     <li class="nav-item">
                         <a class="nav-link{% if request.endpoint == 'wiki.search' %} active{% endif %}" href="{{ url_for('wiki.search') }}">
-                            <i class="fas fa-search"></i> Search
+                            Search
                         </a>
                     </li>
                     
                     <!-- Random Article -->
                     <li class="nav-item">
                         <a class="nav-link{% if request.endpoint == 'wiki.random' %} active{% endif %}" href="{{ url_for('wiki.random') }}">
-                            <i class="fas fa-random"></i> Random
+                            Random
                         </a>
                     </li>
 
                     <!-- Main Site with Submenu -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="mainSiteDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-home"></i> Main Site
+                            Main Site
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="mainSiteDropdown">
                             <li>
                                 <a class="dropdown-item" href="{{ url_for('index') }}" target="_blank">
-                                    <i class="fas fa-home"></i> Home
+                                    Home
                                 </a>
                             </li>
                             <li>
                                 <a class="dropdown-item" href="{{ url_for('git.index') }}">
-                                    <i class="fas fa-code"></i> Projects
+                                    Projects
                                 </a>
                             </li>
                             <li>
                                 <a class="dropdown-item" href="{{ url_for('store.index') }}" target="_blank">
-                                    <i class="fas fa-store"></i> Store
+                                    Store
                                 </a>
                             </li>
                             <li>
                                 <a class="dropdown-item" href="{{ url_for('donation.index') }}">
-                                    <i class="fas fa-heart"></i> Donate
+                                    Donate
                                 </a>
                             </li>
                         </ul>
@@ -409,6 +408,7 @@
     <!-- CDN JS: Bootstrap & jQuery -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"  crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"  crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     
     <script src="{{ url_for('static', filename='assets/js/custom.js') }}"></script>
     <script src="{{ url_for('wiki.static', filename='js/wiki-script.js') }}"></script>

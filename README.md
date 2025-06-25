@@ -9,6 +9,12 @@
   <h3>Professional portfolio showcasing expertise in Full Stack Development & AI/ML Engineering</h3>
 </div>
 
+## Cover
+
+<div align="center">
+  <img src="static/assets/images/portfolio.png" alt="Portfolio Cover" style="width:100%; max-width:1920px; height:auto;" />
+</div>
+
 ## 🚀 About
 
 A comprehensive portfolio website featuring a modern, responsive design with advanced CMS capabilities. Built with enterprise-grade architecture and optimized for performance, SEO, and user experience.
@@ -84,10 +90,10 @@ A comprehensive portfolio website featuring a modern, responsive design with adv
 Python 3.11+, PostgreSQL, Redis (optional for caching)
 ```
 
-### Local Development
+### Local Development (use dev branch)
 ```bash
 # Clone repository
-git clone https://github.com/lusansapkota/portfolio.git
+git clone hhttps://github.com/Lusan-sapkota/portfolio/tree/dev
 cd portfolio
 
 # Create virtual environment

@@ -18,6 +18,11 @@ $(document).ready(function(){
         initializeOwlCarousel();
         initializeContactForm();
         initializeAnimations();
+        initializeSkillsRedesigned();
+        initializeSubdomainCards();
+        initializeMobileInteractions();
+        optimizeAnimations();
+        handleResponsiveAnimations();
 
         // FIXED: Dark Mode Implementation
         function initializeDarkMode() {
@@ -47,9 +52,7 @@ $(document).ready(function(){
             });
         }
 
-        // ... rest of your existing code remains unchanged ...
-
-    // 1. Scroll To Top 
+        // 1. Scroll To Top 
     function initializeScrollEffects() {
         $(window).on('scroll', function () {
             if ($(this).scrollTop() > 600) {
@@ -84,12 +87,20 @@ $(document).ready(function(){
                     scrollTop: targetSection.offset().top - navbarHeight
                 }, 800, 'easeInOutExpo');
                 
-                // Close mobile menu if open
+                // Close mobile menu if open - FIXED VERSION
                 const navbarCollapse = $('.navbar-collapse');
+                const navbarToggler = $('.navbar-toggler');
+                
                 if (navbarCollapse.hasClass('show')) {
-                    navbarCollapse.removeClass('show');
+                    // Use Bootstrap's collapse method for proper cleanup
+                    navbarCollapse.collapse('hide');
+                    
+                    // Reset the toggler button state
+                    navbarToggler.attr('aria-expanded', 'false');
+                    navbarToggler.removeClass('collapsed').addClass('collapsed');
                 }
                 
+                // Update active states
                 $('.navbar-nav li').removeClass('active');
                 $(`a[href="${targetId}"]`).parent('li').addClass('active');
             }
@@ -364,6 +375,158 @@ $(document).ready(function(){
     setTimeout(() => {
         animateProgressBars();
     }, 1000);
+
+    // Enhanced Skills Progress Bar Animation for Redesigned Section
+    function initializeSkillsRedesigned() {
+        const skillsSection = document.querySelector('.skills-redesigned');
+        if (!skillsSection) return;
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Add animation class to trigger CSS animations
+                    entry.target.classList.add('animate-in');
+                    
+                    // Animate all progress bars with staggered delay
+                    const progressBars = entry.target.querySelectorAll('.skill-progress-redesigned');
+                    progressBars.forEach((bar, index) => {
+                        setTimeout(() => {
+                            const percentage = bar.getAttribute('data-progress') || 
+                                             bar.getAttribute('data-percentage') || 
+                                             bar.getAttribute('aria-valuenow') || '0';
+                            bar.style.width = percentage + '%';
+                            bar.classList.add('animate');
+                        }, index * 200); // Stagger animations
+                    });
+                    
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.3,
+            rootMargin: '0px 0px -100px 0px'
+        });
+        
+        observer.observe(skillsSection);
+    }
+    
+    // Enhanced Subdomain Cards Animation
+    function initializeSubdomainCards() {
+        const subdomainCards = document.querySelectorAll('.subdomain-card');
+        if (subdomainCards.length === 0) return;
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }, index * 150); // Stagger card animations
+                    
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.2,
+            rootMargin: '0px 0px -50px 0px'
+        });
+        
+        // Initially hide cards for animation
+        subdomainCards.forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+            observer.observe(card);
+        });
+    }
+    
+    // Touch-friendly interactions for mobile
+    function initializeMobileInteractions() {
+        const isMobile = window.innerWidth <= 768;
+        const isTouch = 'ontouchstart' in window;
+        
+        if (isMobile || isTouch) {
+            // Add touch feedback for subdomain cards
+            const subdomainCards = document.querySelectorAll('.subdomain-card');
+            subdomainCards.forEach(card => {
+                card.addEventListener('touchstart', function() {
+                    this.style.transform = 'translateY(-8px) scale(1.02)';
+                });
+                
+                card.addEventListener('touchend', function() {
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 150);
+                });
+            });
+            
+            // Add touch feedback for skill categories
+            const skillCategories = document.querySelectorAll('.skill-category-redesigned');
+            skillCategories.forEach(category => {
+                category.addEventListener('touchstart', function() {
+                    this.style.transform = 'translateY(-4px)';
+                });
+                
+                category.addEventListener('touchend', function() {
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 150);
+                });
+            });
+        }
+    }
+    
+    // Performance optimization for animations
+    function optimizeAnimations() {
+        // Pause animations when tab is hidden
+        document.addEventListener('visibilitychange', function() {
+            const body = document.body;
+            if (document.hidden) {
+                body.style.animationPlayState = 'paused';
+            } else {
+                body.style.animationPlayState = 'running';
+            }
+        });
+        
+        // Reduce animations on low-end devices
+        if (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4) {
+            document.documentElement.style.setProperty('--transition', '0.2s ease');
+            document.documentElement.style.setProperty('--transition-fast', '0.1s ease');
+        }
+    }
+    
+    // Enhanced responsive behavior
+    function handleResponsiveAnimations() {
+        const mediaQuery = window.matchMedia('(max-width: 768px)');
+        
+        function handleMobileChange(e) {
+            const subdomainCards = document.querySelectorAll('.subdomain-card');
+            const skillCategories = document.querySelectorAll('.skill-category-redesigned');
+            
+            if (e.matches) {
+                // Mobile optimizations
+                subdomainCards.forEach(card => {
+                    card.style.setProperty('--hover-transform', 'translateY(-10px) scale(1.02)');
+                });
+                
+                skillCategories.forEach(category => {
+                    category.style.setProperty('--hover-transform', 'translateY(-4px)');
+                });
+            } else {
+                // Desktop optimizations
+                subdomainCards.forEach(card => {
+                    card.style.removeProperty('--hover-transform');
+                });
+                
+                skillCategories.forEach(category => {
+                    category.style.removeProperty('--hover-transform');
+                });
+            }
+        }
+        
+        mediaQuery.addListener(handleMobileChange);
+        handleMobileChange(mediaQuery);
+    }
 });
 
 // Add pulse animation CSS dynamically

@@ -80,6 +80,7 @@
     <meta property="og:see_also" content="https://www.linkedin.com/in/lusan-sapkota-a08194284/">
     
     <!-- Mobile App Meta Tags -->
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Lusan Sapkota">
@@ -446,8 +447,10 @@
     }
     </script>
     
-	<!-- CDN CSS: Bootstrap & Font Awesome -->
+	<!-- CDN CSS: Bootstrap, Owl Carousel & Font Awesome -->
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" crossorigin="anonymous">
 	
 	<!-- Font Awesome for Icons -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
@@ -480,7 +483,7 @@
     
     <!-- Prefetch for common resources -->
     <link rel="prefetch" href="{{ url_for('static', filename='assets/download/Lusan_Sapkota_Resume.txt') }}">
-    <link rel="prefetch" href="{{ url_for('static', filename='assets/images/portfolio/p1.png') }}">
+    <link rel="prefetch" href="{{ url_for('static', filename='assets/images/profile.jpg') }}">
 
     <!-- Google Tag Manager and toggle -->
 	<script>
@@ -2262,7 +2265,7 @@
                         <!-- Fallback content if no projects in database -->
                         <div class="portfolio-item card-base" data-category="web">
                             <div class="portfolio-image">
-                                <img src="{{ url_for('static', filename='assets/images/portfolio/p1.png')}}" alt="Sample Project" />
+                                <img src="{{ url_for('static', filename='assets/images/portfolio/placeholder.svg')}}" alt="Sample Project" />
                                 <div class="portfolio-overlay">
                                     <div class="portfolio-links">
                                         <a href="https://github.com/Lusan-sapkota" target="_blank" class="btn-portfolio btn-github">
@@ -2619,11 +2622,14 @@
 </footer>
 		<!--footer end-->
 
-		<!-- CDN JS: Bootstrap, jQuery & AOS -->
+		<!-- CDN JS: Bootstrap, jQuery, Owl Carousel & AOS -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"  crossorigin="anonymous"></script>
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"  crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" crossorigin="anonymous"></script>
 		<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 		<script src="{{ url_for('static', filename='assets/js/custom.js') }}"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+
 
 		<!-- Page Animation Initialization -->
 		<script>
@@ -2631,7 +2637,7 @@
 			// Initialize AOS (Animate On Scroll)
 			AOS.init({
 				duration: 800,
-				easing: 'ease-in-out',
+				easing: 'swing',
 				once: true,
 				offset: 100,
 				delay: 100
