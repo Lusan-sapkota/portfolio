@@ -9,8 +9,6 @@
   <h3>Professional portfolio showcasing expertise in Full Stack Development & AI/ML Engineering</h3>
 </div>
 
-## Cover
-
 <div align="center">
   <img src="static/assets/images/portfolio.png" alt="Portfolio Cover" style="width:100%; max-width:1920px; height:auto;" />
 </div>
