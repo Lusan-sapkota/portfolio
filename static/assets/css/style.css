@@ -600,6 +600,13 @@ section {
     letter-spacing: -0.5px;
 }
 
+/* Responsive Brand Text - Hide at 1255px and below */
+@media (max-width: 1255px) {
+  .navbar-brand .brand-text {
+    display: none;
+  }
+}
+
 @media (max-width: 575.98px) {
   .navbar-brand {
     font-size: 1.1rem;
@@ -616,7 +623,7 @@ section {
     .navbar-brand .brand-text {
         display: none;
     }
-  }
+}
 
 .navbar-brand img {
   transition: transform var(--transition);
@@ -627,13 +634,20 @@ section {
   transform: scale(1.05);
 }
 
+/* Navigation Links - Show inline until 1255px */
+.navbar-nav {
+  flex-direction: row;
+  align-items: center;
+  margin-left: auto;
+}
+
 .navbar-nav .nav-link {
   color: var(--text-primary);
   font-weight: 500;
   margin: 0 10px;
   padding: 8px 15px !important;
   border-radius: var(--border-radius);
-  transition: all var(--transition-fast);
+  transition: all 0.4s cubic-bezier(0.075, 0.82, 0.165, 1) !important;
   position: relative;
   overflow: hidden;
 }
@@ -671,9 +685,185 @@ section {
   background: rgba(255, 255, 255, 0.3);
 }
 
+/* Show navbar toggler at 1255px and below */
+.navbar-toggler {
+  display: none;
+  background: var(--gradient-primary) !important;
+  border: 2px solid var(--primary-yellow) !important;
+  border-radius: 12px !important;
+  padding: 0.5rem 0.75rem !important;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
+  width: 48px;
+  height: 48px;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+}
+
+@media (max-width: 1255px) {
+  .navbar-toggler {
+    display: flex;
+  }
+  
+  .navbar-collapse {
+    border-radius: var(--border-radius);
+    margin-top: 15px;
+    padding: 20px;
+  }
+  
+  .navbar-nav {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+  
+  .navbar-nav .nav-link {
+    margin: 5px 0;
+    text-align: center;
+    padding: 12px 20px !important;
+  }
+  
+  .navbar-nav .nav-item {
+    width: 100%;
+  }
+}
+
+.navbar-toggler:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(243, 156, 18, 0.4);
+    background: var(--gradient-warm) !important;
+}
+
+/* Custom hamburger icon */
+.navbar-toggler-icon {
+    background-image: none !important;
+    width: 24px;
+    height: 3px;
+    position: relative;
+    transform: rotate(0deg);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    background: white;
+    border-radius: 2px;
+}
+
+.navbar-toggler-icon::before,
+.navbar-toggler-icon::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 24px;
+    height: 3px;
+    background: white;
+    border-radius: 2px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.navbar-toggler-icon::before {
+    top: -8px;
+}
+
+.navbar-toggler-icon::after {
+    top: 8px;
+}
+
+/* Animated toggle states */
+.navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
+    background: transparent;
+}
+
+.navbar-toggler[aria-expanded="true"] .navbar-toggler-icon::before {
+    transform: rotate(45deg);
+    top: 0;
+}
+
+.navbar-toggler[aria-expanded="true"] .navbar-toggler-icon::after {
+    transform: rotate(-45deg);
+    top: 0;
+}
+
+/* Theme toggle responsive positioning */
+.theme-toggle-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.theme-toggle {
+    background: linear-gradient(135deg, var(--accent-yellow) 0%, var(--warm-yellow) 100%) !important;
+    border: 2px solid var(--primary-color) !important;
+    color: #1a1a1a !important;
+    border-radius: 50px !important;
+    padding: 0.75rem 1rem !important;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    min-width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
+}
+
+@media (max-width: 1255px) {
+  .theme-toggle {
+    margin: 1rem auto 0;
+    width: auto;
+    justify-content: center;
+  }
+}
+
 /* Navigation hide/show animation */
 .navbar.nav-hidden {
   transform: translateY(-100%);
+}
+
+/* Container responsive adjustments */
+@media (max-width: 1255px) {
+  .navbar .container {
+    padding: 0 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+    .navbar .container {
+        padding: 0px 1rem;
+    }
+    
+    .navbar-collapse {
+      margin-top: 10px;
+      padding: 15px;
+    }
+    
+    .navbar-nav .nav-link {
+      padding: 10px 15px !important;
+      margin: 3px 0;
+    }
+}
+
+@media (max-width: 576px) {
+  .navbar-toggler {
+    width: 44px;
+    height: 44px;
+  }
+  
+  .navbar-toggler-icon {
+    width: 20px;
+  }
+  
+  .navbar-toggler-icon::before,
+  .navbar-toggler-icon::after {
+    width: 20px;
+  }
+  
+  .theme-toggle {
+    min-width: 45px;
+    height: 45px;
+    font-size: 1rem;
+  }
 }
 
 /*-------------------------------------
@@ -2344,11 +2534,9 @@ section {
 
 @media (max-width: 768px) {
   .navbar-collapse {
-    background: var(--white);
     border-radius: var(--border-radius);
     margin-top: 15px;
     padding: 20px;
-    box-shadow: var(--shadow-lg);
   }
   
   .navbar-nav .nav-link {
@@ -3595,64 +3783,6 @@ Skills Section - Modern Design
   }
 }
 
-@media (max-width: 768px) {
-  .navbar-collapse {
-    background: var(--white);
-    border-radius: var(--border-radius);
-    margin-top: 15px;
-    padding: 20px;
-    box-shadow: var(--shadow-lg);
-  }
-  
-  .navbar-nav .nav-link {
-    margin: 5px 0;
-    text-align: center;
-  }
-  
-  .header-text h2 {
-    font-size: 2.5rem;
-  }
-  
-  .header-text a {
-    display: block;
-    margin: 10px auto;
-    max-width: 250px;
-  }
-  
-  .subdomain-grid {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-  
-  .subdomain-card {
-    padding: 30px 20px;
-  }
-  
-  .subdomain-title h2 {
-    font-size: 2rem;
-  }
-  
-  .section-heading h2 {
-    font-size: 2rem;
-  }
-  
-  .single-about-txt h3 {
-    font-size: 1.5rem;
-  }
-  
-  .single-horizontal-timeline {
-    padding: 20px;
-  }
-  
-  .experience-time h2 {
-    font-size: 1.3rem;
-  }
-  
-  .timeline-content .title {
-    font-size: 1.1rem;
-  }
-}
-
 @media (max-width: 576px) {
   .container {
     padding: 0 10px;
@@ -4038,12 +4168,49 @@ Skills Section - Modern Design
 }
 
 @keyframes shimmer-redesigned {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+  0% { 
+    left: -100%; 
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+  100% { 
+    left: 100%; 
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
 }
 
-[data-theme="dark"] .skill-bar-redesigned {
-  background: #334155;
+@-webkit-keyframes shimmer-redesigned {
+  0% { 
+    left: -100%; 
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+  100% { 
+    left: 100%; 
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+}
+
+/* Touch device specific optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .skill-category-redesigned .skill-progress-redesigned::after {
+    /* Slightly slower animation on touch devices for better visibility */
+    animation-duration: 3s;
+    -webkit-animation-duration: 3s;
+  }
+}
+
+/* High DPI display support */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .skill-category-redesigned .skill-progress-redesigned::after {
+    /* Enhanced shimmer opacity for retina displays */
+    background: linear-gradient(90deg, 
+      transparent 0%, 
+      rgba(255, 255, 255, 0.35) 50%, 
+      transparent 100%);
+  }
 }
 
 /* ==========================================================================
@@ -4108,6 +4275,7 @@ Skills Section - Modern Design
   margin: 0;
   max-width: 500px;
   margin: 0 auto;
+  line-height: 1.5;
 }
 
 [data-theme="dark"] .tools-header-redesigned h4 {
@@ -4435,28 +4603,6 @@ Skills Section - Modern Design
     justify-content: center;
   }
 
-}
-
-.navbar-toggler {
-    background: var(--gradient-primary) !important;
-    border: 2px solid var(--primary-yellow) !important;
-    border-radius: 12px !important;
-    padding: 0.5rem 0.75rem !important;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
-    width: 48px;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.navbar-toggler:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 20px rgba(243, 156, 18, 0.4);
-    background: var(--gradient-warm) !important;
 }
 
 /* Custom hamburger icon */
@@ -4935,4 +5081,284 @@ Skills Section - Modern Design
   font-size: 1.1rem;
   max-width: 500px;
   margin: 0 auto;
+}
+
+/* Enhanced Mobile and Tablet Support for Skill Progress Bars */
+@media (max-width: 1024px) {
+  .skill-category-redesigned .skill-progress-redesigned {
+    position: relative;
+    overflow: hidden;
+    /* Ensure shimmer effect works on tablets */
+  }
+  
+  .skill-category-redesigned .skill-progress-redesigned::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+      transparent 0%, 
+      rgba(255, 255, 255, 0.3) 50%, 
+      transparent 100%);
+    animation: shimmer-redesigned 2s infinite;
+    will-change: transform;
+    -webkit-animation: shimmer-redesigned 2s infinite;
+  }
+}
+
+@media (max-width: 768px) {
+  .skill-category-redesigned .skill-progress-redesigned {
+    position: relative;
+    overflow: hidden;
+    /* Maintain shimmer on mobile */
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+  
+  .skill-category-redesigned .skill-progress-redesigned::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+      transparent 0%, 
+      rgba(255, 255, 255, 0.3) 50%, 
+      transparent 100%);
+    animation: shimmer-redesigned 2s infinite;
+    will-change: transform;
+    -webkit-animation: shimmer-redesigned 2s infinite;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+  
+  /* Force hardware acceleration for better performance */
+  .skill-category-redesigned .skill-bar-redesigned {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+}
+
+@media (max-width: 576px) {
+  .skill-category-redesigned .skill-progress-redesigned {
+    position: relative;
+    overflow: hidden;
+    /* Enhanced mobile shimmer support */
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+  
+  .skill-category-redesigned .skill-progress-redesigned::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+      transparent 0%, 
+      rgba(255, 255, 255, 0.4) 50%, 
+      transparent 100%);
+    animation: shimmer-redesigned 2.5s infinite;
+    will-change: transform;
+    -webkit-animation: shimmer-redesigned 2.5s infinite;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+  
+  /* Ensure skill level colors remain vibrant on mobile */
+  .skill-category-redesigned .expert-redesigned .skill-progress-redesigned {
+    background: linear-gradient(90deg, #10b981, #059669);
+  }
+  
+  .skill-category-redesigned .advanced-redesigned .skill-progress-redesigned {
+    background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+  }
+  
+  .skill-category-redesigned .intermediate-redesigned .skill-progress-redesigned {
+    background: linear-gradient(90deg, #f59e0b, #d97706);
+  }
+  
+  .skill-category-redesigned .basic-redesigned .skill-progress-redesigned {
+    background: linear-gradient(90deg, #38bdf8, #0ea5e9);
+  }
+}
+
+/* Enhanced shimmer animation with better mobile support */
+@keyframes shimmer-redesigned {
+  0% { 
+    left: -100%; 
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+  100% { 
+    left: 100%; 
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+}
+
+@-webkit-keyframes shimmer-redesigned {
+  0% { 
+    left: -100%; 
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+  100% { 
+    left: 100%; 
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+}
+
+/* Touch device specific optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .skill-category-redesigned .skill-progress-redesigned::after {
+    /* Slightly slower animation on touch devices for better visibility */
+    animation-duration: 3s;
+    -webkit-animation-duration: 3s;
+  }
+}
+
+/* High DPI display support */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .skill-category-redesigned .skill-progress-redesigned::after {
+    /* Enhanced shimmer opacity for retina displays */
+    background: linear-gradient(90deg, 
+      transparent 0%, 
+      rgba(255, 255, 255, 0.35) 50%, 
+      transparent 100%);
+  }
+}
+
+@media (max-width: 1249.98px) {
+  .navbar-nav {
+    display: none;
+  }
+  
+  .navbar-toggler {
+    display: flex !important;
+    margin-left: auto; /* Ensure hamburger stays on right */
+  }
+  
+  .navbar-collapse {
+    background: transparent !important; /* Remove background */
+    border-radius: 0 !important;
+    margin-top: 15px;
+    padding: 0 !important; /* Remove padding */
+    box-shadow: none !important; /* Remove shadow */
+    border: none !important; /* Remove border */
+    width: 100%;
+  }
+  
+  .navbar-collapse.show .navbar-nav,
+  .navbar-collapse.collapsing .navbar-nav {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background: var(--white); /* Apply background only to nav items */
+    border-radius: var(--border-radius);
+    padding: 20px;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid rgba(243, 156, 18, 0.1);
+    margin-top: 10px;
+  }
+  
+  [data-theme="dark"] .navbar-collapse.show .navbar-nav,
+  [data-theme="dark"] .navbar-collapse.collapsing .navbar-nav {
+    background: var(--card-bg);
+    border-color: rgba(243, 156, 18, 0.2);
+  }
+  
+  .navbar-nav .nav-link {
+    margin: 5px 0;
+    text-align: center;
+    padding: 12px 20px !important;
+  }
+  
+  .navbar-nav .nav-item {
+    width: 100%;
+  }
+  
+  /* Theme toggle positioning in collapsed menu */
+  .theme-toggle-wrapper {
+    margin: 15px auto 0;
+    width: auto;
+    display: flex;
+    justify-content: center;
+  }
+}
+
+@media (min-width: 1250px) {
+  .navbar-toggler {
+    display: none !important;
+  }
+  
+  .navbar-nav {
+    display: flex !important;
+    flex-direction: row;
+    margin-left: auto; /* Keep nav items on the right */
+  }
+  
+  .navbar-collapse {
+    display: flex !important;
+    justify-content: flex-end; /* Align content to the right */
+  }
+  
+  .theme-toggle-wrapper {
+    margin-left: 15px; /* Add some space from nav items */
+  }
+
+  .navbar-expand-lg .navbar-toggler {
+    display: none !important;
+  }
+  
+  .navbar-expand-lg .navbar-nav {
+    display: flex !important;
+    flex-direction: row;
+  }
+  
+  .navbar-expand-lg .navbar-collapse {
+    display: flex !important;
+  }
+}
+
+/* Container responsive adjustments */
+@media (max-width: 1249.98px) {
+  .navbar .container {
+    padding: 0 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .navbar-brand {
+    flex: 0 0 auto; /* Don't let brand grow/shrink */
+  }
+  
+  .navbar-toggler .collapse {
+    flex: 0 0 auto; /* Don't let toggler grow/shrink */
+    margin-left: auto; /* Push to right */
+  }
+
+  .navbar-expand-lg .navbar-nav {
+    display: none;
+  }
+  
+  .navbar-expand-lg .navbar-toggler {
+    display: block !important;
+  }
+  
+  .navbar-expand-lg .navbar-collapse.show .navbar-nav {
+    display: flex;
+    flex-direction: column;
+  }
 }
