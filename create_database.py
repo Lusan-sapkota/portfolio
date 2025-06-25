@@ -2,32 +2,70 @@
 """
 Create all database tables
 """
-import sys
 import os
-from app import app
-from database import db
-from models import *
-        
+import sys
+from sqlalchemy import inspect, text
+
+# Add the current directory to Python path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-def create_database_tables():
-    try:
+from app import app, db
 
+def create_database_tables():
+    """Create all database tables"""
+    try:
         with app.app_context():
             print("🗄️  Creating database tables...")
+            
+            # Create all tables
             db.create_all()
             print("✅ Database tables created successfully!")
             
-            # Show what tables were created
-            tables = db.engine.table_names()
-            print(f"📊 Created {len(tables)} tables:")
-            for table in sorted(tables):
-                print(f"   - {table}")
+            # Check what tables were created using inspector (fixed method)
+            inspector = inspect(db.engine)
+            tables = inspector.get_table_names()
             
+            if tables:
+                print(f"📋 Created tables: {', '.join(tables)}")
+            else:
+                print("⚠️  No tables found after creation")
+                
+            # Test database connection
+            with db.engine.connect() as connection:
+                result = connection.execute(text("SELECT 1"))
+                print("✅ Database connection test successful!")
+                
     except Exception as e:
         print(f"❌ Error creating tables: {e}")
-        import traceback
-        traceback.print_exc()
+        return False
+    
+    return True
 
-if __name__ == '__main__':
-    create_database_tables()
+def check_database_connection():
+    """Check if database connection is working"""
+    try:
+        with app.app_context():
+            with db.engine.connect() as connection:
+                result = connection.execute(text("SELECT version()"))
+                version = result.fetchone()[0]
+                print(f"✅ PostgreSQL version: {version}")
+                return True
+                
+    except Exception as e:
+        print(f"❌ Database connection failed: {e}")
+        return False
+
+if __name__ == "__main__":
+    print("🚀 Starting database setup...")
+    
+    # Check database connection first
+    if not check_database_connection():
+        print("❌ Please check your database configuration in .env file")
+        sys.exit(1)
+    
+    # Create tables
+    if create_database_tables():
+        print("🎉 Database setup completed successfully!")
+    else:
+        print("❌ Database setup failed!")
+        sys.exit(1)

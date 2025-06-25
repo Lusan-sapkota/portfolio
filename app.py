@@ -29,12 +29,38 @@ def nl2br_filter(text):
     from markupsafe import Markup
     return Markup(text.replace('\n', '<br>\n'))
 
-# Configure rate limiting
-limiter = Limiter(
-    key_func=get_remote_address,
-    app=app,
-    default_limits=["1000 per hour"]
-)
+# Configure rate limiting based on environment
+debug_mode = os.getenv('DEBUG', 'False').lower() == 'true'
+redis_url = os.getenv('REDIS_URL')
+
+if debug_mode:
+    # Development environment - use in-memory storage (Flask default)
+    print("DEBUG: Using in-memory storage for Flask-Limiter (development)")
+    limiter = Limiter(
+        key_func=get_remote_address,
+        app=app,
+        default_limits=["1000 per hour"]
+    )
+elif redis_url:
+    # Production with Redis - use Redis storage
+    print("PRODUCTION: Using Redis storage for Flask-Limiter")
+    limiter = Limiter(
+        key_func=get_remote_address,
+        app=app,
+        default_limits=["1000 per hour"],
+        storage_uri=redis_url
+    )
+else:
+    # Production without Redis - use file-based storage
+    print("PRODUCTION: Using file-based storage for Flask-Limiter")
+    import tempfile
+    storage_path = os.path.join(tempfile.gettempdir(), 'flask_limiter')
+    limiter = Limiter(
+        key_func=get_remote_address,
+        app=app,
+        default_limits=["1000 per hour"],
+        storage_uri=f"file://{storage_path}"
+    )
 
 # Configure app
 app.secret_key = os.getenv('SECRET_KEY') # Used by Flask-Login, can also be JWT_SECRET_KEY
