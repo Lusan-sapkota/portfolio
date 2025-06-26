@@ -265,20 +265,45 @@ def projects_delete(id):
 def projects_refresh_github(id):
     """Refresh GitHub data for project"""
     try:
+        # Debug logging
+        print(f"Attempting to refresh GitHub data for project ID: {id}")
+        
         project = Project.query.get_or_404(id)
+        print(f"Found project: {project.title}")
         
         if not project.github_url:
+            print(f"No GitHub URL for project: {project.title}")
             return jsonify({'status': 'error', 'message': 'No GitHub URL set for this project'}), 400
         
+        print(f"GitHub URL: {project.github_url}")
+        
+        # Extract repo info
+        username, repo = project.extract_github_repo()
+        print(f"Extracted repo: {username}/{repo}")
+        
+        if not username or not repo:
+            return jsonify({'status': 'error', 'message': 'Invalid GitHub URL format'}), 400
+        
         success = project.fetch_github_data()
-        db.session.commit()
+        print(f"GitHub fetch success: {success}")
         
         if success:
-            return jsonify({'status': 'success', 'message': 'GitHub data refreshed successfully!'})
+            db.session.commit()
+            print("Database updated successfully")
+            return jsonify({
+                'status': 'success', 
+                'message': 'GitHub data refreshed successfully!',
+                'stars': project.stars,
+                'forks': project.forks
+            })
         else:
+            print("Failed to fetch GitHub data")
             return jsonify({'status': 'error', 'message': 'Failed to fetch GitHub data'}), 400
             
     except Exception as e:
+        print(f"Exception in refresh_github: {str(e)}")
+        import traceback
+        traceback.print_exc()
         db.session.rollback()
         return jsonify({'status': 'error', 'message': f'Error refreshing GitHub data: {str(e)}'}), 400
 
@@ -2267,3 +2292,4 @@ def export_newsletter_csv():
     except Exception as e:
         flash(f'Error exporting newsletter: {str(e)}', 'danger')
         return redirect(url_for('admin.data_management'))
+

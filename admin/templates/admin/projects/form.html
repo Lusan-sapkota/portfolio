@@ -264,16 +264,32 @@ $(document).ready(function() {
         $.ajax({
             url: '{{ url_for("admin.projects_refresh_github", id=project.id) }}',
             method: 'POST',
+            dataType: 'json',
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+            },
             success: function(response) {
+                console.log('GitHub refresh response:', response);
                 if (response.status === 'success') {
+                    alert('GitHub data refreshed successfully!');
                     location.reload();
                 } else {
                     alert(response.message || 'Error refreshing GitHub data');
                     btn.prop('disabled', false).html('<i class="fab fa-github"></i> Refresh GitHub Data');
                 }
             },
-            error: function() {
-                alert('Error refreshing GitHub data');
+            error: function(xhr, status, error) {
+                console.error('GitHub refresh error:', xhr.responseText);
+                let errorMessage = 'Error refreshing GitHub data';
+                
+                try {
+                    const response = JSON.parse(xhr.responseText);
+                    errorMessage = response.message || errorMessage;
+                } catch (e) {
+                    errorMessage = `${errorMessage}: ${xhr.status} ${xhr.statusText}`;
+                }
+                
+                alert(errorMessage);
                 btn.prop('disabled', false).html('<i class="fab fa-github"></i> Refresh GitHub Data');
             }
         });
