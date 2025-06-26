@@ -6,10 +6,15 @@
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#f39c12",
-  "orientation": "portrait-primary",
+  "orientation": "any",
   "scope": "/",
   "lang": "en-US",
-  "categories": ["technology", "portfolio", "developer", "software"],
+  "categories": [
+    "technology",
+    "portfolio",
+    "developer",
+    "software"
+  ],
   "icons": [
     {
       "src": "/static/assets/logo/android-chrome-192x192.png",
@@ -75,6 +80,24 @@
           "sizes": "96x96"
         }
       ]
+    }
+  ],
+  "dir": "ltr",
+  "display_override": [
+    "window-controls-overlay",
+    "standalone"
+  ],
+  "edge_side_panel": {
+    "preferred_width": 320
+  },
+  "id": "/",
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "iarc_rating_id": "",
+  "protocol_handlers": [
+    {
+      "protocol": "web+portfolio",
+      "url": "/?action=%s"
     }
   ]
 }

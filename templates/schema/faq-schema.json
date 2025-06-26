@@ -1,0 +1,46 @@
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What technologies does Lusan Sapkota specialize in?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Lusan specializes in Python, JavaScript, React, Django, Flask, Machine Learning, AI development, and full-stack web development. He also has experience with mobile app development using React Native and Ionic."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How can I hire Lusan Sapkota for a project?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "You can contact Lusan through the contact form on this website, email at sapkotalusan@gmail.com, or connect on LinkedIn. He's available for freelance projects, consulting, and full-time opportunities."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What types of projects has Lusan worked on?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Lusan has worked on various projects including ambulance tracking systems, face recognition attendance systems, AI assistants, task management applications, and comprehensive web applications using modern frameworks."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Where is Lusan Sapkota located?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Lusan is based in Kathmandu, Nepal, but works with clients worldwide on remote projects. He's experienced in collaborating across different time zones and cultures."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is Lusan's experience level?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Lusan has over 3.5 years of professional experience in full-stack development, AI/ML engineering, and software development. He has worked on both personal projects and client projects across various industries."
+      }
+    }
+  ]
+}

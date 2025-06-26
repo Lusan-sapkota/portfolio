@@ -1,19 +1,8 @@
+# Robots.txt for Lusan Sapkota Portfolio
+# https://www.lusansapkota.com.np/robots.txt
+
 User-agent: *
 Allow: /
-
-# Prioritize important pages
-Allow: /static/
-Allow: /assets/
-Allow: /*.css
-Allow: /*.js
-Allow: /*.jpg
-Allow: /*.png
-Allow: /*.gif
-Allow: /*.svg
-Allow: /*.webp
-Allow: /*.ico
-
-# Block admin and sensitive areas
 Disallow: /admin/
 Disallow: /api/private/
 Disallow: /.git/
@@ -25,17 +14,31 @@ Disallow: /config.py
 Disallow: /requirements.txt
 Disallow: /test*
 Disallow: /debug/
-
-# Block search and temporary pages
 Disallow: /search?
 Disallow: /tmp/
 Disallow: /cache/
+
+# Allow important resources
+Allow: /static/
+Allow: /assets/
+Allow: /*.css
+Allow: /*.js
+Allow: /*.jpg
+Allow: /*.png
+Allow: /*.gif
+Allow: /*.svg
+Allow: /*.webp
+Allow: /*.ico
+Allow: /*.pdf
+Allow: /*.txt
+Allow: /manifest.json
+Allow: /sw.js
 
 # Crawl delay for respectful crawling
 Crawl-delay: 1
 
 # Sitemaps
-Sitemap: https://www.lusansapkota.com.np/sitemap.xml
+Sitemap: https://www.lusansapkota.com.np/static/sitemap.xml
 Sitemap: https://wiki.lusansapkota.com.np/sitemap.xml
 Sitemap: https://git.lusansapkota.com.np/sitemap.xml
 Sitemap: https://donation.lusansapkota.com.np/sitemap.xml
@@ -50,12 +53,41 @@ User-agent: Bingbot
 Allow: /
 Crawl-delay: 1
 
-# Block bad bots
-User-agent: SemrushBot
+# Social Media Crawlers
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+User-agent: WhatsApp
+Allow: /
+
+User-agent: TelegramBot
+Allow: /
+
+# AI/ML Crawlers
+User-agent: GPTBot
 Disallow: /
 
-User-agent: AhrefsBot
+User-agent: ChatGPT-User
 Disallow: /
 
-User-agent: MJ12bot
+User-agent: CCBot
 Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
+
+# Archive crawlers
+User-agent: ia_archiver
+Allow: /
+
+User-agent: archive.org_bot
+Allow: /
