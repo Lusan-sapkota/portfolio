@@ -1,9 +1,9 @@
 // Service Worker for Lusan Sapkota Portfolio PWA
-// Version 1.0.0
+// Version 1.1.0 - Fixed POST request caching issue
 
-const CACHE_NAME = 'lusan-portfolio-v1.0.0';
-const STATIC_CACHE = 'lusan-static-v1.0.0';
-const DYNAMIC_CACHE = 'lusan-dynamic-v1.0.0';
+const CACHE_NAME = 'lusan-portfolio-v1.1.0';
+const STATIC_CACHE = 'lusan-static-v1.1.0';
+const DYNAMIC_CACHE = 'lusan-dynamic-v1.1.0';
 
 // Resources to cache
 const STATIC_ASSETS = [
@@ -76,6 +76,11 @@ self.addEventListener('fetch', event => {
     // Skip cross-origin requests
     if (url.origin !== location.origin) return;
     
+    // Skip non-GET requests for admin routes
+    if (request.method !== 'GET' && (url.pathname.includes('/admin/') || url.pathname.includes('/api/'))) {
+        return; // Let the browser handle it normally
+    }
+    
     // Handle different types of requests
     if (request.destination === 'document') {
         // HTML pages - Network first, fallback to cache
@@ -86,6 +91,9 @@ self.addEventListener('fetch', event => {
     } else if (request.url.includes('/api/')) {
         // API requests - Network first with cache fallback
         event.respondWith(handleApiRequest(request));
+    } else if (request.url.includes('/admin/')) {
+        // Admin routes - Always go to network, don't cache
+        event.respondWith(fetch(request));
     } else {
         // Static assets - Cache first
         event.respondWith(handleStaticRequest(request));
@@ -128,11 +136,16 @@ async function handleImageRequest(request) {
 
 // Handle API requests
 async function handleApiRequest(request) {
+    // For non-GET requests, always go to network
+    if (request.method !== 'GET') {
+        return fetch(request);
+    }
+    
     try {
         const networkResponse = await fetch(request);
         
-        // Cache API responses for specific endpoints
-        if (API_CACHE_ENDPOINTS.some(endpoint => request.url.includes(endpoint))) {
+        // Cache API responses only for GET requests and specific endpoints
+        if (request.method === 'GET' && API_CACHE_ENDPOINTS.some(endpoint => request.url.includes(endpoint))) {
             const cache = await caches.open(DYNAMIC_CACHE);
             cache.put(request, networkResponse.clone());
         }
@@ -157,6 +170,11 @@ async function handleApiRequest(request) {
 
 // Handle static asset requests
 async function handleStaticRequest(request) {
+    // Only handle GET requests for caching
+    if (request.method !== 'GET') {
+        return fetch(request);
+    }
+    
     const cachedResponse = await caches.match(request);
     if (cachedResponse) {
         return cachedResponse;
@@ -164,11 +182,14 @@ async function handleStaticRequest(request) {
     
     try {
         const networkResponse = await fetch(request);
-        const cache = await caches.open(STATIC_CACHE);
-        cache.put(request, networkResponse.clone());
+        // Only cache successful GET responses
+        if (networkResponse.ok && request.method === 'GET') {
+            const cache = await caches.open(STATIC_CACHE);
+            cache.put(request, networkResponse.clone());
+        }
         return networkResponse;
     } catch (error) {
-        return cachedResponse;
+        return cachedResponse || new Response('Network error', { status: 503 });
     }
 }
 
@@ -239,6 +260,13 @@ self.addEventListener('notificationclick', event => {
         event.waitUntil(
             clients.openWindow('https://www.lusansapkota.com.np')
         );
+    }
+});
+
+// Message event for skip waiting
+self.addEventListener('message', event => {
+    if (event.data && event.data.action === 'skipWaiting') {
+        self.skipWaiting();
     }
 });
 

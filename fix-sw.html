@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Service Worker Fix</title>
+</head>
+<body>
+    <h1>Fixing Service Worker Cache Issue...</h1>
+    <div id="status">Starting...</div>
+    
+    <script>
+    async function fixServiceWorker() {
+        const status = document.getElementById('status');
+        
+        try {
+            status.textContent = 'Clearing old service workers...';
+            
+            if ('serviceWorker' in navigator) {
+                // Get all registrations
+                const registrations = await navigator.serviceWorker.getRegistrations();
+                
+                // Unregister all service workers
+                for (let registration of registrations) {
+                    await registration.unregister();
+                    console.log('Unregistered service worker');
+                }
+                
+                status.textContent = 'Clearing old caches...';
+                
+                // Clear all caches
+                const cacheNames = await caches.keys();
+                for (let cacheName of cacheNames) {
+                    await caches.delete(cacheName);
+                    console.log('Deleted cache:', cacheName);
+                }
+                
+                status.textContent = 'Service worker fixed! Redirecting...';
+                
+                // Wait a moment then redirect
+                setTimeout(() => {
+                    window.location.href = '/admin/';
+                }, 2000);
+                
+            } else {
+                status.textContent = 'Service Worker not supported';
+            }
+            
+        } catch (error) {
+            status.textContent = 'Error: ' + error.message;
+            console.error('Error fixing service worker:', error);
+        }
+    }
+    
+    // Run immediately
+    fixServiceWorker();
+    </script>
+</body>
+</html>
