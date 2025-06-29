@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://git.lusansapkota.com.np/search</loc>
+    <lastmod>2025-06-29T10:21:17+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://git.lusansapkota.com.np/project</loc>
+    <lastmod>2025-06-29T10:21:17+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://git.lusansapkota.com.np/</loc>
+    <lastmod>2025-06-29T10:21:17+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+</urlset>
