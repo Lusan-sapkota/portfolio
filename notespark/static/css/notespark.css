@@ -1,0 +1,55 @@
+
+/* NoteSpark Custom Theme - Bootstrap Enhanced - GPLv3 */
+
+.glass {
+  background: rgba(255,255,255,0.7);
+  backdrop-filter: blur(8px);
+  border-radius: 1rem;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.08);
+}
+[data-bs-theme="dark"] .glass {
+  background: rgba(40,40,40,0.7);
+}
+
+.text-gradient {
+  background: linear-gradient(90deg, #E4572E, #F8A21A);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Card and button enhancements */
+.card {
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.card:hover {
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  transform: translateY(-4px) scale(1.02);
+}
+.btn {
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.btn:hover {
+  box-shadow: 0 4px 16px rgba(228,87,46,0.15);
+  transform: translateY(-2px) scale(1.04);
+}
+
+/* Responsive tweaks */
+@media (max-width: 600px) {
+  .display-2, .display-3, .display-4 {
+    font-size: 2rem !important;
+  }
+  .card-title {
+    font-size: 1.2rem !important;
+  }
+}
+
+/* Hide scrollbars for glass cards */
+.glass::-webkit-scrollbar {
+  display: none;
+}
+.glass {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

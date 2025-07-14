@@ -122,16 +122,13 @@ login_manager.login_view = 'admin.login'
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-debug_mode = os.getenv('DEBUG', 'False').lower() == 'true'
-print(f"DEBUG env var: {os.getenv('DEBUG')}") 
-print(f"debug_mode value: {debug_mode}")
-
 # Import blueprints - AFTER app creation and extension initialization
 from admin import admin_bp
 from wiki import wiki_bp
 from git import git_bp
 from donation import donation_bp
 from store import store_bp
+from notespark import notespark_bp
 
 # Register blueprints
 app.register_blueprint(admin_bp) # url_prefix is set in admin_bp definition
@@ -146,6 +143,7 @@ if server_name_env:
     app.register_blueprint(git_bp, subdomain='git')
     app.register_blueprint(donation_bp, subdomain='donation')
     app.register_blueprint(store_bp, subdomain='store')
+    app.register_blueprint(notespark_bp, subdomain='notespark')
     
     # Debug: Print all registered routes
     print("DEBUG: Registered routes after subdomain setup:")
@@ -157,6 +155,7 @@ else:
     app.register_blueprint(git_bp, url_prefix='/git')
     app.register_blueprint(donation_bp, url_prefix='/donation')
     app.register_blueprint(store_bp, url_prefix='/store')
+    app.register_blueprint(notespark_bp, url_prefix='/notespark')
 
 # Import models here (after db initialization)
 from models import *

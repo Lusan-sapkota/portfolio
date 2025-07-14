@@ -13,6 +13,9 @@ virtualenv/
 .env.bak/
 .venv.bak/
 
+# MODES
+.github/chatmodes/BEASTMODE.chatmode.md
+
 # Environment variables
 .env
 
