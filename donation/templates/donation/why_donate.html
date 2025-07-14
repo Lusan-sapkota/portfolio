@@ -3,7 +3,7 @@
 {% block title %}Why Support {{ project.title }}?{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('donation.static', filename='css/why-donate-page.css') }}">
+<link rel="stylesheet" href="{{ url_for('donation.static', filename='css/why-donate-page.css', _external=True, _scheme='https') }}">
 {% endblock %}
 
 {% block content %}

@@ -894,13 +894,6 @@ body {
   border-color: var(--dark-border);
 }
 
-[data-theme="dark"] .project-title a {
-  background: linear-gradient(135deg, var(--dark-text), var(--git-primary));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
 [data-theme="dark"] .project-description {
   color: var(--dark-text-muted);
 }
@@ -2371,13 +2364,6 @@ body {
 [data-theme="dark"] .project-footer {
   background: var(--dark-card-bg);
   border-color: var(--dark-border);
-}
-
-[data-theme="dark"] .project-title a {
-  background: linear-gradient(135deg, var(--dark-text), var(--git-primary));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
 
 [data-theme="dark"] .project-description {

@@ -106,6 +106,9 @@ python create_database.py
 python create_admin.py
 python app.py
 ```
+## Production Branch Updates
+
+Please refer to the main branch for all production changes. Multiple files have been updated—check the commit history for detailed insights, especially if the development branch is incomplete.
 
 ### Production Deployment
 

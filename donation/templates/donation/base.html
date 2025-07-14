@@ -53,11 +53,11 @@
     <meta property="og:url" content="https://donation.lusansapkota.com.np{{ request.path }}">
     <meta property="og:title" content="{% block og_title %}{{ seo_settings.site_title if seo_settings else 'Support Open Source Innovation | Lusan Sapkota' }}{% endblock %}">
     <meta property="og:description" content="{% block og_description %}{{ seo_settings.meta_description if seo_settings else 'Support cutting-edge software development and AI/ML research. Your donations fund open source projects and community resources.' }}{% endblock %}">
-    <meta property="og:image" content="{% block og_image %}{{ url_for('static', filename='assets/images/donation-preview.jpg', _external=True) }}{% endblock %}">
-    <meta property="og:image:secure_url" content="{% block og_image_secure %}{{ url_for('static', filename='assets/images/donation-preview.jpg', _external=True) }}{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}{{ url_for('static', filename='assets/images/profile.jpg', _external=True) }}{% endblock %}">
+    <meta property="og:image:secure_url" content="{% block og_image_secure %}{{ url_for('static', filename='assets/images/profile.jpg', _external=True) }}{% endblock %}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="Support Open Source Development">
+    <meta property="og:image:alt" content="Lusan Sapkota - Support Open Source Development">
     <meta property="og:site_name" content="Lusan Sapkota Donation Platform">
     <meta property="og:locale" content="en_US">
     
@@ -66,8 +66,8 @@
     <meta property="twitter:url" content="https://donation.lusansapkota.com.np{{ request.path }}">
     <meta property="twitter:title" content="{% block twitter_title %}{{ seo_settings.site_title if seo_settings else 'Support Open Source Innovation' }}{% endblock %}">
     <meta property="twitter:description" content="{% block twitter_description %}{{ seo_settings.meta_description if seo_settings else 'Support software development and AI/ML research through secure donations. Help fund innovative open source projects.' }}{% endblock %}">
-    <meta property="twitter:image" content="{% block twitter_image %}{{ url_for('static', filename='assets/images/donation-preview.jpg', _external=True) }}{% endblock %}">
-    <meta property="twitter:image:alt" content="Support Open Source Development">
+    <meta property="twitter:image" content="{% block twitter_image %}{{ url_for('static', filename='assets/images/profile.jpg', _external=True) }}{% endblock %}">
+    <meta property="twitter:image:alt" content="Lusan Sapkota - Support Open Source Development">
     <meta property="twitter:site" content="@LusanSapkota">
     <meta property="twitter:creator" content="@LusanSapkota">
     <meta property="twitter:label1" content="Platform">
@@ -193,8 +193,8 @@
     <meta name="msapplication-config" content="{{ url_for('static', filename='assets/logo/browserconfig.xml') }}">
     
     <!-- Performance Hints -->
-    <link rel="preload" href="{{ url_for('static', filename='assets/css/style.css') }}" as="style">
-    <link rel="preload" href="{{ url_for('donation.static', filename='css/donation-style.css') }}" as="style">
+    <link rel="preload" href="{{ url_for('static', filename='assets/css/style.css', _external=True, _scheme='https') }}" as="style">
+    <link rel="preload" href="{{ url_for('donation.static', filename='css/donation-style.css', _external=True, _scheme='https') }}" as="style">
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" as="style">
     
     <!-- Bootstrap CSS -->
@@ -204,8 +204,8 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Local CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style.css') }}">
-    <link rel="stylesheet" href="{{ url_for('donation.static', filename='css/donation-style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style.css', _external=True, _scheme='https') }}">
+    <link rel="stylesheet" href="{{ url_for('donation.static', filename='css/donation-style.css', _external=True, _scheme='https') }}">
 
     <script>
     // Initialize theme before page renders
@@ -385,21 +385,21 @@
                 <ul class="navbar-nav ms-auto">
                     <!-- Projects -->
                     <li class="nav-item">
-                        <a class="nav-link{% if request.endpoint == 'donation.index' %} active{% endif %}" href="{{ url_for('donation.index') }}">
+                        <a class="nav-link{% if (request.endpoint == 'donation.index') or (g.get('endpoint') == 'donation.index') %} active{% endif %}" href="{{ url_for('donation.index') }}">
                             Projects
                         </a>
                     </li>
                     
                     <!-- Hightlights -->
                     <li class="nav-item">
-                        <a class="nav-link{% if request.endpoint == 'donation.highlights' %} active{% endif %}" href="{{ url_for('donation.highlights') }}">
+                        <a class="nav-link{% if (request.endpoint == 'donation.highlights') or (g.get('endpoint') == 'donation.highlights') %} active{% endif %}" href="{{ url_for('donation.highlights') }}">
                             Highlights
                         </a>
                     </li>
                     
                     <!-- Thanksgiving -->
                     <li class="nav-item">
-                        <a class="nav-link{% if request.endpoint == 'donation.thanksgiving' %} active{% endif %}" href="{{ url_for('donation.thanksgiving') }}">
+                        <a class="nav-link{% if (request.endpoint == 'donation.thanksgiving') or (g.get('endpoint') == 'donation.thanksgiving') %} active{% endif %}" href="{{ url_for('donation.thanksgiving') }}">
                             Thanksgiving
                         </a>
                     </li>
@@ -411,8 +411,13 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="mainSiteDropdown">
                             <li>
-                                <a class="dropdown-item" href="{{ url_for('index') }}" target="_blank">
+                                <a class="dropdown-item" href="https://lusansapkota.com.np" target="_blank">
                                     Home
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ url_for('wiki.index') }}">
+                                    Wiki
                                 </a>
                             </li>
                             <li>
@@ -494,7 +499,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
     <!-- Custom JS -->
 	<script src="{{ url_for('static', filename='assets/js/custom.js') }}"></script>
-    <script src="{{ url_for('donation.static', filename='js/donation-script.js') }}"></script>
+    <script src="{{ url_for('donation.static', filename='js/donation-script.js', _external=True, _scheme='https') }}"></script>
 
     
     <!-- Analytics Integration -->

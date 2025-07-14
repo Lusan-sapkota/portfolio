@@ -47,11 +47,11 @@
 	<meta property="og:url" content="https://git.lusansapkota.com.np{{ request.path }}">
 	<meta property="og:title" content="{% block og_title %}{{ page_title if page_title else 'Lusan\'s Code Repository | Open Source Projects' }}{% endblock %}">
 	<meta property="og:description" content="{% block og_description %}{{ page_description if page_description else 'Explore innovative open source projects and code repositories featuring Python, JavaScript, AI/ML solutions, and web applications.' }}{% endblock %}">
-	<meta property="og:image" content="{% block og_image %}{{ project_image if project_image else url_for('static', filename='assets/images/git-preview.jpg', _external=True) }}{% endblock %}">
-	<meta property="og:image:secure_url" content="{% block og_image_secure %}{{ project_image if project_image else url_for('static', filename='assets/images/git-preview.jpg', _external=True) }}{% endblock %}">
+	<meta property="og:image" content="{% block og_image %}{{ project_image if project_image else url_for('static', filename='assets/images/profile.jpg', _external=True) }}{% endblock %}">
+	<meta property="og:image:secure_url" content="{% block og_image_secure %}{{ project_image if project_image else url_for('static', filename='assets/images/profile.jpg', _external=True) }}{% endblock %}">
 	<meta property="og:image:width" content="1200">
 	<meta property="og:image:height" content="630">
-	<meta property="og:image:alt" content="{% block og_image_alt %}Lusan's Open Source Projects{% endblock %}">
+	<meta property="og:image:alt" content="{% block og_image_alt %}Lusan Sapkota - Open Source Projects{% endblock %}">
 	<meta property="og:site_name" content="Lusan's Code Repository">
 	<meta property="og:locale" content="en_US">
 	<meta property="article:author" content="Lusan Sapkota">
@@ -62,8 +62,8 @@
 	<meta name="twitter:url" content="https://git.lusansapkota.com.np{{ request.path }}">
 	<meta name="twitter:title" content="{% block twitter_title %}{{ page_title if page_title else 'Lusan\'s Code Repository' }}{% endblock %}">
 	<meta name="twitter:description" content="{% block twitter_description %}{{ page_description if page_description else 'Open source projects and code repositories featuring innovative software solutions and development work.' }}{% endblock %}">
-	<meta name="twitter:image" content="{% block twitter_image %}{{ project_image if project_image else url_for('static', filename='assets/images/git-preview.jpg', _external=True) }}{% endblock %}">
-	<meta name="twitter:image:alt" content="{% block twitter_image_alt %}Open Source Code Repository{% endblock %}">
+	<meta name="twitter:image" content="{% block twitter_image %}{{ project_image if project_image else url_for('static', filename='assets/images/profile.jpg', _external=True) }}{% endblock %}">
+	<meta name="twitter:image:alt" content="{% block twitter_image_alt %}Lusan Sapkota - Code Repository{% endblock %}">
 	<meta name="twitter:site" content="@LusanSapkota">
 	<meta name="twitter:creator" content="@LusanSapkota">
 	<meta name="twitter:label1" content="Developer">
@@ -196,9 +196,9 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"  crossorigin="anonymous">
 
 	<!-- Local CSS -->
-	<link rel="preload" href="{{ url_for('git.static', filename='css/git-style.css') }}" as="style">
-	<link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style.css') }}">
-	<link rel="stylesheet" href="{{ url_for('git.static', filename='css/git-style.css') }}">
+	<link rel="preload" href="{{ url_for('git.static', filename='css/git-style.css', _external=True, _scheme='https') }}" as="style">
+	<link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style.css', _external=True, _scheme='https') }}">
+	<link rel="stylesheet" href="{{ url_for('git.static', filename='css/git-style.css', _external=True, _scheme='https') }}">
 
 	<script>
     // Initialize theme before page renders
@@ -260,8 +260,13 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="mainSiteDropdown">
                             <li>
-                                <a class="dropdown-item" href="{{ url_for('index') }}" target="_blank">
+                                <a class="dropdown-item" href="https://lusansapkota.com.np" target="_blank">
                                     Home
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ url_for('wiki.index') }}">
+                                    Wiki
                                 </a>
                             </li>
                             <li>
@@ -336,7 +341,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 	<script src="{{ url_for('static', filename='assets/js/custom.js') }}"></script>
-    <script src="{{ url_for('git.static', filename='js/git-script.js') }}"></script>
+    <script src="{{ url_for('git.static', filename='js/git-script.js', _external=True, _scheme='https') }}"></script>
 
     <!-- Analytics Integration -->
     {% if seo and seo.google_analytics_id %}

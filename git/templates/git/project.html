@@ -1,24 +1,184 @@
 {% extends 'git/base.html' %}
 
-{% block title %}{{ project.title }}{% endblock %}
+{% block title %}{{ project.title }} - Project Details{% endblock %}
 
 {% block content %}
-<h2>{{ project.title }}</h2>
-<p>{{ project.description }}</p>
-
-{% if project.technologies %}
-  <p><strong>Technologies:</strong> {{ project.technologies }}</p>
-{% endif %}
-
-{% if project.github_url %}
-  <p><a href="{{ project.github_url }}" target="_blank">View on GitHub</a></p>
-{% endif %}
-
-{% if project.live_url %}
-  <p><a href="{{ project.live_url }}" target="_blank">Live Demo</a></p>
-{% endif %}
-
-{% if project.commercial_url %}
-  <p><a href="{{ project.commercial_url }}" target="_blank">Commercial Product</a></p>
-{% endif %}
+<div class="container-fluid p-0" style="font-family: 'Poppins', sans-serif;">
+    <!-- Project Header (Full Width) -->
+    <div class="text-center py-5 px-3 mb-4" style="background: linear-gradient(135deg, #FF8C00, #FF6B00); color: white; position: relative; overflow: hidden; margin-top:100px;">
+        <div style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%); transform: rotate(30deg);"></div>
+        
+        <div class="container">
+            <h1 class="display-4 fw-bold mb-3" style="position: relative; z-index: 1; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">{{ project.title }}</h1>
+            
+            <div class="d-flex justify-content-center flex-wrap gap-3" style="position: relative; z-index: 1;">
+                {% if project.status %}
+                <div class="d-flex align-items-center gap-2 px-3 py-2" style="background: rgba(255, 255, 255, 0.25); border-radius: 30px; backdrop-filter: blur(5px); border: 1px solid rgba(255, 255, 255, 0.3); font-weight: 600; transition: all 0.3s ease; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                    <i class="fas fa-info-circle"></i>
+                    <span class="px-2 py-1 rounded-pill fw-bold" style="{% if project.status == 'completed' %}background: linear-gradient(135deg, #C8E6C9, #A5D6A7); color: #1B5E20; border: 2px solid #A5D6A7;
+                    {% elif project.status == 'in-progress' %}background: linear-gradient(135deg, #FFF9C4, #FFF59D); color: #F57F17; border: 2px solid #FFF59D;
+                    {% else %}background: linear-gradient(135deg, #B3E5FC, #81D4FA); color: #01579B; border: 2px solid #81D4FA;{% endif %}">
+                        {{ project.status.replace('-', ' ').title() }}
+                    </span>
+                </div>
+                {% endif %}
+                
+                {% if project.category %}
+                <div class="d-flex align-items-center gap-2 px-3 py-2" style="background: rgba(255, 255, 255, 0.25); border-radius: 30px; backdrop-filter: blur(5px); border: 1px solid rgba(255, 255, 255, 0.3); font-weight: 600; transition: all 0.3s ease; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                    <i class="fas fa-folder"></i>
+                    <span>{{ project.category.name }}</span>
+                </div>
+                {% endif %}
+                
+                {% if project.is_opensource %}
+                <div class="d-flex align-items-center gap-2 px-3 py-2" style="background: rgba(255, 255, 255, 0.25); border-radius: 30px; backdrop-filter: blur(5px); border: 1px solid rgba(255, 255, 255, 0.3); font-weight: 600; transition: all 0.3s ease; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                    <i class="fas fa-code"></i>
+                    <span>Open Source</span>
+                </div>
+                {% endif %}
+                
+                {% if project.created_at %}
+                <div class="d-flex align-items-center gap-2 px-3 py-2" style="background: rgba(255, 255, 255, 0.25); border-radius: 30px; backdrop-filter: blur(5px); border: 1px solid rgba(255, 255, 255, 0.3); font-weight: 600; transition: all 0.3s ease; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                    <i class="fas fa-calendar"></i>
+                    <span>{{ project.created_at.strftime('%B %Y') }}</span>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Content Container -->
+    <div class="container py-4" style="background-color: #FFF8E1; border-radius: 20px; box-shadow: 0 10px 30px rgba(255, 140, 0, 0.1); margin-top: -30px; position: relative; z-index: 2;">
+        <!-- Project Content -->
+        <div class="row g-4 mb-4">
+            <!-- Main Content -->
+            <div class="col-lg-8">
+                <div class="p-4 bg-white rounded-4" style="box-shadow: 0 15px 35px rgba(255, 140, 0, 0.08); border: 1px solid rgba(255, 215, 0, 0.2);">
+                    <h2 class="mb-4 d-flex align-items-center gap-2" style="color: #FF6B00; border-bottom: 3px solid #FFD700; padding-bottom: 12px;">
+                        <i class="fas fa-file-alt" style="color: #FF8C00;"></i> Project Description
+                    </h2>
+                    
+                    <div class="mb-4" style="color: #333; line-height: 1.8; text-align: justify;">
+                        {% if project.description %}
+                            {{ project.description|nl2br|safe }}
+                        {% else %}
+                            <p>No description available for this project.</p>
+                        {% endif %}
+                    </div>
+                    
+                    {% if project.technologies %}
+                    <h3 class="mb-4 d-flex align-items-center gap-2" style="color: #FF6B00; border-bottom: 3px solid #FFD700; padding-bottom: 12px;">
+                        <i class="fas fa-cogs" style="color: #FF8C00;"></i> Technologies Used
+                    </h3>
+                    
+                    <div class="row g-2 mb-4">
+                        {% for tech in project.technologies.split(',') %}
+                        <div class="col-6 col-md-4 col-lg-3">
+                            <div class="text-center py-2 rounded-pill text-white fw-bold" style="background: linear-gradient(45deg, #FF8C00, #FF6B00); transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3); position: relative; overflow: hidden;">
+                                <div style="position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition: 0.5s;"></div>
+                                {{ tech.strip() }}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    
+                    {% if project.stars or project.forks or project.last_updated %}
+                    <div class="d-flex justify-content-around p-4 my-4 rounded-4 flex-wrap" style="background: linear-gradient(135deg, #FFF8E1, #FFECB3); border: 1px solid rgba(255, 215, 0, 0.3); gap: 1rem;">
+                        {% if project.stars %}
+                        <div class="text-center px-3">
+                            <span class="d-block fw-black" style="font-size: 2.5rem; color: #FF6B00; text-shadow: 0 2px 4px rgba(0,0,0,0.1);">{{ project.stars }}</span>
+                            <span class="text-uppercase fw-semibold" style="font-size: 0.9rem; color: #666; letter-spacing: 2px;">Stars</span>
+                        </div>
+                        {% endif %}
+                        
+                        {% if project.forks %}
+                        <div class="text-center px-3">
+                            <span class="d-block fw-black" style="font-size: 2.5rem; color: #FF6B00; text-shadow: 0 2px 4px rgba(0,0,0,0.1);">{{ project.forks }}</span>
+                            <span class="text-uppercase fw-semibold" style="font-size: 0.9rem; color: #666; letter-spacing: 2px;">Forks</span>
+                        </div>
+                        {% endif %}
+                        
+                        {% if project.last_updated %}
+                        <div class="text-center px-3">
+                            <span class="d-block fw-black" style="font-size: 2.5rem; color: #FF6B00; text-shadow: 0 2px 4px rgba(0,0,0,0.1);">{{ project.last_updated.strftime('%b %Y') }}</span>
+                            <span class="text-uppercase fw-semibold" style="font-size: 0.9rem; color: #666; letter-spacing: 2px;">Last Updated</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <div class="p-4 bg-white rounded-4 sticky-top" style="top: 20px; box-shadow: 0 15px 35px rgba(255, 140, 0, 0.08); border: 1px solid rgba(255, 215, 0, 0.2);">
+                    <h3 class="mb-4 d-flex align-items-center gap-2" style="color: #FF6B00; border-bottom: 3px solid #FFD700; padding-bottom: 12px;">
+                        <i class="fas fa-link" style="color: #FF8C00;"></i> Quick Actions
+                    </h3>
+                    
+                    <div class="d-flex flex-column gap-3 mb-4">
+                        {% if project.github_url %}
+                        <a href="{{ project.github_url }}" target="_blank" rel="noopener noreferrer" class="btn d-flex align-items-center justify-content-center gap-2 py-3 text-white fw-bold text-uppercase" style="background: linear-gradient(135deg, #333, #555); letter-spacing: 1px; transition: all 0.3s ease; position: relative; overflow: hidden;">
+                            <i class="fab fa-github"></i>
+                            View Source Code
+                            <div style="position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent); transition: 0.5s;"></div>
+                        </a>
+                        {% endif %}
+                        
+                        {% if project.live_url %}
+                        <a href="{{ project.live_url }}" target="_blank" rel="noopener noreferrer" class="btn d-flex align-items-center justify-content-center gap-2 py-3 text-white fw-bold text-uppercase" style="background: linear-gradient(135deg, #FFD700, #FF8C00); letter-spacing: 1px; transition: all 0.3s ease; position: relative; overflow: hidden;">
+                            <i class="fas fa-external-link-alt"></i>
+                            Live Demo
+                            <div style="position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent); transition: 0.5s;"></div>
+                        </a>
+                        {% endif %}
+                        
+                        {% if project.commercial_url %}
+                        <a href="{{ project.commercial_url }}" target="_blank" rel="noopener noreferrer" class="btn d-flex align-items-center justify-content-center gap-2 py-3 text-white fw-bold text-uppercase" style="background: linear-gradient(135deg, #FF5722, #E64A19); letter-spacing: 1px; transition: all 0.3s ease; position: relative; overflow: hidden;">
+                            <i class="fas fa-shopping-cart"></i>
+                            Commercial Product
+                            <div style="position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent); transition: 0.5s;"></div>
+                        </a>
+                        {% endif %}
+                    </div>
+                    
+                    {% if project.image_url %}
+                    <div class="mt-4">
+                        <h4 class="mb-3 d-flex align-items-center gap-2" style="color: #FF6B00; border-bottom: 3px solid #FFD700; padding-bottom: 12px;">
+                            <i class="fas fa-image" style="color: #FF8C00;"></i> Project Preview
+                        </h4>
+                        <img src="{{ project.image_url }}" alt="{{ project.title }}" class="img-fluid rounded-3" style="border: 3px solid white; box-shadow: 0 10px 30px rgba(255, 140, 0, 0.15); transition: transform 0.3s ease;">
+                    </div>
+                    {% endif %}
+                    
+                    <!-- Additional Info -->
+                    <div class="mt-4 p-4 rounded-4" style="background: linear-gradient(135deg, #FFF8E1, #FFECB3); border-left: 5px solid #FF8C00;">
+                        <h5 class="mb-3 d-flex align-items-center gap-2" style="color: #FF6B00; font-weight: 700;">
+                            <i class="fas fa-info" style="color: #FF8C00;"></i> Project Information
+                        </h5>
+                        <div style="color: #333; line-height: 1.6; font-size: 0.95rem;">
+                            <p class="mb-2"><strong>Type:</strong> {{ "Open Source" if project.is_opensource else "Proprietary" }}</p>
+                            {% if project.category %}
+                            <p class="mb-2"><strong>Category:</strong> {{ project.category.name }}</p>
+                            {% endif %}
+                            <p class="mb-2"><strong>Status:</strong> {{ project.status.replace('-', ' ').title() if project.status else 'Unknown' }}</p>
+                            {% if project.created_at %}
+                            <p class="mb-0"><strong>Created:</strong> {{ project.created_at.strftime('%B %d, %Y') }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Navigation -->
+        <div class="text-center mt-5 pt-4" style="border-top: 2px solid rgba(255, 215, 0, 0.3);">
+            <a href="{{ url_for('git.index') }}" class="btn d-inline-flex align-items-center gap-2 px-5 py-3 text-white fw-bold text-uppercase" style="background: linear-gradient(135deg, #FF8C00, #FF6B00); letter-spacing: 1px; transition: all 0.3s ease; box-shadow: 0 5px 15px rgba(255, 140, 0, 0.3);">
+                <i class="fas fa-arrow-left"></i>
+                Back to Projects
+            </a>
+        </div>
+    </div>
+</div>
 {% endblock %}

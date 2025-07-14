@@ -5,7 +5,7 @@
 {% block meta_description %}{{ thanksgiving_settings.page_description if thanksgiving_settings else 'I are grateful for the incredible support from my community.' }}{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('donation.static', filename='css/donation-style.css') }}">
+<link rel="stylesheet" href="{{ url_for('donation.static', filename='css/donation-style.css', _external=True, _scheme='https') }}">
 {% endblock %}
 
 {% block content %}

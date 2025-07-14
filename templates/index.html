@@ -9,12 +9,14 @@
     <meta http-equiv="Accept-CH" content="DPR, Viewport-Width, Width">
     
     <!-- Primary Meta Tags -->
-    <title>{{ seo.title if seo else 'Lusan Sapkota | Full Stack Software Developer & AI/ML Engineer from Nepal | Python, JavaScript, React Expert' }}</title>
-    <meta name="title" content="{{ seo.title if seo else 'Lusan Sapkota | Full Stack Software Developer & AI/ML Engineer from Nepal | Python, JavaScript, React Expert' }}">
-    <meta name="description" content="{{ seo.meta_description if seo and seo.meta_description else 'Expert Full Stack Developer & AI/ML Engineer from Nepal. Specializing in Python, JavaScript, React, Django. 5+ years experience building scalable web applications and AI solutions.' }}">
-    <meta name="author" content="{{ personal.full_name if personal else 'Lusan Sapkota' }}">
-    <meta name="keywords" content="{{ seo.meta_keywords if seo and seo.meta_keywords else 'Lusan Sapkota, Full Stack Developer Nepal, Python Developer, AI Engineer, JavaScript Expert, React Developer, Django Developer, Web Development Nepal, Nepali Developer, Software Engineer' }}">
-    <meta name="subject" content="Full Stack Software Development & AI/ML Engineering Portfolio">
+	<title>{{ seo.title if seo else 'Lusan Sapkota | Full Stack Developer & AI Engineer' }}</title>
+
+	<meta name="title" content="{{ seo.title if seo else 'Lusan Sapkota | Full Stack Developer & AI Engineer' }}">
+	<meta name="description" content="{{ seo.meta_description if seo and seo.meta_description else 'Hi, I\'m Lusan — a Full Stack Developer from Nepal with 3.5+ years of experience. I build powerful websites, smart apps, and AI-driven tools that work beautifully across devices.' }}">
+	<meta name="author" content="{{ personal.full_name if personal else 'Lusan Sapkota' }}">
+	<meta name="keywords" content="{{ seo.meta_keywords if seo and seo.meta_keywords else 'Lusan Sapkota, Full Stack Developer, AI Engineer, Web Developer Nepal, Python, React, React Native, Mobile App Developer, Software Engineer, Machine Learning, Ionic, Django' }}">
+	<meta name="subject" content="Professional Portfolio of Lusan Sapkota | Full Stack Development, AI/ML Solutions, Mobile App Development">
+
     <meta name="copyright" content="Lusan Sapkota">
     <meta name="topic" content="Software Development, AI/ML, Web Technologies">
     <meta name="summary" content="Professional portfolio of Lusan Sapkota - Full Stack Developer and AI/ML Engineer from Nepal">
@@ -49,7 +51,7 @@
     <meta property="og:type" content="profile">
     <meta property="og:url" content="{{ seo.og_url if seo and seo.og_url else 'https://www.lusansapkota.com.np/' }}">
     <meta property="og:title" content="{{ seo.og_title if seo and seo.og_title else seo.title if seo else 'Lusan Sapkota | Full Stack Software Developer & AI/ML Engineer from Nepal' }}">
-    <meta property="og:description" content="{{ seo.og_description if seo and seo.og_description else seo.meta_description if seo else 'Expert Full Stack Developer & AI/ML Engineer from Nepal specializing in Python, JavaScript, React, Django. Expert in building scalable applications and AI solutions.' }}">
+    <meta property="og:description" content="{{ seo.og_description if seo and seo.og_description else seo.meta_description if seo else 'Full Stack Developer from Nepal specializing in Python, JavaScript, React, AI/ML. Building scalable web applications and innovative AI solutions.' }}">
     <meta property="og:image" content="{{ seo.og_image if seo and seo.og_image else url_for('static', filename='assets/images/profile.jpg', _external=True) }}">
     <meta property="og:image:secure_url" content="{{ seo.og_image if seo and seo.og_image else url_for('static', filename='assets/images/profile.jpg', _external=True) }}">
     <meta property="og:image:width" content="1200">
@@ -66,7 +68,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="{{ seo.twitter_url if seo and seo.twitter_url else 'https://www.lusansapkota.com.np/' }}">
     <meta name="twitter:title" content="{{ seo.twitter_title if seo and seo.twitter_title else seo.title if seo else 'Lusan Sapkota | Full Stack Developer & AI/ML Engineer' }}">
-    <meta name="twitter:description" content="{{ seo.twitter_description if seo and seo.twitter_description else seo.meta_description if seo else 'Expert Full Stack Developer from Nepal specializing in Python, JavaScript, React, Django, AI/ML, and modern web technologies. Building scalable applications and innovative solutions.' }}">
+    <meta name="twitter:description" content="{{ seo.twitter_description if seo and seo.twitter_description else seo.meta_description if seo else 'Full Stack Developer from Nepal with expertise in Python, JavaScript, React, AI/ML. Creating powerful web applications and intelligent solutions.' }}">
     <meta name="twitter:image" content="{{ seo.twitter_image if seo and seo.twitter_image else url_for('static', filename='assets/images/profile.jpg', _external=True) }}">
     <meta name="twitter:image:alt" content="Lusan Sapkota - Full Stack Software Developer Portfolio">
     <meta name="twitter:site" content="@LusanSapkota">
@@ -319,7 +321,7 @@
     </script>
     
     <!-- Dynamic Schema.org from Database -->
-    {% if seo and seo.schema_markup %}
+    {% if seo and seo.schema_markup and seo.schema_markup.strip() and seo.schema_markup.strip().startswith('{') %}
     <script type="application/ld+json">
     {{ seo.schema_markup | safe }}
     </script>
@@ -1006,7 +1008,7 @@
 		})(window.lintrk);
 	</script>
 	<noscript>
-		<img height="1" width="1" style="display:none;" alt="" src="https://px.ads.linkedin.com/collect/?pid=5849652&fmt=gif" />
+		<img height="1" width="1" style="display:none;" alt="LinkedIn Analytics Pixel" src="https://px.ads.linkedin.com/collect/?pid=5849652&fmt=gif" />
 	</noscript>
 	
 	<!-- Performance and Error Monitoring -->
@@ -1076,26 +1078,18 @@
 		"mainEntity": [
 			{
 				"@type": "Question",
-				"name": "What technologies does Lusan Sapkota specialize in?",
+				"name": "What is Lusan Sapkota's portfolio?",
 				"acceptedAnswer": {
 					"@type": "Answer",
-					"text": "Lusan Sapkota specializes in Python, JavaScript, TypeScript, React, Next.js, Django, Flask, AI/ML technologies, graph algorithms, and modern web development frameworks."
-				}
-			},
-			{
-				"@type": "Question", 
-				"name": "Where is Lusan Sapkota located?",
-				"acceptedAnswer": {
-					"@type": "Answer",
-					"text": "Lusan Sapkota is based in Kathmandu, Nepal and works with clients worldwide."
+					"text": "It's a custom-built developer platform available at lusansapkota.com.np with subdomains for wiki, shop, git, and donations."
 				}
 			},
 			{
 				"@type": "Question",
-				"name": "What type of projects does Lusan Sapkota work on?",
+				"name": "Is the CMS custom-built?",
 				"acceptedAnswer": {
 					"@type": "Answer",
-					"text": "Lusan works on full-stack web applications, AI/ML solutions, mobile applications, e-commerce platforms, and open-source projects featuring modern technologies."
+					"text": "Yes, the CMS is handcrafted without any templates or drag-and-drop builders."
 				}
 			}
 		]
@@ -1179,13 +1173,13 @@
 		<!-- top-area End -->
 	
 		<!--welcome-hero start -->
-		<section id="welcome-hero" class="welcome-hero" data-aos="fade-up" data-aos-duration="1200">
+		<section id="welcome-hero" class="welcome-hero" data-aos="fade-up" data-aos-duration="1200" itemprop="mainEntity" itemscope itemtype="http://schema.org/Person">
 			<div class="container">
 				<div class="row">
 					<div class="col-md-12 text-center">
 						<div class="header-text">
-							<h2 data-aos="fade-up" data-aos-delay="300">hi <span>,</span> i am <br> Lusan <br> Sapkota <span>.</span>   </h2>
-							<p data-aos="fade-up" data-aos-delay="600">Full Stack Software Developer from Nepal &#x1F1F3;&#x1F1F5;.
+							<h1 data-aos="fade-up" data-aos-delay="300" itemprop="name">hi <span>,</span> i am <br> Lusan <br> Sapkota <span>.</span>   </h1>
+							<p data-aos="fade-up" data-aos-delay="600" itemprop="jobTitle">Full Stack Software Developer from Nepal &#x1F1F3;&#x1F1F5;.
 							</p>
 							<div data-aos="fade-up" data-aos-delay="900">
 								<a href="javascript:void(0)" class="hover-lift resume-download-btn" data-resume-url="{{ url_for('static', filename='assets/download/Lusan_Sapkota_Resume.txt') }}">Download Resume</a>
@@ -1301,7 +1295,7 @@
 									Crafting Solutions with a Full Stack Approach, from the Himalayas
 								</h3>
 								<p>
-									As a Full Stack Software Developer based in Nepal, I combine creativity with technical expertise to deliver dynamic, responsive websites and robust applications. With a deep understanding of both backend architecture and modern frontend design, I take a holistic approach to development, always focusing on user-centered solutions. My passion for creating impactful digital experiences is driven by a commitment to leveraging the latest technologies and best practices. In addition to my development work, I specialize in AI and ML, particularly in graph-based models and algorithms, to drive data-driven insights and innovation.<a href="#contact">Let’s connect and build something extraordinary together!</a>
+									As a Full Stack Software Developer based in Nepal, I combine creativity with technical expertise to deliver dynamic, responsive websites and robust applications. With a deep understanding of both backend architecture and modern frontend design, I take a holistic approach to development, always focusing on user-centered solutions. My passion for creating impactful digital experiences is driven by a commitment to leveraging the latest technologies and best practices. In addition to my development work, I specialize in AI and ML, particularly in graph-based models and algorithms, to drive data-driven insights and innovation.<a href="#contact">Let's connect and build something extraordinary together!</a>
 								</p>
 								<div class="row">
 									<div class="col-sm-4">
@@ -1322,7 +1316,7 @@
 						</div>
 						<div class="col-sm-offset-1 col-sm-5">
 							<div class="single-about-img">
-								<img src="{{ url_for('static', filename='assets/images/profile.jpg') }}" alt="profile_image">
+								<img src="{{ url_for('static', filename='assets/images/profile.jpg') }}" alt="Lusan Sapkota - Full Stack Developer Profile Photo" loading="lazy">
 								<div class="about-list-icon">
 									<ul>
 										<li>
@@ -2076,7 +2070,7 @@
 								<div class="profile-content">
 									<h4>GitHub</h4>
 									<p>Open source projects & code repositories</p>
-									<a href="https://github.com/Lusan-sapkota" target="_blank" class="profile-link">
+									<a href="https://github.com/Lusan-sapkota" target="_blank" rel="noopener noreferrer" class="profile-link">
 										View Profile <i class="fas fa-external-link-alt"></i>
 									</a>
 								</div>
@@ -2214,7 +2208,7 @@
                         {% for project in portfolio_projects %}
                         <div class="portfolio-item card-base" data-category="{{ project.category.name.lower().replace(' ', '-') if project.category else 'other' }}">
                             <div class="portfolio-image">
-                                <img src="{{ project.image_url or url_for('static', filename='assets/images/portfolio/default-project.jpg') }}" alt="{{ project.title }}" />
+                                <img src="{{ project.image_url or url_for('static', filename='assets/images/portfolio/default-project.jpg') }}" alt="{{ project.title }} - Project Screenshot" loading="lazy" />
                                 <div class="portfolio-overlay">
                                     <div class="portfolio-links">
                                         {% if project.github_url %}
@@ -2237,12 +2231,26 @@
                             </div>
                             <div class="portfolio-content">
                                 <h3 class="portfolio-title">{{ project.title }}</h3>
-                                <p class="portfolio-description">{{ project.description }}</p>
+                                <p class="portfolio-description">
+                                    {% if project.description %}
+                                        {% set description = project.description %}
+                                        {% if description|length > 120 %}
+                                            {{ description[:120] }}...
+                                        {% else %}
+                                            {{ description }}
+                                        {% endif %}
+                                    {% else %}
+                                        No description available.
+                                    {% endif %}
+                                </p>
                                 <div class="portfolio-tech">
                                     {% if project.technologies %}
-                                        {% for tech in project.technologies.split(',') %}
+                                        {% for tech in project.technologies.split(',')[:4] %}
                                         <span class="tech-tag">{{ tech.strip() }}</span>
                                         {% endfor %}
+                                        {% if project.technologies.split(',')|length > 4 %}
+                                        <span class="tech-tag tech-more">+{{ project.technologies.split(',')|length - 4 }} more</span>
+                                        {% endif %}
                                     {% endif %}
                                 </div>
                                 {% if project.stars or project.forks %}
@@ -2259,13 +2267,22 @@
                                     {% endif %}
                                 </div>
                                 {% endif %}
+                                <!-- Learn More Button -->
+                                <div class="portfolio-actions mt-3" style="display: flex; justify-content: center; align-items: center;">
+                                    <a href="https://git.lusansapkota.com.np/project/{{ project.id }}" 
+                                       class="btn-learn-more" style=" text-decoration:none; color: #fff; background-color: #f39c12; padding: 10px 15px; border-radius: 5px;"
+                                       target="_blank" 
+                                       rel="noopener noreferrer">
+                                        Learn More
+                                    </a>
+                                </div>
                             </div>
                         </div>
                         {% else %}
                         <!-- Fallback content if no projects in database -->
                         <div class="portfolio-item card-base" data-category="web">
                             <div class="portfolio-image">
-                                <img src="{{ url_for('static', filename='assets/images/portfolio/placeholder.svg')}}" alt="Sample Project" />
+                                <img src="{{ url_for('static', filename='assets/images/portfolio/placeholder.svg')}}" alt="Sample Project Screenshot" loading="lazy" />
                                 <div class="portfolio-overlay">
                                     <div class="portfolio-links">
                                         <a href="https://github.com/Lusan-sapkota" target="_blank" class="btn-portfolio btn-github">
@@ -2566,7 +2583,7 @@
       <div class="footer-social">
         <h4>Connect With Me</h4>
         <div class="social-links">
-          <a href="https://github.com/Lusan-sapkota" target="_blank" class="social-link" title="GitHub">
+          <a href="https://github.com/Lusan-sapkota" target="_blank" rel="noopener noreferrer" class="social-link" title="GitHub">
             <i class="fab fa-github"></i>
           </a>
           <a href="https://www.linkedin.com/in/lusan-sapkota-a08194284/" target="_blank" class="social-link" title="LinkedIn">

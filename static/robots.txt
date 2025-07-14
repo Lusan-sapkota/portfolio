@@ -35,7 +35,7 @@ Disallow: /cache/
 Crawl-delay: 1
 
 # Sitemaps
-Sitemap: https://www.lusansapkota.com.np/sitemap.xml
+Sitemap: https://www.lusansapkota.com.np/static/sitemap.xml
 Sitemap: https://wiki.lusansapkota.com.np/sitemap.xml
 Sitemap: https://git.lusansapkota.com.np/sitemap.xml
 Sitemap: https://donation.lusansapkota.com.np/sitemap.xml
@@ -50,12 +50,12 @@ User-agent: Bingbot
 Allow: /
 Crawl-delay: 1
 
-# Block bad bots
-User-agent: SemrushBot
-Disallow: /
+# Social Media Crawlers
+User-agent: facebookexternalhit
+Allow: /
 
-User-agent: AhrefsBot
-Disallow: /
+User-agent: Twitterbot
+Allow: /
 
-User-agent: MJ12bot
-Disallow: /
+User-agent: LinkedInBot
+Allow: /

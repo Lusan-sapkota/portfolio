@@ -5,7 +5,7 @@
 {% block meta_description %}Support {{ project.title }} - {{ project.short_description or project.description[:150] }}. Help advance open source innovation with your contribution.{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('donation.static', filename='css/donation-style.css') }}">
+<link rel="stylesheet" href="{{ url_for('donation.static', filename='css/donation-style.css', _external=True, _scheme='https') }}">
 <style>
     /* Project-specific enhancements */
     .external-links a {
@@ -341,7 +341,7 @@
                         <div class="enhanced-donation-form">
                             <h4 class="form-section-title"><i class="fas fa-heart text-primary"></i> Support This Project</h4>
                             
-                            <form action="{{ url_for('donation.donate', project_id=project.id) }}" method="POST" id="donationForm">
+                            <form action="{{ url_for('donation.donate', project_id=project.id, _external=True, _scheme='https') }}" method="POST" id="donationForm">
                                 <!-- Currency Selection -->
                                 <div class="enhanced-form-group">
                                     <label class="enhanced-form-label">
@@ -918,7 +918,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
             <div class="modal-body">
                 <div class="text-center mb-3">
-                    <img src="{{ url_for('donation.static', filename='images/sorry.png') }}" 
+                    <img src="{{ url_for('donation.static', filename='images/sorry.png', _external=True, _scheme='https') }}" 
                          alt="Sorry" class="img-fluid" style="max-height: 150px;">
                 </div>
                 <h6 class="text-center mb-3">This payment method is temporarily unavailable</h6>

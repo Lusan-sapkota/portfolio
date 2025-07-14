@@ -75,7 +75,7 @@
     <div class="article-content">
         <div class="content-wrapper">
             {% if article.content %}
-                {{ article.content|safe }}
+                {{ article.content|markdown|safe }}
             {% else %}
                 <p class="text-muted">No content available for this article.</p>
             {% endif %}

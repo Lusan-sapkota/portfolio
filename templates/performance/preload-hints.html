@@ -1,0 +1,24 @@
+<!-- Critical Resource Preloads for Performance -->
+<link rel="preload" href="{{ url_for('static', filename='assets/css/style.css') }}" as="style">
+<link rel="preload" href="{{ url_for('static', filename='assets/js/main.js') }}" as="script">
+<link rel="preload" href="{{ url_for('static', filename='assets/images/profile.jpg') }}" as="image">
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" as="style" crossorigin>
+
+<!-- DNS Prefetch for External Resources -->
+<link rel="dns-prefetch" href="https://fonts.googleapis.com">
+<link rel="dns-prefetch" href="https://fonts.gstatic.com">
+<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+<link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+<link rel="dns-prefetch" href="https://github.com">
+<link rel="dns-prefetch" href="https://api.github.com">
+<link rel="dns-prefetch" href="https://www.google-analytics.com">
+<link rel="dns-prefetch" href="https://www.googletagmanager.com">
+
+<!-- Preconnect for Critical Third-party Origins -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://api.github.com" crossorigin>
+
+<!-- Resource Hints for Better Loading -->
+<link rel="prefetch" href="{{ url_for('static', filename='assets/download/Lusan_Sapkota_Resume.txt') }}">
+<link rel="prefetch" href="{{ url_for('static', filename='manifest.json') }}">

@@ -5,7 +5,7 @@
 {% block meta_description %}Complete your donation payment for {{ donation.project.title }}{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('donation.static', filename='css/donation-style.css') }}">
+<link rel="stylesheet" href="{{ url_for('donation.static', filename='css/donation-style.css', _external=True, _scheme='https') }}">
 
 <style>
 /* ===== VERIFICATION PENDING PAYMENT METHODS ===== */

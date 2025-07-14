@@ -1,0 +1,4 @@
+# ads.txt file for lusansapkota.com.np
+# This file is used to authorize digital advertising inventory
+# Currently no advertising partnerships active
+# Contact: sapkotalusan@gmail.com for advertising inquiries

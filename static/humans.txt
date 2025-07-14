@@ -1,0 +1,15 @@
+/* TEAM */
+    Developer: Lusan Sapkota
+    Contact: sapkotalusan@gmail.com
+    Twitter: @LusanSapkota
+    Location: Kathmandu, Nepal
+    
+/* THANKS */
+    Thanks to all the open source contributors
+    
+/* SITE */
+    Last update: 2024/12/23
+    Language: English
+    Doctype: HTML5
+    IDE: VS Code
+    Components: Python, Flask, JavaScript, Bootstrap

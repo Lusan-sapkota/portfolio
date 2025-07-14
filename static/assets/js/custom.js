@@ -607,3 +607,38 @@ $(document).ready(function() {
         skillsObserver.observe(skillsSection);
     }
 });
+
+// Enhanced Mobile Skills Animation - Add this function
+function initializeMobileSkillBars() {
+    // Check if we're on a mobile device
+    const isMobile = window.innerWidth <= 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    if (isMobile) {
+        // Force show all skill bars immediately on mobile
+        const progressBars = document.querySelectorAll('.skill-progress-redesigned');
+        progressBars.forEach((bar, index) => {
+            const percentage = bar.getAttribute('data-progress') || 
+                             bar.getAttribute('data-percentage') || 
+                             bar.getAttribute('aria-valuenow') || '75'; // Default to 75% if no data
+            
+            // Set width immediately for mobile
+            setTimeout(() => {
+                bar.style.width = percentage + '%';
+                bar.style.opacity = '1';
+                bar.classList.add('mobile-animated');
+            }, index * 100); // Stagger slightly for visual appeal
+        });
+    }
+}
+
+// Call on page load and resize
+document.addEventListener('DOMContentLoaded', function() {
+    initializeMobileSkillBars();
+    
+    // Re-initialize on window resize
+    let resizeTimer;
+    window.addEventListener('resize', function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(initializeMobileSkillBars, 250);
+    });
+});

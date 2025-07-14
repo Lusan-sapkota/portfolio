@@ -5,7 +5,7 @@
 {% block meta_description %}{{ seo_settings.meta_description if seo_settings else 'Support open source innovation and amazing projects that benefit the developer community.' }}{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('donation.static', filename='css/donation-page.css') }}">
+<link rel="stylesheet" href="{{ url_for('donation.static', filename='css/donation-page.css', _external=True, _scheme='https') }}">
 {% endblock %}
 
 {% block content %}
@@ -163,7 +163,7 @@
         
         <div class="row justify-content-center">
             <div class="col-lg-6 col-md-8">
-                <form action="{{ url_for('donation.subscribe_newsletter') }}" method="POST" class="donation-newsletter-form">
+                <form action="{{ url_for('donation.subscribe_newsletter', _external=True, _scheme='https') }}" method="POST" class="donation-newsletter-form">
                     <div class="donation-form-group">
                         <input type="email" name="email" class="donation-form-control" placeholder="Your Email Address" required>
                     </div>

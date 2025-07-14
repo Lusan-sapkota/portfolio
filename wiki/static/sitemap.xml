@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://wiki.lusansapkota.com.np/explore</loc>
+    <lastmod>2025-06-29T10:21:38+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://wiki.lusansapkota.com.np/search</loc>
+    <lastmod>2025-06-29T10:21:38+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://wiki.lusansapkota.com.np/article</loc>
+    <lastmod>2025-06-29T10:21:38+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://wiki.lusansapkota.com.np/</loc>
+    <lastmod>2025-06-29T10:21:38+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://wiki.lusansapkota.com.np/random_page</loc>
+    <lastmod>2025-06-29T10:21:38+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+</urlset>

@@ -3,7 +3,7 @@
 {% block title %}Project Highlights - Donation{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('donation.static', filename='css/donation-style.css') }}">
+<link rel="stylesheet" href="{{ url_for('donation.static', filename='css/donation-style.css', _external=True, _scheme='https') }}">
 {% endblock %}
 
 {% block content %}

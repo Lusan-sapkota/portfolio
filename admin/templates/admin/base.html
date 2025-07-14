@@ -159,9 +159,19 @@
     </div>
 
     <!-- Scripts -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" 
+            integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" 
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ url_for('admin.static', filename='js/admin-script.js') }}"></script>
+    <script>
+        // Debug: Check if jQuery is loaded
+        if (typeof $ === 'undefined') {
+            console.error('jQuery is not loaded!');
+        } else {
+            console.log('jQuery loaded successfully:', $.fn.jquery);
+        }
+    </script>
+    <script src="{{ url_for('admin.static', filename='js/admin-script.js') }}?v={{ range(1000, 9999) | random }}"></script>
     {% block extra_js %}{% endblock %}
 </body>
 </html>
