@@ -53,7 +53,7 @@ def markdown_filter(text):
         }
     })
     return Markup(md.convert(text))
-
+  
 # Configure rate limiting based on environment
 debug_mode = os.getenv('DEBUG', 'False').lower() == 'true'
 redis_url = os.getenv('REDIS_URL')
