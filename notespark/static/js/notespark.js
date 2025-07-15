@@ -1,4 +1,3 @@
-
 // NoteSpark landing page JS (GPLv3)
 document.addEventListener('DOMContentLoaded', function() {
   // GSAP entrance animations
@@ -41,4 +40,28 @@ document.addEventListener('DOMContentLoaded', function() {
       setTimeout(updateThemeIcon, 100);
     });
   }
+
+  // Initialize Lenis for smooth scrolling
+  const lenis = new Lenis({
+    duration: 1.2,
+    smooth: true,
+    direction: 'vertical',
+    gestureDirection: 'vertical',
+    mouseMultiplier: 1,
+    touchMultiplier: 2,
+    smoothTouch: true,
+    infinite: false
+  });
+
+  function raf(time) {
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+  }
+  requestAnimationFrame(raf);
+
+  // Optional: update Three.js camera on scroll for 3D effect
+  lenis.on('scroll', ({ scroll }) => {
+    // Example: Parallax effect or camera movement
+    // camera.position.z = 15 + scroll * 0.01;
+  });
 });

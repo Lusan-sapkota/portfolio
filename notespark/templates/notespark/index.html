@@ -20,27 +20,266 @@
 {% endblock %}
 
 {% block header %}
-<section class="container py-5 text-center">
-  <div class="row justify-content-center align-items-center">
-    <div class="col-lg-8">
-      <h1 class="display-2 fw-bold mb-3 text-gradient">NoteSpark</h1>
+<!-- Hero Section - 100vh -->
+<section class="container-fluid d-flex flex-column justify-content-center align-items-center text-center min-vh-100 hero-section-home position-relative">
+  <div class="floating-shapes position-absolute w-100 h-100" id="hero-floating-shapes" style="top:0;left:0;z-index:0;"></div>
+  <div class="row justify-content-center align-items-center w-100" style="z-index:2;">
+    <div class="col-lg-8 mx-auto">
+      <h1 class="display-2 fw-bold mb-3 text-gradient hero-title">NoteSpark</h1>
+      <p class="lead mb-4 hero-subtitle">Secure, offline-first Markdown note app. Fast, flexible, open-source. <span class="badge bg-warning text-dark ms-2">GPLv3</span></p>
+      <div class="d-flex flex-wrap justify-content-center gap-3 mb-4 hero-btn">
+        <a href="/download" class="btn btn-lg btn-primary shadow">Download</a>
+        <a href="/docs" class="btn btn-lg btn-outline-dark shadow">Docs</a>
+        <a href="https://github.com/Lusan-sapkota/notespark" target="_blank" class="btn btn-lg btn-outline-secondary shadow">GitHub</a>
+      </div>
+      <div class="d-flex flex-wrap justify-content-center gap-2 mb-4 hero-badges">
+        <span class="badge rounded-pill bg-primary">Markdown</span>
+        <span class="badge rounded-pill bg-success">Offline-first</span>
+        <span class="badge rounded-pill bg-info text-dark">Secure Vault (soon)</span>
+        <span class="badge rounded-pill bg-secondary">JSON Import/Export</span>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <i class="fas fa-chevron-down"></i>
+  </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<!-- Features Section - 100vh with Screenshots Left, Video Right -->
+<section class="container-fluid d-flex flex-column justify-content-center align-items-center min-vh-100 features-section position-relative" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+  <div class="floating-shapes position-absolute w-100 h-100" id="features-floating-shapes" style="top:0;left:0;z-index:0;"></div>
+  <div class="container" style="z-index:2;">
+    <div class="row align-items-center h-100">
+      <div class="col-lg-6 mb-4 mb-lg-0">
+        <h2 class="display-4 fw-bold mb-4 text-white">Experience NoteSpark</h2>
+        <p class="lead text-white mb-4">See how NoteSpark transforms your note-taking workflow with powerful features and an intuitive interface.</p>
+        
+        <!-- App Screenshots -->
+        <div class="screenshots-container">
+          <div class="screenshot-item mb-3">
+            <img src="/static/images/screenshot1.png" alt="NoteSpark Editor Interface" class="img-fluid rounded-3 shadow-lg">
+            <div class="screenshot-caption mt-2">
+              <h5 class="text-white">📝 Markdown Editor</h5>
+              <p class="text-white-50">Write with full Markdown support and real-time preview</p>
+            </div>
+          </div>
+          <div class="screenshot-item">
+            <img src="/static/images/screenshot2.png" alt="NoteSpark Offline Mode" class="img-fluid rounded-3 shadow-lg">
+            <div class="screenshot-caption mt-2">
+              <h5 class="text-white">📶 Offline-First</h5>
+              <p class="text-white-50">Access your notes anywhere, anytime without internet</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-lg-6">
+        <!-- Demo Video -->
+        <div class="demo-video-container">
+          <h3 class="text-white mb-3">Watch NoteSpark in Action</h3>
+          <div class="ratio ratio-16x9 rounded-4 shadow-lg">
+            <video controls poster="/static/images/demo-poster.png" style="width:100%;height:100%;object-fit:cover;">
+              <source src="/static/videos/demo.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <div class="video-features mt-3">
+            <div class="row g-2">
+              <div class="col-6">
+                <div class="feature-badge bg-primary text-white rounded-pill px-3 py-1">
+                  🔒 Secure Vault (Coming Soon)
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="feature-badge bg-success text-white rounded-pill px-3 py-1">
+                  🔄 JSON Import/Export
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
-<section class="text-center mb-5">
-  <h2 class="fw-bold mb-3">Ready to get started?</h2>
-  <a href="/download" class="btn btn-lg btn-primary px-5 py-3 shadow">Download Now</a>
+<!-- Key Features Grid - 100vh -->
+<section class="container-fluid d-flex flex-column justify-content-center align-items-center min-vh-100 key-features-section position-relative" style="background: linear-gradient(120deg, #89f7fe 0%, #66a6ff 100%);">
+  <div class="floating-shapes position-absolute w-100 h-100" id="key-features-floating-shapes" style="top:0;left:0;z-index:0;"></div>
+  <div class="container" style="z-index:2;">
+    <div class="text-center mb-5">
+      <h2 class="display-4 fw-bold mb-4 text-dark">Why Choose NoteSpark?</h2>
+      <p class="lead text-dark">Built for productivity, designed for security, crafted for simplicity.</p>
+    </div>
+    
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-3">
+        <div class="feature-card text-center p-4 bg-white rounded-4 shadow-lg h-100">
+          <div class="feature-icon mb-3" style="font-size: 3rem;">📝</div>
+          <h4 class="fw-bold mb-3">Markdown Support</h4>
+          <p class="text-muted">Write beautiful notes with full Markdown syntax support and real-time preview functionality.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="feature-card text-center p-4 bg-white rounded-4 shadow-lg h-100">
+          <div class="feature-icon mb-3" style="font-size: 3rem;">📶</div>
+          <h4 class="fw-bold mb-3">Offline-First</h4>
+          <p class="text-muted">Access your notes anytime, anywhere without internet connection. Your data stays with you.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="feature-card text-center p-4 bg-white rounded-4 shadow-lg h-100">
+          <div class="feature-icon mb-3" style="font-size: 3rem;">🔒</div>
+          <h4 class="fw-bold mb-3">Secure Vault</h4>
+          <p class="text-muted"><em>Coming in the next version!</em> Protect sensitive notes with advanced encryption technology.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="feature-card text-center p-4 bg-white rounded-4 shadow-lg h-100">
+          <div class="feature-icon mb-3" style="font-size: 3rem;">🔄</div>
+          <h4 class="fw-bold mb-3">JSON Import/Export</h4>
+          <p class="text-muted">Easily migrate and backup your notes with seamless data portability across platforms.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Download Section - 100vh -->
+<section class="container-fluid d-flex flex-column justify-content-center align-items-center text-center min-vh-100 section-download position-relative" style="background: linear-gradient(120deg, #F8A21A 0%, #E4572E 100%);">
+  <div class="floating-shapes position-absolute w-100 h-100" id="download-floating-shapes" style="top:0;left:0;z-index:0;"></div>
+  <div class="row justify-content-center align-items-center w-100" style="z-index:2;">
+    <div class="col-lg-8 mx-auto">
+      <h2 class="display-4 fw-bold mb-4 text-white">Fast Downloads</h2>
+      <p class="lead mb-4 text-white">Get the latest version directly from our site. No ads, no tracking, just pure performance and reliability.</p>
+      <div class="download-platforms mb-4">
+        <div class="row g-3 justify-content-center">
+          <div class="col-auto">
+            <div class="platform-card bg-white rounded-3 p-3 shadow">
+              <i class="fab fa-windows" style="font-size: 2rem; color: #0078d4;"></i>
+              <p class="mb-0 mt-2 fw-bold">Windows</p>
+            </div>
+          </div>
+          <div class="col-auto">
+            <div class="platform-card bg-white rounded-3 p-3 shadow">
+              <i class="fab fa-apple" style="font-size: 2rem; color: #000;"></i>
+              <p class="mb-0 mt-2 fw-bold">macOS</p>
+            </div>
+          </div>
+          <div class="col-auto">
+            <div class="platform-card bg-white rounded-3 p-3 shadow">
+              <i class="fab fa-linux" style="font-size: 2rem; color: #fcc624;"></i>
+              <p class="mb-0 mt-2 fw-bold">Linux</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <a class="btn btn-lg btn-light shadow-lg px-5 py-3" href="/download">
+        <i class="fas fa-download me-2"></i>Download Now
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Documentation Section - 100vh -->
+<section class="container-fluid d-flex flex-column justify-content-center align-items-center text-center min-vh-100 section-docs position-relative" style="background: linear-gradient(120deg, #222 0%, #434343 100%);">
+  <div class="floating-shapes position-absolute w-100 h-100" id="docs-floating-shapes" style="top:0;left:0;z-index:0;"></div>
+  <div class="row justify-content-center align-items-center w-100" style="z-index:2;">
+    <div class="col-lg-8 mx-auto">
+      <h2 class="display-4 fw-bold mb-4 text-white">Documentation</h2>
+      <p class="lead mb-4 text-white">Learn how to use NoteSpark and explore advanced features to maximize your productivity and note-taking workflow.</p>
+      <div class="docs-preview mb-4">
+        <div class="row g-4 justify-content-center">
+          <div class="col-md-4">
+            <div class="docs-card bg-white rounded-3 p-4 shadow-lg">
+              <i class="fas fa-rocket" style="font-size: 2rem; color: #E4572E;"></i>
+              <h5 class="mt-3 fw-bold">Getting Started</h5>
+              <p class="text-muted">Quick setup guide</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="docs-card bg-white rounded-3 p-4 shadow-lg">
+              <i class="fas fa-cog" style="font-size: 2rem; color: #F8A21A;"></i>
+              <h5 class="mt-3 fw-bold">Advanced Features</h5>
+              <p class="text-muted">Power user tips</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="docs-card bg-white rounded-3 p-4 shadow-lg">
+              <i class="fas fa-code" style="font-size: 2rem; color: #667eea;"></i>
+              <h5 class="mt-3 fw-bold">API Reference</h5>
+              <p class="text-muted">Developer resources</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <a href="/docs" class="btn btn-lg btn-outline-light shadow-lg px-5 py-3">
+        <i class="fas fa-book me-2"></i>Read the Docs
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Version History Section - 100vh -->
+<section class="container-fluid d-flex flex-column justify-content-center align-items-center min-vh-100 releases-section position-relative" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+  <div class="floating-shapes position-absolute w-100 h-100" id="releases-floating-shapes" style="top:0;left:0;z-index:0;"></div>
+  <div class="container" style="z-index:2;">
+    <div class="text-center mb-5">
+      <h2 class="display-4 fw-bold mb-4 text-white">Version History & Changelog</h2>
+      <p class="lead text-white">Stay up to date with the latest improvements, bug fixes, and exciting new features.</p>
+    </div>
+    
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="timeline">
+          <div class="timeline-item bg-white rounded-3 p-4 shadow-lg mb-4">
+            <div class="timeline-marker bg-primary"></div>
+            <h5 class="fw-bold text-primary">v2.1.0 - Latest</h5>
+            <p class="text-muted mb-2">Released 2 weeks ago</p>
+            <ul class="list-unstyled">
+              <li>✨ Enhanced Markdown rendering</li>
+              <li>🔧 Bug fixes and performance improvements</li>
+              <li>🎨 New themes and customization options</li>
+            </ul>
+          </div>
+          <div class="timeline-item bg-white rounded-3 p-4 shadow-lg mb-4">
+            <div class="timeline-marker bg-success"></div>
+            <h5 class="fw-bold text-success">v2.0.0</h5>
+            <p class="text-muted mb-2">Released 1 month ago</p>
+            <ul class="list-unstyled">
+              <li>🚀 Major UI/UX overhaul</li>
+              <li>📱 Mobile responsiveness improvements</li>
+              <li>🔄 Better import/export functionality</li>
+            </ul>
+          </div>
+        </div>
+        <div class="text-center">
+          <a href="/releases" class="btn btn-lg btn-outline-light shadow-lg px-5 py-3">
+            <i class="fas fa-history me-2"></i>See All Releases
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 {% endblock %}
-  height: 100%;
-  pointer-events: none;
-  z-index: 1;
+
+<style>
+/* Global Styles */
+.text-gradient {
+  background: linear-gradient(45deg, #F8A21A, #E4572E);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
+/* Floating shapes */
 .floating-shape {
   position: absolute;
   border-radius: 50%;
-  background: linear-gradient(45deg, var(--primary-light), var(--accent-light));
+  background: linear-gradient(45deg, rgba(248, 162, 26, 0.3), rgba(228, 87, 46, 0.3));
   animation: float 8s ease-in-out infinite;
 }
 
@@ -55,12 +294,13 @@
   }
 }
 
+/* Scroll indicator */
 .scroll-indicator {
   position: absolute;
   bottom: 2rem;
   left: 50%;
   transform: translateX(-50%);
-  color: var(--primary);
+  color: #E4572E;
   font-size: 2rem;
   animation: bounce 2s infinite;
   z-index: 2;
@@ -72,13 +312,91 @@
   60% { transform: translateX(-50%) translateY(-5px); }
 }
 
-/* Responsive design */
-@media (max-width: 768px) {
-  .hero-title { font-size: 2.5rem; }
-  .hero-subtitle { font-size: 1.1rem; }
-  .section { padding: 4rem 1rem; }
-  .features-grid { grid-template-columns: 1fr; }
-  .feature-card { padding: 2rem; }
+/* Feature cards */
+.feature-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+/* Platform cards */
+.platform-card {
+  transition: transform 0.3s ease;
+}
+
+.platform-card:hover {
+  transform: scale(1.05);
+}
+
+/* Docs cards */
+.docs-card {
+  transition: transform 0.3s ease;
+}
+
+.docs-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Timeline */
+.timeline {
+  position: relative;
+}
+
+.timeline-item {
+  position: relative;
+  padding-left: 3rem;
+}
+
+.timeline-marker {
+  position: absolute;
+  left: -10px;
+  top: 1rem;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 4px solid white;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: rgba(255,255,255,0.3);
+}
+
+/* Screenshot styles */
+.screenshot-item {
+  transition: transform 0.3s ease;
+}
+
+.screenshot-item:hover {
+  transform: scale(1.05);
+}
+
+.screenshot-caption h5 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Video container */
+.demo-video-container {
+  transition: transform 0.3s ease;
+}
+
+.demo-video-container:hover {
+  transform: scale(1.02);
+}
+
+.feature-badge {
+  font-size: 0.85rem;
+  text-align: center;
+  display: block;
 }
 
 /* Particle effects */
@@ -86,7 +404,7 @@
   position: absolute;
   width: 6px;
   height: 6px;
-  background: var(--accent);
+  background: #F8A21A;
   border-radius: 50%;
   pointer-events: none;
   animation: particles 10s linear infinite;
@@ -109,6 +427,25 @@
   }
 }
 
+/* Responsive design */
+@media (max-width: 768px) {
+  .display-2 { font-size: 2.5rem; }
+  .display-4 { font-size: 2rem; }
+  .lead { font-size: 1.1rem; }
+  
+  .screenshot-item {
+    margin-bottom: 2rem;
+  }
+  
+  .timeline-item {
+    padding-left: 2rem;
+  }
+  
+  .timeline-marker {
+    left: -8px;
+  }
+}
+
 /* Loading animation */
 .loading-overlay {
   position: fixed;
@@ -116,7 +453,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: var(--background);
+  background: #fff;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -127,8 +464,8 @@
 .loader {
   width: 60px;
   height: 60px;
-  border: 4px solid var(--secondary);
-  border-top: 4px solid var(--primary);
+  border: 4px solid #F8A21A;
+  border-top: 4px solid #E4572E;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -139,211 +476,14 @@
 }
 </style>
 
-
-{% block content %}
-<section class="section">
-  <h2 class="section-title">Key Features</h2>
-  <div class="features-grid">
-    <div class="feature-card">
-      <span class="feature-icon">📝</span>
-      <h3>Markdown Support</h3>
-      <p>Write beautiful notes with full Markdown syntax support and real-time preview functionality.</p>
-    </div>
-    <div class="feature-card">
-      <span class="feature-icon">📶</span>
-      <h3>Offline-First</h3>
-      <p>Access your notes anytime, anywhere without internet connection. Your data stays with you.</p>
-    </div>
-    <div class="feature-card">
-      <span class="feature-icon">🔒</span>
-      <h3>Secure Vault</h3>
-      <p><em>Coming in the next version!</em> Protect sensitive notes with advanced encryption technology.</p>
-    </div>
-    <div class="feature-card">
-      <span class="feature-icon">🔄</span>
-      <h3>JSON Import/Export</h3>
-      <p>Easily migrate and backup your notes with seamless data portability across platforms.</p>
-    </div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="download-section" id="download">
-    <h2 class="section-title">Fast Downloads</h2>
-    <p class="download-description">Get the latest version directly from our site. No ads, no tracking, just pure performance and reliability.</p>
-    <a class="hero-btn" href="/download">Download Now</a>
-  </div>
-</section>
-
-<section class="section">
-  <div class="docs-section">
-    <h2 class="section-title">Documentation</h2>
-    <p class="download-description">Learn how to use NoteSpark and explore advanced features to maximize your productivity and note-taking workflow.</p>
-    <a href="/docs" class="docs-btn">Read the Docs</a>
-  </div>
-</section>
-
-<section class="section">
-  <div class="releases-section">
-    <h2 class="section-title">Version History & Changelog</h2>
-    <div id="release-list">
-      <p class="download-description">Stay up to date with the latest improvements, bug fixes, and exciting new features.</p>
-    </div>
-    <a href="/releases" class="docs-btn">See All Releases</a>
-  </div>
-</section>
-{% endblock %}
-
 {% block scripts %}
 <script>
-// Remove loading overlay
-window.addEventListener('load', function() {
-  const loading = document.getElementById('loading');
-  loading.style.opacity = '0';
-  setTimeout(() => loading.remove(), 500);
-});
-
-// Three.js scene setup
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer({ 
-  canvas: document.getElementById('three-canvas'),
-  alpha: true,
-  antialias: true
-});
-
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setPixelRatio(window.devicePixelRatio);
-
-// Create geometric shapes with orange theme
-const geometries = [
-  new THREE.OctahedronGeometry(1, 0),
-  new THREE.TetrahedronGeometry(1, 0),
-  new THREE.IcosahedronGeometry(1, 0)
-];
-
-const materials = [
-  new THREE.MeshPhongMaterial({ 
-    color: 0xE4572E,
-    transparent: true,
-    opacity: 0.4,
-    wireframe: true
-  }),
-  new THREE.MeshPhongMaterial({ 
-    color: 0xF8A21A,
-    transparent: true,
-    opacity: 0.3,
-    wireframe: true
-  })
-];
-
-const shapes = [];
-for (let i = 0; i < 20; i++) {
-  const geometry = geometries[Math.floor(Math.random() * geometries.length)];
-  const material = materials[Math.floor(Math.random() * materials.length)];
-  const mesh = new THREE.Mesh(geometry, material);
+// Floating shapes creation
+function createFloatingShapes(containerId, count = 15) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
   
-  mesh.position.x = (Math.random() - 0.5) * 30;
-  mesh.position.y = (Math.random() - 0.5) * 30;
-  mesh.position.z = (Math.random() - 0.5) * 30;
-  mesh.rotation.x = Math.random() * Math.PI;
-  mesh.rotation.y = Math.random() * Math.PI;
-  
-  shapes.push(mesh);
-  scene.add(mesh);
-}
-
-// Lighting
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-scene.add(ambientLight);
-
-const directionalLight = new THREE.DirectionalLight(0xF8A21A, 0.8);
-directionalLight.position.set(5, 5, 5);
-scene.add(directionalLight);
-
-const pointLight = new THREE.PointLight(0xE4572E, 0.5, 100);
-pointLight.position.set(10, 10, 10);
-scene.add(pointLight);
-
-camera.position.z = 15;
-
-// Animation loop
-function animate() {
-  requestAnimationFrame(animate);
-  
-  shapes.forEach((shape, index) => {
-    shape.rotation.x += 0.005;
-    shape.rotation.y += 0.008;
-    shape.position.y = Math.sin(Date.now() * 0.001 + index) * 0.5;
-    shape.position.x = Math.cos(Date.now() * 0.0008 + index) * 0.3;
-  });
-  
-  renderer.render(scene, camera);
-}
-animate();
-
-// Resize handler
-window.addEventListener('resize', () => {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
-});
-
-// GSAP animations
-if (window.gsap) {
-  gsap.from('.hero-title', { 
-    duration: 1.5, 
-    y: -50, 
-    opacity: 0, 
-    ease: 'power3.out',
-    delay: 0.5
-  });
-
-  gsap.from('.hero-subtitle', { 
-    duration: 1.5, 
-    y: 50, 
-    opacity: 0, 
-    delay: 0.8, 
-    ease: 'power3.out' 
-  });
-
-  gsap.from('.hero-btn', { 
-    duration: 1.5, 
-    scale: 0.8, 
-    opacity: 0, 
-    delay: 1.1, 
-    ease: 'back.out(1.7)' 
-  });
-
-  // Scroll-triggered animations
-  const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -100px 0px'
-  };
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        gsap.from(entry.target.querySelectorAll('.feature-card'), {
-          duration: 1,
-          y: 50,
-          opacity: 0,
-          stagger: 0.2,
-          ease: 'power3.out'
-        });
-      }
-    });
-  }, observerOptions);
-
-  document.querySelectorAll('.features-grid').forEach(grid => {
-    observer.observe(grid);
-  });
-}
-
-// Floating shapes
-function createFloatingShapes() {
-  const container = document.getElementById('floating-shapes');
-  for (let i = 0; i < 15; i++) {
+  for (let i = 0; i < count; i++) {
     const shape = document.createElement('div');
     shape.className = 'floating-shape';
     shape.style.left = Math.random() * 100 + '%';
@@ -371,24 +511,19 @@ function createParticles() {
   }, 500);
 }
 
-// Mouse interaction
-document.addEventListener('mousemove', (e) => {
-  const mouseX = (e.clientX / window.innerWidth) * 2 - 1;
-  const mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
-  
-  if (window.gsap) {
-    gsap.to(camera.position, {
-      duration: 2,
-      x: mouseX * 0.8,
-      y: mouseY * 0.8,
-      ease: 'power2.out'
-    });
-  }
-});
+// Intersection Observer for animations
+const observerOptions = {
+  threshold: 0.1,
+  rootMargin: '0px 0px -100px 0px'
+};
 
-// Initialize
-createFloatingShapes();
-createParticles();
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('animate-in');
+    }
+  });
+}, observerOptions);
 
 // Smooth scrolling
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -402,5 +537,65 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     }
   });
 });
+
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+  // Create floating shapes for each section
+  createFloatingShapes('hero-floating-shapes', 12);
+  createFloatingShapes('features-floating-shapes', 10);
+  createFloatingShapes('key-features-floating-shapes', 8);
+  createFloatingShapes('download-floating-shapes', 10);
+  createFloatingShapes('docs-floating-shapes', 8);
+  createFloatingShapes('releases-floating-shapes', 10);
+  
+  // Start particle system
+  createParticles();
+  
+  // Observe sections for animations
+  document.querySelectorAll('section').forEach(section => {
+    observer.observe(section);
+  });
+  
+  // Add scroll event for parallax effect
+  window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    const parallaxElements = document.querySelectorAll('.floating-shapes');
+    
+    parallaxElements.forEach(element => {
+      const speed = 0.5;
+      element.style.transform = `translateY(${scrolled * speed}px)`;
+    });
+  });
+});
+
+// Add CSS animations via JavaScript
+const style = document.createElement('style');
+style.textContent = `
+  .animate-in {
+    animation: fadeInUp 1s ease-out forwards;
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .hero-title, .hero-subtitle, .hero-btn, .hero-badges {
+    opacity: 0;
+    animation: fadeInUp 1s ease-out forwards;
+  }
+  
+  .hero-title { animation-delay: 0.2s; }
+  .hero-subtitle { animation-delay: 0.4s; }
+  .hero-btn { animation-delay: 0.6s; }
+  .hero-badges { animation-delay: 0.8s; }
+`;
+document.head.appendChild(style);
 </script>
 {% endblock %}
