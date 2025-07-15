@@ -28,8 +28,8 @@
       <h1 class="display-2 fw-bold mb-3 text-gradient hero-title">NoteSpark</h1>
       <p class="lead mb-4 hero-subtitle">Secure, offline-first Markdown note app. Fast, flexible, open-source. <span class="badge bg-warning text-dark ms-2">GPLv3</span></p>
       <div class="d-flex flex-wrap justify-content-center gap-3 mb-4 hero-btn">
-        <a href="/download" class="btn btn-lg btn-primary shadow">Download</a>
-        <a href="/docs" class="btn btn-lg btn-outline-dark shadow">Docs</a>
+        <a href="{{ url_for('notespark.download') }}" class="btn btn-lg btn-primary shadow">Download</a>
+        <a href="{{ url_for('notespark.about') }}" class="btn btn-lg btn-outline-dark shadow">Know More</a>
         <a href="https://github.com/Lusan-sapkota/notespark" target="_blank" class="btn btn-lg btn-outline-secondary shadow">GitHub</a>
       </div>
       <div class="d-flex flex-wrap justify-content-center gap-2 mb-4 hero-badges">
@@ -48,29 +48,38 @@
 
 {% block content %}
 <!-- Features Section - 100vh with Screenshots Left, Video Right -->
-<section class="container-fluid d-flex flex-column justify-content-center align-items-center min-vh-100 features-section position-relative" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+<section class="container-fluid d-flex flex-column justify-content-center align-items-center min-vh-100 features-section position-relative" >
   <div class="floating-shapes position-absolute w-100 h-100" id="features-floating-shapes" style="top:0;left:0;z-index:0;"></div>
   <div class="container" style="z-index:2;">
+    <h2 class="display-4 fw-bold mb-4 text-white text-center">Experience NoteSpark</h2>
+    <p class="lead text-white mb-4">See how NoteSpark transforms your note-taking workflow with powerful features and an intuitive interface.</p>
     <div class="row align-items-center h-100">
       <div class="col-lg-6 mb-4 mb-lg-0">
-        <h2 class="display-4 fw-bold mb-4 text-white">Experience NoteSpark</h2>
-        <p class="lead text-white mb-4">See how NoteSpark transforms your note-taking workflow with powerful features and an intuitive interface.</p>
-        
+ 
         <!-- App Screenshots -->
         <div class="screenshots-container">
-          <div class="screenshot-item mb-3">
-            <img src="/static/images/screenshot1.png" alt="NoteSpark Editor Interface" class="img-fluid rounded-3 shadow-lg">
-            <div class="screenshot-caption mt-2">
-              <h5 class="text-white">📝 Markdown Editor</h5>
-              <p class="text-white-50">Write with full Markdown support and real-time preview</p>
+          <!-- Bootstrap Carousel for F1–F11 Screenshots -->
+          <div id="featuresCarousel" class="carousel slide carousel-fade glass shadow-lg rounded-4" data-bs-ride="carousel" data-bs-touch="true" style="max-width:480px;">
+            <div class="carousel-indicators">
+              {% for i in range(11) %}
+              <button type="button" data-bs-target="#featuresCarousel" data-bs-slide-to="{{ i }}" {% if i == 0 %}class="active" aria-current="true"{% endif %} aria-label="Feature {{ i+1 }}"></button>
+              {% endfor %}
             </div>
-          </div>
-          <div class="screenshot-item">
-            <img src="/static/images/screenshot2.png" alt="NoteSpark Offline Mode" class="img-fluid rounded-3 shadow-lg">
-            <div class="screenshot-caption mt-2">
-              <h5 class="text-white">📶 Offline-First</h5>
-              <p class="text-white-50">Access your notes anywhere, anytime without internet</p>
+            <div class="carousel-inner">
+              {% for i in range(1,12) %}
+              <div class="carousel-item {% if i == 1 %}active{% endif %}">
+                <img src="{{ url_for('notespark.static', filename='images/features/f' ~ i|string ~ '.png') }}" class="d-block img-fluid screenshot-img mx-auto rounded-4 shadow" alt="Feature F{{ i }} Screenshot" style="max-width:650px; max-height:550px; object-fit:cover; padding:12px; background:rgba(255,255,255,0.08);">
+              </div>
+              {% endfor %}
             </div>
+            <button class="carousel-control-prev carousel-nav-btn" type="button" data-bs-target="#featuresCarousel" data-bs-slide="prev" style="display:block;">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next carousel-nav-btn" type="button" data-bs-target="#featuresCarousel" data-bs-slide="next" style="display:block;">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
           </div>
         </div>
       </div>
@@ -79,7 +88,7 @@
         <!-- Demo Video -->
         <div class="demo-video-container">
           <h3 class="text-white mb-3">Watch NoteSpark in Action</h3>
-          <div class="ratio ratio-16x9 rounded-4 shadow-lg">
+          <div class="ratio ratio-16x9 rounded-4 shadow-lg demo-video-responsive">
             <video controls poster="/static/images/demo-poster.png" style="width:100%;height:100%;object-fit:cover;">
               <source src="/static/videos/demo.mp4" type="video/mp4">
               Your browser does not support the video tag.
@@ -105,48 +114,6 @@
   </div>
 </section>
 
-<!-- Key Features Grid - 100vh -->
-<section class="container-fluid d-flex flex-column justify-content-center align-items-center min-vh-100 key-features-section position-relative" style="background: linear-gradient(120deg, #89f7fe 0%, #66a6ff 100%);">
-  <div class="floating-shapes position-absolute w-100 h-100" id="key-features-floating-shapes" style="top:0;left:0;z-index:0;"></div>
-  <div class="container" style="z-index:2;">
-    <div class="text-center mb-5">
-      <h2 class="display-4 fw-bold mb-4 text-dark">Why Choose NoteSpark?</h2>
-      <p class="lead text-dark">Built for productivity, designed for security, crafted for simplicity.</p>
-    </div>
-    
-    <div class="row g-4">
-      <div class="col-md-6 col-lg-3">
-        <div class="feature-card text-center p-4 bg-white rounded-4 shadow-lg h-100">
-          <div class="feature-icon mb-3" style="font-size: 3rem;">📝</div>
-          <h4 class="fw-bold mb-3">Markdown Support</h4>
-          <p class="text-muted">Write beautiful notes with full Markdown syntax support and real-time preview functionality.</p>
-        </div>
-      </div>
-      <div class="col-md-6 col-lg-3">
-        <div class="feature-card text-center p-4 bg-white rounded-4 shadow-lg h-100">
-          <div class="feature-icon mb-3" style="font-size: 3rem;">📶</div>
-          <h4 class="fw-bold mb-3">Offline-First</h4>
-          <p class="text-muted">Access your notes anytime, anywhere without internet connection. Your data stays with you.</p>
-        </div>
-      </div>
-      <div class="col-md-6 col-lg-3">
-        <div class="feature-card text-center p-4 bg-white rounded-4 shadow-lg h-100">
-          <div class="feature-icon mb-3" style="font-size: 3rem;">🔒</div>
-          <h4 class="fw-bold mb-3">Secure Vault</h4>
-          <p class="text-muted"><em>Coming in the next version!</em> Protect sensitive notes with advanced encryption technology.</p>
-        </div>
-      </div>
-      <div class="col-md-6 col-lg-3">
-        <div class="feature-card text-center p-4 bg-white rounded-4 shadow-lg h-100">
-          <div class="feature-icon mb-3" style="font-size: 3rem;">🔄</div>
-          <h4 class="fw-bold mb-3">JSON Import/Export</h4>
-          <p class="text-muted">Easily migrate and backup your notes with seamless data portability across platforms.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- Download Section - 100vh -->
 <section class="container-fluid d-flex flex-column justify-content-center align-items-center text-center min-vh-100 section-download position-relative" style="background: linear-gradient(120deg, #F8A21A 0%, #E4572E 100%);">
   <div class="floating-shapes position-absolute w-100 h-100" id="download-floating-shapes" style="top:0;left:0;z-index:0;"></div>
@@ -157,27 +124,22 @@
       <div class="download-platforms mb-4">
         <div class="row g-3 justify-content-center">
           <div class="col-auto">
-            <div class="platform-card bg-white rounded-3 p-3 shadow">
-              <i class="fab fa-windows" style="font-size: 2rem; color: #0078d4;"></i>
-              <p class="mb-0 mt-2 fw-bold">Windows</p>
-            </div>
-          </div>
-          <div class="col-auto">
-            <div class="platform-card bg-white rounded-3 p-3 shadow">
-              <i class="fab fa-apple" style="font-size: 2rem; color: #000;"></i>
-              <p class="mb-0 mt-2 fw-bold">macOS</p>
-            </div>
-          </div>
           <div class="col-auto">
             <div class="platform-card bg-white rounded-3 p-3 shadow">
               <i class="fab fa-linux" style="font-size: 2rem; color: #fcc624;"></i>
-              <p class="mb-0 mt-2 fw-bold">Linux</p>
+              <p class="mb-0 mt-2 fw-bold">Android</p>
             </div>
           </div>
         </div>
       </div>
       <a class="btn btn-lg btn-light shadow-lg px-5 py-3" href="/download">
         <i class="fas fa-download me-2"></i>Download Now
+      </a>
+      <a class="btn btn-lg btn-light shadow-lg px-5 py-3" href="/download">
+        <i class="fas fa-download me-2"></i>View Releases
+      </a>
+      <a class="btn btn-lg btn-light shadow-lg px-5 py-3" href="/download">
+        <i class="fas fa-download me-2"></i>Use Sourceforge
       </a>
     </div>
   </div>
@@ -371,17 +333,24 @@
 }
 
 /* Screenshot styles */
-.screenshot-item {
-  transition: transform 0.3s ease;
-}
 
-.screenshot-item:hover {
+/* Carousel screenshot images */
+.screenshot-img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 320px;
+  max-height: 200px;
+  object-fit: cover;
+  padding: 12px;
+  background: rgba(255,255,255,0.08);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  border-radius: 1rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.screenshot-img:hover {
   transform: scale(1.05);
-}
-
-.screenshot-caption h5 {
-  font-size: 1.1rem;
-  margin-bottom: 0.5rem;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.22);
 }
 
 /* Video container */
@@ -443,6 +412,15 @@
   
   .timeline-marker {
     left: -8px;
+  }
+  
+  .demo-video-responsive {
+    max-width: 320px;
+  }
+  
+  .carousel-nav-btn {
+    width: 2.2rem;
+    height: 2.2rem;
   }
 }
 
