@@ -1,14 +1,14 @@
 <!doctype html>
-<html class="no-js" lang="en" dir="ltr" itemscope itemtype="http://schema.org/ProfilePage">
+<html class="no-js" lang="en" dir="ltr">
 
 <head>
-    <!-- Essential Meta Tags -->
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta http-equiv="Accept-CH" content="DPR, Viewport-Width, Width">
-    
-    <!-- Primary Meta Tags -->
+	<!-- Essential Meta Tags -->
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta http-equiv="Accept-CH" content="DPR, Viewport-Width, Width">
+	
+	<!-- Primary Meta Tags -->
 	<title>{{ seo.title if seo else 'Lusan Sapkota | Full Stack Developer & AI Engineer' }}</title>
 
 	<meta name="title" content="{{ seo.title if seo else 'Lusan Sapkota | Full Stack Developer & AI Engineer' }}">
@@ -17,438 +17,438 @@
 	<meta name="keywords" content="{{ seo.meta_keywords if seo and seo.meta_keywords else 'Lusan Sapkota, Full Stack Developer, AI Engineer, Web Developer Nepal, Python, React, React Native, Mobile App Developer, Software Engineer, Machine Learning, Ionic, Django' }}">
 	<meta name="subject" content="Professional Portfolio of Lusan Sapkota | Full Stack Development, AI/ML Solutions, Mobile App Development">
 
-    <meta name="copyright" content="Lusan Sapkota">
-    <meta name="topic" content="Software Development, AI/ML, Web Technologies">
-    <meta name="summary" content="Professional portfolio of Lusan Sapkota - Full Stack Developer and AI/ML Engineer from Nepal">
-    <meta name="classification" content="Technology, Software Development, Portfolio">
-    <meta name="designer" content="Lusan Sapkota">
-    <meta name="owner" content="Lusan Sapkota">
-    <meta name="url" content="https://www.lusansapkota.com.np">
-    <meta name="identifier-URL" content="https://www.lusansapkota.com.np">
-    <meta name="directory" content="submission">
-    <meta name="category" content="Technology, Software Development, AI, Machine Learning">
-    <meta name="coverage" content="Worldwide">
-    <meta name="distribution" content="Global">
-    <meta name="rating" content="General">
-    <meta name="revisit-after" content="7 days">
-    
-    <!-- Canonical URL -->
-    <link rel="canonical" href="{{ seo.canonical_url if seo and seo.canonical_url else 'https://www.lusansapkota.com.np/' }}">
-    
-    <!-- Alternate URLs -->
-    <link rel="alternate" hreflang="en" href="https://www.lusansapkota.com.np/">
-    <link rel="alternate" hreflang="x-default" href="https://www.lusansapkota.com.np/">
-    
-    <!-- Language and Geography -->
-    <meta name="language" content="English">
-    <meta name="geo.region" content="NP-3">
-    <meta name="geo.placename" content="Kathmandu, Nepal">
-    <meta name="geo.position" content="27.7172;85.3240">
-    <meta name="ICBM" content="27.7172, 85.3240">
-    <meta name="DC.title" content="Lusan Sapkota - Full Stack Developer Portfolio">
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="profile">
-    <meta property="og:url" content="{{ seo.og_url if seo and seo.og_url else 'https://www.lusansapkota.com.np/' }}">
-    <meta property="og:title" content="{{ seo.og_title if seo and seo.og_title else seo.title if seo else 'Lusan Sapkota | Full Stack Software Developer & AI/ML Engineer from Nepal' }}">
-    <meta property="og:description" content="{{ seo.og_description if seo and seo.og_description else seo.meta_description if seo else 'Full Stack Developer from Nepal specializing in Python, JavaScript, React, AI/ML. Building scalable web applications and innovative AI solutions.' }}">
-    <meta property="og:image" content="{{ seo.og_image if seo and seo.og_image else url_for('static', filename='assets/images/profile.jpg', _external=True) }}">
-    <meta property="og:image:secure_url" content="{{ seo.og_image if seo and seo.og_image else url_for('static', filename='assets/images/profile.jpg', _external=True) }}">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="Lusan Sapkota - Full Stack Software Developer from Nepal">
-    <meta property="og:site_name" content="Lusan Sapkota Portfolio">
-    <meta property="og:locale" content="en_US">
-    <meta property="profile:first_name" content="Lusan">
-    <meta property="profile:last_name" content="Sapkota">
-    <meta property="profile:username" content="lusansapkota">
-    <meta property="profile:gender" content="male">
-    
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="{{ seo.twitter_url if seo and seo.twitter_url else 'https://www.lusansapkota.com.np/' }}">
-    <meta name="twitter:title" content="{{ seo.twitter_title if seo and seo.twitter_title else seo.title if seo else 'Lusan Sapkota | Full Stack Developer & AI/ML Engineer' }}">
-    <meta name="twitter:description" content="{{ seo.twitter_description if seo and seo.twitter_description else seo.meta_description if seo else 'Full Stack Developer from Nepal with expertise in Python, JavaScript, React, AI/ML. Creating powerful web applications and intelligent solutions.' }}">
-    <meta name="twitter:image" content="{{ seo.twitter_image if seo and seo.twitter_image else url_for('static', filename='assets/images/profile.jpg', _external=True) }}">
-    <meta name="twitter:image:alt" content="Lusan Sapkota - Full Stack Software Developer Portfolio">
-    <meta name="twitter:site" content="@LusanSapkota">
-    <meta name="twitter:creator" content="@LusanSapkota">
-    <meta name="twitter:label1" content="Written by">
-    <meta name="twitter:data1" content="Lusan Sapkota">
-    <meta name="twitter:label2" content="Skills">
-    <meta name="twitter:data2" content="Python, JavaScript, React, AI/ML">
-    
-    <!-- LinkedIn -->
-    <meta property="og:see_also" content="https://www.linkedin.com/in/lusan-sapkota-a08194284/">
-    
-    <!-- Mobile App Meta Tags -->
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Lusan Sapkota">
-    <meta name="application-name" content="Lusan Sapkota Portfolio">
-    <meta name="theme-color" content="#f39c12">
-    <meta name="msapplication-TileColor" content="#f39c12">
-    <meta name="msapplication-config" content="{{ url_for('static', filename='assets/logo/browserconfig.xml') }}">
-    
+	<meta name="copyright" content="Lusan Sapkota">
+	<meta name="topic" content="Software Development, AI/ML, Web Technologies">
+	<meta name="summary" content="Professional portfolio of Lusan Sapkota - Full Stack Developer and AI/ML Engineer from Nepal">
+	<meta name="classification" content="Technology, Software Development, Portfolio">
+	<meta name="designer" content="Lusan Sapkota">
+	<meta name="owner" content="Lusan Sapkota">
+	<meta name="url" content="https://www.lusansapkota.com.np">
+	<meta name="identifier-URL" content="https://www.lusansapkota.com.np">
+	<meta name="directory" content="submission">
+	<meta name="category" content="Technology, Software Development, AI, Machine Learning">
+	<meta name="coverage" content="Worldwide">
+	<meta name="distribution" content="Global">
+	<meta name="rating" content="General">
+	<meta name="revisit-after" content="7 days">
+	
+	<!-- Canonical URL -->
+	<link rel="canonical" href="{{ seo.canonical_url if seo and seo.canonical_url else 'https://www.lusansapkota.com.np/' }}">
+	
+	<!-- Alternate URLs -->
+	<link rel="alternate" hreflang="en" href="https://www.lusansapkota.com.np/">
+	<link rel="alternate" hreflang="x-default" href="https://www.lusansapkota.com.np/">
+	
+	<!-- Language and Geography -->
+	<meta name="language" content="English">
+	<meta name="geo.region" content="NP-3">
+	<meta name="geo.placename" content="Kathmandu, Nepal">
+	<meta name="geo.position" content="27.7172;85.3240">
+	<meta name="ICBM" content="27.7172, 85.3240">
+	<meta name="DC.title" content="Lusan Sapkota - Full Stack Developer Portfolio">
+	
+	<!-- Open Graph / Facebook -->
+	<meta property="og:type" content="profile">
+	<meta property="og:url" content="{{ seo.og_url if seo and seo.og_url else 'https://www.lusansapkota.com.np/' }}">
+	<meta property="og:title" content="{{ seo.og_title if seo and seo.og_title else seo.title if seo else 'Lusan Sapkota | Full Stack Software Developer & AI/ML Engineer from Nepal' }}">
+	<meta property="og:description" content="{{ seo.og_description if seo and seo.og_description else seo.meta_description if seo else 'Full Stack Developer from Nepal specializing in Python, JavaScript, React, AI/ML. Building scalable web applications and innovative AI solutions.' }}">
+	<meta property="og:image" content="{{ seo.og_image if seo and seo.og_image else url_for('static', filename='assets/images/profile.jpg', _external=True) }}">
+	<meta property="og:image:secure_url" content="{{ seo.og_image if seo and seo.og_image else url_for('static', filename='assets/images/profile.jpg', _external=True) }}">
+	<meta property="og:image:width" content="1200">
+	<meta property="og:image:height" content="630">
+	<meta property="og:image:alt" content="Lusan Sapkota - Full Stack Software Developer from Nepal">
+	<meta property="og:site_name" content="Lusan Sapkota Portfolio">
+	<meta property="og:locale" content="en_US">
+	<meta property="profile:first_name" content="Lusan">
+	<meta property="profile:last_name" content="Sapkota">
+	<meta property="profile:username" content="lusansapkota">
+	<meta property="profile:gender" content="male">
+	
+	<!-- Twitter -->
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:url" content="{{ seo.twitter_url if seo and seo.twitter_url else 'https://www.lusansapkota.com.np/' }}">
+	<meta name="twitter:title" content="{{ seo.twitter_title if seo and seo.twitter_title else seo.title if seo else 'Lusan Sapkota | Full Stack Developer & AI/ML Engineer' }}">
+	<meta name="twitter:description" content="{{ seo.twitter_description if seo and seo.twitter_description else seo.meta_description if seo else 'Full Stack Developer from Nepal with expertise in Python, JavaScript, React, AI/ML. Creating powerful web applications and intelligent solutions.' }}">
+	<meta name="twitter:image" content="{{ seo.twitter_image if seo and seo.twitter_image else url_for('static', filename='assets/images/profile.jpg', _external=True) }}">
+	<meta name="twitter:image:alt" content="Lusan Sapkota - Full Stack Software Developer Portfolio">
+	<meta name="twitter:site" content="@LusanSapkota">
+	<meta name="twitter:creator" content="@LusanSapkota">
+	<meta name="twitter:label1" content="Written by">
+	<meta name="twitter:data1" content="Lusan Sapkota">
+	<meta name="twitter:label2" content="Skills">
+	<meta name="twitter:data2" content="Python, JavaScript, React, AI/ML">
+	
+	<!-- LinkedIn -->
+	<meta property="og:see_also" content="https://www.linkedin.com/in/lusan-sapkota-a08194284/">
+	
+	<!-- Mobile App Meta Tags -->
+	<meta name="mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	<meta name="apple-mobile-web-app-title" content="Lusan Sapkota">
+	<meta name="application-name" content="Lusan Sapkota Portfolio">
+	<meta name="theme-color" content="#f39c12">
+	<meta name="msapplication-TileColor" content="#f39c12">
+	<meta name="msapplication-config" content="{{ url_for('static', filename='assets/logo/browserconfig.xml') }}">
+	
 	<!-- Universal favicon -->
 	<link rel="icon" type="image/png" href="{{ url_for('static', filename='assets/logo/logo.png') }}" sizes="any">
 
 	<!-- For Apple devices -->
 	<link rel="apple-touch-icon" href="{{ url_for('static', filename='assets/logo/logo.png') }}">
 
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+	<!-- PWA Manifest -->
+	<link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
 
-    <!-- Performance Optimization -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
-    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
-    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
-    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
-    <link rel="dns-prefetch" href="https://github.com">
-    <link rel="dns-prefetch" href="https://api.github.com">
-    
-    <!-- Robots Control -->
-    <meta name="robots" content="{{ seo.robots if seo and seo.robots else 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1' }}">
-    <meta name="googlebot" content="{{ seo.robots if seo and seo.robots else 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1' }}">
-    <meta name="bingbot" content="{{ seo.robots if seo and seo.robots else 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1' }}">
-    
-    <!-- Verification Tags -->
-    <meta name="google-site-verification" content="">
-    <meta name="msvalidate.01" content="">
-    <meta name="yandex-verification" content="">
-    <meta name="facebook-domain-verification" content="">
-    
-    <!-- Additional SEO Tags -->
-    <meta name="referrer" content="no-referrer-when-downgrade">
-    <meta name="format-detection" content="telephone=no">
-    <meta name="handheld-friendly" content="true">
-    <meta name="MobileOptimized" content="320">
-    
-    <!-- Font Family -->
-    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,520,600,700,800,900&display=swap&subset=devanagari,latin-ext" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Schema.org Structured Data -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "Person",
-          "@id": "https://www.lusansapkota.com.np/#person",
-          "name": "Lusan Sapkota",
-          "url": "https://www.lusansapkota.com.np",
-          "image": {
-            "@type": "ImageObject",
-            "url": "https://www.lusansapkota.com.np/static/assets/images/profile.jpg",
-            "width": 400,
-            "height": 400
-          },
-          "sameAs": [
-            "https://github.com/Lusan-sapkota",
-            "https://www.linkedin.com/in/lusan-sapkota-a08194284/",
-            "https://twitter.com/LusanSapkota",
-            "https://www.instagram.com/sapkotalusan/",
-            "https://web.facebook.com/lusan.sapkota.1"
-          ],
-          "jobTitle": "Full Stack Software Developer & AI/ML Engineer",
-          "description": "Full Stack Software Developer and AI/ML Engineer from Nepal specializing in Python, JavaScript, and modern web technologies with expertise in graph-based models and algorithms.",
-          "worksFor": {
-            "@type": "Organization",
-            "name": "Freelancer",
-            "description": "Independent Software Development Consultant"
-          },
-          "alumniOf": [
-            {
-              "@type": "CollegeOrUniversity",
-              "name": "Texas International College",
-              "sameAs": "https://texasedu.edu.np/",
-              "location": {
-                "@type": "Place",
-                "name": "Kathmandu, Nepal"
-              }
-            }
-          ],
-          "knowsAbout": [
-            "Python Programming",
-            "JavaScript Development", 
-            "React.js",
-            "Next.js",
-            "Django Framework",
-            "Flask Framework",
-            "TypeScript",
-            "AI/ML Engineering",
-            "Graph Algorithms",
-            "Data Analysis",
-            "Full Stack Development",
-            "Web Development",
-            "Machine Learning",
-            "Deep Learning",
-            "Computer Vision",
-            "Natural Language Processing",
-            "Database Design",
-            "API Development",
-            "Cloud Computing",
-            "DevOps"
-          ],
-          "hasOccupation": {
-            "@type": "Occupation",
-            "name": "Software Developer",
-            "occupationLocation": {
-              "@type": "Country",
-              "name": "Nepal"
-            },
-            "estimatedSalary": {
-              "@type": "MonetaryAmountDistribution",
-              "name": "Available upon request"
-            }
-          },
-          "nationality": {
-            "@type": "Country",
-            "name": "Nepal"
-          },
-          "birthPlace": {
-            "@type": "Place",
-            "name": "Nepal"
-          },
-          "email": "sapkotalusan@gmail.com",
-          "telephone": "Available upon request",
-          "address": {
-            "@type": "PostalAddress",
-            "addressLocality": "Kathmandu",
-            "addressCountry": "Nepal"
-          }
-        },
-        {
-          "@type": "WebSite",
-          "@id": "https://www.lusansapkota.com.np/#website",
-          "url": "https://www.lusansapkota.com.np/",
-          "name": "Lusan Sapkota - Portfolio",
-          "description": "Professional portfolio of Lusan Sapkota, Full Stack Software Developer and AI/ML Engineer from Nepal",
-          "publisher": {
-            "@id": "https://www.lusansapkota.com.np/#person"
-          },
-          "potentialAction": {
-            "@type": "SearchAction",
-            "target": "https://www.lusansapkota.com.np/search?q={search_term_string}",
-            "query-input": "required name=search_term_string"
-          },
-          "inLanguage": "en-US",
-          "copyrightYear": "2024",
-          "copyrightHolder": {
-            "@id": "https://www.lusansapkota.com.np/#person"
-          }
-        },
-        {
-          "@type": "WebPage",
-          "@id": "https://www.lusansapkota.com.np/#webpage",
-          "url": "https://www.lusansapkota.com.np/",
-          "name": "Lusan Sapkota | Full Stack Software Developer & AI/ML Engineer from Nepal",
-          "isPartOf": {
-            "@id": "https://www.lusansapkota.com.np/#website"
-          },
-          "about": {
-            "@id": "https://www.lusansapkota.com.np/#person"
-          },
-          "description": "Professional portfolio showcasing Full Stack Software Development and AI/ML Engineering projects, skills, and experience",
-          "breadcrumb": {
-            "@type": "BreadcrumbList",
-            "itemListElement": [
-              {
-                "@type": "ListItem",
-                "position": 1,
-                "name": "Home",
-                "item": "https://www.lusansapkota.com.np/"
-              }
-            ]
-          },
-          "mainEntity": {
-            "@id": "https://www.lusansapkota.com.np/#person"
-          },
-          "datePublished": "2024-01-01T00:00:00+00:00",
-          "dateModified": "2024-12-23T00:00:00+00:00"
-        },
-        {
-          "@type": "ProfessionalService",
-          "@id": "https://www.lusansapkota.com.np/#service",
-          "name": "Full Stack Software Development Services",
-          "description": "Professional software development services including web applications, AI/ML solutions, and technical consulting",
-          "provider": {
-            "@id": "https://www.lusansapkota.com.np/#person"
-          },
-          "areaServed": {
-            "@type": "Place",
-            "name": "Worldwide"
-          },
-          "hasOfferCatalog": {
-            "@type": "OfferCatalog",
-            "name": "Software Development Services",
-            "itemListElement": [
-              {
-                "@type": "Offer",
-                "itemOffered": {
-                  "@type": "Service",
-                  "name": "Full Stack Web Development",
-                  "description": "Complete web application development using modern technologies"
-                }
-              },
-              {
-                "@type": "Offer",
-                "itemOffered": {
-                  "@type": "Service",
-                  "name": "AI/ML Development",
-                  "description": "Machine learning and artificial intelligence solutions"
-                }
-              },
-              {
-                "@type": "Offer",
-                "itemOffered": {
-                  "@type": "Service",
-                  "name": "Technical Consulting",
-                  "description": "Expert technical advice and code review services"
-                }
-              }
-            ]
-          }
-        }
-      ]
-    }
-    </script>
-    
-    <!-- Dynamic Schema.org from Database -->
-    {% if seo and seo.schema_markup and seo.schema_markup.strip() and seo.schema_markup.strip().startswith('{') %}
-    <script type="application/ld+json">
-    {{ seo.schema_markup | safe }}
-    </script>
-    {% endif %}
-    
-    <!-- Portfolio Projects Structured Data -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "ItemList",
-      "itemListElement": [
-        {
-          "@type": "SoftwareSourceCode",
-          "position": 1,
-          "name": "Ambulance Tracking System",
-          "url": "https://github.com/Lusan-sapkota/Ambulance-tracking-system",
-          "programmingLanguage": ["Python", "JavaScript"],
-          "description": "Real-time ambulance tracking system to optimize emergency response"
-        },
-        {
-          "@type": "SoftwareSourceCode",
-          "position": 2,
-          "name": "Face Recognition Based Attendance System",
-          "url": "https://github.com/Lusan-sapkota/Face-Recognition-Based-Attendance-System",
-          "programmingLanguage": ["Python", "OpenCV"],
-          "description": "Automated attendance tracking using facial recognition technology"
-        },
-        {
-          "@type": "SoftwareSourceCode",
-          "position": 3,
-          "name": "Task Master",
-          "url": "https://github.com/Lusan-sapkota/Task-Master",
-          "programmingLanguage": ["JavaScript", "HTML", "CSS"],
-          "description": "Productivity application for task management and organization"
-        },
-        {
-          "@type": "SoftwareSourceCode",
-          "position": 4,
-          "name": "Jarvis",
-          "url": "https://github.com/Lusan-sapkota/Jarvis",
-          "programmingLanguage": ["Python"],
-          "description": "Personal AI assistant with voice recognition capabilities"
-        },
-        {
-          "@type": "SoftwareSourceCode",
-          "position": 5,
-          "name": "Chat History Master",
-          "url": "https://github.com/Lusan-sapkota/Chat-History_Master",
-          "programmingLanguage": ["Python", "JavaScript"],
-          "description": "Tool for analyzing and organizing chat histories from various platforms"
-        }
-      ]
-    }
-    </script>
+	<!-- Performance Optimization -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="preconnect" href="https://cdnjs.cloudflare.com">
+	<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+	<link rel="dns-prefetch" href="https://fonts.googleapis.com">
+	<link rel="dns-prefetch" href="https://fonts.gstatic.com">
+	<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+	<link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+	<link rel="dns-prefetch" href="https://github.com">
+	<link rel="dns-prefetch" href="https://api.github.com">
+	
+	<!-- Robots Control -->
+	<meta name="robots" content="{{ seo.robots if seo and seo.robots else 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1' }}">
+	<meta name="googlebot" content="{{ seo.robots if seo and seo.robots else 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1' }}">
+	<meta name="bingbot" content="{{ seo.robots if seo and seo.robots else 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1' }}">
+	
+	<!-- Verification Tags -->
+	<meta name="google-site-verification" content="">
+	<meta name="msvalidate.01" content="">
+	<meta name="yandex-verification" content="">
+	<meta name="facebook-domain-verification" content="">
+	
+	<!-- Additional SEO Tags -->
+	<meta name="referrer" content="no-referrer-when-downgrade">
+	<meta name="format-detection" content="telephone=no">
+	<meta name="handheld-friendly" content="true">
+	<meta name="MobileOptimized" content="320">
+	
+	<!-- Font Family -->
+	<link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,520,600,700,800,900&display=swap&subset=devanagari,latin-ext" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+	
+	<!-- Schema.org Structured Data -->
+	<script type="application/ld+json">
+	{
+	  "@context": "https://schema.org",
+	  "@graph": [
+		{
+		  "@type": "Person",
+		  "@id": "https://www.lusansapkota.com.np/#person",
+		  "name": "Lusan Sapkota",
+		  "url": "https://www.lusansapkota.com.np",
+		  "image": {
+			"@type": "ImageObject",
+			"url": "https://www.lusansapkota.com.np/static/assets/images/profile.jpg",
+			"width": 400,
+			"height": 400
+		  },
+		  "sameAs": [
+			"https://github.com/Lusan-sapkota",
+			"https://www.linkedin.com/in/lusan-sapkota-a08194284/",
+			"https://twitter.com/LusanSapkota",
+			"https://www.instagram.com/sapkotalusan/",
+			"https://web.facebook.com/lusan.sapkota.1"
+		  ],
+		  "jobTitle": "Full Stack Software Developer & AI/ML Engineer",
+		  "description": "Full Stack Software Developer and AI/ML Engineer from Nepal specializing in Python, JavaScript, and modern web technologies with expertise in graph-based models and algorithms.",
+		  "worksFor": {
+			"@type": "Organization",
+			"name": "Freelancer",
+			"description": "Independent Software Development Consultant"
+		  },
+		  "alumniOf": [
+			{
+			  "@type": "CollegeOrUniversity",
+			  "name": "Texas International College",
+			  "sameAs": "https://texasedu.edu.np/",
+			  "location": {
+				"@type": "Place",
+				"name": "Kathmandu, Nepal"
+			  }
+			}
+		  ],
+		  "knowsAbout": [
+			"Python Programming",
+			"JavaScript Development", 
+			"React.js",
+			"Next.js",
+			"Django Framework",
+			"Flask Framework",
+			"TypeScript",
+			"AI/ML Engineering",
+			"Graph Algorithms",
+			"Data Analysis",
+			"Full Stack Development",
+			"Web Development",
+			"Machine Learning",
+			"Deep Learning",
+			"Computer Vision",
+			"Natural Language Processing",
+			"Database Design",
+			"API Development",
+			"Cloud Computing",
+			"DevOps"
+		  ],
+		  "hasOccupation": {
+			"@type": "Occupation",
+			"name": "Software Developer",
+			"occupationLocation": {
+			  "@type": "Country",
+			  "name": "Nepal"
+			},
+			"estimatedSalary": {
+			  "@type": "MonetaryAmountDistribution",
+			  "name": "Available upon request"
+			}
+		  },
+		  "nationality": {
+			"@type": "Country",
+			"name": "Nepal"
+		  },
+		  "birthPlace": {
+			"@type": "Place",
+			"name": "Nepal"
+		  },
+		  "email": "sapkotalusan@gmail.com",
+		  "telephone": "Available upon request",
+		  "address": {
+			"@type": "PostalAddress",
+			"addressLocality": "Kathmandu",
+			"addressCountry": "Nepal"
+		  }
+		},
+		{
+		  "@type": "WebSite",
+		  "@id": "https://www.lusansapkota.com.np/#website",
+		  "url": "https://www.lusansapkota.com.np/",
+		  "name": "Lusan Sapkota - Portfolio",
+		  "description": "Professional portfolio of Lusan Sapkota, Full Stack Software Developer and AI/ML Engineer from Nepal",
+		  "publisher": {
+			"@id": "https://www.lusansapkota.com.np/#person"
+		  },
+		  "potentialAction": {
+			"@type": "SearchAction",
+			"target": "https://www.lusansapkota.com.np/search?q={search_term_string}",
+			"query-input": "required name=search_term_string"
+		  },
+		  "inLanguage": "en-US",
+		  "copyrightYear": "2024",
+		  "copyrightHolder": {
+			"@id": "https://www.lusansapkota.com.np/#person"
+		  }
+		},
+		{
+		  "@type": "WebPage",
+		  "@id": "https://www.lusansapkota.com.np/#webpage",
+		  "url": "https://www.lusansapkota.com.np/",
+		  "name": "Lusan Sapkota | Full Stack Software Developer & AI/ML Engineer from Nepal",
+		  "isPartOf": {
+			"@id": "https://www.lusansapkota.com.np/#website"
+		  },
+		  "about": {
+			"@id": "https://www.lusansapkota.com.np/#person"
+		  },
+		  "description": "Professional portfolio showcasing Full Stack Software Development and AI/ML Engineering projects, skills, and experience",
+		  "breadcrumb": {
+			"@type": "BreadcrumbList",
+			"itemListElement": [
+			  {
+				"@type": "ListItem",
+				"position": 1,
+				"name": "Home",
+				"item": "https://www.lusansapkota.com.np/"
+			  }
+			]
+		  },
+		  "mainEntity": {
+			"@id": "https://www.lusansapkota.com.np/#person"
+		  },
+		  "datePublished": "2024-01-01T00:00:00+00:00",
+		  "dateModified": "2024-12-23T00:00:00+00:00"
+		},
+		{
+		  "@type": "ProfessionalService",
+		  "@id": "https://www.lusansapkota.com.np/#service",
+		  "name": "Full Stack Software Development Services",
+		  "description": "Professional software development services including web applications, AI/ML solutions, and technical consulting",
+		  "provider": {
+			"@id": "https://www.lusansapkota.com.np/#person"
+		  },
+		  "areaServed": {
+			"@type": "Place",
+			"name": "Worldwide"
+		  },
+		  "hasOfferCatalog": {
+			"@type": "OfferCatalog",
+			"name": "Software Development Services",
+			"itemListElement": [
+			  {
+				"@type": "Offer",
+				"itemOffered": {
+				  "@type": "Service",
+				  "name": "Full Stack Web Development",
+				  "description": "Complete web application development using modern technologies"
+				}
+			  },
+			  {
+				"@type": "Offer",
+				"itemOffered": {
+				  "@type": "Service",
+				  "name": "AI/ML Development",
+				  "description": "Machine learning and artificial intelligence solutions"
+				}
+			  },
+			  {
+				"@type": "Offer",
+				"itemOffered": {
+				  "@type": "Service",
+				  "name": "Technical Consulting",
+				  "description": "Versatile technical advice and code review services"
+				}
+			  }
+			]
+		  }
+		}
+	  ]
+	}
+	</script>
+	
+	<!-- Dynamic Schema.org from Database -->
+	{% if seo and seo.schema_markup and seo.schema_markup.strip() and seo.schema_markup.strip().startswith('{') %}
+	<script type="application/ld+json">
+	{{ seo.schema_markup | safe }}
+	</script>
+	{% endif %}
+	
+	<!-- Portfolio Projects Structured Data -->
+	<script type="application/ld+json">
+	{
+	  "@context": "https://schema.org",
+	  "@type": "ItemList",
+	  "itemListElement": [
+		{
+		  "@type": "SoftwareSourceCode",
+		  "position": 1,
+		  "name": "Ambulance Tracking System",
+		  "url": "https://github.com/Lusan-sapkota/Ambulance-tracking-system",
+		  "programmingLanguage": ["Python", "JavaScript"],
+		  "description": "Real-time ambulance tracking system to optimize emergency response"
+		},
+		{
+		  "@type": "SoftwareSourceCode",
+		  "position": 2,
+		  "name": "Face Recognition Based Attendance System",
+		  "url": "https://github.com/Lusan-sapkota/Face-Recognition-Based-Attendance-System",
+		  "programmingLanguage": ["Python", "OpenCV"],
+		  "description": "Automated attendance tracking using facial recognition technology"
+		},
+		{
+		  "@type": "SoftwareSourceCode",
+		  "position": 3,
+		  "name": "Task Master",
+		  "url": "https://github.com/Lusan-sapkota/Task-Master",
+		  "programmingLanguage": ["JavaScript", "HTML", "CSS"],
+		  "description": "Productivity application for task management and organization"
+		},
+		{
+		  "@type": "SoftwareSourceCode",
+		  "position": 4,
+		  "name": "Jarvis",
+		  "url": "https://github.com/Lusan-sapkota/Jarvis",
+		  "programmingLanguage": ["Python"],
+		  "description": "Personal AI assistant with voice recognition capabilities"
+		},
+		{
+		  "@type": "SoftwareSourceCode",
+		  "position": 5,
+		  "name": "Chat History Master",
+		  "url": "https://github.com/Lusan-sapkota/Chat-History_Master",
+		  "programmingLanguage": ["Python", "JavaScript"],
+		  "description": "Tool for analyzing and organizing chat histories from various platforms"
+		}
+	  ]
+	}
+	</script>
 
-    <!-- Breadcrumb Structured Data -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "Home",
-          "item": "https://www.lusansapkota.com.np/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "name": "About",
-          "item": "https://www.lusansapkota.com.np/#about"
-        },
-        {
-          "@type": "ListItem",
-          "position": 3,
-          "name": "Skills",
-          "item": "https://www.lusansapkota.com.np/#skills"
-        },
-        {
-          "@type": "ListItem",
-          "position": 4,
-          "name": "Portfolio",
-          "item": "https://www.lusansapkota.com.np/#portfolio"
-        },
-        {
-          "@type": "ListItem",
-          "position": 5,
-          "name": "Contact",
-          "item": "https://www.lusansapkota.com.np/#contact"
-        }
-      ]
-    }
-    </script>
-    
-    <!-- LocalBusiness Structured Data -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "LocalBusiness",
-      "name": "Lusan Sapkota - Freelance Developer",
-      "image": "https://www.lusansapkota.com.np/static/assets/images/profile.jpg",
-      "telephone": "Available upon request",
-      "email": "sapkotalusan@gmail.com",
-      "url": "https://www.lusansapkota.com.np",
-      "address": {
-        "@type": "PostalAddress",
-        "addressCountry": "Nepal",
-        "addressLocality": "Kathmandu"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": "27.7172",
-        "longitude": "85.3240"
-      },
-      "priceRange": "$$",
-      "openingHoursSpecification": [
-        {
-          "@type": "OpeningHoursSpecification",
-          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-          "opens": "09:00",
-          "closes": "18:00"
-        }
-      ]
-    }
-    </script>
-    
+	<!-- Breadcrumb Structured Data -->
+	<script type="application/ld+json">
+	{
+	  "@context": "https://schema.org",
+	  "@type": "BreadcrumbList",
+	  "itemListElement": [
+		{
+		  "@type": "ListItem",
+		  "position": 1,
+		  "name": "Home",
+		  "item": "https://www.lusansapkota.com.np/"
+		},
+		{
+		  "@type": "ListItem",
+		  "position": 2,
+		  "name": "About",
+		  "item": "https://www.lusansapkota.com.np/#about"
+		},
+		{
+		  "@type": "ListItem",
+		  "position": 3,
+		  "name": "Skills",
+		  "item": "https://www.lusansapkota.com.np/#skills"
+		},
+		{
+		  "@type": "ListItem",
+		  "position": 4,
+		  "name": "Portfolio",
+		  "item": "https://www.lusansapkota.com.np/#portfolio"
+		},
+		{
+		  "@type": "ListItem",
+		  "position": 5,
+		  "name": "Contact",
+		  "item": "https://www.lusansapkota.com.np/#contact"
+		}
+	  ]
+	}
+	</script>
+	
+	<!-- LocalBusiness Structured Data -->
+	<script type="application/ld+json">
+	{
+	  "@context": "https://schema.org",
+	  "@type": "LocalBusiness",
+	  "name": "Lusan Sapkota - Freelance Developer",
+	  "image": "https://www.lusansapkota.com.np/static/assets/images/profile.jpg",
+	  "telephone": "Available upon request",
+	  "email": "sapkotalusan@gmail.com",
+	  "url": "https://www.lusansapkota.com.np",
+	  "address": {
+		"@type": "PostalAddress",
+		"addressCountry": "Nepal",
+		"addressLocality": "Kathmandu"
+	  },
+	  "geo": {
+		"@type": "GeoCoordinates",
+		"latitude": "27.7172",
+		"longitude": "85.3240"
+	  },
+	  "priceRange": "$$",
+	  "openingHoursSpecification": [
+		{
+		  "@type": "OpeningHoursSpecification",
+		  "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+		  "opens": "09:00",
+		  "closes": "18:00"
+		}
+	  ]
+	}
+	</script>
+	
 	<!-- CDN CSS: Bootstrap, Owl Carousel & Font Awesome -->
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" crossorigin="anonymous">
@@ -464,30 +464,30 @@
 	<link rel="preload" href="{{ url_for('static', filename='assets/css/style.css') }}" as="style">
 	<link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style.css') }}">
 
-	    
-    <!-- OpenGraph article data -->
-    <meta property="article:author" content="Lusan Sapkota">
-    <meta property="article:publisher" content="https://www.lusansapkota.com.np">
-    <meta property="article:section" content="Technology">
-    <meta property="article:tag" content="Web Development, Full Stack, Portfolio, Nepal, Developer, Software">
+		
+	<!-- OpenGraph article data -->
+	<meta property="article:author" content="Lusan Sapkota">
+	<meta property="article:publisher" content="https://www.lusansapkota.com.np">
+	<meta property="article:section" content="Technology">
+	<meta property="article:tag" content="Web Development, Full Stack, Portfolio, Nepal, Developer, Software">
 
-    <!-- Additional SEO tags -->
-    <meta name="rating" content="General">
-    <meta name="revisit-after" content="7 days">
-    <meta name="target" content="all">
-    <meta name="HandheldFriendly" content="True">
-    <meta name="MobileOptimized" content="320">
-    <meta http-equiv="cleartype" content="on">
-    
-    <!-- Accessibility meta tags -->
-    <meta name="format-detection" content="telephone=yes">
-    <meta name="format-detection" content="address=yes">
-    
-    <!-- Prefetch for common resources -->
-    <link rel="prefetch" href="{{ url_for('static', filename='assets/download/Lusan_Sapkota_Resume.txt') }}">
-    <link rel="prefetch" href="{{ url_for('static', filename='assets/images/profile.jpg') }}">
+	<!-- Additional SEO tags -->
+	<meta name="rating" content="General">
+	<meta name="revisit-after" content="7 days">
+	<meta name="target" content="all">
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta http-equiv="cleartype" content="on">
+	
+	<!-- Accessibility meta tags -->
+	<meta name="format-detection" content="telephone=yes">
+	<meta name="format-detection" content="address=yes">
+	
+	<!-- Prefetch for common resources -->
+	<link rel="prefetch" href="{{ url_for('static', filename='assets/download/Lusan_Sapkota_Resume.txt') }}">
+	<link rel="prefetch" href="{{ url_for('static', filename='assets/images/profile.jpg') }}">
 
-    <!-- Google Tag Manager and toggle -->
+	<!-- Google Tag Manager and toggle -->
 	<script>
 	(function(w, d, s, l, i) {
 		// Google Tag Manager setup
@@ -1095,6 +1095,28 @@
 		]
 	}
 	</script>
+	
+	<!-- ProfilePage Structured Data -->
+	<script type="application/ld+json">
+	{
+		"@context": "https://schema.org",
+		"@type": "ProfilePage",
+		"mainEntity": {
+			"@type": "Person",
+			"name": "Lusan Sapkota",
+			"jobTitle": "Full Stack Software Developer",
+			"nationality": {
+				"@type": "Country",
+				"name": "Nepal"
+			},
+			"description": "Full Stack Software Developer specializing in Python, JavaScript, TypeScript, React, Next.js, Django, Flask, and AI/ML technologies",
+			"url": "{{ request.url_root }}",
+			"image": "{{ url_for('static', filename='assets/logo/logo.png', _external=True) }}"
+		}
+	}
+	</script>
+	<!-- Canonical tag for SEO -->
+	<link rel="canonical" href="{{ request.url }}" />
 </head>
 
 	
@@ -1113,73 +1135,73 @@
 				<!-- Start Navigation -->
 				<nav class="navbar navbar-expand-lg navbar-light bootsnav">
 				  <div class="container">
-				    <!-- Logo -->
-				    <a href="{{ url_for('index') }}" class="navbar-brand">
-				      <img src="{{ url_for('static', filename='assets/logo/logo.png') }}" alt="logo" width="60" height="40" class="logo-animation">
-				    </a>
-				    
-				    <!-- Mobile Toggle Button -->
-				    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
-				            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-				      <span class="navbar-toggler-icon"></span>
-				    </button>
-				    
-				    <!-- Navigation Links -->
-				    <div class="collapse navbar-collapse" id="navbarNav">
-				      <ul class="navbar-nav ms-auto">
-				        <li class="nav-item">
-				          <a class="nav-link smooth-menu" href="#subdomains">Platforms</a>
-				        </li>
-				        <li class="nav-item">
-				          <a class="nav-link smooth-menu" href="#about">About</a>
-				        </li>
-				        <li class="nav-item">
-				          <a class="nav-link smooth-menu" href="#education">Education</a>
-				        </li>
-				        <li class="nav-item">
-				          <a class="nav-link smooth-menu" href="#skills">Skills</a>
-				        </li>
-				        <li class="nav-item">
-				          <a class="nav-link smooth-menu" href="#experience">Experience</a>
-				        </li>
-				        <li class="nav-item">
-				          <a class="nav-link smooth-menu" href="#profiles">Profile</a>
-				        </li>
-				        <li class="nav-item">
-				          <a class="nav-link smooth-menu" href="#portfolio">Portfolio</a>
-				        </li>
-				        <li class="nav-item">
-				          <a class="nav-link smooth-menu" href="#testimonials">Testimonials</a>
-				        </li>
-				        <li class="nav-item">
-				          <a class="nav-link smooth-menu" href="#contact">Contact</a>
-				        </li>
-				        <li class="nav-item theme-toggle-wrapper">
-				          <button type="button" class="btn btn-link nav-link theme-toggle" id="theme-toggle">
-				            <i class="fas fa-moon"></i>
-				            <i class="fas fa-sun"></i>
-				          </button>
-				        </li>
-				      </ul>
-				    </div>
+					<!-- Logo -->
+					<a href="{{ url_for('index') }}" class="navbar-brand">
+					  <img src="{{ url_for('static', filename='assets/logo/logo.png') }}" alt="logo" width="60" height="40" class="logo-animation">
+					</a>
+					
+					<!-- Mobile Toggle Button -->
+					<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+							aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+					  <span class="navbar-toggler-icon"></span>
+					</button>
+					
+					<!-- Navigation Links -->
+					<div class="collapse navbar-collapse" id="navbarNav">
+					  <ul class="navbar-nav ms-auto">
+						<li class="nav-item">
+						  <a class="nav-link smooth-menu" href="#subdomains">Platforms</a>
+						</li>
+						<li class="nav-item">
+						  <a class="nav-link smooth-menu" href="#about">About</a>
+						</li>
+						<li class="nav-item">
+						  <a class="nav-link smooth-menu" href="#education">Education</a>
+						</li>
+						<li class="nav-item">
+						  <a class="nav-link smooth-menu" href="#skills">Skills</a>
+						</li>
+						<li class="nav-item">
+						  <a class="nav-link smooth-menu" href="#experience">Experience</a>
+						</li>
+						<li class="nav-item">
+						  <a class="nav-link smooth-menu" href="#profiles">Profile</a>
+						</li>
+						<li class="nav-item">
+						  <a class="nav-link smooth-menu" href="#portfolio">Portfolio</a>
+						</li>
+						<li class="nav-item">
+						  <a class="nav-link smooth-menu" href="#testimonials">Testimonials</a>
+						</li>
+						<li class="nav-item">
+						  <a class="nav-link smooth-menu" href="#contact">Contact</a>
+						</li>
+						<li class="nav-item theme-toggle-wrapper">
+						  <button type="button" class="btn btn-link nav-link theme-toggle" id="theme-toggle">
+							<i class="fas fa-moon"></i>
+							<i class="fas fa-sun"></i>
+						  </button>
+						</li>
+					  </ul>
+					</div>
 				  </div>
 				</nav><!--/nav-->
 				<!-- End Navigation -->
 			</div><!--/.header-area-->
 
-		    <div class="clearfix"></div>
+			<div class="clearfix"></div>
 
 		</header><!-- /.top-area-->
 		<!-- top-area End -->
 	
 		<!--welcome-hero start -->
-		<section id="welcome-hero" class="welcome-hero" data-aos="fade-up" data-aos-duration="1200" itemprop="mainEntity" itemscope itemtype="http://schema.org/Person">
+		<section id="welcome-hero" class="welcome-hero" data-aos="fade-up" data-aos-duration="1200">
 			<div class="container">
 				<div class="row">
 					<div class="col-md-12 text-center">
 						<div class="header-text">
-							<h1 data-aos="fade-up" data-aos-delay="300" itemprop="name">hi <span>,</span> i am <br> Lusan <br> Sapkota <span>.</span>   </h1>
-							<p data-aos="fade-up" data-aos-delay="600" itemprop="jobTitle">Full Stack Software Developer from Nepal &#x1F1F3;&#x1F1F5;.
+							<h1 data-aos="fade-up" data-aos-delay="300">hi <span>,</span> i am <br> Lusan <br> Sapkota <span>.</span>   </h1>
+							<p data-aos="fade-up" data-aos-delay="600">Full Stack Software Developer from Nepal &#x1F1F3;&#x1F1F5;.
 							</p>
 							<div data-aos="fade-up" data-aos-delay="900">
 								<a href="javascript:void(0)" class="hover-lift resume-download-btn" data-resume-url="{{ url_for('static', filename='assets/download/Lusan_Sapkota_Resume.txt') }}">Download Resume</a>
@@ -1372,7 +1394,7 @@
 									<h4>Texas International College</h4>
 									<div class="education-details">
 										<span class="location"><i class="fas fa-map-marker-alt"></i> Sifal, Kathmandu</span>
-										<span class="gpa"><i class="fas fa-star"></i> Currently in 4th Semester</span>
+										<span class="gpa"><i class="fas fa-star"></i> Current</span>
 									</div>
 									<p>Lincoln University partnership program combining theoretical knowledge with practical skills for the evolving tech industry.</p>
 									<div class="education-tags">
@@ -1437,18 +1459,18 @@
 		<!--education end -->
 
 		<!--skills start -->
-    <section id="skills" class="skills-redesigned" data-aos="fade-up" data-aos-duration="800">
-        <div class="container">
-            <!-- Section Header -->
-            <div class="skills-header">
-                <div class="section-heading text-center" data-aos="fade-up" data-aos-delay="200">
-                    <h2>Technical Skills</h2>
-                    <p class="section-subtitle">Expertise across the full development stack</p>
-                </div>
-            </div>
+	<section id="skills" class="skills-redesigned" data-aos="fade-up" data-aos-duration="800">
+		<div class="container">
+			<!-- Section Header -->
+			<div class="skills-header">
+				<div class="section-heading text-center" data-aos="fade-up" data-aos-delay="200">
+					<h2>Technical Skills</h2>
+					<p class="section-subtitle">Expertise across the full development stack</p>
+				</div>
+			</div>
 
-            <!-- Skills Content -->
-            <div class="skills-redesigned-content">
+			<!-- Skills Content -->
+			<div class="skills-redesigned-content">
 				<div class="skills-categories-grid">
 					<!-- Programming Languages -->
 					<div class="skill-category-redesigned">
@@ -1810,8 +1832,8 @@
 						</div>
 					</div>
 				</div>
-                
-                <!-- Familiar Tools & Concepts -->
+				
+				<!-- Familiar Tools & Concepts -->
 				<div class="familiar-tools-redesigned">
 					<div class="tools-header-redesigned">
 						<h4>Familiar Tools & Concepts</h4>
@@ -1890,7 +1912,6 @@
 								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Collaborative design platform for prototyping, wireframing and design systems">Figma</span>
 								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Quick design tool for creating marketing materials and social media assets">Canva</span>
 								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Google's unified design system for consistent, intuitive experiences">Material Design</span>
-								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Mobile-first CSS framework with pre-built components and responsive layouts">Bootstrap</span>
 							</div>
 						</div>
 
@@ -1966,8 +1987,8 @@
 					</div>
 				</div>
 
-            </div>
-        </section><!--/.skills-->
+			</div>
+		</section><!--/.skills-->
 		<!--skills end -->
 
 		<!--experience start -->
@@ -1986,11 +2007,11 @@
 								<div class="timeline-content">
 									<div class="timeline-header">
 										<h3>Full Stack Developer & Student</h3>
-										<span class="timeline-date">2025 - Present</span>
+										<span class="timeline-date">2023 - Present</span>
 									</div>
 									<div class="timeline-location">
 										<i class="fas fa-map-marker-alt"></i>
-										Remote & Nepal
+										Kathmandu, Nepal
 									</div>
 									<div class="timeline-description">
 										<p>Advancing my skills in modern web technologies while working on diverse freelance projects. Specializing in Python web frameworks, JavaScript development, and exploring AI/ML applications in web development.</p>
@@ -2006,32 +2027,22 @@
 								</div>
 							</div>
 
-							<!-- Learning Phase -->
 							<div class="timeline-item card-base">
 								<div class="timeline-content">
 									<div class="timeline-header">
-										<h3>Student & Emerging Developer</h3>
-										<span class="timeline-date">2022 - 2024</span>
+									<h3>Full-Stack Developer (Internship + Junior)</h3>
+									<span class="timeline-date">06/2023 – 09/2024</span>
 									</div>
 									<div class="timeline-location">
-										<i class="fas fa-map-marker-alt"></i>
-										Remote Learning & Local Projects
+									<i class="fas fa-map-marker-alt"></i>
+										Kathmandu, Nepal
 									</div>
 									<div class="timeline-description">
-										<p>Intensive learning phase focusing on modern web technologies while completing academic studies. Built foundation in full-stack development and started taking on local freelance projects.</p>
-										<div class="timeline-achievements">
-											<div class="achievement">
-												<i class="fas fa-check-circle"></i>
-												<span>Mastered Python web frameworks</span>
-											</div>
-											<div class="achievement">
-												<i class="fas fa-check-circle"></i>
-												<span>Completed multiple client projects</span>
-											</div>
-											<div class="achievement">
-												<i class="fas fa-check-circle"></i>
-												<span>Built responsive web applications</span>
-											</div>
+										<p>Started as an intern and promoted to Junior Full-Stack Developer within 3 months. Developed cross-platform mobile apps using React Native, built backend APIs with Django, and designed microservices using Flask.</p>
+										<div class="timeline-skills">
+											<span class="skill-tag">React Native</span>
+											<span class="skill-tag">Django</span>
+											<span class="skill-tag">Flask</span>
 										</div>
 									</div>
 								</div>
@@ -2194,127 +2205,127 @@
 		</section><!--/.profiles-->
 		
 		<!--profiles end -->        <!--portfolio start -->
-        <section id="portfolio" class="portfolio">
-            <div class="container">
-                <div class="section-heading text-center">
-                    <h2>portfolio</h2>
-                    <p>Showcasing innovative projects that demonstrate expertise in full-stack development, AI/ML, and modern web technologies</p>
-                </div>
-                
-                <div class="portfolio-content">
-                    
-                    <!-- Portfolio Grid -->
-                    <div class="portfolio-grid card-grid">
-                        {% for project in portfolio_projects %}
-                        <div class="portfolio-item card-base" data-category="{{ project.category.name.lower().replace(' ', '-') if project.category else 'other' }}">
-                            <div class="portfolio-image">
-                                <img src="{{ project.image_url or url_for('static', filename='assets/images/portfolio/default-project.jpg') }}" alt="{{ project.title }} - Project Screenshot" loading="lazy" />
-                                <div class="portfolio-overlay">
-                                    <div class="portfolio-links">
-                                        {% if project.github_url %}
-                                        <a href="{{ project.github_url }}" target="_blank" class="btn-portfolio btn-github">
-                                            <i class="fab fa-github"></i>
-                                        </a>
-                                        {% endif %}
-                                        {% if project.live_url %}
-                                        <a href="{{ project.live_url }}" target="_blank" class="btn-portfolio btn-preview">
-                                            <i class="fas fa-external-link-alt"></i>
-                                        </a>
-                                        {% endif %}
-                                        {% if project.commercial_url %}
-                                        <a href="{{ project.commercial_url }}" target="_blank" class="btn-portfolio btn-commercial">
-                                            <i class="fas fa-shopping-cart"></i>
-                                        </a>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="portfolio-content">
-                                <h3 class="portfolio-title">{{ project.title }}</h3>
-                                <p class="portfolio-description">
-                                    {% if project.description %}
-                                        {% set description = project.description %}
-                                        {% if description|length > 120 %}
-                                            {{ description[:120] }}...
-                                        {% else %}
-                                            {{ description }}
-                                        {% endif %}
-                                    {% else %}
-                                        No description available.
-                                    {% endif %}
-                                </p>
-                                <div class="portfolio-tech">
-                                    {% if project.technologies %}
-                                        {% for tech in project.technologies.split(',')[:4] %}
-                                        <span class="tech-tag">{{ tech.strip() }}</span>
-                                        {% endfor %}
-                                        {% if project.technologies.split(',')|length > 4 %}
-                                        <span class="tech-tag tech-more">+{{ project.technologies.split(',')|length - 4 }} more</span>
-                                        {% endif %}
-                                    {% endif %}
-                                </div>
-                                {% if project.stars or project.forks %}
-                                <div class="portfolio-stats mt-3 text-center">
-                                    {% if project.stars %}
-                                    <span class="stat-item">
-                                        <i class="fas fa-star"></i> {{ project.stars }}
-                                    </span>
-                                    {% endif %}
-                                    {% if project.forks %}
-                                    <span class="stat-item">
-                                        <i class="fas fa-code-branch"></i> {{ project.forks }}
-                                    </span>
-                                    {% endif %}
-                                </div>
-                                {% endif %}
-                                <!-- Learn More Button -->
-                                <div class="portfolio-actions mt-3" style="display: flex; justify-content: center; align-items: center;">
-                                    <a href="https://git.lusansapkota.com.np/project/{{ project.id }}" 
-                                       class="btn-learn-more" style=" text-decoration:none; color: #fff; background-color: #f39c12; padding: 10px 15px; border-radius: 5px;"
-                                       target="_blank" 
-                                       rel="noopener noreferrer">
-                                        Learn More
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        {% else %}
-                        <!-- Fallback content if no projects in database -->
-                        <div class="portfolio-item card-base" data-category="web">
-                            <div class="portfolio-image">
-                                <img src="{{ url_for('static', filename='assets/images/portfolio/placeholder.svg')}}" alt="Sample Project Screenshot" loading="lazy" />
-                                <div class="portfolio-overlay">
-                                    <div class="portfolio-links">
-                                        <a href="https://github.com/Lusan-sapkota" target="_blank" class="btn-portfolio btn-github">
-                                            <i class="fab fa-github"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="portfolio-content">
-                                <h3 class="portfolio-title">Sample Project</h3>
-                                <p class="portfolio-description">Portfolio projects will be displayed here once added to the database.</p>
-                                <div class="portfolio-tech">
-                                    <span class="tech-tag">Python</span>
-                                    <span class="tech-tag">Flask</span>
-                                </div>
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
-                    
-                    <!-- View More Button -->
-                    <div class="text-center mt-5">
-                        <a href="{{url_for('git.index')}}" target="_blank" class="btn btn-primary btn-lg">
-                            <i class="fas fa-code me-2"></i>
-                            View All Projects
-                       
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section><!--/.portfolio-->
-        <!--portfolio end -->
+		<section id="portfolio" class="portfolio">
+			<div class="container">
+				<div class="section-heading text-center">
+					<h2>portfolio</h2>
+					<p>Showcasing innovative projects that demonstrate expertise in full-stack development, AI/ML, and modern web technologies</p>
+				</div>
+				
+				<div class="portfolio-content">
+					
+					<!-- Portfolio Grid -->
+					<div class="portfolio-grid card-grid">
+						{% for project in portfolio_projects %}
+						<div class="portfolio-item card-base" data-category="{{ project.category.name.lower().replace(' ', '-') if project.category else 'other' }}">
+							<div class="portfolio-image">
+								<img src="{{ project.image_url or url_for('static', filename='assets/images/portfolio/default-project.jpg') }}" alt="{{ project.title }} - Project Screenshot" loading="lazy" />
+								<div class="portfolio-overlay">
+									<div class="portfolio-links">
+										{% if project.github_url %}
+										<a href="{{ project.github_url }}" target="_blank" class="btn-portfolio btn-github">
+											<i class="fab fa-github"></i>
+										</a>
+										{% endif %}
+										{% if project.live_url %}
+										<a href="{{ project.live_url }}" target="_blank" class="btn-portfolio btn-preview">
+											<i class="fas fa-external-link-alt"></i>
+										</a>
+										{% endif %}
+										{% if project.commercial_url %}
+										<a href="{{ project.commercial_url }}" target="_blank" class="btn-portfolio btn-commercial">
+											<i class="fas fa-shopping-cart"></i>
+										</a>
+										{% endif %}
+									</div>
+								</div>
+							</div>
+							<div class="portfolio-content">
+								<h3 class="portfolio-title">{{ project.title }}</h3>
+								<p class="portfolio-description">
+									{% if project.description %}
+										{% set description = project.description %}
+										{% if description|length > 120 %}
+											{{ description[:120] }}...
+										{% else %}
+											{{ description }}
+										{% endif %}
+									{% else %}
+										No description available.
+									{% endif %}
+								</p>
+								<div class="portfolio-tech">
+									{% if project.technologies %}
+										{% for tech in project.technologies.split(',')[:4] %}
+										<span class="tech-tag">{{ tech.strip() }}</span>
+										{% endfor %}
+										{% if project.technologies.split(',')|length > 4 %}
+										<span class="tech-tag tech-more">+{{ project.technologies.split(',')|length - 4 }} more</span>
+										{% endif %}
+									{% endif %}
+								</div>
+								{% if project.stars or project.forks %}
+								<div class="portfolio-stats mt-3 text-center">
+									{% if project.stars %}
+									<span class="stat-item">
+										<i class="fas fa-star"></i> {{ project.stars }}
+									</span>
+									{% endif %}
+									{% if project.forks %}
+									<span class="stat-item">
+										<i class="fas fa-code-branch"></i> {{ project.forks }}
+									</span>
+									{% endif %}
+								</div>
+								{% endif %}
+								<!-- Learn More Button -->
+								<div class="portfolio-actions mt-3" style="display: flex; justify-content: center; align-items: center;">
+									<a href="https://git.lusansapkota.com.np/project/{{ project.id }}" 
+									   class="btn-learn-more" style=" text-decoration:none; color: #fff; background-color: #f39c12; padding: 10px 15px; border-radius: 5px;"
+									   target="_blank" 
+									   rel="noopener noreferrer">
+										Learn More
+									</a>
+								</div>
+							</div>
+						</div>
+						{% else %}
+						<!-- Fallback content if no projects in database -->
+						<div class="portfolio-item card-base" data-category="web">
+							<div class="portfolio-image">
+								<img src="{{ url_for('static', filename='assets/images/portfolio/placeholder.svg')}}" alt="Sample Project Screenshot" loading="lazy" />
+								<div class="portfolio-overlay">
+									<div class="portfolio-links">
+										<a href="https://github.com/Lusan-sapkota" target="_blank" class="btn-portfolio btn-github">
+											<i class="fab fa-github"></i>
+										</a>
+									</div>
+								</div>
+							</div>
+							<div class="portfolio-content">
+								<h3 class="portfolio-title">Sample Project</h3>
+								<p class="portfolio-description">Portfolio projects will be displayed here once added to the database.</p>
+								<div class="portfolio-tech">
+									<span class="tech-tag">Python</span>
+									<span class="tech-tag">Flask</span>
+								</div>
+							</div>
+						</div>
+						{% endfor %}
+					</div>
+					
+					<!-- View More Button -->
+					<div class="text-center mt-5">
+						<a href="{{url_for('git.index')}}" target="_blank" class="btn btn-primary btn-lg">
+							<i class="fas fa-code me-2"></i>
+							View All Projects
+					   
+						</a>
+					</div>
+				</div>
+			</div>
+		</section><!--/.portfolio-->
+		<!--portfolio end -->
 
 
 		<!--testimonials start -->
@@ -2468,173 +2479,173 @@
 		<!-- Enhanced Footer Section -->
 		<footer class="footer">
   <div class="container">
-    <div class="footer-content">
-      
-      <!-- Logo & Brand Section -->
-      <div class="footer-section">
-        <div class="footer-logo">
-          <img src="{{ url_for('static', filename='assets/logo/logo.png') }}" alt="Lusan Sapkota Logo">
-          <div class="footer-brand-text">Lusan Sapkota</div>
-          <div class="footer-tagline">Full-Stack Developer & Digital Innovation Enthusiast</div>
-        </div>
-      </div>
-      
-      <!-- Quick Links Grid -->
-      <div class="footer-links">
-        
-        <!-- Navigation Links -->
-        <div class="footer-column">
-          <h4>Navigation</h4>
-          <ul>
-            <li><a href="#subdomains"><i class="fas fa-chevron-right"></i>Platforms</a></li>
-            <li><a href="#about"><i class="fas fa-chevron-right"></i>About Me</a></li>
-            <li><a href="#education"><i class="fas fa-chevron-right"></i>Education</a></li>
-            <li><a href="#skills"><i class="fas fa-chevron-right"></i>Skills</a></li>
-            <li><a href="#experience"><i class="fas fa-chevron-right"></i>Experience</a></li>
-            <li><a href="#portfolio"><i class="fas fa-chevron-right"></i>Portfolio</a></li>
-            <li><a href="#testimonials"><i class="fas fa-chevron-right"></i>Testimonials</a></li>
-          </ul>
-        </div>
-        
-        <!-- Platform Links -->
-        <div class="footer-column">
-          <h4>Platforms</h4>
-          <ul>
-            <li><a href="{{url_for('wiki.index')}}" target="_blank"><i class="fas fa-book"></i>Wiki Platform</a></li>
-            <li><a href="{{url_for('git.index')}}" target="_blank"><i class="fab fa-git-alt"></i>Git Repository</a></li>
-            <li><a href="{{url_for('donation.index')}}" target="_blank"><i class="fas fa-heart"></i>Donation Hub</a></li>
-            <li><a href="{{ url_for('store.index') }}" target="_blank"><i class="fas fa-store"></i>Online Store</a></li>
-          </ul>
-        </div>
-        
-        <!-- Contact Information Section -->
-        <div class="footer-column">
-          <div class="footer-contact-section">
-            <h4>Contact Info</h4>
-            <ul class="contact-info-list">
-              
-              <!-- Email Section with Both Emails -->
-              <li class="contact-info-item">
+	<div class="footer-content">
+	  
+	  <!-- Logo & Brand Section -->
+	  <div class="footer-section">
+		<div class="footer-logo">
+		  <img src="{{ url_for('static', filename='assets/logo/logo.png') }}" alt="Lusan Sapkota Logo">
+		  <div class="footer-brand-text">Lusan Sapkota</div>
+		  <div class="footer-tagline">Full-Stack Developer & Digital Innovation Enthusiast</div>
+		</div>
+	  </div>
+	  
+	  <!-- Quick Links Grid -->
+	  <div class="footer-links">
+		
+		<!-- Navigation Links -->
+		<div class="footer-column">
+		  <h4>Navigation</h4>
+		  <ul>
+			<li><a href="#subdomains"><i class="fas fa-chevron-right"></i>Platforms</a></li>
+			<li><a href="#about"><i class="fas fa-chevron-right"></i>About Me</a></li>
+			<li><a href="#education"><i class="fas fa-chevron-right"></i>Education</a></li>
+			<li><a href="#skills"><i class="fas fa-chevron-right"></i>Skills</a></li>
+			<li><a href="#experience"><i class="fas fa-chevron-right"></i>Experience</a></li>
+			<li><a href="#portfolio"><i class="fas fa-chevron-right"></i>Portfolio</a></li>
+			<li><a href="#testimonials"><i class="fas fa-chevron-right"></i>Testimonials</a></li>
+		  </ul>
+		</div>
+		
+		<!-- Platform Links -->
+		<div class="footer-column">
+		  <h4>Platforms</h4>
+		  <ul>
+			<li><a href="{{url_for('wiki.index')}}" target="_blank"><i class="fas fa-book"></i>Wiki Platform</a></li>
+			<li><a href="{{url_for('git.index')}}" target="_blank"><i class="fab fa-git-alt"></i>Git Repository</a></li>
+			<li><a href="{{url_for('donation.index')}}" target="_blank"><i class="fas fa-heart"></i>Donation Hub</a></li>
+			<li><a href="{{ url_for('store.index') }}" target="_blank"><i class="fas fa-store"></i>Online Store</a></li>
+		  </ul>
+		</div>
+		
+		<!-- Contact Information Section -->
+		<div class="footer-column">
+		  <div class="footer-contact-section">
+			<h4>Contact Info</h4>
+			<ul class="contact-info-list">
+			  
+			  <!-- Email Section with Both Emails -->
+			  <li class="contact-info-item">
 
-                <div class="contact-details">
+				<div class="contact-details">
 				  <div class="contact-icon">
-                  	<i class="fas fa-envelope"></i>
+					<i class="fas fa-envelope"></i>
 					<span class="contact-label">Email</span>
-                  </div>
-                  <div class="contact-value">
-                    <div class="email-list">
+				  </div>
+				  <div class="contact-value">
+					<div class="email-list">
 					  <div class="email-item email-primary">
-                        <a href="mailto:sapkotalusan@gmail.com">sapkotalusan@gmail.com</a>
-                      </div>
-                      <div class="email-item email-secondary">
-                        <a href="mailto:contact@lusansapkota.com.np">contact@lusansapkota.com.np</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </li>
-              
-              <!-- Phone Section -->
-              <li class="contact-info-item">
-                <div class="contact-details">
+						<a href="mailto:sapkotalusan@gmail.com">sapkotalusan@gmail.com</a>
+					  </div>
+					  <div class="email-item email-secondary">
+						<a href="mailto:contact@lusansapkota.com.np">contact@lusansapkota.com.np</a>
+					  </div>
+					</div>
+				  </div>
+				</div>
+			  </li>
+			  
+			  <!-- Phone Section -->
+			  <li class="contact-info-item">
+				<div class="contact-details">
 				  <div class="contact-icon">
-                  	<i class="fas fa-phone"></i>
+					<i class="fas fa-phone"></i>
 					<span class="contact-label">Phone</span>
-                  </div>
-                  <div class="contact-value">
-                    <a href="tel:Available upon request">Available upon request</a>
-                  </div>
-                </div>
-              </li>
-              
-              <!-- Location Section -->
-              <li class="contact-info-item">
-                <div class="contact-details">
+				  </div>
+				  <div class="contact-value">
+					<a href="tel:Available upon request">Available upon request</a>
+				  </div>
+				</div>
+			  </li>
+			  
+			  <!-- Location Section -->
+			  <li class="contact-info-item">
+				<div class="contact-details">
 				<div class="contact-icon">
-                  <i class="fas fa-map-marker-alt"></i>
-				    <span class="contact-label">Location</span>
-                </div>
-                  <div class="contact-value">
-                    Kathmandu, Nepal<br>
-                    <small style="opacity: 0.8;">Available for Remote Work</small>
-                  </div>
-                </div>
-              </li>
-              
-            </ul>
-          </div>
-        </div>
-        
-        <!-- Quick Actions -->
-        <div class="footer-column">
-          <h4>Quick Actions</h4>
-          <ul>
-            <li><a href="#contact"><i class="fas fa-paper-plane"></i>Send Message</a></li>
-            <li><a href="https://calendly.com/lusansapkota" target="_blank"><i class="fas fa-calendar"></i>Schedule Meeting</a></li>
+				  <i class="fas fa-map-marker-alt"></i>
+					<span class="contact-label">Location</span>
+				</div>
+				  <div class="contact-value">
+					Kathmandu, Nepal<br>
+					<small style="opacity: 0.8;">Available for Remote Work</small>
+				  </div>
+				</div>
+			  </li>
+			  
+			</ul>
+		  </div>
+		</div>
+		
+		<!-- Quick Actions -->
+		<div class="footer-column">
+		  <h4>Quick Actions</h4>
+		  <ul>
+			<li><a href="#contact"><i class="fas fa-paper-plane"></i>Send Message</a></li>
+			<li><a href="https://calendly.com/lusansapkota" target="_blank"><i class="fas fa-calendar"></i>Schedule Meeting</a></li>
 			<li><a href="javascript:void(0)" class="hover-lift resume-download-btn" data-resume-url="{{ url_for('static', filename='assets/download/Lusan_Sapkota_Resume.txt') }}"><i class="fas fa-download"></i>Download Resume</a></li>
-            <li><a href="/hire-me"><i class="fas fa-handshake"></i>Hire Me</a></li>
-            <li><a href="/privacy"><i class="fas fa-shield-alt"></i>Privacy Policy</a></li>
-          </ul>
-        </div>
-        
-      </div>
-      
-      <!-- Social Media -->
-      <div class="footer-social">
-        <h4>Connect With Me</h4>
-        <div class="social-links">
-          <a href="https://github.com/Lusan-sapkota" target="_blank" rel="noopener noreferrer" class="social-link" title="GitHub">
-            <i class="fab fa-github"></i>
-          </a>
-          <a href="https://www.linkedin.com/in/lusan-sapkota-a08194284/" target="_blank" class="social-link" title="LinkedIn">
-            <i class="fab fa-linkedin-in"></i>
-          </a>
-          <a href="https://x.com/LusanSapkota" target="_blank" class="social-link" title="X(Twitter)">
-            <i class="fab fa-x-twitter"></i>
-          </a>
-          <a href="https://www.instagram.com/sapkotalusan/" target="_blank" class="social-link" title="Instagram">
-            <i class="fab fa-instagram"></i>
-          </a>
-          <a href="https://www.youtube.com/@learn_with_lusan" target="_blank" class="social-link" title="YouTube">
-            <i class="fab fa-youtube"></i>
-          </a>
-          <a href="https://discord.gg/X9JzzRug" target="_blank" class="social-link" title="Discord">
-            <i class="fab fa-discord"></i>
-          </a>
-        </div>
-      </div>
-      
-      <!-- Newsletter Signup -->
-      <div class="footer-newsletter">
-        <h4>Stay Updated</h4>
-        <p>Subscribe to get the latest updates on my projects and tutorials</p>
-        <form class="newsletter-form" id="newsletter-form" action="/newsletter/subscribe" method="POST">
-          <div class="form-group">
-            <input type="email" name="email" placeholder="Enter your email address" required>
-            <!-- Honeypot field for bot detection (hidden from users) -->
-            <input type="text" name="website" style="display: none;" tabindex="-1">
-          </div>
-          <button type="submit" class="newsletter-btn">Subscribe</button>
-        </form>
-        <div id="newsletter-message" style="margin-top: 10px; display: none;"></div>
-      </div>
-      
-    </div>
+			<li><a href="/hire-me"><i class="fas fa-handshake"></i>Hire Me</a></li>
+			<li><a href="/privacy"><i class="fas fa-shield-alt"></i>Privacy Policy</a></li>
+		  </ul>
+		</div>
+		
+	  </div>
+	  
+	  <!-- Social Media -->
+	  <div class="footer-social">
+		<h4>Connect With Me</h4>
+		<div class="social-links">
+		  <a href="https://github.com/Lusan-sapkota" target="_blank" rel="noopener noreferrer" class="social-link" title="GitHub">
+			<i class="fab fa-github"></i>
+		  </a>
+		  <a href="https://www.linkedin.com/in/lusan-sapkota-a08194284/" target="_blank" class="social-link" title="LinkedIn">
+			<i class="fab fa-linkedin-in"></i>
+		  </a>
+		  <a href="https://x.com/LusanSapkota" target="_blank" class="social-link" title="X(Twitter)">
+			<i class="fab fa-x-twitter"></i>
+		  </a>
+		  <a href="https://www.instagram.com/sapkotalusan/" target="_blank" class="social-link" title="Instagram">
+			<i class="fab fa-instagram"></i>
+		  </a>
+		  <a href="https://www.youtube.com/@learn_with_lusan" target="_blank" class="social-link" title="YouTube">
+			<i class="fab fa-youtube"></i>
+		  </a>
+		  <a href="https://discord.gg/X9JzzRug" target="_blank" class="social-link" title="Discord">
+			<i class="fab fa-discord"></i>
+		  </a>
+		</div>
+	  </div>
+	  
+	  <!-- Newsletter Signup -->
+	  <div class="footer-newsletter">
+		<h4>Stay Updated</h4>
+		<p>Subscribe to get the latest updates on my projects and tutorials</p>
+		<form class="newsletter-form" id="newsletter-form" action="/newsletter/subscribe" method="POST">
+		  <div class="form-group">
+			<input type="email" name="email" placeholder="Enter your email address" required>
+			<!-- Honeypot field for bot detection (hidden from users) -->
+			<input type="text" name="website" style="display: none;" tabindex="-1">
+		  </div>
+		  <button type="submit" class="newsletter-btn">Subscribe</button>
+		</form>
+		<div id="newsletter-message" style="margin-top: 10px; display: none;"></div>
+	  </div>
+	  
+	</div>
   </div>
   
   <!-- Copyright Section -->
   <div class="footer-copyright">
-    <div class="container">
-      <div class="footer-copyright-content"></div>
-        <p>&copy; {{ current_year }}  <a href="https://lusansapkota.com.np">Lusan Sapkota</a>. All rights reserved. | Crafted with <i class="fas fa-heart" style="color: #e74c3c;"></i> in Nepal</p>
-        <div class="footer-back-top">
-          <span class="back-to-top-text">Back to Top</span>
-          <a href="#welcome-hero" class="back-to-top-footer smooth-menu">
-            <i class="fas fa-chevron-up"></i>
-          </a>
-        </div>
-      </div>
-    </div>
+	<div class="container">
+	  <div class="footer-copyright-content"></div>
+		<p>&copy; {{ current_year }}  <a href="https://lusansapkota.com.np">Lusan Sapkota</a>. All rights reserved. | Crafted with <i class="fas fa-heart" style="color: #e74c3c;"></i> in Nepal</p>
+		<div class="footer-back-top">
+		  <span class="back-to-top-text">Back to Top</span>
+		  <a href="#welcome-hero" class="back-to-top-footer smooth-menu">
+			<i class="fas fa-chevron-up"></i>
+		  </a>
+		</div>
+	  </div>
+	</div>
   </div>
 </footer>
 		<!--footer end-->
@@ -3046,6 +3057,6 @@
 		</div>
 
 			
-    </body>
+	</body>
 	
 </html>
