@@ -1,0 +1,19 @@
+{% extends 'admin/base.html' %}
+{% block title %}Send Newsletter{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Send Newsletter</h2>
+    <form method="post">
+        <div class="mb-3">
+            <label for="subject" class="form-label">Subject</label>
+            <input type="text" class="form-control" id="subject" name="subject" value="{{ subject or '' }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="content" class="form-label">Content</label>
+            <textarea class="form-control" id="content" name="content" rows="10" required>{{ content or '' }}</textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Send Newsletter</button>
+        <a href="{{ url_for('admin.newsletter') }}" class="btn btn-secondary ms-2">Cancel</a>
+    </form>
+</div>
+{% endblock %}
