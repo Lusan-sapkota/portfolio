@@ -53,6 +53,12 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Newsletter Subscribers</h2>
+        <a href="{{ newsletter_send_url }}" class="btn btn-primary">
+            <i class="fas fa-paper-plane"></i> Send Newsletter
+        </a>
+    </div>
                                     <label for="search">Search</label>
                                     <input type="text" name="search" id="search" class="form-control" placeholder="Email address..." value="{{ request.args.get('search', '') }}">
                                 </div>

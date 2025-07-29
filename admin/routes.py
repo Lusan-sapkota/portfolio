@@ -115,7 +115,38 @@ def dashboard():
         'recent_subscribers': NewsletterSubscriber.query.order_by(desc(NewsletterSubscriber.subscribed_at)).limit(5).all(),
         'recent_donations': Donation.query.order_by(desc(Donation.created_at)).limit(5).all()
     }
-    return render_template('admin/dashboard.html', stats=stats)
+    # Add newsletter send page URL for dashboard quick link
+    newsletter_send_url = url_for('admin.newsletter_send')
+    return render_template('admin/dashboard.html', stats=stats, newsletter_send_url=newsletter_send_url)
+
+# ============ NEWSLETTER SENDING (ADMIN) ============
+@admin_bp.route('/newsletter/send', methods=['GET', 'POST'])
+@admin_required
+def newsletter_send():
+    """Send a newsletter to all active subscribers from the admin panel"""
+    from email_service import EmailService
+    from models import NewsletterSubscriber
+    if request.method == 'POST':
+        subject = request.form.get('subject', '').strip()
+        content = request.form.get('content', '').strip()
+        if not subject or not content:
+            flash('Subject and content are required.', 'danger')
+            return render_template('admin/newsletter/send.html', subject=subject, content=content)
+        # Get all active subscribers
+        subscribers = [s.email for s in NewsletterSubscriber.query.filter_by(is_active=True).all()]
+        if not subscribers:
+            flash('No active subscribers to send the newsletter.', 'warning')
+            return render_template('admin/newsletter/send.html', subject=subject, content=content)
+        email_service = EmailService()
+        success = email_service.send_newsletter(subscribers, subject, content)
+        if success:
+            flash(f'Newsletter sent to {len(subscribers)} subscribers!', 'success')
+            return redirect(url_for('admin.newsletter'))
+        else:
+            flash('Failed to send newsletter. Check logs for details.', 'danger')
+            return render_template('admin/newsletter/send.html', subject=subject, content=content)
+    return render_template('admin/newsletter/send.html')
+
 
 # ============ PROJECTS MANAGEMENT ============
 @admin_bp.route('/projects')
@@ -993,12 +1024,15 @@ def newsletter():
         NewsletterSubscriber.subscribed_at >= this_month_start
     ).count()
     
+    # Add newsletter send page URL for easy access from the list page
+    newsletter_send_url = url_for('admin.newsletter_send')
     return render_template('admin/newsletter/list.html', 
                          subscribers=subscribers,
                          total_subscribers=total_subscribers,
                          active_subscribers=active_subscribers,
                          inactive_subscribers=inactive_subscribers,
-                         this_month_subscribers=this_month_subscribers)
+                         this_month_subscribers=this_month_subscribers,
+                         newsletter_send_url=newsletter_send_url)
     
     return render_template('admin/newsletter/list.html', subscribers=subscribers)
 
