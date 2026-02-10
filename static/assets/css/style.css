@@ -377,6 +377,7 @@ body.theme-transitioning * {
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 70px;
+  overflow-x: hidden;
 }
 
 body {
@@ -2933,107 +2934,175 @@ section {
 }
 
 @media (max-width: 768px) {
+  /* Prevent any horizontal overflow */
+  .container {
+    max-width: 100%;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .row {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
   .navbar-collapse {
     border-radius: var(--border-radius);
     margin-top: 15px;
     padding: 20px;
   }
-  
+
   .navbar-nav .nav-link {
     margin: 5px 0;
     text-align: center;
   }
-  
+
   .header-text h1 {
     font-size: 2.5rem;
   }
-  
+
   .header-text a {
     display: block;
     margin: 10px auto;
     max-width: 250px;
   }
-  
+
   .subdomain-grid {
     grid-template-columns: 1fr;
     gap: 20px;
   }
-  
+
   .subdomain-card {
     padding: 30px 20px;
   }
-  
+
   .subdomain-title h2 {
     font-size: 2rem;
   }
-  
+
   .section-heading h2 {
     font-size: 2rem;
   }
-  
+
   .single-about-txt h3 {
     font-size: 1.5rem;
   }
-  
+
   .single-horizontal-timeline {
     padding: 20px;
   }
-  
+
   .experience-time h2 {
     font-size: 1.3rem;
   }
-  
+
   .timeline-content .title {
     font-size: 1.1rem;
+  }
+
+  /* Fix timeline items overflow */
+  .timeline-item {
+    padding: 20px 15px;
+  }
+
+  .timeline-skills {
+    gap: 6px;
+  }
+
+  .skill-tag {
+    font-size: 11px;
+    padding: 3px 10px;
   }
 }
 
 @media (max-width: 576px) {
   .container {
-    padding: 0 10px;
+    padding: 0 15px;
+    max-width: 100%;
   }
-  
+
+  /* Prevent Bootstrap row negative margins from causing overflow */
+  .row {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .row > * {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
   .header-text h1 {
     font-size: 2rem;
   }
-  
+
   .header-text p {
     font-size: 1rem;
   }
-  
+
+  .header-text a {
+    margin: 8px 5px;
+    padding: 12px 20px;
+    font-size: 0.9rem;
+  }
+
   .subdomain-title h2 {
     font-size: 1.8rem;
   }
-  
+
   .subdomain-icon {
     width: 60px;
     height: 60px;
     font-size: 1.5rem;
   }
-  
+
   .section-heading h2 {
     font-size: 1.8rem;
   }
-  
+
   section {
     padding: 60px 0;
   }
-  
+
   .single-horizontal-timeline {
     padding: 15px;
   }
-  
+
   .single-contact-box {
-    padding: 25px 20px;
+    padding: 25px 15px;
   }
-  
+
   .framework-card .card-body {
     padding: 20px 15px;
   }
-  
+
   .logo-icon {
     width: 40px;
     height: 40px;
+  }
+
+  /* Fix about section on mobile */
+  .about-content .row {
+    flex-direction: column;
+  }
+
+  .about-content [class*="col-"] {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .single-about-img {
+    margin-top: 30px;
+  }
+
+  /* Fix contact section on mobile */
+  .contact-content .row {
+    flex-direction: column;
+  }
+
+  .contact-content [class*="col-"] {
+    width: 100%;
+    max-width: 100%;
   }
 }
 
