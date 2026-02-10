@@ -13,7 +13,7 @@ const STATIC_ASSETS = [
     '/static/assets/css/responsive.css',
     '/static/assets/js/main.js',
     '/static/assets/logo/logo.png',
-    '/static/assets/images/profile.jpg',
+    '/static/assets/images/profile.png',
     '/static/manifest.json',
     '/offline.html'
 ];

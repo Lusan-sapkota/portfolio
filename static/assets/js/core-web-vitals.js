@@ -72,7 +72,7 @@ class CoreWebVitals {
         const criticalResources = [
             '/static/assets/css/style.css',
             '/static/assets/js/main.js',
-            '/static/assets/images/profile.jpg'
+            '/static/assets/images/profile.png'
         ];
 
         criticalResources.forEach(resource => {

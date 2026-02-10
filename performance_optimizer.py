@@ -21,7 +21,7 @@ class PerformanceOptimizer:
         preload_hints = """<!-- Critical Resource Preloads for Performance -->
 <link rel="preload" href="{{ url_for('static', filename='assets/css/style.css') }}" as="style">
 <link rel="preload" href="{{ url_for('static', filename='assets/js/main.js') }}" as="script">
-<link rel="preload" href="{{ url_for('static', filename='assets/images/profile.jpg') }}" as="image">
+<link rel="preload" href="{{ url_for('static', filename='assets/images/profile.png') }}" as="image">
 <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" as="style" crossorigin>
 
 <!-- DNS Prefetch for External Resources -->
@@ -429,7 +429,7 @@ class CoreWebVitals {
         const criticalResources = [
             '/static/assets/css/style.css',
             '/static/assets/js/main.js',
-            '/static/assets/images/profile.jpg'
+            '/static/assets/images/profile.png'
         ];
 
         criticalResources.forEach(resource => {

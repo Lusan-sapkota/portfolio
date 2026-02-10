@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -255,7 +255,36 @@
             transform: translateY(-3px);
             box-shadow: 0 10px 30px rgba(243, 156, 18, 0.3);
         }
-        
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 999;
+            background: var(--gradient-primary);
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--white);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(243, 156, 18, 0.4);
+        }
+
+        [data-theme="dark"] .theme-toggle .fa-moon { display: none; }
+        [data-theme="light"] .theme-toggle .fa-sun { display: none; }
+
         @media (max-width: 768px) {
             .privacy-page {
                 padding: 100px 0 60px;
@@ -289,6 +318,12 @@
     <a href="javascript:history.back()" class="back-home-btn" title="Go Back" style="position: fixed; top: 20px; left: 20px; z-index: 999; padding: 10px 20px;">
         <i class="fa fa-arrow-left" style="color: white;"></i>
     </a>
+
+    <!-- Theme Toggle -->
+    <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+        <i class="fas fa-moon"></i>
+        <i class="fas fa-sun"></i>
+    </button>
      
 
     <!-- Privacy Policy Content -->
@@ -308,7 +343,7 @@
                 
                 <!-- Last Updated -->
                 <div class="last-updated">
-                    <p><strong>Last Updated:</strong> June 17, 2025</p>
+                    <p><strong>Last Updated:</strong> Feb 08, 2026</p>
                 </div>
                 
                 <!-- 1. Introduction -->
@@ -325,7 +360,7 @@
                         <li><strong>wiki.lusansapkota.com.np</strong> - Knowledge base platform</li>
                         <li><strong>git.lusansapkota.com.np</strong> - Code repository platform</li>
                         <li><strong>store.lusansapkota.com.np</strong> - Digital products store</li>
-                        <li><strong>donation.lusansapkota.com.np</strong> - Donation platform</li>
+                        <li><strong>donation.lusansapkota.com.np</strong> - Support platform (Coming Soon)</li>
                     </ul>
                     <p>
                         By using any of my services, you agree to the collection and use of information in accordance with this policy.
@@ -345,7 +380,7 @@
                         <li><strong>Email Address:</strong> When you subscribe to my newsletter or contact Me</li>
                         <li><strong>Name:</strong> Optional, when you introduce yourself in contact forms</li>
                         <li><strong>Messages:</strong> Content you send through my contact forms</li>
-                        <li><strong>Donation Information:</strong> Optional name and email for donation receipts</li>
+                        <li><strong>Support Information:</strong> Optional name and email for contribution receipts (when platform launches)</li>
                     </ul>
                     
                     <h3>Automatically Collected:</h3>
@@ -400,21 +435,13 @@
                     <p>You can disable cookies in your browser settings, though some site features may not work properly.</p>
                 </div>
                 
-                <!-- 5. Donations and Financial Data -->
+                <!-- 5. Support Platform (Coming Soon) -->
                 <div class="privacy-section" id="donations">
-                    <h2><span class="section-number">4</span>Donations and Financial Data</h2>
-                    <p>My donation platform is designed to be secure and transparent. When you make a contribution, your financial information is handled with the utmost care.</p>
-                    <h3>a. Payment Processing</h3>
-                    <p>I use industry-standard payment processors to handle transactions. I do not store your full credit card number or financial details on my servers. All payment information is encrypted and transmitted securely to the payment gateway.</p>
-                    <h3>b. Donation Methods</h3>
-                    <p>The following donation methods are supported:</p>
-                    <ul>
-                        <li><strong>Credit/Debit Cards:</strong> Secure payments processed via Stripe.</li>
-                        <li><strong>PayPal:</strong> Redirects to PayPal for secure transaction processing.</li>
-                        <li><strong>Cryptocurrency:</strong> Anonymous donations via wallet-to-wallet transfers.</li>
-                    </ul>
-                    <h3>c. Data Handling</h3>
-                    <p>When you donate, I collect your name and email address to send a thank-you note and a receipt. This information is stored securely and is not shared with third parties, except as required by law. I do not use this information for marketing purposes without your explicit consent.</p>
+                    <h2><span class="section-number">4</span>Support Platform (Coming Soon)</h2>
+                    <p>The support/donation platform is currently under development and will be enabled once open source projects are publicly available. This section will be updated with detailed privacy information when the platform launches.</p>
+                    <div class="highlight-box">
+                        <p><strong>Note:</strong> No donation or payment data is currently being collected as this feature is not yet active.</p>
+                    </div>
                 </div>
                 
                 <!-- 6. Contact Forms & Newsletter -->
@@ -469,33 +496,25 @@
                     </ul>
                 </div>
                 
-                <!-- 8. Donation Subdomain -->
+                <!-- 8. Support Platform Subdomain (Coming Soon) -->
                 <div class="privacy-section">
                     <h2>
                         <span class="section-number">7</span>
-                        Donation Platform (donation.lusansapkota.com.np)
+                        Support Platform (donation.lusansapkota.com.np)
                     </h2>
-                    <p>My donation platform supports various payment methods for voluntary contributions:</p>
-                    
-                    <h3>Donation Methods:</h3>
-                    <ul>
-                        <li><strong>Digital Wallets:</strong> eSewa, Khalti, IME Pay (Nepal)</li>
-                        <li><strong>International:</strong> Payoneer, Wise</li>
-                        <li><strong>Bank Transfer:</strong> Direct bank deposit options</li>
-                    </ul>
-                    
-                    <h3>Data Handling:</h3>
-                    <ul>
-                        <li>Donations are processed through respective payment platforms</li>
-                        <li>I collect donor information for acknowledgment</li>
-                        <li>No financial information is stored on my servers</li>
-                        <li>Donation records are kept for tax and transparency purposes</li>
-                    </ul>
-                    
-                    <div class="highlight-box">
-                        <p><strong>Cryptocurrency Note:</strong> Cryptocurrency donations are not accepted due to legal restrictions in Nepal. Please consider using other available donation methods.</p>
+                    <p>The support platform is currently under development and will be launched once open source projects are publicly available.</p>
 
+                    <div class="highlight-box">
+                        <p><strong>Coming Soon:</strong> This platform will allow supporters to contribute to open source development. Payment methods and detailed privacy terms will be provided when the platform launches.</p>
                     </div>
+
+                    <p>When active, the platform will:</p>
+                    <ul>
+                        <li>Use secure, industry-standard payment processors</li>
+                        <li>Not store financial information on my servers</li>
+                        <li>Collect minimal donor information for acknowledgment only</li>
+                        <li>Provide transparent records for contributors</li>
+                    </ul>
                 </div>
                 
                 <!-- 9. Data Security -->
@@ -587,11 +606,8 @@
                         <li><strong>Legal Requests:</strong> I may disclose information if legally required by authorities</li>
                     </ul>
                     
-                    <div class="highlight-box">
-                        <p><strong>Note:</strong> Cryptocurrency donation is disabled based on current legal status in Nepal.</p>
-                    </div>
                 </div>
-                
+
                 <!-- 13. Contact Information -->
                 <div class="privacy-section">
                     <h2>
@@ -640,5 +656,23 @@
     <script src="{{ url_for('static', filename='assets/js/jquery-2.1.4.min.js') }}"></script>
     <script src="{{ url_for('static', filename='assets/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ url_for('static', filename='assets/js/custom.js') }}"></script>
+
+    <!-- Theme Toggle Script -->
+    <script>
+        // Initialize theme from localStorage or system preference
+        (function() {
+            const savedTheme = localStorage.getItem('theme') ||
+                (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+    </script>
 </body>
 </html>

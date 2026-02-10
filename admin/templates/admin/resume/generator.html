@@ -1,0 +1,361 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Resume Generator{% endblock %}
+
+{% block extra_css %}
+<style>
+    .resume-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
+        margin-bottom: 30px;
+    }
+
+    .stat-box {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 12px;
+        text-align: center;
+        transition: transform 0.2s;
+    }
+
+    .stat-box:hover {
+        transform: translateY(-3px);
+    }
+
+    .stat-box.projects { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
+    .stat-box.skills { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+    .stat-box.experience { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+    .stat-box.education { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+    .stat-box.social { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: 700;
+        line-height: 1;
+    }
+
+    .stat-label {
+        font-size: 0.85rem;
+        opacity: 0.9;
+        margin-top: 5px;
+    }
+
+    .action-card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+        margin-bottom: 20px;
+    }
+
+    .action-card h4 {
+        margin-bottom: 20px;
+        color: #333;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .action-card h4 i {
+        color: #667eea;
+    }
+
+    .btn-generate {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        color: white;
+        padding: 15px 40px;
+        font-size: 1.1rem;
+        border-radius: 8px;
+        transition: all 0.3s;
+    }
+
+    .btn-generate:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        color: white;
+    }
+
+    .preview-buttons {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .btn-preview {
+        padding: 12px 25px;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.2s;
+    }
+
+    .data-summary {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-top: 20px;
+    }
+
+    .data-summary h5 {
+        color: #495057;
+        margin-bottom: 15px;
+        font-size: 1rem;
+    }
+
+    .data-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .data-list li {
+        padding: 8px 0;
+        border-bottom: 1px solid #e9ecef;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .data-list li:last-child {
+        border-bottom: none;
+    }
+
+    .data-list .label {
+        color: #6c757d;
+    }
+
+    .data-list .value {
+        font-weight: 600;
+        color: #333;
+    }
+
+    .featured-projects-list {
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    .project-item {
+        background: #fff;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        padding: 12px 15px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .project-item .title {
+        font-weight: 500;
+        color: #333;
+    }
+
+    .project-item .tech {
+        font-size: 0.8rem;
+        color: #6c757d;
+    }
+
+    .download-section {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        border-radius: 12px;
+        padding: 25px;
+        text-align: center;
+    }
+
+    .download-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 15px;
+        flex-wrap: wrap;
+    }
+
+    .btn-download {
+        padding: 12px 30px;
+        border-radius: 8px;
+        font-weight: 500;
+    }
+
+    .info-box {
+        background: #e7f3ff;
+        border-left: 4px solid #3498db;
+        padding: 15px;
+        border-radius: 0 8px 8px 0;
+        margin-top: 20px;
+    }
+
+    .info-box p {
+        margin: 0;
+        color: #2c3e50;
+        font-size: 0.9rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="fas fa-file-alt text-primary"></i> Resume Generator</h2>
+        <a href="{{ url_for('admin.dashboard') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </a>
+    </div>
+
+    <!-- Stats Overview -->
+    <div class="resume-stats">
+        <div class="stat-box projects">
+            <div class="stat-number">{{ stats.projects }}</div>
+            <div class="stat-label">Featured Projects</div>
+        </div>
+        <div class="stat-box skills">
+            <div class="stat-number">{{ stats.skills }}</div>
+            <div class="stat-label">Skills</div>
+        </div>
+        <div class="stat-box experience">
+            <div class="stat-number">{{ stats.experiences }}</div>
+            <div class="stat-label">Experiences</div>
+        </div>
+        <div class="stat-box education">
+            <div class="stat-number">{{ stats.education }}</div>
+            <div class="stat-label">Education</div>
+        </div>
+        <div class="stat-box social">
+            <div class="stat-number">{{ stats.social_links }}</div>
+            <div class="stat-label">Social Links</div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Left Column: Generate & Preview -->
+        <div class="col-lg-8">
+            <!-- Generate Resume Card -->
+            <div class="action-card">
+                <h4><i class="fas fa-magic"></i> Generate Resume</h4>
+                <p class="text-muted mb-4">
+                    Generate a professional resume from your portfolio data. This will create both TXT and HTML versions
+                    that can be downloaded or shared.
+                </p>
+
+                <form action="{{ url_for('admin.generate_resume') }}" method="POST" class="mb-4">
+                    <button type="submit" class="btn btn-generate">
+                        <i class="fas fa-sync-alt"></i> Generate Resume Now
+                    </button>
+                </form>
+
+                <hr>
+
+                <h5 class="mb-3">Preview Options</h5>
+                <div class="preview-buttons">
+                    <a href="{{ url_for('admin.preview_resume', format='html') }}" target="_blank" class="btn btn-outline-primary btn-preview">
+                        <i class="fas fa-globe"></i> Preview HTML
+                    </a>
+                    <a href="{{ url_for('admin.preview_resume', format='txt') }}" target="_blank" class="btn btn-outline-secondary btn-preview">
+                        <i class="fas fa-file-alt"></i> Preview TXT
+                    </a>
+                </div>
+
+                <div class="info-box">
+                    <p><i class="fas fa-info-circle"></i> <strong>Tip:</strong> The HTML version can be printed to PDF using your browser's print function (Ctrl+P / Cmd+P).</p>
+                </div>
+            </div>
+
+            <!-- Download Section -->
+            <div class="download-section">
+                <h5><i class="fas fa-download"></i> Download Resume</h5>
+                <p class="text-muted">Download the latest generated resume in your preferred format.</p>
+                <div class="download-buttons">
+                    <a href="{{ url_for('admin.download_resume', format='txt') }}" class="btn btn-primary btn-download">
+                        <i class="fas fa-file-alt"></i> Download TXT
+                    </a>
+                    <a href="{{ url_for('admin.download_resume', format='html') }}" class="btn btn-success btn-download">
+                        <i class="fas fa-file-code"></i> Download HTML
+                    </a>
+                    <a href="{{ url_for('static', filename='assets/download/Lusan_Sapkota_Resume.txt') }}" target="_blank" class="btn btn-outline-dark btn-download">
+                        <i class="fas fa-external-link-alt"></i> View Public Resume
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Data Summary -->
+        <div class="col-lg-4">
+            <!-- Personal Info Summary -->
+            <div class="action-card">
+                <h4><i class="fas fa-user"></i> Personal Info</h4>
+                {% if data.personal %}
+                <div class="data-summary">
+                    <ul class="data-list">
+                        <li>
+                            <span class="label">Name</span>
+                            <span class="value">{{ data.personal.name }}</span>
+                        </li>
+                        <li>
+                            <span class="label">Title</span>
+                            <span class="value">{{ data.personal.title[:30] }}...</span>
+                        </li>
+                        <li>
+                            <span class="label">Email</span>
+                            <span class="value">{{ data.personal.email }}</span>
+                        </li>
+                        <li>
+                            <span class="label">Location</span>
+                            <span class="value">{{ data.personal.location or 'Not set' }}</span>
+                        </li>
+                    </ul>
+                </div>
+                {% else %}
+                <p class="text-muted">No personal info found. <a href="{{ url_for('admin.personal_info') }}">Add now</a></p>
+                {% endif %}
+            </div>
+
+            <!-- Featured Projects -->
+            <div class="action-card">
+                <h4><i class="fas fa-star"></i> Featured Projects</h4>
+                {% if data.featured_projects %}
+                <div class="featured-projects-list">
+                    {% for project in data.featured_projects[:5] %}
+                    <div class="project-item">
+                        <div>
+                            <div class="title">{{ project.title }}</div>
+                            <div class="tech">{{ project.technologies[:40] }}...</div>
+                        </div>
+                        <span class="badge bg-success">Featured</span>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% if data.featured_projects|length > 5 %}
+                <p class="text-muted mt-2 mb-0 small">+ {{ data.featured_projects|length - 5 }} more projects</p>
+                {% endif %}
+                {% else %}
+                <p class="text-muted">No featured projects. <a href="{{ url_for('admin.projects') }}">Mark some as featured</a></p>
+                {% endif %}
+            </div>
+
+            <!-- Quick Links -->
+            <div class="action-card">
+                <h4><i class="fas fa-link"></i> Quick Edit</h4>
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('admin.personal_info') }}" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-user-edit"></i> Edit Personal Info
+                    </a>
+                    <a href="{{ url_for('admin.experience') }}" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-briefcase"></i> Edit Experience
+                    </a>
+                    <a href="{{ url_for('admin.education') }}" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-graduation-cap"></i> Edit Education
+                    </a>
+                    <a href="{{ url_for('admin.skills') }}" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-code"></i> Edit Skills
+                    </a>
+                    <a href="{{ url_for('admin.projects') }}" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-project-diagram"></i> Manage Projects
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

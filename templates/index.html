@@ -12,7 +12,7 @@
 	<title>{{ seo.title if seo else 'Lusan Sapkota | Full Stack Developer & AI Engineer' }}</title>
 
 	<meta name="title" content="{{ seo.title if seo else 'Lusan Sapkota | Full Stack Developer & AI Engineer' }}">
-	<meta name="description" content="{{ seo.meta_description if seo and seo.meta_description else 'Hi, I\'m Lusan — a Full Stack Developer from Nepal with 3.5+ years of experience. I build powerful websites, smart apps, and AI-driven tools that work beautifully across devices.' }}">
+	<meta name="description" content="{{ seo.meta_description if seo and seo.meta_description else 'Hi, I\'m Lusan — Co-founder & CEO at Icepeak Tech, Full Stack Developer from Nepal with 4+ years of experience. I build powerful websites, smart apps, and AI-driven tools.' }}">
 	<meta name="author" content="{{ personal.full_name if personal else 'Lusan Sapkota' }}">
 	<meta name="keywords" content="{{ seo.meta_keywords if seo and seo.meta_keywords else 'Lusan Sapkota, Full Stack Developer, AI Engineer, Web Developer Nepal, Python, React, React Native, Mobile App Developer, Software Engineer, Machine Learning, Ionic, Django' }}">
 	<meta name="subject" content="Professional Portfolio of Lusan Sapkota | Full Stack Development, AI/ML Solutions, Mobile App Development">
@@ -52,8 +52,8 @@
 	<meta property="og:url" content="{{ seo.og_url if seo and seo.og_url else 'https://www.lusansapkota.com.np/' }}">
 	<meta property="og:title" content="{{ seo.og_title if seo and seo.og_title else seo.title if seo else 'Lusan Sapkota | Full Stack Software Developer & AI/ML Engineer from Nepal' }}">
 	<meta property="og:description" content="{{ seo.og_description if seo and seo.og_description else seo.meta_description if seo else 'Full Stack Developer from Nepal specializing in Python, JavaScript, React, AI/ML. Building scalable web applications and innovative AI solutions.' }}">
-	<meta property="og:image" content="{{ seo.og_image if seo and seo.og_image else url_for('static', filename='assets/images/profile.jpg', _external=True) }}">
-	<meta property="og:image:secure_url" content="{{ seo.og_image if seo and seo.og_image else url_for('static', filename='assets/images/profile.jpg', _external=True) }}">
+	<meta property="og:image" content="{{ seo.og_image if seo and seo.og_image else url_for('static', filename='assets/images/profile.png', _external=True) }}">
+	<meta property="og:image:secure_url" content="{{ seo.og_image if seo and seo.og_image else url_for('static', filename='assets/images/profile.png', _external=True) }}">
 	<meta property="og:image:width" content="1200">
 	<meta property="og:image:height" content="630">
 	<meta property="og:image:alt" content="Lusan Sapkota - Full Stack Software Developer from Nepal">
@@ -69,7 +69,7 @@
 	<meta name="twitter:url" content="{{ seo.twitter_url if seo and seo.twitter_url else 'https://www.lusansapkota.com.np/' }}">
 	<meta name="twitter:title" content="{{ seo.twitter_title if seo and seo.twitter_title else seo.title if seo else 'Lusan Sapkota | Full Stack Developer & AI/ML Engineer' }}">
 	<meta name="twitter:description" content="{{ seo.twitter_description if seo and seo.twitter_description else seo.meta_description if seo else 'Full Stack Developer from Nepal with expertise in Python, JavaScript, React, AI/ML. Creating powerful web applications and intelligent solutions.' }}">
-	<meta name="twitter:image" content="{{ seo.twitter_image if seo and seo.twitter_image else url_for('static', filename='assets/images/profile.jpg', _external=True) }}">
+	<meta name="twitter:image" content="{{ seo.twitter_image if seo and seo.twitter_image else url_for('static', filename='assets/images/profile.png', _external=True) }}">
 	<meta name="twitter:image:alt" content="Lusan Sapkota - Full Stack Software Developer Portfolio">
 	<meta name="twitter:site" content="@LusanSapkota">
 	<meta name="twitter:creator" content="@LusanSapkota">
@@ -79,7 +79,7 @@
 	<meta name="twitter:data2" content="Python, JavaScript, React, AI/ML">
 	
 	<!-- LinkedIn -->
-	<meta property="og:see_also" content="https://www.linkedin.com/in/lusan-sapkota-a08194284/">
+	<meta property="og:see_also" content="https://www.linkedin.com/in/lusan-sapkota-aa087b39b">
 	
 	<!-- Mobile App Meta Tags -->
 	<meta name="mobile-web-app-capable" content="yes">
@@ -145,22 +145,23 @@
 		  "url": "https://www.lusansapkota.com.np",
 		  "image": {
 			"@type": "ImageObject",
-			"url": "https://www.lusansapkota.com.np/static/assets/images/profile.jpg",
+			"url": "https://www.lusansapkota.com.np/static/assets/images/profile.png",
 			"width": 400,
 			"height": 400
 		  },
 		  "sameAs": [
 			"https://github.com/Lusan-sapkota",
-			"https://www.linkedin.com/in/lusan-sapkota-a08194284/",
+			"https://www.linkedin.com/in/lusan-sapkota-aa087b39b",
 			"https://twitter.com/LusanSapkota",
 			"https://www.instagram.com/sapkotalusan/",
 			"https://web.facebook.com/lusan.sapkota.1"
 		  ],
-		  "jobTitle": "Full Stack Software Developer & AI/ML Engineer",
-		  "description": "Full Stack Software Developer and AI/ML Engineer from Nepal specializing in Python, JavaScript, and modern web technologies with expertise in graph-based models and algorithms.",
+		  "jobTitle": "Co-founder & CEO at Icepeak Tech | Full Stack Developer",
+		  "description": "Co-founder & CEO at Icepeak Tech with 4+ years of experience. Full Stack Developer and AI/ML Engineer from Nepal specializing in Python, JavaScript, and modern web technologies.",
 		  "worksFor": {
 			"@type": "Organization",
-			"name": "Freelancer",
+			"name": "Icepeak Tech",
+			"url": "https://icepeaktech.com",
 			"description": "Independent Software Development Consultant"
 		  },
 		  "alumniOf": [
@@ -423,7 +424,7 @@
 	  "@context": "https://schema.org",
 	  "@type": "LocalBusiness",
 	  "name": "Lusan Sapkota - Freelance Developer",
-	  "image": "https://www.lusansapkota.com.np/static/assets/images/profile.jpg",
+	  "image": "https://www.lusansapkota.com.np/static/assets/images/profile.png",
 	  "telephone": "Available upon request",
 	  "email": "sapkotalusan@gmail.com",
 	  "url": "https://www.lusansapkota.com.np",
@@ -485,7 +486,7 @@
 	
 	<!-- Prefetch for common resources -->
 	<link rel="prefetch" href="{{ url_for('static', filename='assets/download/Lusan_Sapkota_Resume.txt') }}">
-	<link rel="prefetch" href="{{ url_for('static', filename='assets/images/profile.jpg') }}">
+	<link rel="prefetch" href="{{ url_for('static', filename='assets/images/profile.png') }}">
 
 	<!-- Google Tag Manager and toggle -->
 	<script>
@@ -1081,7 +1082,7 @@
 				"name": "What is Lusan Sapkota's portfolio?",
 				"acceptedAnswer": {
 					"@type": "Answer",
-					"text": "It's a custom-built developer platform available at lusansapkota.com.np with subdomains for wiki, shop, git, and donations."
+					"text": "It's a custom-built developer platform available at lusansapkota.com.np with subdomains for wiki, git, and store."
 				}
 			},
 			{
@@ -1150,31 +1151,28 @@
 					<div class="collapse navbar-collapse" id="navbarNav">
 					  <ul class="navbar-nav ms-auto">
 						<li class="nav-item">
-						  <a class="nav-link smooth-menu" href="#subdomains">Platforms</a>
-						</li>
-						<li class="nav-item">
 						  <a class="nav-link smooth-menu" href="#about">About</a>
-						</li>
-						<li class="nav-item">
-						  <a class="nav-link smooth-menu" href="#education">Education</a>
-						</li>
-						<li class="nav-item">
-						  <a class="nav-link smooth-menu" href="#skills">Skills</a>
 						</li>
 						<li class="nav-item">
 						  <a class="nav-link smooth-menu" href="#experience">Experience</a>
 						</li>
 						<li class="nav-item">
-						  <a class="nav-link smooth-menu" href="#profiles">Profile</a>
+						  <a class="nav-link smooth-menu" href="#portfolio">Portfolio</a>
 						</li>
 						<li class="nav-item">
-						  <a class="nav-link smooth-menu" href="#portfolio">Portfolio</a>
+						  <a class="nav-link smooth-menu" href="#skills">Skills</a>
 						</li>
 						<li class="nav-item">
 						  <a class="nav-link smooth-menu" href="#testimonials">Testimonials</a>
 						</li>
 						<li class="nav-item">
+						  <a class="nav-link smooth-menu" href="#education">Education</a>
+						</li>
+						<li class="nav-item">
 						  <a class="nav-link smooth-menu" href="#contact">Contact</a>
+						</li>
+						<li class="nav-item">
+						  <a class="nav-link smooth-menu" href="#subdomains">Platforms</a>
 						</li>
 						<li class="nav-item theme-toggle-wrapper">
 						  <button type="button" class="btn btn-link nav-link theme-toggle" id="theme-toggle">
@@ -1219,90 +1217,6 @@
 		</section><!--/.welcome-hero-->
 		<!--welcome-hero end -->
 
-		<!-- Subdomain Navigation Section Start -->
-		<section class="subdomain-nav" id="subdomains" data-aos="fade-up" data-aos-duration="800">
-			<div class="container">
-				<div class="subdomain-title" data-aos="fade-up" data-aos-delay="200">
-					<h2>Explore My Digital Ecosystem</h2>
-					<p>Discover specialized platforms designed to showcase different aspects of my work and expertise. Each subdomain offers a unique experience tailored to specific interests and professional needs.</p>
-				</div>
-				
-				<div class="subdomain-grid">
-					{% if subdomains %}
-						{% for key, subdomain in subdomains.items() %}
-						<div class="subdomain-card hover-lift" data-subdomain="{{ key }}" tabindex="0" role="button" aria-label="Navigate to {{ subdomain.title }}" data-aos="fade-up" data-aos-delay="{{ loop.index * 150 }}">
-							<div class="subdomain-icon">
-								<i class="{{ subdomain.icon }}"></i>
-							</div>
-							<h3>{{ subdomain.title }}</h3>
-							<p>{{ subdomain.description }}</p>
-							<a href="{{ url_for('{}.index'.format(key)) }}" class="subdomain-btn" data-subdomain="{{ key }}">
-								<span>
-									{% if key == 'wiki' %}Explore Wiki
-									{% elif key == 'git' %}View Code
-									{% elif key == 'donation' %}Support Work
-									{% elif key == 'store' %}Visit Store
-									{% else %}Visit {{ subdomain.title }}
-									{% endif %}
-								</span>
-								<i class="fas fa-arrow-right"></i>
-							</a>
-						</div>
-						{% endfor %}
-					{% else %}
-					<!-- Fallback static content if config is not available -->
-					<div class="subdomain-card hover-lift" onclick="navigateToWiki()" tabindex="0" role="button" aria-label="Navigate to Wiki platform" data-aos="fade-up" data-aos-delay="150">
-						<div class="subdomain-icon">
-							<i class="fas fa-book-open"></i>
-						</div>
-						<h3>Knowledge Wiki</h3>
-						<p>Comprehensive documentation, tutorials, and technical articles covering web development, app development, AI/ML, and cutting-edge technologies. A curated knowledge base for developers and tech enthusiasts.</p>
-						<a href="{{url_for('wiki.index')}}" class="subdomain-btn" onclick="navigateToWiki(); return false;">
-							<span>Explore Wiki</span>
-							<i class="fas fa-arrow-right"></i>
-						</a>
-					</div>
-					
-					<div class="subdomain-card hover-lift" onclick="navigateToGit()" tabindex="0" role="button" aria-label="Navigate to Git repositories" data-aos="fade-up" data-aos-delay="300">
-						<div class="subdomain-icon">
-							<i class="fab fa-git-alt"></i>
-						</div>
-						<h3>Code Repository</h3>
-						<p>Browse through my open-source projects, code samples, and collaborative development work. Featuring clean, well-documented code with modern development practices.</p>
-						<a href="{{url_for('git.index')}}" class="subdomain-btn" onclick="navigateToGit(); return false;">
-							<span>View Code</span>
-							<i class="fas fa-arrow-right"></i>
-						</a>
-					</div>
-					
-					<div class="subdomain-card hover-lift" onclick="navigateToDonation()" tabindex="0" role="button" aria-label="Navigate to Donation platform" data-aos="fade-up" data-aos-delay="450">
-						<div class="subdomain-icon">
-							<i class="fas fa-heart"></i>
-						</div>
-						<h3>Support Platform</h3>
-						<p>Support my open-source work and community contributions. Your donations help me create more valuable content, tools, and educational resources for the developer community.</p>
-						<a href="{{url_for('donation.index')}}" class="subdomain-btn" onclick="navigateToDonation(); return false;">
-							<span>Support Work</span>
-							<i class="fas fa-arrow-right"></i>
-						</a>
-					</div>
-					<div class="subdomain-card hover-lift" onclick="navigateToStore()" tabindex="0" role="button" aria-label="Navigate to Online Store" data-aos="fade-up" data-aos-delay="600">
-						<div class="subdomain-icon">
-							<i class="fas fa-shopping-cart"></i>
-						</div>
-						<h3>Online Store</h3>
-						<p>Browse and purchase digital products, courses, and exclusive content. Secure payments and instant delivery.</p>
-						<a href="{{ url_for('store.index') }}" class="subdomain-btn" onclick="navigateToStore(); return false;">
-							<span>Visit Store</span>
-							<i class="fas fa-arrow-right"></i>
-						</a>
-					</div>
-					{% endif %}
-				</div>
-			</div>
-		</section>
-		<!-- Subdomain Navigation Section End -->
-
 		<!--about start -->
 		<section id="about" class="about" data-aos="fade-up" data-aos-duration="800">
 			<div class="section-heading text-center" data-aos="fade-up" data-aos-delay="200">
@@ -1314,10 +1228,16 @@
 						<div class="col-sm-6">
 							<div class="single-about-txt">
 								<h3>
-									Crafting Solutions with a Full Stack Approach, from the Himalayas
+									Full Stack Developer | 4+ Years Building Production Systems
 								</h3>
 								<p>
-									As a Full Stack Software Developer based in Nepal, I combine creativity with technical expertise to deliver dynamic, responsive websites and robust applications. With a deep understanding of both backend architecture and modern frontend design, I take a holistic approach to development, always focusing on user-centered solutions. My passion for creating impactful digital experiences is driven by a commitment to leveraging the latest technologies and best practices. In addition to my development work, I specialize in AI and ML, particularly in graph-based models and algorithms, to drive data-driven insights and innovation.<a href="#contact">Let's connect and build something extraordinary together!</a>
+									I design and ship software that works at scale. With 4+ years of hands-on experience across backend architecture, frontend systems, and cross-platform mobile development, I focus on building reliable, maintainable solutions that solve real problems.
+								</p>
+								<p>
+									Through <a href="https://icepeaktech.com" target="_blank" rel="noopener">Icepeak Tech</a>, I deliver end-to-end development services: REST APIs, database design, VPS deployments, CI/CD pipelines, and React/React Native applications. I also work with AI/ML integrations, particularly graph-based models and algorithmic systems.
+								</p>
+								<p>
+									<a href="#contact">Let's build systems that last.</a>
 								</p>
 								<div class="row">
 									<div class="col-sm-4">
@@ -1330,7 +1250,7 @@
 									<div class="col-sm-4">
 										<div class="single-about-add-info">
 											<h3>email</h3>
-											<p><a href="mailto:sapkotalusan@gmail.com">sapkotalusan@gmail.com</a></p>
+											<p><a href="mailto:sapkotalusan@gmail.com">sapkotalusan@gmail.com</a>, <a href="mailto:contact@lusansapkota.com.np">contact@lusansapkota.com.np</a></p>
 										</div>
 									</div>
 								</div>
@@ -1338,7 +1258,7 @@
 						</div>
 						<div class="col-sm-offset-1 col-sm-5">
 							<div class="single-about-img">
-								<img src="{{ url_for('static', filename='assets/images/profile.jpg') }}" alt="Lusan Sapkota - Full Stack Developer Profile Photo" loading="lazy">
+								<img src="{{ url_for('static', filename='assets/images/profile.png') }}" alt="Lusan Sapkota - Full Stack Developer Profile Photo" loading="lazy">
 								<div class="about-list-icon">
 									<ul>
 										<li>
@@ -1354,7 +1274,7 @@
 											
 										</li><!-- / li -->
 										<li>
-											<a href="https://www.linkedin.com/in/lusan-sapkota-a08194284/">
+											<a href="https://www.linkedin.com/in/lusan-sapkota-aa087b39b">
 												<i  class="fab fa-linkedin" aria-hidden="true"></i>
 											</a>
 										</li><!-- / li -->
@@ -1370,679 +1290,123 @@
 			</div>
 		</section><!--/.about-->
 		<!--about end -->
-		
-		<!--education start -->
-		<section id="education" class="education" data-aos="fade-up" data-aos-duration="800">
-			<div class="container">
-				<div class="section-heading text-center" data-aos="fade-up" data-aos-delay="200">
-					<h2>Education Journey</h2>
-					<p class="section-subtitle">Academic achievements and learning milestones</p>
-				</div>
-				
-				<div class="education-timeline">
-					<div class="row">
-						<div class="col-lg-4 col-md-6 mb-4">
-							<div class="education-card card-base hover-lift" data-aos="fade-up" data-aos-delay="400">
-								<div class="education-header">
-									<div class="education-year">2023 - 2027</div>
-									<div class="education-degree">
-										<i class="fas fa-graduation-cap"></i>
-										<h3>Bachelor's in IT</h3>
-									</div>
-								</div>
-								<div class="education-content">
-									<h4>Texas International College</h4>
-									<div class="education-details">
-										<span class="location"><i class="fas fa-map-marker-alt"></i> Sifal, Kathmandu</span>
-										<span class="gpa"><i class="fas fa-star"></i> Current</span>
-									</div>
-									<p>Lincoln University partnership program combining theoretical knowledge with practical skills for the evolving tech industry.</p>
-									<div class="education-tags">
-										<span class="edu-tag">Information Technology</span>
-										<span class="edu-tag">Software Development</span>
-									</div>
-								</div>
-							</div>
-						</div>
-
-						<div class="col-lg-4 col-md-6 mb-4">
-							<div class="education-card card-base hover-lift" data-aos="fade-up" data-aos-delay="550">
-								<div class="education-header">
-									<div class="education-year">2021 - 2023</div>
-									<div class="education-degree">
-										<i class="fas fa-certificate"></i>
-										<h3>Higher Secondary (+2)</h3>
-									</div>
-								</div>
-								<div class="education-content">
-									<h4>Mansalu World College</h4>
-									<div class="education-details">
-										<span class="location"><i class="fas fa-map-marker-alt"></i> Chuchepati, Kathmandu</span>
-										<span class="gpa"><i class="fas fa-star"></i> GPA: 3.48</span>
-									</div>
-									<p>Physical Science and Computer Science major, building a strong foundation for technology and science career paths.</p>
-									<div class="education-tags">
-										<span class="edu-tag">Physical Science</span>
-										<span class="edu-tag">Computer Science</span>
-									</div>
-								</div>
-							</div>
-						</div>
-
-						<div class="col-lg-4 col-md-12 mb-4">
-							<div class="education-card card-base hover-lift" data-aos="fade-up" data-aos-delay="700">
-								<div class="education-header">
-									<div class="education-year">2019 - 2021</div>
-									<div class="education-degree">
-										<i class="fas fa-school"></i>
-										<h3>Secondary Education (SEE)</h3>
-									</div>
-								</div>
-								<div class="education-content">
-									<h4>Chandikaswori Secondary Boarding School</h4>
-									<div class="education-details">
-										<span class="location"><i class="fas fa-map-marker-alt"></i> Gokarneshowr-2, Kathmandu</span>
-										<span class="gpa"><i class="fas fa-star"></i> GPA: 3.6</span>
-									</div>
-									<p>Optional Mathematics major, developing analytical skills and mathematical foundation for future academic pursuits.</p>
-									<div class="education-tags">
-										<span class="edu-tag">Mathematics</span>
-										<span class="edu-tag">Science</span>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section><!--/.education-->
-		<!--education end -->
-
-		<!--skills start -->
-	<section id="skills" class="skills-redesigned" data-aos="fade-up" data-aos-duration="800">
-		<div class="container">
-			<!-- Section Header -->
-			<div class="skills-header">
-				<div class="section-heading text-center" data-aos="fade-up" data-aos-delay="200">
-					<h2>Technical Skills</h2>
-					<p class="section-subtitle">Expertise across the full development stack</p>
-				</div>
-			</div>
-
-			<!-- Skills Content -->
-			<div class="skills-redesigned-content">
-				<div class="skills-categories-grid">
-					<!-- Programming Languages -->
-					<div class="skill-category-redesigned">
-						<div class="category-header-redesigned">
-							<div class="category-icon-redesigned">
-								<i class="fas fa-code"></i>
-							</div>
-							<h3>Programming Languages</h3>
-						</div>
-						<div class="skills-list-redesigned">
-							<div class="skill-item-redesigned expert-redesigned">
-								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Python: High-level general-purpose programming language with clean syntax and extensive libraries">
-									Python
-								</div>
-								<div class="skill-level-redesigned">Expert</div>
-								<div class="skill-bar-redesigned">
-									<div class="skill-progress-redesigned" data-progress="90"></div>
-								</div>
-							</div>
-							<div class="skill-item-redesigned advanced-redesigned">
-								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="JavaScript: High-level scripting language for web development with dynamic typing and first-class functions">
-									JavaScript
-								</div>
-								<div class="skill-level-redesigned">Advanced</div>
-								<div class="skill-bar-redesigned">
-									<div class="skill-progress-redesigned" data-progress="85"></div>
-								</div>
-							</div>
-							<div class="skill-item-redesigned advanced-redesigned">
-								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="TypeScript: Strongly typed programming language that builds on JavaScript with type safety">
-									TypeScript
-								</div>
-								<div class="skill-level-redesigned">Advanced</div>
-								<div class="skill-bar-redesigned">
-									<div class="skill-progress-redesigned" data-progress="80"></div>
-								</div>
-							</div>
-							<div class="skill-item-redesigned expert-redesigned">
-								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="HTML5/CSS3: Markup and styling languages for creating web content and responsive design">
-									HTML5/CSS3
-								</div>
-								<div class="skill-level-redesigned">Expert</div>
-								<div class="skill-bar-redesigned">
-									<div class="skill-progress-redesigned" data-progress="95"></div>
-								</div>
-							</div>
-							<div class="skill-item-redesigned basic-redesigned">
-								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Go: Statically typed, compiled language designed for simplicity, efficiency, and concurrency">
-									Go
-								</div>
-								<div class="skill-level-redesigned">Basic</div>
-								<div class="skill-bar-redesigned">
-									<div class="skill-progress-redesigned" data-progress="70"></div>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<!-- Frontend Technologies -->
-					<div class="skill-category-redesigned">
-						<div class="category-header-redesigned">
-							<div class="category-icon-redesigned">
-								<i class="fas fa-paint-brush"></i>
-							</div>
-							<h3>Frontend Development</h3>
-						</div>
-						<div class="skills-list-redesigned">
-							<div class="skill-item-redesigned advanced-redesigned">
-								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="React: JavaScript library for building user interfaces with component-based architecture">
-									React
-								</div>
-								<div class="skill-level-redesigned">Advanced</div>
-								<div class="skill-bar-redesigned">
-									<div class="skill-progress-redesigned" data-progress="80"></div>
-								</div>
-							</div>
-							<div class="skill-item-redesigned advanced-redesigned">
-								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="React Native: Framework for building native mobile applications using React architecture">
-									React Native
-								</div>
-								<div class="skill-level-redesigned">Advanced</div>
-								<div class="skill-bar-redesigned">
-									<div class="skill-progress-redesigned" data-progress="75"></div>
-								</div>
-							</div>
-							<div class="skill-item-redesigned intermediate-redesigned">
-								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Ionic: Framework for building cross-platform mobile applications with web technologies">
-									Ionic
-								</div>
-								<div class="skill-level-redesigned">Intermediate</div>
-								<div class="skill-bar-redesigned">
-									<div class="skill-progress-redesigned" data-progress="70"></div>
-								</div>
-							</div>
-							<div class="skill-item-redesigned expert-redesigned">
-								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Bootstrap/Tailwind: CSS frameworks for responsive, mobile-first design with pre-built components">
-									Bootstrap/Tailwind
-								</div>
-								<div class="skill-level-redesigned">Expert</div>
-								<div class="skill-bar-redesigned">
-									<div class="skill-progress-redesigned" data-progress="90"></div>
-								</div>
-							</div>
-							<div class="skill-item-redesigned intermediate-redesigned">
-								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Vue.js: Progressive JavaScript framework for building user interfaces with reactive data binding">
-									Vue.js
-								</div>
-								<div class="skill-level-redesigned">Intermediate</div>
-								<div class="skill-bar-redesigned">
-									<div class="skill-progress-redesigned" data-progress="65"></div>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<!-- Backend Technologies -->
-					<div class="skill-category-redesigned">
-						<div class="category-header-redesigned">
-							<div class="category-icon-redesigned">
-								<i class="fas fa-server"></i>
-							</div>
-							<h3>Backend Development</h3>
-						</div>
-						<div class="skills-list-redesigned">
-							<div class="skill-item-redesigned expert-redesigned">
-								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Flask: Lightweight micro-framework for building web applications in Python with minimal boilerplate">
-									Flask
-								</div>
-								<div class="skill-level-redesigned">Expert</div>
-								<div class="skill-bar-redesigned">
-									<div class="skill-progress-redesigned" data-progress="90"></div>
-								</div>
-							</div>
-							<div class="skill-item-redesigned advanced-redesigned">
-								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Django: High-level Python web framework with batteries-included architecture and ORM">
-									Django
-								</div>
-								<div class="skill-level-redesigned">Advanced</div>
-								<div class="skill-bar-redesigned">
-									<div class="skill-progress-redesigned" data-progress="85"></div>
-								</div>
-							</div>
-							<div class="skill-item-redesigned intermediate-redesigned">
-								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="FastAPI: Modern, high-performance Python web framework with automatic API documentation">
-									FastAPI
-								</div>
-								<div class="skill-level-redesigned">Intermediate</div>
-								<div class="skill-bar-redesigned">
-									<div class="skill-progress-redesigned" data-progress="75"></div>
-								</div>
-							</div>
-							<div class="skill-item-redesigned intermediate-redesigned">
-								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Node.js: JavaScript runtime for server-side programming with event-driven architecture">
-									Node.js
-								</div>
-								<div class="skill-level-redesigned">Intermediate</div>
-								<div class="skill-bar-redesigned">
-									<div class="skill-progress-redesigned" data-progress="75"></div>
-								</div>
-							</div>
-							<div class="skill-item-redesigned basic-redesigned">
-								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Gin: Lightweight web framework for Go with performance and minimalist design">
-									Gin
-								</div>
-								<div class="skill-level-redesigned">Basic</div>
-								<div class="skill-bar-redesigned">
-									<div class="skill-progress-redesigned" data-progress="75"></div>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<!-- Database & DevOps -->
-					<div class="skill-category-redesigned">
-						<div class="category-header-redesigned">
-							<div class="category-icon-redesigned">
-								<i class="fas fa-database"></i>
-							</div>
-							<h3>Database & DevOps</h3>
-						</div>
-						<div class="skills-list-redesigned">
-							<div class="skill-item-redesigned advanced-redesigned">
-								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="MySQL: Relational database management system for structured data storage and retrieval">
-									MySQL
-								</div>
-								<div class="skill-level-redesigned">Advanced</div>
-								<div class="skill-bar-redesigned">
-									<div class="skill-progress-redesigned" data-progress="85"></div>
-								</div>
-							</div>
-							<div class="skill-item-redesigned intermediate-redesigned">
-								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="PostgreSQL: Advanced object-relational database with extensive features and extensibility">
-									PostgreSQL
-								</div>
-								<div class="skill-level-redesigned">Intermediate</div>
-								<div class="skill-bar-redesigned">
-									<div class="skill-progress-redesigned" data-progress="70"></div>
-								</div>
-							</div>
-							<div class="skill-item-redesigned intermediate-redesigned">
-								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Docker: Platform for containerization to simplify application deployment and management">
-									Docker
-								</div>
-								<div class="skill-level-redesigned">Intermediate</div>
-								<div class="skill-bar-redesigned">
-									<div class="skill-progress-redesigned" data-progress="80"></div>
-								</div>
-							</div>
-							<div class="skill-item-redesigned intermediate-redesigned">
-								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Azure: Microsoft's cloud computing platform for building, deploying, and managing applications">
-									Azure
-								</div>
-								<div class="skill-level-redesigned">Intermediate</div>
-								<div class="skill-bar-redesigned">
-									<div class="skill-progress-redesigned" data-progress="85"></div>
-								</div>
-							</div>
-							<div class="skill-item-redesigned intermediate-redesigned">
-								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="AWS: Amazon's comprehensive cloud computing platform with numerous services and tools">
-									AWS
-								</div>
-								<div class="skill-level-redesigned">Intermediate</div>
-								<div class="skill-bar-redesigned">
-									<div class="skill-progress-redesigned" data-progress="75"></div>
-								</div>
-							</div>
-							<div class="skill-item-redesigned intermediate-redesigned">
-								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Jenkins: Open-source automation server for continuous integration and continuous delivery">
-									Jenkins
-								</div>
-								<div class="skill-level-redesigned">Intermediate</div>
-								<div class="skill-bar-redesigned">
-									<div class="skill-progress-redesigned" data-progress="75"></div>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<!-- AI/ML & Data Science -->
-					<div class="skill-category-redesigned">
-						<div class="category-header-redesigned">
-							<div class="category-icon-redesigned">
-								<i class="fas fa-brain"></i>
-							</div>
-							<h3>AI/ML & Data Science</h3>
-						</div>
-						<div class="skills-list-redesigned">
-							<div class="skill-item-redesigned advanced-redesigned">
-								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="TensorFlow: Open-source library for machine learning and neural network modeling">
-									TensorFlow
-								</div>
-								<div class="skill-level-redesigned">Advanced</div>
-								<div class="skill-bar-redesigned">
-									<div class="skill-progress-redesigned" data-progress="75"></div>
-								</div>
-							</div>
-							<div class="skill-item-redesigned expert-redesigned">
-								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="NumPy & Pandas: Essential libraries for numerical computing and data manipulation in Python">
-									NumPy & Pandas
-								</div>
-								<div class="skill-level-redesigned">Expert</div>
-								<div class="skill-bar-redesigned">
-									<div class="skill-progress-redesigned" data-progress="85"></div>
-								</div>
-							</div>
-							<div class="skill-item-redesigned advanced-redesigned">
-								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Scikit-learn: Machine learning library with comprehensive algorithms for classification and regression">
-									Scikit-learn
-								</div>
-								<div class="skill-level-redesigned">Advanced</div>
-								<div class="skill-bar-redesigned">
-									<div class="skill-progress-redesigned" data-progress="80"></div>
-								</div>
-							</div>
-							<div class="skill-item-redesigned intermediate-redesigned">
-								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="OpenCV: Computer vision library for image and video processing applications">
-									OpenCV
-								</div>
-								<div class="skill-level-redesigned">Intermediate</div>
-								<div class="skill-bar-redesigned">
-									<div class="skill-progress-redesigned" data-progress="70"></div>
-								</div>
-							</div>
-							<div class="skill-item-redesigned intermediate-redesigned">
-								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="XGBoost: Optimized gradient boosting library for high-performance machine learning">
-									XGBoost
-								</div>
-								<div class="skill-level-redesigned">Intermediate</div>
-								<div class="skill-bar-redesigned">
-									<div class="skill-progress-redesigned" data-progress="70"></div>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<!-- Tools & Operating Systems -->
-					<div class="skill-category-redesigned">
-						<div class="category-header-redesigned">
-							<div class="category-icon-redesigned">
-								<i class="fas fa-tools"></i>
-							</div>
-							<h3>Tools & OS</h3>
-						</div>
-						<div class="skills-list-redesigned">
-							<div class="skill-item-redesigned advanced-redesigned">
-								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Linux: Family of open-source Unix-like operating systems with kernel-based architecture">
-									Linux
-								</div>
-								<div class="skill-level-redesigned">Advanced</div>
-								<div class="skill-bar-redesigned">
-									<div class="skill-progress-redesigned" data-progress="90"></div>
-								</div>
-							</div>
-							<div class="skill-item-redesigned advanced-redesigned">
-								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="VS Code: Lightweight but powerful source code editor with extensive extension ecosystem">
-									VS Code
-								</div>
-								<div class="skill-level-redesigned">Advanced</div>
-								<div class="skill-bar-redesigned">
-									<div class="skill-progress-redesigned" data-progress="88"></div>
-								</div>
-							</div>
-							<div class="skill-item-redesigned advanced-redesigned">
-								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Postman: API development environment for testing and documenting web services">
-									Postman
-								</div>
-								<div class="skill-level-redesigned">Advanced</div>
-								<div class="skill-bar-redesigned">
-									<div class="skill-progress-redesigned" data-progress="82"></div>
-								</div>
-							</div>
-							<div class="skill-item-redesigned intermediate-redesigned">
-								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Figma: Collaborative interface design tool for creating web and mobile UI/UX">
-									Figma
-								</div>
-								<div class="skill-level-redesigned">Intermediate</div>
-								<div class="skill-bar-redesigned">
-									<div class="skill-progress-redesigned" data-progress="65"></div>
-								</div>
-							</div>
-							<div class="skill-item-redesigned advanced-redesigned">
-								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Jetbrains: Suite of integrated development environments for various programming languages">
-									Jetbrains
-								</div>
-								<div class="skill-level-redesigned">Advanced</div>
-								<div class="skill-bar-redesigned">
-									<div class="skill-progress-redesigned" data-progress="85"></div>
-								</div>
-							</div>
-							<div class="skill-item-redesigned advanced-redesigned">
-								<div class="skill-name-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Git/Github: Distributed version control system for tracking code changes and collaboration">
-									Git/Github
-								</div>
-								<div class="skill-level-redesigned">Advanced</div>
-								<div class="skill-bar-redesigned">
-									<div class="skill-progress-redesigned" data-progress="85"></div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				
-				<!-- Familiar Tools & Concepts -->
-				<div class="familiar-tools-redesigned">
-					<div class="tools-header-redesigned">
-						<h4>Familiar Tools & Concepts</h4>
-						<p>Additional technologies and methodologies I work with </p>
-					</div>
-					
-					<div class="tools-grid-redesigned">
-						
-						<!-- Development Tools -->
-						<div class="tools-category-redesigned">
-							<div class="tools-category-header-redesigned">
-								<i class="fas fa-wrench"></i>
-								<h5>Development Tools</h5>
-							</div>
-							<div class="tools-list-redesigned">
-								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="My primary coding environment with powerful extensions that boost productivity">Visual Studio Code</span>
-								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Professional-grade IDEs with intelligent coding assistance for multiple languages">Jetbrains</span>
-								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Lightning-fast text editor perfect for quick edits and scripting">Sublime Text</span>
-								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Interactive data science environment for visualization and analysis">Jupyter Notebook</span>
-								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Command-line text editor that's surprisingly powerful for server-side editing">Nano</span>
-							</div>
-						</div>
-
-						<!-- Version Control -->
-						<div class="tools-category-redesigned">
-							<div class="tools-category-header-redesigned">
-								<i class="fab fa-git-alt"></i>
-								<h5>Version Control</h5>
-							</div>
-							<div class="tools-list-redesigned">
-								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Track code changes with branching, merging, and history management">Git</span>
-								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Collaborative development platform for hosting repositories and managing workflows">GitHub</span>
-								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Complete DevOps platform with CI/CD pipelines and integrated project management">GitLab</span>
-								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Structured branching strategy for feature development, releases, and hotfixes">Git Flow</span>
-							</div>
-						</div>
-
-						<!-- Testing & Debugging -->
-						<div class="tools-category-redesigned">
-							<div class="tools-category-header-redesigned">
-								<i class="fas fa-bug"></i>
-								<h5>Testing & Debugging</h5>
-							</div>
-							<div class="tools-list-redesigned">
-								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Isolate and verify individual code components for reliable functionality">Unit Testing</span>
-								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Python-focused testing framework with simple syntax and powerful assertions">Pytest</span>
-								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Zero-config JavaScript testing with snapshot capabilities and mocking">Jest</span>
-								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="API testing platform with request building, automated tests, and documentation">Postman</span>
-								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Cloud-based cross-browser testing across 3000+ environments">LambdaTest</span>
-								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Built-in browser toolset for inspecting, debugging, and profiling web apps">Chrome DevTools</span>
-							</div>
-						</div>
-
-						<!-- Package Managers -->
-						<div class="tools-category-redesigned">
-							<div class="tools-category-header-redesigned">
-								<i class="fas fa-cube"></i>
-								<h5>Package Managers</h5>
-							</div>
-							<div class="tools-list-redesigned">
-								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="World's largest software registry with 1.3M+ JavaScript packages">npm</span>
-								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Python's preferred package installer with access to 350k+ libraries">pip</span>
-								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Fast, reliable, and secure dependency management for JavaScript">yarn</span>
-								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Cross-platform environment manager for data science and ML projects">conda</span>
-								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Python dev workflow tool combining package and virtual environment management">pipenv</span>
-							</div>
-						</div>
-
-						<!-- Design & UI/UX -->
-						<div class="tools-category-redesigned">
-							<div class="tools-category-header-redesigned">
-								<i class="fas fa-palette"></i>
-								<h5>Design & UI/UX</h5>
-							</div>
-							<div class="tools-list-redesigned">
-								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Collaborative design platform for prototyping, wireframing and design systems">Figma</span>
-								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Quick design tool for creating marketing materials and social media assets">Canva</span>
-								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Google's unified design system for consistent, intuitive experiences">Material Design</span>
-							</div>
-						</div>
-
-						<!-- Operating Systems -->
-						<div class="tools-category-redesigned">
-							<div class="tools-category-header-redesigned">
-								<i class="fas fa-desktop"></i>
-								<h5>Operating Systems</h5>
-							</div>
-							<div class="tools-list-redesigned">
-								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Developer-friendly Linux distro with vast package repository and strong community">Ubuntu</span>
-								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Mainstream OS with broad application support and enterprise integration">Windows</span>
-								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Unix-based system with elegant UI and powerful development capabilities">macOS</span>
-								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Rock-solid Linux foundation known for stability and security">Debian</span>
-							</div>
-						</div>
-
-						<!-- Cloud Platforms -->
-						<div class="tools-category-redesigned">
-							<div class="tools-category-header-redesigned">
-								<i class="fas fa-cloud"></i>
-								<h5>Cloud Platforms</h5>
-							</div>
-							<div class="tools-list-redesigned">
-								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="AI-focused cloud platform with powerful data analytics and machine learning tools">Google Cloud</span>
-								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Enterprise-grade infrastructure with autonomous database capabilities">Oracle</span>
-								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Developer-friendly PaaS for quick deployments with simplified workflow">Heroku</span>
-								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Developer-focused cloud platform with straightforward pricing and simplicity">DigitalOcean</span>
-								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Specialized platform for frontend deployment with built-in CI/CD and previews">Vercel</span>
-							</div>
-						</div>
-
-						<!-- Development Concepts -->
-						<div class="tools-category-redesigned">
-							<div class="tools-category-header-redesigned">
-								<i class="fas fa-lightbulb"></i>
-								<h5>Development Concepts</h5>
-							</div>
-							<div class="tools-list-redesigned">
-								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Secure token-based authentication for stateless API authorization">JWT</span>
-								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Industry-standard protocol for secure third-party authentication">OAuth 2.0</span>
-								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Drop-in authentication solution with multi-provider support">Firebase Auth</span>
-								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Self-hosted alternative to Firebase with auth, storage, and database services">Appwrite</span>
-								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Powerful email API for transactional messages and campaigns">Mailgun</span>
-								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Cloud communications platform for SMS, voice and video integration">Twilio</span>
-							</div>
-						</div>
-
-						<!-- Workflow & Orchestration -->
-						<div class="tools-category-redesigned">
-							<div class="tools-category-header-redesigned">
-								<i class="fas fa-project-diagram"></i>
-								<h5>Workflow & Orchestration</h5>
-							</div>
-							<div class="tools-list-redesigned">
-								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Container orchestration platform for automated deployment and scaling">Kubernetes</span>
-								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Agile project management tool with customizable workflows and tracking">Jira</span>
-								<span class="tool-tag-redesigned" data-bs-toggle="tooltip" data-bs-placement="top" title="All-in-one workspace for notes, wikis, projects, and team collaboration">Notion</span>
-							</div>
-						</div>
-
-
-					</div>
-
-					<!-- Call to Action -->
-					<div class="tools-cta-redesigned">
-						<h5>Ready to Collaborate?</h5>
-						<p>Let's discuss how these tools and skills can benefit your next project</p>
-						<a href="#contact" class="tools-cta-button-redesigned">
-							<i class="fas fa-handshake"></i>
-							Start Conversation
-						</a>
-					</div>
-				</div>
-
-			</div>
-		</section><!--/.skills-->
-		<!--skills end -->
 
 		<!--experience start -->
 		<section id="experience" class="experience">
 			<div class="container">
 				<div class="section-heading text-center">
-					<h2>Professional Journey</h2>
-					<p class="section-subtitle">Building expertise through learning and practice</p>
+					<h2>Experience</h2>
+					<p class="section-subtitle">Engineer → Full Stack → Team Lead → Founder</p>
 				</div>
 				
 				<div class="experience-timeline">
 					<div class="row justify-content-center">
 						<div class="col-lg-8">
-							<!-- Current Phase -->
+							<!-- Icepeak Tech - Co-founder & Lead Engineer -->
 							<div class="timeline-item card-base">
 								<div class="timeline-content">
 									<div class="timeline-header">
-										<h3>Full Stack Developer & Student</h3>
-										<span class="timeline-date">2023 - Present</span>
+										<h3>Co-founder & Lead Engineer</h3>
+										<span class="timeline-date">Dec 2025 - Present</span>
+									</div>
+									<div class="timeline-company">
+										<i class="fas fa-building"></i>
+										<a href="https://icepeaktech.com" target="_blank" rel="noopener" class="highlight-link">Icepeak Tech</a>
+									</div>
+									<div class="timeline-description">
+										<ul class="timeline-bullets">
+											<li>Founded a software development company delivering full-stack web apps, backend systems, and cross-platform mobile applications</li>
+											<li>Architect end-to-end solutions from database design to deployment pipelines</li>
+											<li>Handle client requirements, technical scoping, and project delivery</li>
+											<li>Build and maintain production infrastructure on VPS with CI/CD automation</li>
+										</ul>
+										<div class="timeline-skills">
+											<span class="skill-tag">System Design</span>
+											<span class="skill-tag">Full Stack</span>
+											<span class="skill-tag">DevOps</span>
+											<span class="skill-tag">Client Delivery</span>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<!-- AiGeeks - Combined Role -->
+							<div class="timeline-item card-base timeline-combined">
+								<div class="timeline-content">
+									<div class="timeline-header">
+										<h3>AiGeeks</h3>
+										<span class="timeline-date">Oct 2025 - Present</span>
+									</div>
+									<div class="timeline-company">
+										<i class="fas fa-building"></i>
+										Part-time · Remote
+									</div>
+
+									<!-- Role 1: Team Lead -->
+									<div class="timeline-role">
+										<div class="role-header">
+											<span class="role-title">Development Team Lead</span>
+											<span class="role-date">Jan 2026 - Present</span>
+										</div>
+										<ul class="timeline-bullets">
+											<li>Lead a distributed team of developers across multiple client projects</li>
+											<li>Own backend architecture decisions and enforce code quality through PR reviews</li>
+											<li>Coordinate deployments and maintain staging/production environments</li>
+										</ul>
+									</div>
+
+									<!-- Role 2: Full Stack Developer -->
+									<div class="timeline-role">
+										<div class="role-header">
+											<span class="role-title">Full Stack Developer</span>
+											<span class="role-date">Oct 2025 - Dec 2025</span>
+										</div>
+										<ul class="timeline-bullets">
+											<li>Built and shipped features across React frontends and Node.js backends</li>
+											<li>Designed database schemas and wrote optimized PostgreSQL queries</li>
+											<li>Integrated third-party APIs and handled authentication flows</li>
+										</ul>
+									</div>
+
+									<div class="timeline-skills">
+										<span class="skill-tag">TypeScript</span>
+										<span class="skill-tag">React</span>
+										<span class="skill-tag">Node.js</span>
+										<span class="skill-tag">PostgreSQL</span>
+										<span class="skill-tag">Team Leadership</span>
+									</div>
+								</div>
+							</div>
+
+							<!-- Covosys - Software Engineer -->
+							<div class="timeline-item card-base">
+								<div class="timeline-content">
+									<div class="timeline-header">
+										<h3>Software Engineer</h3>
+										<span class="timeline-date">Apr 2023 - Sep 2025</span>
+									</div>
+									<div class="timeline-company">
+										<i class="fas fa-building"></i>
+										Covosys · Full-time · Hybrid
 									</div>
 									<div class="timeline-location">
 										<i class="fas fa-map-marker-alt"></i>
 										Kathmandu, Nepal
 									</div>
 									<div class="timeline-description">
-										<p>Advancing my skills in modern web technologies while working on diverse freelance projects. Specializing in Python web frameworks, JavaScript development, and exploring AI/ML applications in web development.</p>
+										<ul class="timeline-bullets">
+											<li>Developed and maintained backend services using Django and Flask</li>
+											<li>Built REST APIs serving production traffic with focus on reliability</li>
+											<li>Worked with PostgreSQL for data modeling and query optimization</li>
+											<li>Collaborated with senior engineers on system design and code reviews</li>
+											<li>Grew from junior responsibilities to owning full feature implementations</li>
+										</ul>
 										<div class="timeline-skills">
-											<span class="skill-tag">Flask</span>
-											<span class="skill-tag">Django</span>
-											<span class="skill-tag">React</span>
-											<span class="skill-tag">FastAPI</span>
-											<span class="skill-tag">Docker</span>
-											<span class="skill-tag">Cloud Hosting</span>
-										</div>
-									</div>
-								</div>
-							</div>
-
-							<div class="timeline-item card-base">
-								<div class="timeline-content">
-									<div class="timeline-header">
-									<h3>Full-Stack Developer (Internship + Junior)</h3>
-									<span class="timeline-date">06/2023 – 09/2024</span>
-									</div>
-									<div class="timeline-location">
-									<i class="fas fa-map-marker-alt"></i>
-										Kathmandu, Nepal
-									</div>
-									<div class="timeline-description">
-										<p>Started as an intern and promoted to Junior Full-Stack Developer within 3 months. Developed cross-platform mobile apps using React Native, built backend APIs with Django, and designed microservices using Flask.</p>
-										<div class="timeline-skills">
-											<span class="skill-tag">React Native</span>
+											<span class="skill-tag">Python</span>
 											<span class="skill-tag">Django</span>
 											<span class="skill-tag">Flask</span>
+											<span class="skill-tag">REST APIs</span>
+											<span class="skill-tag">PostgreSQL</span>
 										</div>
 									</div>
 								</div>
@@ -2053,158 +1417,16 @@
 
 				<div class="experience-cta text-center">
 					<div class="cta-content">
-						<h4>Ready to Create Something Amazing?</h4>
-						<p>"My journey is just beginning, but my passion and dedication to excellence will exceed your expectations."</p>
-						<a href="#contact" class="btn btn-primary">Let's Work Together</a>
+						<h4>Need a Developer Who Ships?</h4>
+						<p>I build systems that scale, deploy reliably, and solve real problems. Let's talk about your project.</p>
+						<a href="#contact" class="btn btn-primary">Get In Touch</a>
 					</div>
 				</div>
 			</div>
 		</section><!--/.experience-->
 		<!--experience end -->
 
-		<!--profiles start -->
-		<section id="profiles" class="profiles">
-			<div class="container">
-				<div class="section-heading text-center">
-					<h2>Connect With Me</h2>
-					<p class="section-subtitle">Find me across various platforms</p>
-				</div>
-				
-				<div class="profiles-grid">
-					<div class="row justify-content-center">
-						<!-- Github -->
-						<div class="col-lg-3 col-md-6 mb-4">
-							<div class="profile-card card-base">
-								<div class="profile-icon">
-									<i class="fab fa-github"></i>
-								</div>
-								<div class="profile-content">
-									<h4>GitHub</h4>
-									<p>Open source projects & code repositories</p>
-									<a href="https://github.com/Lusan-sapkota" target="_blank" rel="noopener noreferrer" class="profile-link">
-										View Profile <i class="fas fa-external-link-alt"></i>
-									</a>
-								</div>
-							</div>
-						</div>
-
-						<!-- LinkedIn -->
-						<div class="col-lg-3 col-md-6 mb-4">
-							<div class="profile-card card-base">
-								<div class="profile-icon">
-									<i class="fab fa-linkedin"></i>
-								</div>
-								<div class="profile-content">
-									<h4>LinkedIn</h4>
-									<p>Professional network & career updates</p>
-									<a href="https://www.linkedin.com/in/lusan-sapkota-a08194284/" target="_blank" class="profile-link">
-										Connect <i class="fas fa-external-link-alt"></i>
-									</a>
-								</div>
-							</div>
-						</div>
-
-						<!-- HackerRank -->
-						<div class="col-lg-3 col-md-6 mb-4">
-							<div class="profile-card card-base">
-								<div class="profile-icon">
-									<i class="fab fa-hackerrank"></i>
-								</div>
-								<div class="profile-content">
-									<h4>HackerRank</h4>
-									<p>Coding challenges & algorithm solutions</p>
-									<a href="https://www.hackerrank.com/profile/sapkotalusan" target="_blank" class="profile-link">
-										View Solutions <i class="fas fa-external-link-alt"></i>
-									</a>
-								</div>
-							</div>
-						</div>
-
-						<!-- Instagram -->
-						<div class="col-lg-3 col-md-6 mb-4">
-							<div class="profile-card card-base">
-								<div class="profile-icon">
-									<i class="fab fa-instagram"></i>
-								</div>
-								<div class="profile-content">
-									<h4>Instagram</h4>
-									<p>Behind the scenes & personal moments</p>
-									<a href="https://www.instagram.com/sapkotalusan/" target="_blank" class="profile-link">
-										Follow <i class="fas fa-external-link-alt"></i>
-									</a>
-								</div>
-							</div>
-						</div>
-
-						<!-- X (Twitter) -->
-						<div class="col-lg-3 col-md-6 mb-4">
-							<div class="profile-card card-base">
-								<div class="profile-icon">
-									<i class="fab fa-x-twitter"></i>
-								</div>
-								<div class="profile-content">
-									<h4>X (Twitter)</h4>
-									<p>Tech thoughts & quick updates</p>
-									<a href="https://x.com/LusanSapkota" target="_blank" class="profile-link">
-										Follow <i class="fas fa-external-link-alt"></i>
-									</a>
-								</div>
-							</div>
-						</div>
-
-						<!-- YouTube -->
-						<div class="col-lg-3 col-md-6 mb-4">
-							<div class="profile-card card-base">
-								<div class="profile-icon">
-									<i class="fab fa-youtube"></i>
-								</div>
-								<div class="profile-content">
-									<h4>YouTube</h4>
-									<p>Coding tutorials & tech content</p>
-									<a href="https://www.youtube.com/@learn_with_lusan" target="_blank" class="profile-link">
-										Subscribe <i class="fas fa-external-link-alt"></i>
-									</a>
-								</div>
-							</div>
-						</div>
-
-						<!-- LeetCode -->
-						<div class="col-lg-3 col-md-6 mb-4">
-							<div class="profile-card card-base">
-								<div class="profile-icon">
-									<i class="fas fa-code"></i>
-								</div>
-								<div class="profile-content">
-									<h4>LeetCode</h4>
-									<p>Data structures & algorithm practice</p>
-									<a href="https://leetcode.com/u/sapkotalusan/" target="_blank" class="profile-link">
-										View Progress <i class="fas fa-external-link-alt"></i>
-									</a>
-								</div>
-							</div>
-						</div>
-
-						<!-- Discord -->
-						<div class="col-lg-3 col-md-6 mb-4">
-							<div class="profile-card card-base">
-								<div class="profile-icon">
-									<i class="fab fa-discord"></i>
-								</div>
-								<div class="profile-content">
-									<h4>Discord</h4>
-									<p>Community discussions & collaboration</p>
-									<a href="https://discord.gg/X9JzzRug" target="_blank" class="profile-link">
-										Connect <i class="fas fa-external-link-alt"></i>
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section><!--/.profiles-->
-		
-		<!--profiles end -->        <!--portfolio start -->
+		<!--portfolio start -->
 		<section id="portfolio" class="portfolio">
 			<div class="container">
 				<div class="section-heading text-center">
@@ -2327,6 +1549,121 @@
 		</section><!--/.portfolio-->
 		<!--portfolio end -->
 
+		<!--skills start -->
+	<section id="skills" class="skills-redesigned" data-aos="fade-up" data-aos-duration="800">
+		<div class="container">
+			<!-- Section Header -->
+			<div class="skills-header">
+				<div class="section-heading text-center" data-aos="fade-up" data-aos-delay="200">
+					<h2>Technical Skills</h2>
+					<p class="section-subtitle">Expertise across the full development stack</p>
+				</div>
+			</div>
+
+			<!-- Skills Content -->
+			<div class="skills-clean-content">
+				<div class="tech-stacks-grid">
+					<!-- Core Stack -->
+					<div class="tech-stack-group">
+						<div class="stack-header">
+							<i class="fas fa-layer-group"></i>
+							<h3>Core Stack</h3>
+						</div>
+						<div class="stack-tags">
+							<span class="tech-tag" data-bs-toggle="tooltip" title="Primary backend & scripting language">Python</span>
+							<span class="tech-tag" data-bs-toggle="tooltip" title="Also familiar with TypeScript">JavaScript</span>
+							<span class="tech-tag" data-bs-toggle="tooltip" title="Also know Vue.js & Angular">React</span>
+							<span class="tech-tag" data-bs-toggle="tooltip" title="React framework for SSR & SSG">Next.js</span>
+							<span class="tech-tag" data-bs-toggle="tooltip" title="Also familiar with Ionic">React Native</span>
+							<span class="tech-tag" data-bs-toggle="tooltip" title="Also use Bootstrap & custom CSS">Tailwind CSS</span>
+						</div>
+					</div>
+
+					<!-- Backend & APIs -->
+					<div class="tech-stack-group">
+						<div class="stack-header">
+							<i class="fas fa-server"></i>
+							<h3>Backend & APIs</h3>
+						</div>
+						<div class="stack-tags">
+							<span class="tech-tag" data-bs-toggle="tooltip" title="Python micro-framework">Flask</span>
+							<span class="tech-tag" data-bs-toggle="tooltip" title="Python full-stack framework">Django</span>
+							<span class="tech-tag" data-bs-toggle="tooltip" title="High-performance Python API">FastAPI</span>
+							<span class="tech-tag" data-bs-toggle="tooltip" title="JavaScript runtime & Express">Node.js</span>
+							<span class="tech-tag" data-bs-toggle="tooltip" title="RESTful web services">REST APIs</span>
+							<span class="tech-tag" data-bs-toggle="tooltip" title="Distributed task queue">Celery</span>
+							<span class="tech-tag" data-bs-toggle="tooltip" title="Real-time bidirectional communication">WebSockets</span>
+						</div>
+					</div>
+
+					<!-- Databases & Caching -->
+					<div class="tech-stack-group">
+						<div class="stack-header">
+							<i class="fas fa-database"></i>
+							<h3>Databases & Caching</h3>
+						</div>
+						<div class="stack-tags">
+							<span class="tech-tag" data-bs-toggle="tooltip" title="Advanced relational database">PostgreSQL</span>
+							<span class="tech-tag" data-bs-toggle="tooltip" title="Popular relational database">MySQL</span>
+							<span class="tech-tag" data-bs-toggle="tooltip" title="NoSQL document database">MongoDB</span>
+							<span class="tech-tag" data-bs-toggle="tooltip" title="In-memory cache & message broker">Redis</span>
+							<span class="tech-tag" data-bs-toggle="tooltip" title="Lightweight embedded database">SQLite</span>
+							<span class="tech-tag" data-bs-toggle="tooltip" title="Python ORM toolkit">SQLAlchemy</span>
+						</div>
+					</div>
+
+					<!-- Infrastructure & Deployment -->
+					<div class="tech-stack-group">
+						<div class="stack-header">
+							<i class="fas fa-server"></i>
+							<h3>Infrastructure & Deployment</h3>
+						</div>
+						<div class="stack-tags">
+							<span class="tech-tag" data-bs-toggle="tooltip" title="VPS hosting & server management">Linux</span>
+							<span class="tech-tag" data-bs-toggle="tooltip" title="Reverse proxy & web server">Nginx</span>
+							<span class="tech-tag" data-bs-toggle="tooltip" title="Containerization platform">Docker</span>
+							<span class="tech-tag" data-bs-toggle="tooltip" title="CI/CD automation">GitHub Actions</span>
+							<span class="tech-tag" data-bs-toggle="tooltip" title="Oracle Cloud Infrastructure">Oracle Cloud</span>
+							<span class="tech-tag" data-bs-toggle="tooltip" title="Amazon Web Services">AWS</span>
+							<span class="tech-tag" data-bs-toggle="tooltip" title="Microsoft cloud platform">Azure</span>
+						</div>
+					</div>
+
+					<!-- AI/ML & Data -->
+					<div class="tech-stack-group">
+						<div class="stack-header">
+							<i class="fas fa-brain"></i>
+							<h3>AI/ML & Data</h3>
+						</div>
+						<div class="stack-tags">
+							<span class="tech-tag" data-bs-toggle="tooltip" title="Google's ML framework">TensorFlow</span>
+							<span class="tech-tag" data-bs-toggle="tooltip" title="Deep learning framework">PyTorch</span>
+							<span class="tech-tag" data-bs-toggle="tooltip" title="ML algorithms library">Scikit-learn</span>
+							<span class="tech-tag" data-bs-toggle="tooltip" title="Data manipulation & analysis">Pandas</span>
+							<span class="tech-tag" data-bs-toggle="tooltip" title="Numerical computing">NumPy</span>
+							<span class="tech-tag" data-bs-toggle="tooltip" title="Computer vision library">OpenCV</span>
+						</div>
+					</div>
+
+					<!-- Tools & Auth -->
+					<div class="tech-stack-group">
+						<div class="stack-header">
+							<i class="fas fa-shield-alt"></i>
+							<h3>Tools & Auth</h3>
+						</div>
+						<div class="stack-tags">
+							<span class="tech-tag" data-bs-toggle="tooltip" title="Version control system">Git</span>
+							<span class="tech-tag" data-bs-toggle="tooltip" title="API development & testing">Postman</span>
+							<span class="tech-tag" data-bs-toggle="tooltip" title="Token-based authentication">JWT</span>
+							<span class="tech-tag" data-bs-toggle="tooltip" title="Authorization protocol">OAuth 2.0</span>
+							<span class="tech-tag" data-bs-toggle="tooltip" title="Google's BaaS platform">Firebase</span>
+							<span class="tech-tag" data-bs-toggle="tooltip" title="Python testing framework">Pytest</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section><!--/.skills-->
+		<!--skills end -->
 
 		<!--testimonials start -->
 		<section id="testimonials" class="testimonials">
@@ -2375,6 +1712,92 @@
 		</section><!--/.testimonials-->
 		<!--testimonials end -->
 
+		<!--education start -->
+		<section id="education" class="education" data-aos="fade-up" data-aos-duration="800">
+			<div class="container">
+				<div class="section-heading text-center" data-aos="fade-up" data-aos-delay="200">
+					<h2>Education Journey</h2>
+					<p class="section-subtitle">Academic achievements and learning milestones</p>
+				</div>
+
+				<div class="education-timeline">
+					<div class="row">
+						<div class="col-lg-4 col-md-6 mb-4">
+							<div class="education-card card-base hover-lift" data-aos="fade-up" data-aos-delay="400">
+								<div class="education-header">
+									<div class="education-year">2023 - 2027</div>
+									<div class="education-degree">
+										<i class="fas fa-graduation-cap"></i>
+										<h3>Bachelor's in IT</h3>
+									</div>
+								</div>
+								<div class="education-content">
+									<h4>Texas International College</h4>
+									<div class="education-details">
+										<span class="location"><i class="fas fa-map-marker-alt"></i> Sifal, Kathmandu</span>
+										<span class="gpa"><i class="fas fa-star"></i> Current</span>
+									</div>
+									<p>Lincoln University partnership program combining theoretical knowledge with practical skills for the evolving tech industry.</p>
+									<div class="education-tags">
+										<span class="edu-tag">Information Technology</span>
+										<span class="edu-tag">Software Development</span>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-lg-4 col-md-6 mb-4">
+							<div class="education-card card-base hover-lift" data-aos="fade-up" data-aos-delay="550">
+								<div class="education-header">
+									<div class="education-year">2021 - 2023</div>
+									<div class="education-degree">
+										<i class="fas fa-certificate"></i>
+										<h3>Higher Secondary (+2)</h3>
+									</div>
+								</div>
+								<div class="education-content">
+									<h4>Mansalu World College</h4>
+									<div class="education-details">
+										<span class="location"><i class="fas fa-map-marker-alt"></i> Chuchepati, Kathmandu</span>
+										<span class="gpa"><i class="fas fa-star"></i> GPA: 3.48</span>
+									</div>
+									<p>Physical Science and Computer Science major, building a strong foundation for technology and science career paths.</p>
+									<div class="education-tags">
+										<span class="edu-tag">Physical Science</span>
+										<span class="edu-tag">Computer Science</span>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-lg-4 col-md-12 mb-4">
+							<div class="education-card card-base hover-lift" data-aos="fade-up" data-aos-delay="700">
+								<div class="education-header">
+									<div class="education-year">2019 - 2021</div>
+									<div class="education-degree">
+										<i class="fas fa-school"></i>
+										<h3>Secondary Education (SEE)</h3>
+									</div>
+								</div>
+								<div class="education-content">
+									<h4>Chandikaswori Secondary Boarding School</h4>
+									<div class="education-details">
+										<span class="location"><i class="fas fa-map-marker-alt"></i> Gokarneshowr-2, Kathmandu</span>
+										<span class="gpa"><i class="fas fa-star"></i> GPA: 3.6</span>
+									</div>
+									<p>Optional Mathematics major, developing analytical skills and mathematical foundation for future academic pursuits.</p>
+									<div class="education-tags">
+										<span class="edu-tag">Mathematics</span>
+										<span class="edu-tag">Science</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section><!--/.education-->
+		<!--education end -->
 
 		<!--contact start -->
 		<section id="contact" class="contact">
@@ -2387,6 +1810,9 @@
 						<div class="col-md-offset-1 col-md-5 col-sm-6">
 							<div class="single-contact-box">
 								<div class="contact-form">
+									<div class="contact-form-head">
+										<h3>Send a Message</h3>
+									</div>
 									<form action="/contact/submit" method="POST" id="contact-form">
 										<div class="row">
 											<div class="col-sm-12">
@@ -2446,12 +1872,9 @@
 									</div>
 									<div class="contact-add-info">
 										<div class="single-contact-add-info">
-											<h3>phone</h3>
-											<p><a href="tel:+9779848189845">Available upon request</a></p>
-										</div>
-										<div class="single-contact-add-info">
 											<h3>email</h3>
 											<p><a href="mailto:sapkotalusan@gmail.com">sapkotalusan@gmail.com</a></p>
+											<p><a href="mailto:contact@lusansapkota.com.np">contact@lusansapkota.com.np</a></p>
 										</div>
 										<div class="single-contact-add-info">
 											<h3>website</h3>
@@ -2459,14 +1882,46 @@
 										</div>
 									</div>
 								</div><!--/.contact-adress-->
-								<div class="hm-foot-icon">
-									<ul>
-										<li><a href="https://github.com/Lusan-sapkota/"><i class="fab fa-github"></i></a></li><!--/li-->
-										<li><a href="https://x.com/LusanSapkota"><i class="fab fa-x-twitter"></i></a></li><!--/li-->
-										<li><a href="https://www.linkedin.com/in/lusan-sapkota-a08194284/"><i class="fab fa-linkedin"></i></a></li><!--/li-->
-										<li><a href="mailto:sapkotalusan@gmail.com"><i class="fa fa-envelope" ></i></a></li><!--/li-->
-									</ul><!--/ul-->
-								</div><!--/.hm-foot-icon-->
+
+								<!-- Social Profiles Grid -->
+								<div class="social-profiles-grid">
+									<h4 class="profiles-heading">Connect With Me</h4>
+									<div class="profiles-grid">
+										<a href="https://github.com/Lusan-sapkota/" target="_blank" rel="noopener noreferrer" class="profile-card" title="GitHub">
+											<i class="fab fa-github"></i>
+											<span>GitHub</span>
+										</a>
+										<a href="https://www.linkedin.com/in/lusan-sapkota-aa087b39b" target="_blank" rel="noopener noreferrer" class="profile-card" title="LinkedIn">
+											<i class="fab fa-linkedin"></i>
+											<span>LinkedIn</span>
+										</a>
+										<a href="https://x.com/LusanSapkota" target="_blank" rel="noopener noreferrer" class="profile-card" title="X (Twitter)">
+											<i class="fab fa-x-twitter"></i>
+											<span>X</span>
+										</a>
+										<a href="https://www.youtube.com/@learn_with_lusan" target="_blank" rel="noopener noreferrer" class="profile-card" title="YouTube">
+											<i class="fab fa-youtube"></i>
+											<span>YouTube</span>
+										</a>
+										<a href="https://leetcode.com/u/sapkotalusan/" target="_blank" rel="noopener noreferrer" class="profile-card" title="LeetCode">
+											<i class="fas fa-code"></i>
+											<span>LeetCode</span>
+										</a>
+										<a href="https://www.hackerrank.com/profile/sapkotalusan" target="_blank" rel="noopener noreferrer" class="profile-card" title="HackerRank">
+											<i class="fab fa-hackerrank"></i>
+											<span>HackerRank</span>
+										</a>
+										<a href="https://www.instagram.com/sapkotalusan/" target="_blank" rel="noopener noreferrer" class="profile-card" title="Instagram">
+											<i class="fab fa-instagram"></i>
+											<span>Instagram</span>
+										</a>
+										<a href="https://discord.gg/X9JzzRug" target="_blank" rel="noopener noreferrer" class="profile-card" title="Discord">
+											<i class="fab fa-discord"></i>
+											<span>Discord</span>
+										</a>
+									</div>
+								</div><!--/.social-profiles-grid-->
+
 							</div><!--/.single-contact-box-->
 						</div><!--/.col-->
 					</div><!--/.row-->
@@ -2475,6 +1930,81 @@
 
 		</section><!--/.contact-->
 		<!--contact end -->
+
+		<!-- Subdomain Navigation Section Start -->
+		<section class="subdomain-nav" id="subdomains" data-aos="fade-up" data-aos-duration="800">
+			<div class="container">
+				<div class="subdomain-title" data-aos="fade-up" data-aos-delay="200">
+					<h2>Explore My Digital Ecosystem</h2>
+					<p>Discover specialized platforms designed to showcase different aspects of my work and expertise. Each subdomain offers a unique experience tailored to specific interests and professional needs.</p>
+				</div>
+
+				<div class="subdomain-grid">
+					{% if subdomains %}
+						{% for key, subdomain in subdomains.items() %}
+						{% if subdomain.enabled %}
+						<div class="subdomain-card hover-lift" data-subdomain="{{ key }}" tabindex="0" role="button" aria-label="Navigate to {{ subdomain.title }}" data-aos="fade-up" data-aos-delay="{{ loop.index * 150 }}">
+							<div class="subdomain-icon">
+								<i class="{{ subdomain.icon }}"></i>
+							</div>
+							<h3>{{ subdomain.title }}</h3>
+							<p>{{ subdomain.description }}</p>
+							<a href="{{ url_for('{}.index'.format(key)) }}" class="subdomain-btn" data-subdomain="{{ key }}">
+								<span>
+									{% if key == 'wiki' %}Explore Wiki
+									{% elif key == 'git' %}View Code
+									{% elif key == 'donation' %}Support Work
+									{% elif key == 'store' %}Visit Store
+									{% else %}Visit {{ subdomain.title }}
+									{% endif %}
+								</span>
+								<i class="fas fa-arrow-right"></i>
+							</a>
+						</div>
+						{% endif %}
+						{% endfor %}
+					{% else %}
+					<!-- Fallback static content if config is not available -->
+					<div class="subdomain-card hover-lift" data-aos="fade-up" data-aos-delay="150">
+						<div class="subdomain-icon">
+							<i class="fas fa-book-open"></i>
+						</div>
+						<h3>Knowledge Wiki</h3>
+						<p>Comprehensive documentation, tutorials, and technical articles covering web development, app development, AI/ML, and cutting-edge technologies. A curated knowledge base for developers and tech enthusiasts.</p>
+						<a href="{{url_for('wiki.index')}}" class="subdomain-btn">
+							<span>Explore Wiki</span>
+							<i class="fas fa-arrow-right"></i>
+						</a>
+					</div>
+
+					<div class="subdomain-card hover-lift" data-aos="fade-up" data-aos-delay="300">
+						<div class="subdomain-icon">
+							<i class="fab fa-git-alt"></i>
+						</div>
+						<h3>Code Repository</h3>
+						<p>Browse through my open-source projects, code samples, and collaborative development work. Featuring clean, well-documented code with modern development practices.</p>
+						<a href="{{url_for('git.index')}}" class="subdomain-btn">
+							<span>View Code</span>
+							<i class="fas fa-arrow-right"></i>
+						</a>
+					</div>
+
+					<div class="subdomain-card hover-lift" data-aos="fade-up" data-aos-delay="450">
+						<div class="subdomain-icon">
+							<i class="fas fa-shopping-cart"></i>
+						</div>
+						<h3>Online Store</h3>
+						<p>Browse and purchase digital products, courses, and exclusive content. Secure payments and instant delivery.</p>
+						<a href="{{ url_for('store.index') }}" class="subdomain-btn">
+							<span>Visit Store</span>
+							<i class="fas fa-arrow-right"></i>
+						</a>
+					</div>
+					{% endif %}
+				</div>
+			</div>
+		</section>
+		<!-- Subdomain Navigation Section End -->
 
 		<!-- Enhanced Footer Section -->
 		<footer class="footer">
@@ -2513,7 +2043,6 @@
 		  <ul>
 			<li><a href="{{url_for('wiki.index')}}" target="_blank"><i class="fas fa-book"></i>Wiki Platform</a></li>
 			<li><a href="{{url_for('git.index')}}" target="_blank"><i class="fab fa-git-alt"></i>Git Repository</a></li>
-			<li><a href="{{url_for('donation.index')}}" target="_blank"><i class="fas fa-heart"></i>Donation Hub</a></li>
 			<li><a href="{{ url_for('store.index') }}" target="_blank"><i class="fas fa-store"></i>Online Store</a></li>
 		  </ul>
 		</div>
@@ -2583,7 +2112,6 @@
 			<li><a href="#contact"><i class="fas fa-paper-plane"></i>Send Message</a></li>
 			<li><a href="https://calendly.com/lusansapkota" target="_blank"><i class="fas fa-calendar"></i>Schedule Meeting</a></li>
 			<li><a href="javascript:void(0)" class="hover-lift resume-download-btn" data-resume-url="{{ url_for('static', filename='assets/download/Lusan_Sapkota_Resume.txt') }}"><i class="fas fa-download"></i>Download Resume</a></li>
-			<li><a href="/hire-me"><i class="fas fa-handshake"></i>Hire Me</a></li>
 			<li><a href="/privacy"><i class="fas fa-shield-alt"></i>Privacy Policy</a></li>
 		  </ul>
 		</div>
@@ -2597,7 +2125,7 @@
 		  <a href="https://github.com/Lusan-sapkota" target="_blank" rel="noopener noreferrer" class="social-link" title="GitHub">
 			<i class="fab fa-github"></i>
 		  </a>
-		  <a href="https://www.linkedin.com/in/lusan-sapkota-a08194284/" target="_blank" class="social-link" title="LinkedIn">
+		  <a href="https://www.linkedin.com/in/lusan-sapkota-aa087b39b" target="_blank" class="social-link" title="LinkedIn">
 			<i class="fab fa-linkedin-in"></i>
 		  </a>
 		  <a href="https://x.com/LusanSapkota" target="_blank" class="social-link" title="X(Twitter)">
@@ -2975,46 +2503,38 @@
 			// === Resume Download Modal Logic ===
 			const resumeDownloadBtns = document.querySelectorAll('.resume-download-btn');
 			const resumeModal = new bootstrap.Modal(document.getElementById('resumeDownloadModal'));
-			const confirmDownloadBtn = document.getElementById('confirmDownload');
-			let currentResumeUrl = '';
+			const downloadPDFBtn = document.getElementById('downloadPDF');
+			const downloadTXTBtn = document.getElementById('downloadTXT');
 
 			// Add click event to all resume download buttons
 			resumeDownloadBtns.forEach(btn => {
 				btn.addEventListener('click', function(e) {
 					e.preventDefault();
-					currentResumeUrl = this.getAttribute('data-resume-url');
 					resumeModal.show();
 				});
 			});
 
-			// Handle confirm download
-			confirmDownloadBtn.addEventListener('click', function() {
-				if (currentResumeUrl) {
-					// Create temporary download link
-					const downloadLink = document.createElement('a');
-					downloadLink.href = currentResumeUrl;
-					downloadLink.download = 'Lusan_Sapkota_Resume.txt';
-					document.body.appendChild(downloadLink);
-					downloadLink.click();
-					document.body.removeChild(downloadLink);
-					
-					// Close modal
-					resumeModal.hide();
-					
-					// Reset URL
-					currentResumeUrl = '';
-					
-					// Optional: Show success message
-					setTimeout(() => {
-						// You could add a toast notification here if desired
-						console.log('Resume download initiated successfully');
-					}, 500);
-				}
+			// Handle PDF download (opens HTML for print-to-PDF)
+			downloadPDFBtn.addEventListener('click', function() {
+				const url = this.getAttribute('data-url');
+				// Open HTML resume in new tab for print-to-PDF
+				const printWindow = window.open(url, '_blank');
+				printWindow.onload = function() {
+					printWindow.print();
+				};
+				resumeModal.hide();
 			});
 
-			// Reset URL when modal is hidden
-			document.getElementById('resumeDownloadModal').addEventListener('hidden.bs.modal', function() {
-				currentResumeUrl = '';
+			// Handle TXT download
+			downloadTXTBtn.addEventListener('click', function() {
+				const url = this.getAttribute('data-url');
+				const downloadLink = document.createElement('a');
+				downloadLink.href = url;
+				downloadLink.download = 'Lusan_Sapkota_Resume.txt';
+				document.body.appendChild(downloadLink);
+				downloadLink.click();
+				document.body.removeChild(downloadLink);
+				resumeModal.hide();
 			});
 		});
 		</script>
@@ -3034,22 +2554,23 @@
 							<i class="fas fa-file-alt fa-3x text-primary mb-3"></i>
 						</div>
 						<p class="text-center">
-							You are about to download a text resume that is auto-generated and regularly updated from my live portfolio website.
-						</p>
-						<p class="text-center mb-4">
-							Please confirm if you want to proceed.
+							Choose your preferred format to download my resume. Both versions are auto-generated from my live portfolio.
 						</p>
 						<div class="alert alert-info" role="alert">
-							<i class="fas fa-info-circle me-2"></i>
+							<i class="fas fa-info-circle me-2
+							"></i>
 							<strong>Note:</strong> This resume is automatically synced with the latest information from my portfolio.
 						</div>
 					</div>
-					<div class="modal-footer justify-content-center">
+					<div class="modal-footer justify-content-center gap-2">
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
 							<i class="fas fa-times me-2"></i>Cancel
 						</button>
-						<button type="button" class="btn btn-primary" id="confirmDownload">
-							<i class="fas fa-download me-2"></i>Download Resume
+						<button type="button" class="btn btn-danger" id="downloadPDF" data-url="{{ url_for('static', filename='assets/download/Lusan_Sapkota_Resume.html') }}">
+							<i class="fas fa-file-pdf me-2"></i>Download PDF
+						</button>
+						<button type="button" class="btn btn-primary" id="downloadTXT" data-url="{{ url_for('static', filename='assets/download/Lusan_Sapkota_Resume.txt') }}">
+							<i class="fas fa-file-alt me-2"></i>Download TXT
 						</button>
 					</div>
 				</div>

@@ -68,9 +68,60 @@ Lusan Sapkota Portfolio
    Dark Mode Theme
    ========================================================================== */
 
-/* Base theme transition for smooth dark mode */
-* {
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
+/* Base theme transition for smooth dark mode - applied to specific elements only */
+body,
+.navbar,
+.card,
+.card-base,
+.btn,
+section,
+footer,
+header,
+.hero,
+.about,
+.skills,
+.experience,
+.education,
+.portfolio,
+.testimonials,
+.contact {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Force disable transitions on Bootstrap modals and tooltips to prevent flicker */
+.modal,
+.modal *,
+.modal-backdrop,
+.tooltip,
+.tooltip *,
+.popover,
+.popover * {
+  transition: none !important;
+  animation: none !important;
+}
+
+/* Re-enable only Bootstrap's essential modal/tooltip animations */
+.modal.fade {
+  opacity: 0;
+  transition: opacity 0.15s linear !important;
+}
+.modal.fade.show {
+  opacity: 1;
+}
+.modal.fade .modal-dialog {
+  transform: translate(0, -50px);
+  transition: transform 0.2s ease-out !important;
+}
+.modal.show .modal-dialog {
+  transform: none;
+}
+
+.tooltip {
+  opacity: 0;
+}
+.tooltip.show {
+  opacity: 1;
+  transition: opacity 0.1s linear !important;
 }
 
 [data-theme="dark"] {
@@ -1332,6 +1383,22 @@ section {
   margin-top: 40px;
 }
 
+.about-content > .row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+}
+
+.about-content > .row > [class*="col-"] {
+  display: flex;
+  flex-direction: column;
+}
+
+.about-content .single-about-txt,
+.about-content .single-about-img {
+  height: 100%;
+}
+
 .single-about-txt h3 {
   font-size: 1.8rem;
   font-weight: 600;
@@ -1389,6 +1456,7 @@ section {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: 100%;
 }
 
 .single-about-img img {
@@ -1648,7 +1716,7 @@ section {
 --------------------------------------*/
 .experience {
   padding: 80px 0;
-  background: linear-gradient(135deg, rgba(243, 156, 18, 0.05) 0%, rgba(230, 126, 34, 0.05) 100%);
+  background: var(--light-gray);
 }
 
 .experience-timeline {
@@ -1699,6 +1767,33 @@ section {
   font-weight: 500;
 }
 
+.timeline-company {
+  color: var(--text-color);
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.timeline-company i {
+  margin-right: 8px;
+  color: var(--primary-color);
+}
+
+.timeline-company a {
+  color: var(--text-color);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.timeline-company a:hover,
+.timeline-company a.highlight-link {
+  color: var(--primary-color);
+}
+
+.timeline-company a.highlight-link:hover {
+  color: var(--primary-yellow-dark);
+}
+
 .timeline-location {
   color: var(--text-color);
   margin-bottom: 15px;
@@ -1716,10 +1811,71 @@ section {
   margin-bottom: 20px;
 }
 
+.timeline-bullets {
+  margin: 0 0 20px 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+.timeline-bullets li {
+  color: var(--text-color);
+  line-height: 1.6;
+  margin-bottom: 8px;
+  position: relative;
+  padding-left: 18px;
+  font-size: 14px;
+}
+
+.timeline-bullets li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 6px;
+  height: 6px;
+  background: var(--primary-color);
+  border-radius: 50%;
+}
+
 .timeline-skills {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+}
+
+/* Combined role styling (LinkedIn-style) */
+.timeline-role {
+  margin-bottom: 20px;
+  padding-left: 15px;
+  border-left: 2px solid var(--primary-color);
+}
+
+.timeline-role:last-of-type {
+  margin-bottom: 20px;
+}
+
+.role-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.role-title {
+  font-weight: 600;
+  color: var(--text-color);
+  font-size: 15px;
+}
+
+.role-date {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.timeline-role .timeline-bullets {
+  margin-bottom: 0;
 }
 
 .timeline-achievements {
@@ -1879,6 +2035,16 @@ section {
   transition: all 0.6 var(--transition) !important;
 }
 
+.contact-content > .row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+}
+
+.contact-content > .row > [class*="col-"] {
+  display: flex;
+}
+
 .single-contact-box {
   background: var(--light-gray);
   border-radius: var(--border-radius-lg);
@@ -1887,6 +2053,9 @@ section {
   box-shadow: var(--shadow-sm);
   border: 1px solid rgba(243, 156, 18, 0.1);
   transition: all 0.6 var(--transition) !important;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .contact-form .form-control {
@@ -1936,6 +2105,23 @@ section {
 .contact-btn:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
+}
+
+.contact-form-head {
+  margin-bottom: 25px;
+}
+
+.contact-form-head h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+}
+
+.contact-form-head p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  margin-bottom: 0;
 }
 
 .contact-add-head h3 {
@@ -2002,24 +2188,100 @@ section {
   box-shadow: var(--shadow-md);
 }
 
+/* Social Profiles Grid in Contact Section */
+.social-profiles-grid {
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.profiles-heading {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.profiles-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.profile-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 8px;
+  background: var(--light-gray);
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all var(--transition);
+  border: 1px solid transparent;
+}
+
+.profile-card:hover {
+  background: var(--white);
+  border-color: var(--primary-yellow);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-sm);
+}
+
+.profile-card i {
+  font-size: 1.4rem;
+  color: var(--text-primary);
+  margin-bottom: 5px;
+  transition: color var(--transition);
+}
+
+.profile-card:hover i {
+  color: var(--primary-yellow);
+}
+
+.profile-card span {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.profile-card:hover span {
+  color: var(--text-primary);
+}
+
+/* Responsive adjustments for profiles grid */
+@media (max-width: 576px) {
+  .profiles-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+
+  .profile-card {
+    padding: 10px 5px;
+  }
+
+  .profile-card i {
+    font-size: 1.2rem;
+  }
+
+  .profile-card span {
+    font-size: 0.6rem;
+  }
+}
+
 /*-------------------------------------
 12. Footer
 --------------------------------------*/
 .footer {
-  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+  background: var(--white);
   position: relative;
   overflow: hidden;
   margin-top: 0;
-}
-
-.footer::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: var(--gradient-primary);
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 /* Footer Content */
@@ -2053,14 +2315,14 @@ section {
 }
 
 .footer-brand-text {
-  color: #ffffff;
+  color: var(--text-primary);
   font-size: 1.1rem;
   font-weight: 600;
   margin-bottom: 10px;
 }
 
 .footer-tagline {
-  color: #bdc3c7;
+  color: var(--text-secondary);
   font-size: 0.9rem;
   font-style: italic;
   max-width: 300px;
@@ -2077,7 +2339,7 @@ section {
 }
 
 .footer-column h4 {
-  color: #ffffff;
+  color: var(--text-primary);
   font-size: 1rem;
   font-weight: 600;
   margin-bottom: 20px;
@@ -2109,7 +2371,7 @@ section {
 }
 
 .footer-column ul li a {
-  color: #bdc3c7;
+  color: var(--text-secondary);
   text-decoration: none;
   font-size: 0.9rem;
   transition: all var(--transition);
@@ -2142,7 +2404,7 @@ section {
   display: inline-flex;
   align-items: center;
   margin: 0 20px 15px;
-  color: #bdc3c7;
+  color: var(--text-secondary);
   font-size: 0.9rem;
 }
 
@@ -2155,7 +2417,7 @@ section {
 }
 
 .contact-item a {
-  color: #bdc3c7;
+  color: var(--text-secondary);
   text-decoration: none;
   transition: all var(--transition);
 }
@@ -2172,7 +2434,7 @@ section {
 }
 
 .footer-social h4 {
-  color: #ffffff;
+  color: var(--text-primary);
   font-size: 1rem;
   font-weight: 600;
   margin-bottom: 20px;
@@ -2245,7 +2507,7 @@ section {
 }
 
 .footer-newsletter h4 {
-  color: #ffffff;
+  color: var(--text-primary);
   font-size: 1rem;
   font-weight: 600;
   margin-bottom: 15px;
@@ -2254,7 +2516,7 @@ section {
 }
 
 .footer-newsletter p {
-  color: #bdc3c7;
+  color: var(--text-secondary);
   font-size: 0.85rem;
   margin-bottom: 20px;
   line-height: 1.5;
@@ -2269,23 +2531,23 @@ section {
 .newsletter-form input {
   flex: 1;
   padding: 12px 15px;
-  border: 2px solid rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(0, 0, 0, 0.1);
   border-radius: var(--border-radius);
-  background: rgba(255, 255, 255, 0.05);
-  color: #ffffff;
+  background: var(--light-gray);
+  color: var(--text-primary);
   font-size: 0.9rem;
   transition: all var(--transition);
 }
 
 .newsletter-form input::placeholder {
-  color: #bdc3c7;
+  color: var(--text-secondary);
   opacity: 0.7;
 }
 
 .newsletter-form input:focus {
   outline: none;
   border-color: var(--primary-yellow);
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--white);
 }
 
 .newsletter-btn {
@@ -2307,9 +2569,9 @@ section {
 
 /* Copyright Section */
 .footer-copyright {
-  background: rgba(0, 0, 0, 0.3);
+  background: var(--light-gray);
   padding: 20px 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
   text-align: center;
 }
 
@@ -2378,7 +2640,7 @@ section {
 
 /* Dark Mode Footer Adjustments */
 [data-theme="dark"] .footer {
-  background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
+  background: #1e293b;
 }
 
 [data-theme="dark"] .footer-copyright {
@@ -2797,6 +3059,11 @@ Skills Section - Modern Design
 /*-------------------------------------
 10. Portfolio Section
 --------------------------------------*/
+.portfolio {
+  background: var(--white);
+  padding: 80px 0;
+}
+
 /* Portfolio Grid */
 .portfolio-grid {
   display: grid;
@@ -3131,6 +3398,16 @@ Skills Section - Modern Design
   transition: all 0.6 var(--transition) !important;
 }
 
+.contact-content > .row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+}
+
+.contact-content > .row > [class*="col-"] {
+  display: flex;
+}
+
 .single-contact-box {
   background: var(--light-gray);
   border-radius: var(--border-radius-lg);
@@ -3139,6 +3416,9 @@ Skills Section - Modern Design
   box-shadow: var(--shadow-sm);
   border: 1px solid rgba(243, 156, 18, 0.1);
   transition: all 0.6 var(--transition) !important;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .contact-form .form-control {
@@ -3257,7 +3537,7 @@ Skills Section - Modern Design
 12. Footer
 --------------------------------------*/
 .footer {
-  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+  background: #ffffff;
   position: relative;
   overflow: hidden;
   margin-top: 0;
@@ -3304,14 +3584,14 @@ Skills Section - Modern Design
 }
 
 .footer-brand-text {
-  color: #ffffff;
+  color: var(--text-primary);
   font-size: 1.1rem;
   font-weight: 600;
   margin-bottom: 10px;
 }
 
 .footer-tagline {
-  color: #bdc3c7;
+  color: var(--text-secondary);
   font-size: 0.9rem;
   font-style: italic;
   max-width: 300px;
@@ -3328,7 +3608,7 @@ Skills Section - Modern Design
 }
 
 .footer-column h4 {
-  color: #ffffff;
+  color: var(--text-primary);
   font-size: 1rem;
   font-weight: 600;
   margin-bottom: 20px;
@@ -3360,7 +3640,7 @@ Skills Section - Modern Design
 }
 
 .footer-column ul li a {
-  color: #bdc3c7;
+  color: var(--text-secondary);
   text-decoration: none;
   font-size: 0.9rem;
   transition: all var(--transition);
@@ -3393,7 +3673,7 @@ Skills Section - Modern Design
   display: inline-flex;
   align-items: center;
   margin: 0 20px 15px;
-  color: #bdc3c7;
+  color: var(--text-secondary);
   font-size: 0.9rem;
 }
 
@@ -3406,7 +3686,7 @@ Skills Section - Modern Design
 }
 
 .contact-item a {
-  color: #bdc3c7;
+  color: var(--text-secondary);
   text-decoration: none;
   transition: all var(--transition);
 }
@@ -3423,7 +3703,7 @@ Skills Section - Modern Design
 }
 
 .footer-social h4 {
-  color: #ffffff;
+  color: var(--text-primary);
   font-size: 1rem;
   font-weight: 600;
   margin-bottom: 20px;
@@ -3496,7 +3776,7 @@ Skills Section - Modern Design
 }
 
 .footer-newsletter h4 {
-  color: #ffffff;
+  color: var(--text-primary);
   font-size: 1rem;
   font-weight: 600;
   margin-bottom: 15px;
@@ -3505,7 +3785,7 @@ Skills Section - Modern Design
 }
 
 .footer-newsletter p {
-  color: #bdc3c7;
+  color: var(--text-secondary);
   font-size: 0.85rem;
   margin-bottom: 20px;
   line-height: 1.5;
@@ -3520,23 +3800,23 @@ Skills Section - Modern Design
 .newsletter-form input {
   flex: 1;
   padding: 12px 15px;
-  border: 2px solid rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(0, 0, 0, 0.1);
   border-radius: var(--border-radius);
-  background: rgba(255, 255, 255, 0.05);
-  color: #ffffff;
+  background: var(--light-gray);
+  color: var(--text-primary);
   font-size: 0.9rem;
   transition: all var(--transition);
 }
 
 .newsletter-form input::placeholder {
-  color: #bdc3c7;
+  color: var(--text-secondary);
   opacity: 0.7;
 }
 
 .newsletter-form input:focus {
   outline: none;
   border-color: var(--primary-yellow);
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--white);
 }
 
 .newsletter-btn {
@@ -3558,9 +3838,9 @@ Skills Section - Modern Design
 
 /* Copyright Section */
 .footer-copyright {
-  background: rgba(0, 0, 0, 0.3);
+  background: var(--light-gray);
   padding: 20px 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
   text-align: center;
 }
 
@@ -3629,7 +3909,7 @@ Skills Section - Modern Design
 
 /* Dark Mode Footer Adjustments */
 [data-theme="dark"] .footer {
-  background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
+  background: #1e293b;
 }
 
 [data-theme="dark"] .footer-copyright {
@@ -3839,22 +4119,9 @@ Skills Section - Modern Design
 /* Skills Section Container - Isolated */
 .skills-redesigned {
   padding: 100px 0;
-  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 50%, #f1f5f9 100%);
+  background: var(--light-gray);
   position: relative;
   isolation: isolate; /* Prevents style bleeding */
-}
-
-.skills-redesigned::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: radial-gradient(circle at 20% 20%, rgba(243, 156, 18, 0.03) 0%, transparent 50%),
-              radial-gradient(circle at 80% 80%, rgba(52, 152, 219, 0.03) 0%, transparent 50%);
-  pointer-events: none;
-  z-index: -1;
 }
 
 [data-theme="dark"] .skills-redesigned {
@@ -3907,6 +4174,169 @@ Skills Section - Modern Design
   max-width: 1200px;
   margin: 0 auto;
 }
+
+/* ========================================
+   Clean Tech Stacks Design
+   ======================================== */
+
+.skills-clean-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.tech-stacks-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+@media (max-width: 992px) {
+  .tech-stacks-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.tech-stack-group {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+}
+
+.tech-stack-group:hover {
+  box-shadow: 0 8px 30px rgba(243, 156, 18, 0.12);
+  border-color: rgba(243, 156, 18, 0.2);
+  transform: translateY(-2px);
+}
+
+[data-theme="dark"] .tech-stack-group {
+  background: #1e293b;
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] .tech-stack-group:hover {
+  border-color: rgba(243, 156, 18, 0.3);
+  box-shadow: 0 8px 30px rgba(243, 156, 18, 0.15);
+}
+
+.stack-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="dark"] .stack-header {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.stack-header i {
+  font-size: 1.25rem;
+  color: #f39c12;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(243, 156, 18, 0.1);
+  border-radius: 10px;
+}
+
+[data-theme="dark"] .stack-header i {
+  background: rgba(243, 156, 18, 0.15);
+}
+
+.stack-header h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0;
+}
+
+[data-theme="dark"] .stack-header h3 {
+  color: #f1f5f9;
+}
+
+.stack-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tech-tag {
+  display: inline-block;
+  padding: 6px 14px;
+  background: #f1f5f9;
+  color: #475569;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 20px;
+  transition: all 0.2s ease;
+  cursor: default;
+}
+
+.tech-tag:hover {
+  background: linear-gradient(135deg, #f39c12, #e67e22);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+[data-theme="dark"] .tech-tag {
+  background: #334155;
+  color: #cbd5e1;
+}
+
+[data-theme="dark"] .tech-tag:hover {
+  background: linear-gradient(135deg, #f39c12, #e67e22);
+  color: #ffffff;
+}
+
+/* Responsive adjustments for tech stacks */
+@media (max-width: 768px) {
+  .tech-stacks-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .tech-stack-group {
+    padding: 20px;
+  }
+
+  .stack-header h3 {
+    font-size: 1rem;
+  }
+
+  .tech-tag {
+    padding: 5px 12px;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .tech-stack-group {
+    padding: 16px;
+  }
+
+  .stack-header i {
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+  }
+
+  .tech-tag {
+    padding: 4px 10px;
+    font-size: 0.75rem;
+  }
+}
+
+/* ========================================
+   End Clean Tech Stacks Design
+   ======================================== */
 
 /* Skills Categories Grid */
 .skills-categories-grid {
@@ -4803,7 +5233,7 @@ Skills Section - Modern Design
   --carousel-gap: 30px;
   --card-min-height: 280px;
   padding: clamp(60px, 5vw, 100px) 0;
-  background-color: var(--light-gray);
+  background-color: var(--white);
   transition: background-color 0.4s ease !important;
 }
 
@@ -5493,4 +5923,61 @@ Skills Section - Modern Design
     min-height: 8px; /* Ensure minimum height */
     background-size: 100% 100% !important;
   }
+}
+
+/* =================================================
+   ANTI-FLICKER FIX FOR MODALS AND TOOLTIPS
+   Must be at end of file to override other rules
+   ================================================= */
+.modal,
+.modal-dialog,
+.modal-content,
+.modal-header,
+.modal-body,
+.modal-footer,
+.modal-title,
+.modal-backdrop,
+.modal *,
+.tooltip,
+.tooltip-inner,
+.tooltip-arrow,
+.tooltip *,
+.popover,
+.popover * {
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+  -o-transition: none !important;
+  transition: none !important;
+  -webkit-animation: none !important;
+  animation: none !important;
+}
+
+/* Bootstrap modal fade - only opacity and transform allowed */
+.modal.fade {
+  opacity: 0 !important;
+  -webkit-transition: opacity 0.15s linear !important;
+  transition: opacity 0.15s linear !important;
+}
+.modal.fade.show {
+  opacity: 1 !important;
+}
+.modal.fade .modal-dialog {
+  -webkit-transform: translate(0, -30px) !important;
+  transform: translate(0, -30px) !important;
+  -webkit-transition: -webkit-transform 0.2s ease-out !important;
+  transition: transform 0.2s ease-out !important;
+}
+.modal.show .modal-dialog {
+  -webkit-transform: none !important;
+  transform: none !important;
+}
+
+/* Bootstrap tooltip fade - only opacity allowed */
+.tooltip {
+  opacity: 0 !important;
+}
+.tooltip.show {
+  opacity: 1 !important;
+  -webkit-transition: opacity 0.1s ease-out !important;
+  transition: opacity 0.1s ease-out !important;
 }

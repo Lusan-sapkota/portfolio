@@ -21,7 +21,7 @@ SUBDOMAINS = {
         'title': 'Support Platform',
         'description': 'Support my open-source work and community contributions.',
         'icon': 'fas fa-heart',
-        'enabled': True
+        'enabled': False  # Disabled until open-source projects are ready
     },
     'store': {
         'url': 'https://store.lusansapkota.com.np',
@@ -57,15 +57,15 @@ ANALYTICS_CONFIG = {
 # SEO Configuration
 SEO_CONFIG = {
     'site_name': 'Lusan Sapkota Portfolio',
-    'default_title': 'Lusan Sapkota | Full Stack Software Developer from Nepal',
-    'default_description': 'Full Stack Software Developer specializing in Python, JavaScript, React, Django, Flask, and AI/ML technologies.',
+    'default_title': 'Lusan Sapkota | Co-founder & CEO at Icepeak Tech | Full Stack Developer',
+    'default_description': 'Co-founder & CEO at Icepeak Tech with 4+ years of experience. Full Stack Software Developer specializing in Python, JavaScript, React, Django, Flask, and AI/ML technologies.',
     'author': 'Lusan Sapkota',
-    'keywords': ['Full Stack Developer', 'Software Developer', 'Python Developer', 'JavaScript Developer', 'Nepal Developer', 'AI ML Developer'],
+    'keywords': ['Full Stack Developer', 'Software Developer', 'Python Developer', 'JavaScript Developer', 'Nepal Developer', 'AI ML Developer', 'Icepeak Tech', 'CEO', 'Co-founder'],
     'social_media': {
         'facebook': 'https://web.facebook.com/lusan.sapkota.1',
         'github': 'https://github.com/Lusan-sapkota',
         'twitter': 'https://x.com/LusanSapkota',
-        'linkedin': 'https://www.linkedin.com/in/lusan-sapkota-a08194284/',
+        'linkedin': 'https://www.linkedin.com/in/lusan-sapkota-aa087b39b',
         'instagram': 'https://www.instagram.com/sapkotalusan/',
         'email': 'sapkotalusan@gmail.com'
     }

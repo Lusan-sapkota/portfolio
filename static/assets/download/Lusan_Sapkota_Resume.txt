@@ -1,6 +1,6 @@
 ============================================================================
                             LUSAN SAPKOTA
-                    Full Stack Software Developer
+          Co-founder & CEO at Icepeak Tech | Full Stack Developer
 ============================================================================
 
 CONTACT INFORMATION
@@ -13,7 +13,7 @@ Location: Kathmandu, Nepal 🇳🇵
 SOCIAL PROFILES
 ---------------
 • GitHub: https://github.com/Lusan-sapkota
-• LinkedIn: https://www.linkedin.com/in/lusan-sapkota-a08194284/
+• LinkedIn: https://www.linkedin.com/in/lusan-sapkota-aa087b39b
 • X (Twitter): https://twitter.com/LusanSapkota
 • YouTube: https://www.youtube.com/@learn_with_lusan
 • LeetCode: https://leetcode.com/u/sapkotalusan/
@@ -23,13 +23,15 @@ SOCIAL PROFILES
 
 PROFESSIONAL SUMMARY
 --------------------
-Passionate Full Stack Software Developer from Nepal specializing in Python, 
-JavaScript, TypeScript, Django, Flask, React, and modern web technologies. 
-Experienced in crafting dynamic, responsive websites and robust applications 
-with a deep understanding of both backend architecture and modern frontend 
-design. Expertise in AI/ML, particularly in graph-based models and algorithms, 
-driving data-driven insights and innovation. Committed to leveraging the latest 
-technologies and best practices to deliver user-centered solutions.
+Co-founder & CEO at Icepeak Tech (icepeaktech.com) with 4+ years of experience
+(3 years professional + 1 year freelancing). Passionate Full Stack Software
+Developer from Nepal specializing in Python, JavaScript, TypeScript, Django,
+Flask, React, and modern web technologies. Experienced in crafting dynamic,
+responsive websites and robust applications with deep understanding of both
+backend architecture and modern frontend design. Expertise in AI/ML, particularly
+in graph-based models and algorithms, driving data-driven insights and innovation.
+Committed to leveraging the latest technologies and best practices to deliver
+user-centered solutions. Currently active in freelancing alongside company work.
 
 EDUCATION
 ---------
@@ -134,24 +136,42 @@ Workflow & Orchestration:
 PROFESSIONAL EXPERIENCE
 -----------------------
 
-Full Stack Developer & Student (2025 - Present)
-Remote & Nepal
-• Advancing skills in modern web technologies while working on diverse 
-  freelance projects
-• Specializing in Python web frameworks, JavaScript development, and 
-  exploring AI/ML applications in web development
-• Technologies: Flask, Django, React, FastAPI, Docker, Cloud Hosting
+Co-founder & Lead Engineer (Dec 2025 - Present)
+Icepeak Tech (icepeaktech.com)
+• Founded a software development company delivering full-stack web apps, backend systems, and cross-platform mobile applications
+• Architect end-to-end solutions from database design to deployment pipelines
+• Handle client requirements, technical scoping, and project delivery
+• Build and maintain production infrastructure on VPS with CI/CD automation
+• Technologies: System Design, Full Stack, DevOps, Client Delivery
 
-Student & Emerging Developer (2022 - 2024)
-Remote Learning & Local Projects
-• Intensive learning phase focusing on modern web technologies while 
-  completing academic studies
-• Built foundation in full-stack development and started taking on local 
-  freelance projects
-• Achievements:
-  - Mastered Python web frameworks
-  - Completed multiple client projects
-  - Built responsive web applications
+AiGeeks (Oct 2025 - Present)
+Part-time · Remote
+
+  Development Team Lead (Jan 2026 - Present)
+  • Lead a distributed team of developers across multiple client projects
+  • Own backend architecture decisions and enforce code quality through PR reviews
+  • Coordinate deployments and maintain staging/production environments
+
+  Full Stack Developer (Oct 2025 - Dec 2025)
+  • Built and shipped features across React frontends and Node.js backends
+  • Designed database schemas and wrote optimized PostgreSQL queries
+  • Integrated third-party APIs and handled authentication flows
+
+• Technologies: TypeScript, React, Node.js, PostgreSQL, Team Leadership
+
+Software Engineer (Apr 2023 - Sep 2025)
+Covosys · Full-time · Hybrid · Kathmandu, Nepal
+• Developed and maintained backend services using Django and Flask
+• Built REST APIs serving production traffic with focus on reliability
+• Worked with PostgreSQL for data modeling and query optimization
+• Collaborated with senior engineers on system design and code reviews
+• Grew from junior responsibilities to owning full feature implementations
+• Technologies: Python, Django, Flask, REST APIs, PostgreSQL
+
+Freelance Developer (2022 - Present)
+• Ongoing freelance work alongside full-time roles
+• Built responsive web applications for diverse clients
+• Technologies: Flask, Django, React, FastAPI, Docker
 
 KEY PROJECTS
 ------------
@@ -234,7 +254,7 @@ REFERENCES
 Available upon request.
 
 ============================================================================
-Last Updated: June 23, 2025
+Last Updated: February 8, 2026
 Resume created from portfolio data at: https://www.lusansapkota.com.np
 This resume is auto-generated from my live portfolio.
 Kindly contact me for my concise resume.

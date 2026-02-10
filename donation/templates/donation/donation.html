@@ -1,274 +1,320 @@
-{% extends "donation/base.html" %}
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coming Soon - Support Platform</title>
+    <meta name="description" content="The support platform will be available once exciting open source projects are ready. Stay tuned for updates!">
 
-{% block title %}{{ seo_settings.site_title if seo_settings else 'Support My Projects - Donation' }}{% endblock %}
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='assets/logo/logo.png') }}">
 
-{% block meta_description %}{{ seo_settings.meta_description if seo_settings else 'Support open source innovation and amazing projects that benefit the developer community.' }}{% endblock %}
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-{% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('donation.static', filename='css/donation-page.css', _external=True, _scheme='https') }}">
-{% endblock %}
-
-{% block content %}
-<!-- Hero Section -->
-<section class="donation-hero-section">
-    <div class="container">
-        <h1 class="donation-hero-title">{{ personal_info.title if personal_info else 'Support Open Source Innovation' }}</h1>
-        <p class="donation-hero-subtitle">
-            {{ personal_info.bio if personal_info else 'Help me build amazing projects that benefit the developer community. Your contribution makes a real difference in advancing technology for everyone.' }}
-        </p>
-        
-        <!-- Hero Stats -->
-        <div class="donation-hero-stats">
-            <div class="hero-stat">
-                <p class="hero-stat-number">{{ project_count or 0 }}</p>
-                <span class="hero-stat-label">Active Projects</span>
-            </div>
-            <div class="hero-stat" >
-                <p class="hero-stat-number">{{ total_raised or '$0 / Rs.0' }}</p>
-                <span class="hero-stat-label">Total Raised</span>
-            </div>
-            <div class="hero-stat">
-                <span class="hero-stat-number">{{ supporter_count or 0 }}</span>
-                <span class="hero-stat-label">Supporters</span>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Featured Projects -->
-{% if featured_projects %}
-<section class="py-5">
-    <div class="container">
-        <h2 class="donation-section-title">Featured Projects</h2>
-        <p class="donation-section-subtitle">Discover my most impactful projects that are making a difference</p>
-        <div class="row">
-            {% for project in featured_projects %}
-            <div class="col-lg-6 col-md-6 mb-4">
-                <div class="donation-project-card">
-                    {% if project.image_url %}
-                    <div class="donation-project-image" style="background-image: url('{{ project.image_url }}')">
-                        <div class="donation-project-badge">Featured</div>
-                    </div>
-                    {% endif %}
-                    <div class="donation-project-content">
-                        <h3 class="donation-project-title">{{ project.title }}</h3>
-                        <p class="donation-project-description">{{ project.short_description or project.description[:150] + '...' }}</p>
-                        
-                        <div class="donation-project-actions">
-                            <a href="{{ url_for('donation.project_detail', project_id=project.id) }}" class="donation-btn-primary">
-                                <i class="fas fa-heart"></i> Donate Now
-                            </a>
-                            <a href="{{ url_for('donation.why_donate', project_id=project.id) }}" class="donation-btn-outline">
-                                <i class="fas fa-info-circle"></i> Why Donate?
-                            </a>
-                            {% if project.github_url %}
-                            <a href="{{ project.github_url }}" target="_blank" class="donation-github-link">
-                                <i class="fab fa-github"></i> View Code
-                            </a>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-</section>
-{% endif %}
-
-<!-- All Projects -->
-<section class="py-5">
-    <div class="container">
-        <h2 class="donation-section-title">All Projects</h2>
-        <p class="donation-section-subtitle">Explore all my innovative projects that need your support</p>
-        <div class="row">
-            {% for project in all_projects %}
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="donation-project-card">
-                    {% if project.is_featured %}
-                    <div class="featured-badge">
-                        <i class="fas fa-star"></i> Featured
-                    </div>
-                    {% endif %}
-                    {% if project.image_url %}
-                    <div class="donation-project-image" style="background-image: url('{{ project.image_url }}')"></div>
-                    {% endif %}
-                    <div class="donation-project-content">
-                        <h3 class="donation-project-title">{{ project.title }}</h3>
-                        <p class="donation-project-description">{{ project.short_description or project.description[:100] + '...' }}</p>
-                        
-                        <div class="donation-project-actions">
-                            <a href="{{ url_for('donation.project_detail', project_id=project.id) }}" class="donation-btn-primary">
-                                <i class="fas fa-arrow-right"></i> Learn More
-                            </a>
-                            <a href="{{ url_for('donation.why_donate', project_id=project.id) }}" class="donation-btn-outline">
-                                <i class="fas fa-question-circle"></i> Why Donate?
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-</section>
-
-<!-- Recent Activity -->
-{% if recent_donations %}
-<section class="donation-activity-section">
-    <div class="container">
-        <h2 class="donation-section-title">Recent Support</h2>
-        <p class="donation-section-subtitle">See how my amazing community is supporting innovation</p>
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
-                <div class="donation-activity-feed">
-                    {% for donation in recent_donations[:5] %}
-                    <div class="donation-activity-item">
-                        <span class="donation-activity-donor">
-                            {% if donation.is_anonymous %}
-                                <i class="fas fa-user-secret"></i> Anonymous Supporter
-                            {% else %}
-                                {{ donation.donor_name }}
-                            {% endif %}
-                        </span>
-                        donated 
-                        <span class="donation-activity-amount">
-                            {% if donation.currency == 'NPR' %}
-                                Rs. {{ "%.2f"|format(donation.amount) }}
-                            {% else %}
-                                ${{ "%.2f"|format(donation.amount) }}
-                            {% endif %}
-                        </span>
-                        to <span class="donation-activity-project">{{ donation.project.title if donation.project else 'General Support' }}</span>
-                        <span class="donation-activity-date">{{ donation.created_at.strftime('%B %d, %Y') }}</span>
-                        {% if donation.message and not donation.is_anonymous %}
-                        <div class="donation-activity-message">"{{ donation.message }}"</div>
-                        {% endif %}
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-{% endif %}
-
-<!-- Newsletter Subscription -->
-<section class="donation-newsletter-section">
-    <div class="container">
-        <div class="text-center mb-4">
-            <h2 class="donation-section-title">Stay Updated</h2>
-            <p class="donation-section-subtitle">Get notified about new projects and updates</p>
-        </div>
-        
-        <div class="row justify-content-center">
-            <div class="col-lg-6 col-md-8">
-                <form action="{{ url_for('donation.subscribe_newsletter', _external=True, _scheme='https') }}" method="POST" class="donation-newsletter-form">
-                    <div class="donation-form-group">
-                        <input type="email" name="email" class="donation-form-control" placeholder="Your Email Address" required>
-                    </div>
-                    <div class="donation-form-group">
-                        <input type="text" name="interests" class="donation-form-control" placeholder="Interests (e.g., Web Development, AI, Mobile Apps)">
-                    </div>
-                    <div class="text-center">
-                        <button type="submit" class="donation-submit-btn">
-                            <i class="fas fa-envelope"></i> Subscribe to Newsletter
-                        </button>
-                    </div>
-                    <div id="newsletter-message" style="margin-top: 15px; display: none;"></div>
-                </form>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Flash Messages -->
-{% with messages = get_flashed_messages(with_categories=true) %}
-{% if messages %}
-<div class="donation-flash-messages">
-    {% for category, message in messages %}
-    <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    {% endfor %}
-</div>
-{% endif %}
-{% endwith %}
-{% endblock %}
-
-{% block extra_js %}
-<script>
-    // Auto-hide flash messages after 5 seconds (exclude modal alerts)
-    setTimeout(function() {
-        const alerts = document.querySelectorAll('.alert');
-        alerts.forEach(function(alert) {
-            // Don't hide alerts inside modals
-            if (!alert.closest('.modal')) {
-                alert.style.transition = 'opacity 0.5s';
-                alert.style.opacity = '0';
-                setTimeout(function() {
-                    alert.remove();
-                }, 500);
-            }
-        });
-    }, 5000);
-    
-    // Newsletter form handling
-    document.addEventListener('DOMContentLoaded', function() {
-        const newsletterForm = document.querySelector('.donation-newsletter-form');
-        if (newsletterForm) {
-            newsletterForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const submitBtn = this.querySelector('button[type="submit"]');
-                const messageDiv = document.getElementById('newsletter-message');
-                const originalText = submitBtn.innerHTML;
-                
-                // Show loading state
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Subscribing...';
-                submitBtn.disabled = true;
-                messageDiv.style.display = 'none';
-                
-                // Submit form
-                fetch(this.action, {
-                    method: 'POST',
-                    body: new FormData(this)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    const alertType = data.status === 'error' ? 'danger' : 
-                                    data.status === 'info' ? 'info' : 'success';
-                    
-                    messageDiv.className = `alert alert-${alertType}`;
-                    messageDiv.textContent = data.message;
-                    messageDiv.style.display = 'block';
-                    
-                    if (data.status === 'success') {
-                        this.reset();
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    messageDiv.className = 'alert alert-danger';
-                    messageDiv.textContent = 'An error occurred. Please try again.';
-                    messageDiv.style.display = 'block';
-                })
-                .finally(() => {
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.disabled = false;
-                    
-                    // Auto-hide message after 5 seconds
-                    setTimeout(() => {
-                        messageDiv.style.opacity = '0';
-                        setTimeout(() => {
-                            messageDiv.style.display = 'none';
-                            messageDiv.style.opacity = '1';
-                        }, 300);
-                    }, 5000);
-                });
-            });
+    <style>
+        :root {
+            --primary-color: #f39c12;
+            --secondary-color: #e67e22;
+            --text-color: #2c3e50;
+            --text-secondary: #7f8c8d;
+            --bg-color: #ffffff;
+            --card-bg: #ffffff;
+            --border-color: #e9ecef;
         }
-    });
-</script>
-{% endblock %}
+
+        [data-theme="dark"] {
+            --text-color: #ecf0f1;
+            --text-secondary: #bdc3c7;
+            --bg-color: #1a1a1a;
+            --card-bg: #2c3e50;
+            --border-color: #5d6d7e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .coming-soon-container {
+            text-align: center;
+            padding: 2rem;
+            max-width: 650px;
+        }
+
+        .coming-soon-icon {
+            font-size: 5rem;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .coming-soon-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .coming-soon-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 2.5rem;
+        }
+
+        .feature-tags {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 3rem;
+        }
+
+        .feature-tag {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 0.6rem 1.2rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .feature-tag:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .feature-tag i {
+            color: var(--primary-color);
+            margin-right: 0.5rem;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(243, 156, 18, 0.3);
+            color: white;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--text-color);
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        [data-theme="dark"] .fa-moon { display: none; }
+        [data-theme="light"] .fa-sun { display: none; }
+
+        /* Tablet */
+        @media (max-width: 768px) {
+            .coming-soon-container {
+                padding: 1.5rem;
+                max-width: 100%;
+            }
+
+            .coming-soon-title {
+                font-size: 2.2rem;
+            }
+
+            .coming-soon-icon {
+                font-size: 4rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .coming-soon-subtitle {
+                font-size: 1rem;
+                margin-bottom: 2rem;
+            }
+
+            .feature-tags {
+                gap: 0.5rem;
+                margin-bottom: 2rem;
+            }
+
+            .feature-tag {
+                padding: 0.5rem 1rem;
+                font-size: 0.85rem;
+            }
+
+            .back-btn {
+                padding: 0.9rem 2rem;
+                font-size: 0.95rem;
+            }
+
+            .theme-toggle {
+                top: 1rem;
+                right: 1rem;
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+        }
+
+        /* Mobile */
+        @media (max-width: 480px) {
+            .coming-soon-container {
+                padding: 1rem;
+            }
+
+            .coming-soon-title {
+                font-size: 1.8rem;
+            }
+
+            .coming-soon-icon {
+                font-size: 3rem;
+                margin-bottom: 1rem;
+            }
+
+            .coming-soon-subtitle {
+                font-size: 0.9rem;
+                line-height: 1.7;
+                margin-bottom: 1.5rem;
+            }
+
+            .feature-tags {
+                gap: 0.4rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .feature-tag {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.8rem;
+                border-radius: 20px;
+            }
+
+            .feature-tag i {
+                margin-right: 0.3rem;
+            }
+
+            .back-btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 0.9rem;
+                width: 100%;
+                justify-content: center;
+            }
+
+            .theme-toggle {
+                top: 0.75rem;
+                right: 0.75rem;
+                width: 38px;
+                height: 38px;
+                font-size: 0.95rem;
+            }
+        }
+
+        /* Very small screens */
+        @media (max-width: 360px) {
+            .coming-soon-title {
+                font-size: 1.5rem;
+            }
+
+            .coming-soon-icon {
+                font-size: 2.5rem;
+            }
+
+            .feature-tag {
+                font-size: 0.75rem;
+                padding: 0.35rem 0.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+        <i class="fas fa-moon"></i>
+        <i class="fas fa-sun"></i>
+    </button>
+
+    <div class="coming-soon-container">
+        <div class="coming-soon-icon">
+            <i class="fas fa-heart"></i>
+        </div>
+
+        <h1 class="coming-soon-title">Coming Soon</h1>
+
+        <p class="coming-soon-subtitle">
+            Support will be enabled once open source projects are publicly available.
+            I'm currently building tools that will benefit developers worldwide.
+        </p>
+
+        <div class="feature-tags">
+            <span class="feature-tag"><i class="fas fa-code"></i> Open Source Tools</span>
+            <span class="feature-tag"><i class="fas fa-robot"></i> AI/ML Projects</span>
+            <span class="feature-tag"><i class="fas fa-globe"></i> Web Applications</span>
+            <span class="feature-tag"><i class="fas fa-mobile-alt"></i> Cross-Platform Apps</span>
+        </div>
+
+        <a href="https://lusansapkota.com.np" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Back to Portfolio
+        </a>
+    </div>
+
+    <script>
+        // Initialize theme
+        (function() {
+            const savedTheme = localStorage.getItem('theme') ||
+                (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+    </script>
+</body>
+</html>

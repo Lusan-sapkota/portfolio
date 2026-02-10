@@ -2327,3 +2327,99 @@ def export_newsletter_csv():
         flash(f'Error exporting newsletter: {str(e)}', 'danger')
         return redirect(url_for('admin.data_management'))
 
+
+# ==========================================
+# Resume Generator Routes
+# ==========================================
+
+@admin_bp.route('/resume')
+@admin_required
+def resume_generator():
+    """Resume generator page with preview and download options."""
+    from utils.resume_generator import get_portfolio_data
+
+    data = get_portfolio_data()
+
+    # Get stats for display
+    stats = {
+        'projects': len(data['featured_projects']),
+        'skills': len(data['skills']),
+        'experiences': len(data['experiences']),
+        'education': len(data['education']),
+        'social_links': len(data['social_links'])
+    }
+
+    return render_template('admin/resume/generator.html', data=data, stats=stats)
+
+
+@admin_bp.route('/resume/generate', methods=['POST'])
+@admin_required
+def generate_resume():
+    """Generate and save resume files."""
+    from utils.resume_generator import save_resume_files
+
+    try:
+        base_path = os.path.join(current_app.root_path, 'static', 'assets', 'download')
+
+        # Ensure directory exists
+        os.makedirs(base_path, exist_ok=True)
+
+        results = save_resume_files(base_path)
+
+        if results['errors']:
+            flash(f"Resume generated with some errors: {', '.join(results['errors'])}", 'warning')
+        else:
+            flash('Resume generated successfully! Both TXT and HTML versions are now available.', 'success')
+
+        return redirect(url_for('admin.resume_generator'))
+
+    except Exception as e:
+        logger.error(f"Resume generation error: {str(e)}")
+        flash(f'Error generating resume: {str(e)}', 'danger')
+        return redirect(url_for('admin.resume_generator'))
+
+
+@admin_bp.route('/resume/preview/<format>')
+@admin_required
+def preview_resume(format):
+    """Preview resume in specified format."""
+    from utils.resume_generator import get_resume_preview
+
+    if format not in ['txt', 'html']:
+        flash('Invalid format specified.', 'danger')
+        return redirect(url_for('admin.resume_generator'))
+
+    content = get_resume_preview(format)
+
+    if format == 'html':
+        return content
+    else:
+        response = make_response(content)
+        response.headers['Content-Type'] = 'text/plain; charset=utf-8'
+        return response
+
+
+@admin_bp.route('/resume/download/<format>')
+@admin_required
+def download_resume(format):
+    """Download resume in specified format."""
+    from utils.resume_generator import get_resume_preview
+
+    if format not in ['txt', 'html']:
+        flash('Invalid format specified.', 'danger')
+        return redirect(url_for('admin.resume_generator'))
+
+    content = get_resume_preview(format)
+
+    filename = f"Lusan_Sapkota_Resume.{format}"
+
+    if format == 'html':
+        response = make_response(content)
+        response.headers['Content-Type'] = 'text/html; charset=utf-8'
+    else:
+        response = make_response(content)
+        response.headers['Content-Type'] = 'text/plain; charset=utf-8'
+
+    response.headers['Content-Disposition'] = f'attachment; filename={filename}'
+    return response
+
