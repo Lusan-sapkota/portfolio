@@ -130,7 +130,7 @@ header,
   --text-primary: #ffffff;
   --text-secondary: #b0b0b0;
   --text-light: #888888;
-  --card-bg: #2d2d2d;
+  --card-bg: #242424;
   --navbar-bg: rgba(26, 26, 26, 0.95);
 }
 
@@ -155,9 +155,9 @@ header,
 }
 
 [data-theme="dark"] .card-base {
-  background: rgba(45, 45, 45, 0.95) !important;
+  background: #242424 !important;
   color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 [data-theme="dark"] .section-heading h2 {
@@ -168,42 +168,81 @@ header,
   color: #b0b0b0;
 }
 
-[data-theme="dark"] #education {
-  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-}
-
-[data-theme="dark"] #skills {
-  background: #1a1a1a;
-}
-
-[data-theme="dark"] #experience {
-  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-}
-
-[data-theme="dark"] #profiles {
-  background: #1a1a1a;
-}
-
-[data-theme="dark"] .profiles {
-  background: #1a1a1a;
-}
-
-[data-theme="dark"] #portfolio {
-  background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
-}
-
-[data-theme="dark"] #subdomains {
-  background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
-}
-
+/* Dark Mode Section Backgrounds */
+[data-theme="dark"] #subdomains,
+[data-theme="dark"] #about,
+[data-theme="dark"] #education,
+[data-theme="dark"] #skills,
+[data-theme="dark"] #experience,
+[data-theme="dark"] #profiles,
+[data-theme="dark"] #portfolio,
 [data-theme="dark"] #contact {
   background: #1a1a1a;
 }
 
+[data-theme="dark"] .profiles {
+  background: transparent;
+}
+
+/* Dark mode patterns - unique per section */
+[data-theme="dark"] #subdomains::before {
+  background-image: radial-gradient(circle, rgba(243, 156, 18, 0.2) 1.5px, transparent 1.5px);
+  background-size: 25px 25px;
+}
+
+[data-theme="dark"] #about::before {
+  background-image: radial-gradient(circle, rgba(243, 156, 18, 0.18) 2px, transparent 2px);
+  background-size: 35px 35px;
+}
+
+[data-theme="dark"] #education::before {
+  background-image:
+    radial-gradient(circle, rgba(243, 156, 18, 0.18) 1.5px, transparent 1.5px),
+    radial-gradient(circle, rgba(243, 156, 18, 0.1) 1px, transparent 1px);
+  background-size: 30px 30px, 30px 30px;
+  background-position: 0 0, 15px 15px;
+}
+
+[data-theme="dark"] #skills::before {
+  background-image: radial-gradient(circle, rgba(243, 156, 18, 0.15) 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+
+[data-theme="dark"] #experience::before {
+  background-image:
+    radial-gradient(circle, rgba(243, 156, 18, 0.2) 1.5px, transparent 1.5px),
+    radial-gradient(circle, rgba(243, 156, 18, 0.1) 1px, transparent 1px);
+  background-size: 40px 40px, 20px 20px;
+}
+
+[data-theme="dark"] #profiles::before {
+  background-image: radial-gradient(circle, rgba(243, 156, 18, 0.22) 2.5px, transparent 2.5px);
+  background-size: 45px 45px;
+}
+
+[data-theme="dark"] #portfolio::before {
+  background-image: radial-gradient(circle, rgba(243, 156, 18, 0.18) 1.5px, transparent 1.5px);
+  background-size: 28px 28px;
+}
+
+[data-theme="dark"] #contact::before {
+  background-image:
+    radial-gradient(circle, rgba(243, 156, 18, 0.15) 1.5px, transparent 1.5px),
+    radial-gradient(circle, rgba(243, 156, 18, 0.15) 1.5px, transparent 1.5px);
+  background-size: 22px 22px, 22px 22px;
+  background-position: 0 0, 11px 11px;
+}
+
 /* Dark mode education cards */
 [data-theme="dark"] .education-card {
-  background: rgba(45, 45, 45, 0.95);
+  background: #242424;
   color: #ffffff;
+}
+
+/* Dark mode subdomain cards */
+[data-theme="dark"] .subdomain-card {
+  background: #242424;
+  border-color: rgba(243, 156, 18, 0.15);
 }
 
 [data-theme="dark"] .education-content h4 {
@@ -248,7 +287,7 @@ header,
 
 /* Dark mode profiles */
 [data-theme="dark"] .profile-card {
-  background: rgba(45, 45, 45, 0.95);
+  background: #242424;
   color: #ffffff;
 }
 
@@ -376,10 +415,112 @@ section {
   justify-content: center;
 }
 
+/* Interactive Dot Pattern Sections */
+#subdomains,
+#about,
+#education,
+#skills,
+#experience,
+#profiles,
+#portfolio,
+#contact {
+  position: relative;
+}
+
+/* Base pattern styles for all sections */
+#subdomains::before,
+#about::before,
+#education::before,
+#skills::before,
+#experience::before,
+#profiles::before,
+#portfolio::before,
+#contact::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Subdomains - Regular dots */
+#subdomains::before {
+  background-image: radial-gradient(circle, rgba(243, 156, 18, 0.15) 1.5px, transparent 1.5px);
+  background-size: 25px 25px;
+}
+
+/* About - Larger spaced dots */
+#about::before {
+  background-image: radial-gradient(circle, rgba(243, 156, 18, 0.12) 2px, transparent 2px);
+  background-size: 35px 35px;
+}
+
+/* Education - Diagonal dot grid */
+#education::before {
+  background-image:
+    radial-gradient(circle, rgba(243, 156, 18, 0.12) 1.5px, transparent 1.5px),
+    radial-gradient(circle, rgba(243, 156, 18, 0.08) 1px, transparent 1px);
+  background-size: 30px 30px, 30px 30px;
+  background-position: 0 0, 15px 15px;
+}
+
+/* Skills - Dense small dots */
+#skills::before {
+  background-image: radial-gradient(circle, rgba(243, 156, 18, 0.1) 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+
+/* Experience - Cross pattern dots */
+#experience::before {
+  background-image:
+    radial-gradient(circle, rgba(243, 156, 18, 0.15) 1.5px, transparent 1.5px),
+    radial-gradient(circle, rgba(243, 156, 18, 0.08) 1px, transparent 1px);
+  background-size: 40px 40px, 20px 20px;
+}
+
+/* Profiles - Scattered larger dots */
+#profiles::before {
+  background-image: radial-gradient(circle, rgba(243, 156, 18, 0.18) 2.5px, transparent 2.5px);
+  background-size: 45px 45px;
+}
+
+/* Portfolio - Grid pattern */
+#portfolio::before {
+  background-image:
+    radial-gradient(circle, rgba(243, 156, 18, 0.12) 1.5px, transparent 1.5px);
+  background-size: 28px 28px;
+}
+
+/* Contact - Tight diagonal */
+#contact::before {
+  background-image:
+    radial-gradient(circle, rgba(243, 156, 18, 0.1) 1.5px, transparent 1.5px),
+    radial-gradient(circle, rgba(243, 156, 18, 0.1) 1.5px, transparent 1.5px);
+  background-size: 22px 22px, 22px 22px;
+  background-position: 0 0, 11px 11px;
+}
+
+/* Ensure section content is above dot pattern */
+#subdomains > .container,
+#about > .container,
+#education > .container,
+#skills > .container,
+#experience > .container,
+#profiles > .container,
+#portfolio > .container,
+#contact > .container,
+.testimonials > .container {
+  position: relative;
+  z-index: 2;
+}
+
 /* Subdomains Section */
 #subdomains {
   min-height: 100vh;
-  background: linear-gradient(135deg, #fff3cd 0%, #f8f9fa 100%);
+  background: var(--white);
   display: flex;
   align-items: center;
 }
@@ -395,7 +536,7 @@ section {
 /* Education Section */
 #education {
   min-height: 100vh;
-  background: linear-gradient(135deg, #f8f9fa 0%, #fff3cd 100%);
+  background: var(--white);
   display: flex;
   align-items: center;
 }
@@ -527,7 +668,7 @@ section {
 /* Experience Section */
 #experience {
   min-height: 100vh;
-  background: linear-gradient(135deg, #f8f9fa 0%, #fff3cd 100%);
+  background: var(--white);
   display: flex;
   align-items: center;
 }
@@ -543,7 +684,7 @@ section {
 /* Portfolio Section */
 #portfolio {
   min-height: 100vh;
-  background: linear-gradient(135deg, #fff3cd 0%, #f8f9fa 100%);
+  background: var(--white);
   display: flex;
   align-items: center;
 }
@@ -1074,8 +1215,8 @@ section {
 
 /* Dark theme card adjustments */
 [data-theme="dark"] .card-base {
-  background: var(--light-gray);
-  border-color: rgba(243, 156, 18, 0.2);
+  background: #242424;
+  border-color: rgba(243, 156, 18, 0.1);
 }
 
 /*-------------------------------------
@@ -2281,7 +2422,6 @@ section {
   position: relative;
   overflow: hidden;
   margin-top: 0;
-  border-top: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 /* Footer Content */
@@ -2569,9 +2709,8 @@ section {
 
 /* Copyright Section */
 .footer-copyright {
-  background: var(--light-gray);
+  background: transparent;
   padding: 20px 0;
-  border-top: 1px solid rgba(0, 0, 0, 0.08);
   text-align: center;
 }
 
@@ -2640,12 +2779,11 @@ section {
 
 /* Dark Mode Footer Adjustments */
 [data-theme="dark"] .footer {
-  background: #1e293b;
+  background: #1a1a1a;
 }
 
 [data-theme="dark"] .footer-copyright {
-  background: rgba(0, 0, 0, 0.5);
-  border-top: 1px solid rgba(243, 156, 18, 0.2);
+  background: transparent;
 }
 
 [data-theme="dark"] .footer-column ul li a,
@@ -3543,15 +3681,6 @@ Skills Section - Modern Design
   margin-top: 0;
 }
 
-.footer::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: var(--gradient-primary);
-}
 
 /* Footer Content */
 .footer-content {
@@ -3838,9 +3967,8 @@ Skills Section - Modern Design
 
 /* Copyright Section */
 .footer-copyright {
-  background: var(--light-gray);
+  background: transparent;
   padding: 20px 0;
-  border-top: 1px solid rgba(0, 0, 0, 0.08);
   text-align: center;
 }
 
@@ -3909,12 +4037,11 @@ Skills Section - Modern Design
 
 /* Dark Mode Footer Adjustments */
 [data-theme="dark"] .footer {
-  background: #1e293b;
+  background: #1a1a1a;
 }
 
 [data-theme="dark"] .footer-copyright {
-  background: rgba(0, 0, 0, 0.5);
-  border-top: 1px solid rgba(243, 156, 18, 0.2);
+  background: transparent;
 }
 
 [data-theme="dark"] .footer-column ul li a,
@@ -4382,9 +4509,9 @@ Skills Section - Modern Design
 }
 
 [data-theme="dark"] .skill-category-redesigned {
-  background: #1e293b;
-  border-color: rgba(243, 156, 18, 0.2);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  background: #242424;
+  border-color: rgba(243, 156, 18, 0.15);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 [data-theme="dark"] .skill-category-redesigned:hover {
@@ -5233,8 +5360,35 @@ Skills Section - Modern Design
   --carousel-gap: 30px;
   --card-min-height: 280px;
   padding: clamp(60px, 5vw, 100px) 0;
-  background-color: var(--white);
+  background: var(--white);
   transition: background-color 0.4s ease !important;
+  position: relative;
+}
+
+.testimonials::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image:
+    radial-gradient(circle, rgba(243, 156, 18, 0.12) 2px, transparent 2px),
+    radial-gradient(circle, rgba(243, 156, 18, 0.06) 1px, transparent 1px);
+  background-size: 32px 32px, 16px 16px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+[data-theme="dark"] .testimonials {
+  background: #1a1a1a;
+}
+
+[data-theme="dark"] .testimonials::before {
+  background-image:
+    radial-gradient(circle, rgba(243, 156, 18, 0.18) 2px, transparent 2px),
+    radial-gradient(circle, rgba(243, 156, 18, 0.08) 1px, transparent 1px);
+  background-size: 32px 32px, 16px 16px;
 }
 
 .testimonials .section-heading {

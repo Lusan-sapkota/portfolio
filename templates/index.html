@@ -1118,6 +1118,9 @@
 	</script>
 	<!-- Canonical tag for SEO -->
 	<link rel="canonical" href="{{ request.url }}" />
+
+	<!-- Lenis Smooth Scroll CSS -->
+	<link rel="stylesheet" href="https://unpkg.com/lenis@1.3.17/dist/lenis.css">
 </head>
 
 	
@@ -2577,7 +2580,178 @@
 			</div>
 		</div>
 
-			
+		<!-- Lenis Smooth Scroll -->
+		<script src="https://unpkg.com/lenis@1.3.17/dist/lenis.min.js"></script>
+		<script>
+			// Initialize Lenis smooth scroll
+			const lenis = new Lenis({
+				autoRaf: true,
+				lerp: 0.1,
+				smoothWheel: true,
+				anchors: true
+			});
+		</script>
+
+		<!-- Interactive Dot Connection Canvas -->
+		<canvas id="dotCanvas"></canvas>
+		<style>
+			#dotCanvas {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				pointer-events: none;
+				z-index: 3;
+				opacity: 0.7;
+			}
+			/* Hide on touch devices */
+			@media (hover: none) and (pointer: coarse) {
+				#dotCanvas { display: none !important; }
+			}
+			/* Respect reduced motion preference */
+			@media (prefers-reduced-motion: reduce) {
+				#dotCanvas { display: none !important; }
+			}
+		</style>
+		<script>
+			(function() {
+				// Respect reduced motion
+				if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+				// Skip on touch devices
+				if (window.matchMedia('(hover: none)').matches) return;
+
+				const canvas = document.getElementById('dotCanvas');
+				const ctx = canvas.getContext('2d');
+				const dotSpacing = 25;
+				const dotRadius = 1.5;
+				const fadeDuration = 2000;
+				const maxDots = 100;
+				const maxConnections = 80;
+
+				let litDots = [];
+				let connections = [];
+				let lastDot = null;
+				let isOverContent = false;
+
+				// Content selectors to exclude from dot effect
+				const contentSelectors = '.container, .card, .btn, .navbar, .footer-content, .modal, form, input, textarea, button, a, img, .education-card, .skill-category-redesigned, .subdomain-card, .profile-card, .testimonial-card, .project-card, .cta-card';
+
+				function resizeCanvas() {
+					canvas.width = window.innerWidth;
+					canvas.height = window.innerHeight;
+				}
+				resizeCanvas();
+				window.addEventListener('resize', resizeCanvas);
+
+				function isMouseOverContent(x, y) {
+					const element = document.elementFromPoint(x, y);
+					if (!element) return false;
+					return element.closest(contentSelectors) !== null;
+				}
+
+				function getNearestDot(x, y) {
+					return {
+						x: Math.round(x / dotSpacing) * dotSpacing,
+						y: Math.round(y / dotSpacing) * dotSpacing
+					};
+				}
+
+				function addLitDot(x, y) {
+					const key = `${x},${y}`;
+					const existing = litDots.find(d => d.key === key);
+					if (existing) {
+						existing.time = Date.now();
+					} else {
+						if (litDots.length >= maxDots) litDots.shift();
+						litDots.push({ x, y, key, time: Date.now() });
+					}
+				}
+
+				function addConnection(from, to) {
+					if (from.x === to.x && from.y === to.y) return;
+					if (connections.length >= maxConnections) connections.shift();
+					connections.push({ from: {...from}, to: {...to}, time: Date.now() });
+				}
+
+				function handleMouseMove(e) {
+					// Check if mouse is over content - if so, reset and skip
+					if (isMouseOverContent(e.clientX, e.clientY)) {
+						lastDot = null;
+						return;
+					}
+
+					const currentDot = getNearestDot(e.clientX, e.clientY);
+
+					if (lastDot && (lastDot.x !== currentDot.x || lastDot.y !== currentDot.y)) {
+						const dx = currentDot.x - lastDot.x;
+						const dy = currentDot.y - lastDot.y;
+						const steps = Math.max(Math.abs(dx), Math.abs(dy)) / dotSpacing;
+
+						let prevDot = lastDot;
+						for (let i = 1; i <= steps; i++) {
+							const t = i / steps;
+							const intermediateDot = {
+								x: Math.round((lastDot.x + dx * t) / dotSpacing) * dotSpacing,
+								y: Math.round((lastDot.y + dy * t) / dotSpacing) * dotSpacing
+							};
+							addLitDot(intermediateDot.x, intermediateDot.y);
+							addConnection(prevDot, intermediateDot);
+							prevDot = intermediateDot;
+						}
+						lastDot = currentDot;
+					} else if (!lastDot) {
+						lastDot = currentDot;
+						addLitDot(currentDot.x, currentDot.y);
+					}
+				}
+
+				document.addEventListener('mousemove', handleMouseMove, { passive: true });
+				document.addEventListener('mouseleave', () => { lastDot = null; });
+
+				function draw() {
+					const now = Date.now();
+					const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+
+					ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+					// Draw connections
+					connections = connections.filter(conn => {
+						const age = now - conn.time;
+						if (age > fadeDuration) return false;
+						const alpha = (1 - age / fadeDuration) * 0.6;
+						ctx.beginPath();
+						ctx.moveTo(conn.from.x, conn.from.y);
+						ctx.lineTo(conn.to.x, conn.to.y);
+						ctx.strokeStyle = isDark
+							? `rgba(243, 156, 18, ${alpha * 0.8})`
+							: `rgba(243, 156, 18, ${alpha * 0.5})`;
+						ctx.lineWidth = 1.5;
+						ctx.stroke();
+						return true;
+					});
+
+					// Draw dots
+					litDots = litDots.filter(dot => {
+						const age = now - dot.time;
+						if (age > fadeDuration) return false;
+						const alpha = (1 - age / fadeDuration);
+						ctx.beginPath();
+						ctx.arc(dot.x, dot.y, dotRadius + 2, 0, Math.PI * 2);
+						ctx.fillStyle = isDark
+							? `rgba(255, 200, 80, ${alpha})`
+							: `rgba(243, 156, 18, ${alpha * 0.9})`;
+						ctx.fill();
+						return true;
+					});
+
+					requestAnimationFrame(draw);
+				}
+
+				// Start the animation loop immediately
+				draw();
+			})();
+		</script>
 	</body>
-	
+
 </html>
