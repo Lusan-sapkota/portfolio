@@ -174,120 +174,155 @@ class EmailService:
     
     def send_newsletter(self, subscribers: List[str], subject: str, content: str) -> bool:
         """
-        Send newsletter to subscribers with proper unsubscribe links
+        Send newsletter to subscribers with proper unsubscribe links.
+        Uses table-based HTML layout for maximum mail client compatibility.
         """
+        import base64
+
         success_count = 0
-        
+
         for email in subscribers:
             try:
-                # Generate unsubscribe token
-                import base64
                 unsubscribe_token = base64.b64encode(email.encode()).decode()
                 unsubscribe_url = f"https://lusansapkota.com.np/newsletter/unsubscribe/{unsubscribe_token}"
-                
-                html_template = f"""
-                <html>
-                <head>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>Newsletter</title>
-                </head>
-                <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh;">
-                    <div style="padding: 40px 20px;">
-                    <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 16px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15); overflow: hidden;">
-                        
-                        <!-- Header -->
-                        <header style="background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%); padding: 40px 30px; text-align: center; position: relative;">
-                        <div style="position: relative; z-index: 1;">
-                            <h1 style="color: #ffffff; margin: 0; font-size: 28px; font-weight: 700; text-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                            📧 Lusan's Portfolio Newsletter
+
+                html_template = f"""<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{subject}</title>
+    <!--[if mso]>
+    <style type="text/css">
+        table, td {{font-family: Arial, sans-serif !important;}}
+    </style>
+    <![endif]-->
+</head>
+<body style="margin: 0; padding: 0; background-color: #f4f4f7; font-family: Arial, Helvetica, sans-serif; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;">
+
+    <!-- Wrapper table -->
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #f4f4f7;">
+        <tr>
+            <td align="center" style="padding: 30px 10px;">
+
+                <!-- Main container -->
+                <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width: 600px; width: 100%; background-color: #ffffff;">
+
+                    <!-- Header -->
+                    <tr>
+                        <td style="background-color: #2c3e50; padding: 35px 30px; text-align: center;">
+                            <h1 style="color: #ffffff; margin: 0; font-size: 24px; font-weight: 700; font-family: Arial, Helvetica, sans-serif; letter-spacing: 1px;">
+                                Lusan Sapkota
                             </h1>
-                            <p style="color: rgba(255,255,255,0.9); margin: 10px 0 0 0; font-size: 16px; font-weight: 300;">
-                            Latest updates from the world of development
+                            <p style="color: #bdc3c7; margin: 8px 0 0 0; font-size: 14px; font-weight: 400; font-family: Arial, Helvetica, sans-serif;">
+                                Newsletter
                             </p>
-                        </div>
-                        </header>
-                        
-                        <!-- Content -->
-                        <div style="padding: 40px 30px;">
-                        <div style="background: #f8f9fa; border-left: 4px solid #f39c12; padding: 20px; border-radius: 8px; margin-bottom: 30px;">
-                            <h2 style="color: #2c3e50; margin: 0 0 15px 0; font-size: 18px; font-weight: 600;">
-                            🎯 What's New This Week
-                            </h2>
-                            <div style="color: #555; line-height: 1.7; font-size: 15px;">
-                            {content}
+                        </td>
+                    </tr>
+
+                    <!-- Content -->
+                    <tr>
+                        <td style="padding: 35px 30px;">
+                            <div style="color: #333333; line-height: 1.7; font-size: 15px; font-family: Arial, Helvetica, sans-serif;">
+                                {content}
                             </div>
-                        </div>
-                        
-                        <!-- Call to Action -->
-                        <div style="text-align: center; margin: 30px 0;">
-                            <a href="https://lusansapkota.com.np" style="display: inline-block; background: linear-gradient(135deg, #f39c12, #e67e22); color: #ffffff; text-decoration: none; padding: 15px 30px; border-radius: 50px; font-weight: 600; font-size: 16px; box-shadow: 0 8px 20px rgba(243, 156, 18, 0.3); transition: all 0.3s ease; border: none;">
-                            🌐 Visit My Portfolio
-                            </a>
-                        </div>
-                        
-                        <!-- Social Links -->
-                        <div style="text-align: center; margin: 30px 0; padding: 20px; background: linear-gradient(135deg, #f8f9fa, #e9ecef); border-radius: 12px;">
-                            <p style="color: #666; margin: 0 0 15px 0; font-size: 14px; font-weight: 500;">Connect with me:</p>
-                            <div style="text-align: center;">
-                            <a href="https://linkedin.com/in/lusansapkota" style="display: inline-block; margin: 0 10px; padding: 8px 16px; background: #0077b5; color: white; text-decoration: none; border-radius: 25px; font-size: 14px; font-weight: 500;">📊 LinkedIn</a>
-                            <a href="https://github.com/lusansapkota" style="display: inline-block; margin: 0 10px; padding: 8px 16px; background: #333; color: white; text-decoration: none; border-radius: 25px; font-size: 14px; font-weight: 500;">💻 GitHub</a>
-                            <a href="mailto:contact@lusansapkota.com.np" style="display: inline-block; margin: 0 10px; padding: 8px 16px; background: #e74c3c; color: white; text-decoration: none; border-radius: 25px; font-size: 14px; font-weight: 500;">📧 Email</a>
-                            </div>
-                        </div>
-                        </div>
-                        
-                        <!-- Footer -->
-                        <footer style="background: #2c3e50; padding: 30px; text-align: center;">
-                        <div style="margin-bottom: 20px;">
-                            <h3 style="color: #ffffff; margin: 0 0 10px 0; font-size: 20px; font-weight: 600;">Lusan Sapkota</h3>
-                            <p style="color: #bdc3c7; margin: 0; font-size: 14px;">Full Stack Developer & Tech Enthusiast</p>
-                        </div>
-                        
-                        <div style="border-top: 1px solid #34495e; padding-top: 20px; color: #95a5a6; font-size: 13px; line-height: 1.6;">
-                            <p style="margin: 0 0 10px 0;">📧 You're receiving this because you subscribed to my newsletter</p>
-                            <p style="margin: 0;">
-                            <a href="{unsubscribe_url}" style="color: #e74c3c; text-decoration: none; font-weight: 500;">Unsubscribe from this newsletter</a>
+                        </td>
+                    </tr>
+
+                    <!-- Divider -->
+                    <tr>
+                        <td style="padding: 0 30px;">
+                            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                                <tr>
+                                    <td style="border-top: 1px solid #e0e0e0; font-size: 0; line-height: 0;">&nbsp;</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- CTA Button -->
+                    <tr>
+                        <td style="padding: 25px 30px; text-align: center;">
+                            <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center">
+                                <tr>
+                                    <td style="background-color: #3498db; padding: 12px 28px;">
+                                        <a href="https://lusansapkota.com.np" style="color: #ffffff; text-decoration: none; font-size: 15px; font-weight: 600; font-family: Arial, Helvetica, sans-serif; display: inline-block;">
+                                            Visit Portfolio
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- Social Links -->
+                    <tr>
+                        <td style="padding: 10px 30px 25px; text-align: center;">
+                            <p style="color: #999999; margin: 0 0 12px 0; font-size: 13px; font-family: Arial, Helvetica, sans-serif;">Connect with me</p>
+                            <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center">
+                                <tr>
+                                    <td style="padding: 0 8px;">
+                                        <a href="https://github.com/Lusan-sapkota" style="color: #3498db; text-decoration: none; font-size: 13px; font-family: Arial, Helvetica, sans-serif;">GitHub</a>
+                                    </td>
+                                    <td style="color: #cccccc; font-size: 13px;">|</td>
+                                    <td style="padding: 0 8px;">
+                                        <a href="https://www.linkedin.com/in/lusan-sapkota-aa087b39b" style="color: #3498db; text-decoration: none; font-size: 13px; font-family: Arial, Helvetica, sans-serif;">LinkedIn</a>
+                                    </td>
+                                    <td style="color: #cccccc; font-size: 13px;">|</td>
+                                    <td style="padding: 0 8px;">
+                                        <a href="mailto:contact@lusansapkota.com.np" style="color: #3498db; text-decoration: none; font-size: 13px; font-family: Arial, Helvetica, sans-serif;">Email</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td style="background-color: #f8f9fa; padding: 25px 30px; text-align: center; border-top: 1px solid #e0e0e0;">
+                            <p style="color: #999999; margin: 0 0 8px 0; font-size: 12px; font-family: Arial, Helvetica, sans-serif; line-height: 1.5;">
+                                You received this email because you subscribed to the newsletter at lusansapkota.com.np
                             </p>
-                            <p style="margin: 15px 0 0 0; font-size: 12px; opacity: 0.8; color: #f1c40f; font-weight: 600;">
-                            📍 Kathmandu, Nepal | 🌐 <span>lusansapkota.com.np</span>
+                            <p style="margin: 0 0 8px 0;">
+                                <a href="{unsubscribe_url}" style="color: #e74c3c; text-decoration: underline; font-size: 12px; font-family: Arial, Helvetica, sans-serif;">Unsubscribe</a>
                             </p>
-                        </div>
-                        </footer>
-                    </div>
-                    
-                    <!-- Bottom spacing -->
-                    <div style="height: 40px;"></div>
-                    </div>
-                </body>
-                </html>
-                """
-                
-                # Create plain text version
-                text_content = f"""
-                LUSAN'S PORTFOLIO NEWSLETTER
-                ============================
-                
-                What's New This Week:
-                {content}
-                
-                Visit my portfolio: https://lusansapkota.com.np
-                
-                ---
-                You're receiving this email because you subscribed to my newsletter.
-                To unsubscribe, visit: {unsubscribe_url}
-                
-                Lusan Sapkota - Full Stack Developer
-                Kathmandu, Nepal
-                """
-                
+                            <p style="color: #bbbbbb; margin: 0; font-size: 11px; font-family: Arial, Helvetica, sans-serif;">
+                                Lusan Sapkota &middot; Kathmandu, Nepal
+                            </p>
+                        </td>
+                    </tr>
+
+                </table>
+                <!-- End main container -->
+
+            </td>
+        </tr>
+    </table>
+    <!-- End wrapper -->
+
+</body>
+</html>"""
+
+                text_content = f"""{subject}
+
+{content}
+
+---
+Visit my portfolio: https://lusansapkota.com.np
+
+You received this email because you subscribed to the newsletter.
+To unsubscribe, visit: {unsubscribe_url}
+
+Lusan Sapkota - Full Stack Developer
+Kathmandu, Nepal"""
+
                 if self.send_email([email], subject, text_content, html_template):
                     success_count += 1
-                    
+
             except Exception as e:
                 logger.error(f"Failed to send newsletter to {email}: {e}")
                 continue
-                
+
         logger.info(f"Newsletter sent to {success_count}/{len(subscribers)} subscribers")
         return success_count > 0
     

@@ -123,29 +123,52 @@ def dashboard():
 @admin_bp.route('/newsletter/send', methods=['GET', 'POST'])
 @admin_required
 def newsletter_send():
-    """Send a newsletter to all active subscribers from the admin panel"""
+    """Send a newsletter to selected subscribers from the admin panel"""
     from email_service import EmailService
     from models import NewsletterSubscriber
+
+    active_subscribers = NewsletterSubscriber.query.filter_by(is_active=True).order_by(
+        NewsletterSubscriber.subscribed_at.desc()
+    ).all()
+
     if request.method == 'POST':
         subject = request.form.get('subject', '').strip()
         content = request.form.get('content', '').strip()
+        selected_ids = request.form.getlist('subscriber_ids', type=int)
+
         if not subject or not content:
             flash('Subject and content are required.', 'danger')
-            return render_template('admin/newsletter/send.html', subject=subject, content=content)
-        # Get all active subscribers
-        subscribers = [s.email for s in NewsletterSubscriber.query.filter_by(is_active=True).all()]
-        if not subscribers:
-            flash('No active subscribers to send the newsletter.', 'warning')
-            return render_template('admin/newsletter/send.html', subject=subject, content=content)
+            return render_template('admin/newsletter/send.html',
+                                   subscribers=active_subscribers, subject=subject, content=content)
+
+        if not selected_ids:
+            flash('Please select at least one subscriber.', 'warning')
+            return render_template('admin/newsletter/send.html',
+                                   subscribers=active_subscribers, subject=subject, content=content)
+
+        # Get emails for selected subscriber IDs (only active ones)
+        selected = NewsletterSubscriber.query.filter(
+            NewsletterSubscriber.id.in_(selected_ids),
+            NewsletterSubscriber.is_active == True
+        ).all()
+        subscriber_emails = [s.email for s in selected]
+
+        if not subscriber_emails:
+            flash('No valid active subscribers selected.', 'warning')
+            return render_template('admin/newsletter/send.html',
+                                   subscribers=active_subscribers, subject=subject, content=content)
+
         email_service = EmailService()
-        success = email_service.send_newsletter(subscribers, subject, content)
+        success = email_service.send_newsletter(subscriber_emails, subject, content)
         if success:
-            flash(f'Newsletter sent to {len(subscribers)} subscribers!', 'success')
+            flash(f'Newsletter sent to {len(subscriber_emails)} subscriber(s)!', 'success')
             return redirect(url_for('admin.newsletter'))
         else:
             flash('Failed to send newsletter. Check logs for details.', 'danger')
-            return render_template('admin/newsletter/send.html', subject=subject, content=content)
-    return render_template('admin/newsletter/send.html')
+            return render_template('admin/newsletter/send.html',
+                                   subscribers=active_subscribers, subject=subject, content=content)
+
+    return render_template('admin/newsletter/send.html', subscribers=active_subscribers)
 
 
 # ============ PROJECTS MANAGEMENT ============

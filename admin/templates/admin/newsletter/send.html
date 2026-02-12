@@ -1,19 +1,232 @@
 {% extends 'admin/base.html' %}
 {% block title %}Send Newsletter{% endblock %}
+
+{% block extra_css %}
+<style>
+    .subscriber-selection {
+        max-height: 350px;
+        overflow-y: auto;
+        border: 1px solid var(--border-color, #dee2e6);
+        border-radius: 8px;
+        padding: 0;
+    }
+    .subscriber-selection .subscriber-row {
+        display: flex;
+        align-items: center;
+        padding: 10px 15px;
+        border-bottom: 1px solid var(--border-color, #f0f0f0);
+        transition: background 0.15s;
+    }
+    .subscriber-selection .subscriber-row:last-child {
+        border-bottom: none;
+    }
+    .subscriber-selection .subscriber-row:hover {
+        background: var(--hover-bg, #f8f9fa);
+    }
+    .subscriber-selection .subscriber-row input[type="checkbox"] {
+        margin-right: 12px;
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
+    }
+    .subscriber-selection .subscriber-row label {
+        cursor: pointer;
+        margin: 0;
+        flex: 1;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .subscriber-email {
+        font-weight: 500;
+    }
+    .subscriber-name {
+        color: var(--text-muted, #6c757d);
+        font-size: 0.85em;
+    }
+    .subscriber-meta {
+        font-size: 0.8em;
+        color: var(--text-muted, #6c757d);
+    }
+    .selection-toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 15px;
+        background: var(--card-bg, #f8f9fa);
+        border: 1px solid var(--border-color, #dee2e6);
+        border-bottom: none;
+        border-radius: 8px 8px 0 0;
+    }
+    .selection-toolbar .selection-actions {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+    .selection-toolbar .selected-count {
+        font-weight: 600;
+        font-size: 0.9em;
+    }
+    .subscriber-search {
+        margin-bottom: 10px;
+    }
+    .no-subscribers {
+        padding: 30px;
+        text-align: center;
+        color: var(--text-muted, #6c757d);
+    }
+    .send-form-section {
+        margin-bottom: 20px;
+    }
+    .send-form-section label {
+        font-weight: 600;
+        margin-bottom: 6px;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 <div class="container mt-4">
-    <h2>Send Newsletter</h2>
-    <form method="post">
-        <div class="mb-3">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="fas fa-paper-plane me-2"></i>Send Newsletter</h2>
+        <a href="{{ url_for('admin.newsletter') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-1"></i> Back to Subscribers
+        </a>
+    </div>
+
+    <form method="post" id="newsletterForm">
+        <!-- Subscriber Selection -->
+        <div class="send-form-section">
+            <label class="form-label">Recipients</label>
+
+            <!-- Search -->
+            <div class="subscriber-search">
+                <input type="text" class="form-control" id="subscriberSearch" placeholder="Search subscribers by email or name...">
+            </div>
+
+            <!-- Toolbar -->
+            <div class="selection-toolbar">
+                <div class="selection-actions">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="selectAll">
+                        <label class="form-check-label" for="selectAll">Select All</label>
+                    </div>
+                </div>
+                <span class="selected-count" id="selectedCount">0 of {{ subscribers|length }} selected</span>
+            </div>
+
+            <!-- Subscriber List -->
+            <div class="subscriber-selection" id="subscriberList">
+                {% if subscribers %}
+                    {% for sub in subscribers %}
+                    <div class="subscriber-row" data-email="{{ sub.email }}" data-name="{{ sub.name or '' }}">
+                        <input type="checkbox" name="subscriber_ids" value="{{ sub.id }}" id="sub_{{ sub.id }}" class="subscriber-checkbox">
+                        <label for="sub_{{ sub.id }}">
+                            <div>
+                                <span class="subscriber-email">{{ sub.email }}</span>
+                                {% if sub.name %}
+                                    <span class="subscriber-name"> - {{ sub.name }}</span>
+                                {% endif %}
+                            </div>
+                            <span class="subscriber-meta">
+                                {{ sub.subscribed_at.strftime('%b %d, %Y') if sub.subscribed_at else '' }}
+                            </span>
+                        </label>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="no-subscribers">
+                        <i class="fas fa-users-slash fa-2x mb-2 d-block"></i>
+                        No active subscribers found.
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Subject -->
+        <div class="send-form-section">
             <label for="subject" class="form-label">Subject</label>
-            <input type="text" class="form-control" id="subject" name="subject" value="{{ subject or '' }}" required>
+            <input type="text" class="form-control" id="subject" name="subject" value="{{ subject or '' }}" placeholder="Newsletter subject line..." required>
         </div>
-        <div class="mb-3">
-            <label for="content" class="form-label">Content</label>
-            <textarea class="form-control" id="content" name="content" rows="10" required>{{ content or '' }}</textarea>
+
+        <!-- Content -->
+        <div class="send-form-section">
+            <label for="content" class="form-label">Content <small class="text-muted">(HTML supported)</small></label>
+            <textarea class="form-control" id="content" name="content" rows="12" placeholder="Write your newsletter content here. HTML tags are supported for formatting." required>{{ content or '' }}</textarea>
         </div>
-        <button type="submit" class="btn btn-primary">Send Newsletter</button>
-        <a href="{{ url_for('admin.newsletter') }}" class="btn btn-secondary ms-2">Cancel</a>
+
+        <!-- Actions -->
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary" id="sendBtn" disabled>
+                <i class="fas fa-paper-plane me-1"></i> Send Newsletter
+            </button>
+            <a href="{{ url_for('admin.newsletter') }}" class="btn btn-secondary">Cancel</a>
+        </div>
     </form>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function() {
+    var checkboxes = document.querySelectorAll('.subscriber-checkbox');
+    var selectAll = document.getElementById('selectAll');
+    var countEl = document.getElementById('selectedCount');
+    var searchInput = document.getElementById('subscriberSearch');
+    var sendBtn = document.getElementById('sendBtn');
+    var total = checkboxes.length;
+
+    function updateCount() {
+        var checked = document.querySelectorAll('.subscriber-checkbox:checked').length;
+        countEl.textContent = checked + ' of ' + total + ' selected';
+        sendBtn.disabled = checked === 0;
+
+        var visibleCheckboxes = document.querySelectorAll('.subscriber-row:not([style*="display: none"]) .subscriber-checkbox');
+        var visibleChecked = document.querySelectorAll('.subscriber-row:not([style*="display: none"]) .subscriber-checkbox:checked');
+        selectAll.checked = visibleCheckboxes.length > 0 && visibleCheckboxes.length === visibleChecked.length;
+        selectAll.indeterminate = visibleChecked.length > 0 && visibleChecked.length < visibleCheckboxes.length;
+    }
+
+    selectAll.addEventListener('change', function() {
+        var visible = document.querySelectorAll('.subscriber-row:not([style*="display: none"]) .subscriber-checkbox');
+        for (var i = 0; i < visible.length; i++) {
+            visible[i].checked = selectAll.checked;
+        }
+        updateCount();
+    });
+
+    for (var i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].addEventListener('change', updateCount);
+    }
+
+    searchInput.addEventListener('input', function() {
+        var term = this.value.toLowerCase();
+        var rows = document.querySelectorAll('.subscriber-row');
+        for (var j = 0; j < rows.length; j++) {
+            var email = (rows[j].getAttribute('data-email') || '').toLowerCase();
+            var name = (rows[j].getAttribute('data-name') || '').toLowerCase();
+            if (email.indexOf(term) !== -1 || name.indexOf(term) !== -1) {
+                rows[j].style.display = '';
+            } else {
+                rows[j].style.display = 'none';
+            }
+        }
+        updateCount();
+    });
+
+    document.getElementById('newsletterForm').addEventListener('submit', function(e) {
+        var checked = document.querySelectorAll('.subscriber-checkbox:checked').length;
+        if (checked === 0) {
+            e.preventDefault();
+            alert('Please select at least one subscriber.');
+            return;
+        }
+        if (!confirm('Send newsletter to ' + checked + ' subscriber(s)?')) {
+            e.preventDefault();
+        }
+    });
+
+    updateCount();
+})();
+</script>
 {% endblock %}

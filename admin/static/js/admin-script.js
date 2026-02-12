@@ -472,10 +472,13 @@ function trackUserActivity() {
         lastActivityTime = Date.now();
     });
     
-    // Track form changes
+    // Track form changes (only for POST/ajax forms, not filter/search GET forms)
     $(document).on('input change', 'input, textarea, select', function() {
         lastActivityTime = Date.now();
-        markFormAsChanged($(this).closest('form'));
+        var form = $(this).closest('form');
+        if (form.length && form.attr('method') && form.attr('method').toUpperCase() === 'POST') {
+            markFormAsChanged(form);
+        }
     });
 }
 
