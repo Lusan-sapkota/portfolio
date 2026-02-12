@@ -1268,8 +1268,7 @@
 									<div class="col-sm-4">
 										<div class="single-about-add-info">
 											<h3>phone</h3>
-											<p><a href="#" class="phone-reveal" data-p="Kzk3Nzk4NDgxODk4NDU=" onclick="return revealPhone(this)">Available upon request</a></p>
-											
+											<p>Available upon request</p>
 										</div>
 									</div>
 									<div class="col-sm-4">
@@ -2099,7 +2098,7 @@
 				  </div>
 				</div>
 			  </li>
-			  
+
 			  <!-- Phone Section -->
 			  <li class="contact-info-item">
 				<div class="contact-details">
@@ -2108,11 +2107,11 @@
 					<span class="contact-label">Phone</span>
 				  </div>
 				  <div class="contact-value">
-					<a href="#" class="phone-reveal" data-p="Kzk3Nzk4NDgxODk4NDU=" onclick="return revealPhone(this)">Available upon request</a>
+					Available upon request
 				  </div>
 				</div>
 			  </li>
-			  
+
 			  <!-- Location Section -->
 			  <li class="contact-info-item">
 				<div class="contact-details">
@@ -2774,15 +2773,6 @@
 				// Start the animation loop immediately
 				draw();
 			})();
-		</script>
-		<script>
-		function revealPhone(el) {
-			try {
-				var d = atob(el.getAttribute('data-p'));
-				window.location.href = 'tel:' + d;
-			} catch(e) {}
-			return false;
-		}
 		</script>
 	</body>
 
