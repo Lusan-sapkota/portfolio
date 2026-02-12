@@ -51,7 +51,7 @@ def create_optimal_seo_data():
             hreflang='en',
             
             # Structured data for rich snippets
-            schema_markup='{"@context":"https://schema.org","@type":"Person","name":"Lusan Sapkota","jobTitle":"Software Engineer | Co-founder at Icepeak Tech | Team Lead at AiGeeks","url":"https://www.lusansapkota.com.np","sameAs":["https://www.linkedin.com/in/lusan-sapkota-aa087b39b","https://github.com/Lusan-sapkota"],"address":{"@type":"PostalAddress","addressCountry":"Nepal","addressLocality":"Kathmandu"},"knowsAbout":["Python","JavaScript","React","Django","Node.js","TypeScript","PostgreSQL","Software Engineering","Full Stack Development"],"worksFor":[{"@type":"Organization","name":"Icepeak Tech"},{"@type":"Organization","name":"AiGeeks"}]}',
+            schema_markup='{"@context":"https://schema.org","@type":"Person","name":"Lusan Sapkota","jobTitle":"Software Engineer | Co-founder at Icepeak Tech | Team Lead at AiGeeks","url":"https://www.lusansapkota.com.np","sameAs":["https://www.linkedin.com/in/lusan-sapkota-aa087b39b/","https://github.com/Lusan-sapkota"],"address":{"@type":"PostalAddress","addressCountry":"Nepal","addressLocality":"Kathmandu"},"knowsAbout":["Python","JavaScript","React","Django","Node.js","TypeScript","PostgreSQL","Software Engineering","Full Stack Development"],"worksFor":[{"@type":"Organization","name":"Icepeak Tech"},{"@type":"Organization","name":"AiGeeks"}]}',
             
             # Focus keywords for this page
             focus_keywords='Lusan Sapkota, Software Developer, Software Engineer, Full Stack Developer, Python Developer, React Developer, Node.js Developer',

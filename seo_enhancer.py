@@ -11,13 +11,14 @@ from datetime import datetime, timezone
 import argparse
 
 class SEOEnhancer:
-    def __init__(self, base_path="/home/ubuntu/portfolio"):
-        self.base_path = base_path
+    def __init__(self, base_path=None):
+        # Use current working directory if no path provided
+        self.base_path = base_path or os.getcwd()
         
     def create_security_txt(self):
         """Create security.txt file for security policy"""
         security_content = """Contact: sapkotalusan@gmail.com
-Expires: 2025-12-31T23:59:59.000Z
+Expires: 2027-02-13T23:59:59.000Z
 Encryption: https://www.lusansapkota.com.np/public-key.txt
 Acknowledgments: https://www.lusansapkota.com.np/security-acknowledgments
 Policy: https://www.lusansapkota.com.np/security-policy
@@ -38,17 +39,20 @@ Hiring: https://www.lusansapkota.com.np/jobs
     Developer: Lusan Sapkota
     Contact: sapkotalusan@gmail.com
     Twitter: @LusanSapkota
+    LinkedIn: https://www.linkedin.com/in/lusan-sapkota-aa087b39b/
+    GitHub: https://github.com/Lusan-sapkota
     Location: Kathmandu, Nepal
     
 /* THANKS */
     Thanks to all the open source contributors
     
 /* SITE */
-    Last update: 2024/12/23
+    Last update: 2026/02/13
     Language: English
     Doctype: HTML5
     IDE: VS Code
-    Components: Python, Flask, JavaScript, Bootstrap
+    Framework: Flask
+    Components: Python, Flask, JavaScript, Bootstrap, React
 """
         
         with open(os.path.join(self.base_path, "static/humans.txt"), 'w') as f:
@@ -351,7 +355,7 @@ Allow: /"""
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Advanced SEO Enhancement Tool')
-    parser.add_argument('--path', default='/home/ubuntu/portfolio', help='Path to portfolio directory')
+    parser.add_argument('--path', default=None, help='Path to portfolio directory (defaults to current directory)')
     
     args = parser.parse_args()
     
