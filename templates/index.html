@@ -1563,7 +1563,7 @@
 					
 					<!-- View More Button -->
 					<div class="text-center mt-5">
-						<a href="{{url_for('git.index')}}" target="_blank" class="btn btn-primary btn-lg">
+						<a href="{{url_for('git.index')}}" target="_blank" rel="noopener" class="btn btn-primary btn-lg">
 							<i class="fas fa-code me-2"></i>
 							View All Projects
 					   
@@ -2067,9 +2067,9 @@
 		<div class="footer-column">
 		  <h4>Platforms</h4>
 		  <ul>
-			<li><a href="{{url_for('wiki.index')}}" target="_blank"><i class="fas fa-book"></i>Wiki Platform</a></li>
-			<li><a href="{{url_for('git.index')}}" target="_blank"><i class="fab fa-git-alt"></i>Git Repository</a></li>
-			<li><a href="{{ url_for('store.index') }}" target="_blank"><i class="fas fa-store"></i>Online Store</a></li>
+			<li><a href="{{url_for('wiki.index')}}" target="_blank" rel="noopener"><i class="fas fa-book"></i>Wiki Platform</a></li>
+			<li><a href="{{url_for('git.index')}}" target="_blank" rel="noopener"><i class="fab fa-git-alt"></i>Git Repository</a></li>
+			<li><a href="{{ url_for('store.index') }}" target="_blank" rel="noopener"><i class="fas fa-store"></i>Online Store</a></li>
 		  </ul>
 		</div>
 		
@@ -2136,7 +2136,7 @@
 		  <h4>Quick Actions</h4>
 		  <ul>
 			<li><a href="#contact"><i class="fas fa-paper-plane"></i>Send Message</a></li>
-			<li><a href="https://calendly.com/lusansapkota" target="_blank"><i class="fas fa-calendar"></i>Schedule Meeting</a></li>
+			<li><a href="https://calendly.com/lusansapkota" target="_blank" rel="noopener"><i class="fas fa-calendar"></i>Schedule Meeting</a></li>
 			<li><a href="javascript:void(0)" class="hover-lift resume-download-btn" data-resume-url="{{ url_for('static', filename='assets/download/Lusan_Sapkota_Resume.txt') }}"><i class="fas fa-download"></i>Download Resume</a></li>
 			<li><a href="/privacy"><i class="fas fa-shield-alt"></i>Privacy Policy</a></li>
 		  </ul>
