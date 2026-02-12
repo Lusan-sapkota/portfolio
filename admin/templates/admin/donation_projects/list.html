@@ -4,19 +4,17 @@
 
 {% block content %}
 <div class="admin-content">
-    <div class="admin-header">
-        <div class="admin-header-left">
-            <h1 class="admin-title">
+    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-4 gap-2">
+        <div>
+            <h1 class="admin-title mb-1">
                 <i class="fas fa-heart"></i>
                 Donation Projects
             </h1>
-            <p class="admin-subtitle">Manage projects available for donations</p>
+            <p class="admin-subtitle text-muted mb-0">Manage projects available for donations</p>
         </div>
-        <div class="admin-header-right">
-            <a href="{{ url_for('admin.donation_project_new') }}" class="btn btn-primary">
-                <i class="fas fa-plus"></i> Add Project
-            </a>
-        </div>
+        <a href="{{ url_for('admin.donation_project_new') }}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Add Project
+        </a>
     </div>
 
     <!-- Filters -->
@@ -47,19 +45,19 @@
 
     <!-- Bulk Actions -->
     <div class="bulk-actions" style="display: none;">
-        <div class="bulk-actions-bar">
-            <span class="bulk-selected-count">0 projects selected</span>
-            <div class="bulk-actions-buttons">
-                <button class="btn btn-outline-success bulk-action" data-action="feature">
+        <div class="d-flex flex-column flex-sm-row align-items-start align-items-sm-center gap-2 p-3 bg-light rounded mb-3">
+            <span class="bulk-selected-count text-muted">0 projects selected</span>
+            <div class="d-flex flex-wrap gap-2">
+                <button class="btn btn-sm btn-outline-success bulk-action" data-action="feature">
                     <i class="fas fa-star"></i> Feature
                 </button>
-                <button class="btn btn-outline-warning bulk-action" data-action="unfeature">
+                <button class="btn btn-sm btn-outline-warning bulk-action" data-action="unfeature">
                     <i class="far fa-star"></i> Unfeature
                 </button>
-                <button class="btn btn-outline-primary bulk-action" data-action="activate">
+                <button class="btn btn-sm btn-outline-primary bulk-action" data-action="activate">
                     <i class="fas fa-check"></i> Activate
                 </button>
-                <button class="btn btn-outline-secondary bulk-action" data-action="deactivate">
+                <button class="btn btn-sm btn-outline-secondary bulk-action" data-action="deactivate">
                     <i class="fas fa-times"></i> Deactivate
                 </button>
             </div>
@@ -67,11 +65,11 @@
     </div>
 
     <!-- Projects Table -->
-    <div class="admin-table-container">
+    <div class="admin-table-container table-responsive">
         <table class="admin-table">
             <thead>
                 <tr>
-                    <th width="50">
+                    <th>
                         <input type="checkbox" id="select-all">
                     </th>
                     <th>Title</th>
@@ -82,7 +80,7 @@
                     <th>Featured</th>
                     <th>Donations</th>
                     <th>Created</th>
-                    <th width="150">Actions</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>

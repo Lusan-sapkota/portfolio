@@ -192,7 +192,7 @@
     <!-- Donation Header -->
     <div class="donation-header">
         <div class="row align-items-center">
-            <div class="col-md-8">
+            <div class="col-md-8 mb-3 mb-md-0">
                 <div class="donation-id">#{{ donation.id }}</div>
                 <div class="donation-amount">
                     {% if donation.currency == 'NPR' %}
@@ -203,15 +203,15 @@
                 </div>
                 <p class="mb-0">{{ donation.project.title if donation.project else 'No Project' }}</p>
             </div>
-            <div class="col-md-4 text-end">
+            <div class="col-md-4 text-center text-md-end">
                 <span class="badge badge-{{ 'success' if donation.status == 'completed' else 'warning' if donation.status == 'pending' else 'danger' }} badge-large">
                     {{ donation.status.title() }}
                 </span>
-                <div class="mt-3">
+                <div class="mt-3 d-flex flex-wrap gap-2 justify-content-center justify-content-md-end">
                     <a href="{{ url_for('admin.donations') }}" class="btn btn-light">
-                        <i class="fas fa-arrow-left"></i> Back to Donations
+                        <i class="fas fa-arrow-left"></i> Back
                     </a>
-                    <a href="{{ url_for('admin.donations_edit', id=donation.id) }}" class="btn btn-warning ms-2">
+                    <a href="{{ url_for('admin.donations_edit', id=donation.id) }}" class="btn btn-warning">
                         <i class="fas fa-edit"></i> Edit
                     </a>
                 </div>

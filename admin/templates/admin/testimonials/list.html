@@ -5,16 +5,12 @@
 {% block content %}
 <div class="content-header">
     <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1 class="m-0">Testimonials</h1>
-            </div>
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="{{ url_for('admin.dashboard') }}">Dashboard</a></li>
-                    <li class="breadcrumb-item active">Testimonials</li>
-                </ol>
-            </div>
+        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-2 gap-1">
+            <h1 class="m-0">Testimonials</h1>
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="{{ url_for('admin.dashboard') }}">Dashboard</a></li>
+                <li class="breadcrumb-item active">Testimonials</li>
+            </ol>
         </div>
     </div>
 </div>
@@ -41,8 +37,8 @@
                 </div>
             </div>
             <div class="card-body">
-                <form method="GET" class="row">
-                    <div class="col-md-3">
+                <form method="GET" class="row g-3">
+                    <div class="col-6 col-md-3">
                         <div class="form-group">
                             <label for="featured">Featured</label>
                             <select name="featured" id="featured" class="form-control">
@@ -52,7 +48,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-6 col-md-3">
                         <div class="form-group">
                             <label for="rating">Minimum Rating</label>
                             <select name="rating" id="rating" class="form-control">
@@ -63,19 +59,21 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-12 col-md-6">
                         <div class="form-group">
                             <label for="search">Search</label>
                             <input type="text" name="search" id="search" class="form-control" placeholder="Name, company, content..." value="{{ request.args.get('search', '') }}">
                         </div>
                     </div>
-                    <div class="col-md-12">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-search"></i> Filter
-                        </button>
-                        <a href="{{ url_for('admin.testimonials') }}" class="btn btn-secondary">
-                            <i class="fas fa-times"></i> Clear
-                        </a>
+                    <div class="col-12">
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-search"></i> Filter
+                            </button>
+                            <a href="{{ url_for('admin.testimonials') }}" class="btn btn-secondary">
+                                <i class="fas fa-times"></i> Clear
+                            </a>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -88,9 +86,9 @@
             </div>
             <div class="card-body">
                 {% if testimonials %}
-                    <div class="row">
+                    <div class="row g-3">
                         {% for testimonial in testimonials %}
-                        <div class="col-md-6 mb-4">
+                        <div class="col-sm-6 mb-3">
                             <div class="card h-100 {{ 'border-warning' if testimonial.is_featured else '' }}">
                                 {% if testimonial.is_featured %}
                                 <div class="card-header bg-warning text-dark">

@@ -56,11 +56,11 @@ ANALYTICS_CONFIG = {
 
 # SEO Configuration
 SEO_CONFIG = {
-    'site_name': 'Lusan Sapkota Portfolio',
-    'default_title': 'Lusan Sapkota | Co-founder & CEO at Icepeak Tech | Full Stack Developer',
-    'default_description': 'Co-founder & CEO at Icepeak Tech with 4+ years of experience. Full Stack Software Developer specializing in Python, JavaScript, React, Django, Flask, and AI/ML technologies.',
+    'site_name': 'Lusan Sapkota - Software Engineer Portfolio',
+    'default_title': 'Lusan Sapkota | Software Engineer & Full Stack Developer',
+    'default_description': 'Lusan Sapkota — Software Engineer & Full Stack Developer with 4+ years experience building scalable systems. Python, React, Django, Node.js, TypeScript expert.',
     'author': 'Lusan Sapkota',
-    'keywords': ['Full Stack Developer', 'Software Developer', 'Python Developer', 'JavaScript Developer', 'Nepal Developer', 'AI ML Developer', 'Icepeak Tech', 'CEO', 'Co-founder'],
+    'keywords': ['Lusan Sapkota', 'Sapkota Lusan', 'Lusan', 'Sapkota', 'Software Developer', 'Software Engineer', 'Full Stack Developer', 'Python Developer', 'React Developer', 'Django Developer', 'Node.js Developer', 'Nepal Developer', 'Kathmandu Developer'],
     'social_media': {
         'facebook': 'https://web.facebook.com/lusan.sapkota.1',
         'github': 'https://github.com/Lusan-sapkota',

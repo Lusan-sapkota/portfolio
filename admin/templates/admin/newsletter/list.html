@@ -5,16 +5,12 @@
 {% block content %}
 <div class="content-header">
     <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1 class="m-0">Newsletter Subscribers</h1>
-            </div>
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="{{ url_for('admin.dashboard') }}">Dashboard</a></li>
-                    <li class="breadcrumb-item active">Newsletter</li>
-                </ol>
-            </div>
+        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-2 gap-1">
+            <h1 class="m-0">Newsletter Subscribers</h1>
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="{{ url_for('admin.dashboard') }}">Dashboard</a></li>
+                <li class="breadcrumb-item active">Newsletter</li>
+            </ol>
         </div>
     </div>
 </div>
@@ -32,58 +28,45 @@
                 </div>
             </div>
             <div class="card-body">
-                <div class="row">
-                    <div class="col-md-8">
-                        <form method="GET" class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="status">Status</label>
-                                    <select name="status" id="status" class="form-control">
-                                        <option value="">All</option>
-                                        <option value="active" {{ 'selected' if request.args.get('status') == 'active' }}>Active</option>
-                                        <option value="inactive" {{ 'selected' if request.args.get('status') == 'inactive' }}>Inactive</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="date_from">From Date</label>
-                                    <input type="date" name="date_from" id="date_from" class="form-control" value="{{ request.args.get('date_from', '') }}">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2>Newsletter Subscribers</h2>
-        <a href="{{ newsletter_send_url }}" class="btn btn-primary">
-            <i class="fas fa-paper-plane"></i> Send Newsletter
-        </a>
-    </div>
-                                    <label for="search">Search</label>
-                                    <input type="text" name="search" id="search" class="form-control" placeholder="Email address..." value="{{ request.args.get('search', '') }}">
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-search"></i> Filter
-                                </button>
-                                <a href="{{ url_for('admin.newsletter') }}" class="btn btn-secondary">
-                                    <i class="fas fa-times"></i> Clear
-                                </a>
-                            </div>
-                        </form>
+                <form method="GET" class="row g-3">
+                    <div class="col-6 col-md-3">
+                        <label for="status">Status</label>
+                        <select name="status" id="status" class="form-control">
+                            <option value="">All</option>
+                            <option value="active" {{ 'selected' if request.args.get('status') == 'active' }}>Active</option>
+                            <option value="inactive" {{ 'selected' if request.args.get('status') == 'inactive' }}>Inactive</option>
+                        </select>
                     </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label>&nbsp;</label>
-                            <div>
-                                <a href="{{ url_for('admin.export_newsletter') }}" class="btn btn-success btn-block">
-                                    <i class="fas fa-download"></i> Export Subscribers
-                                </a>
-                            </div>
+                    <div class="col-6 col-md-3">
+                        <label for="date_from">From Date</label>
+                        <input type="date" name="date_from" id="date_from" class="form-control" value="{{ request.args.get('date_from', '') }}">
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <label for="search">Search</label>
+                        <input type="text" name="search" id="search" class="form-control" placeholder="Email address..." value="{{ request.args.get('search', '') }}">
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <label class="d-none d-md-block">&nbsp;</label>
+                        <div class="d-flex flex-wrap gap-2">
+                            <button type="submit" class="btn btn-primary flex-fill">
+                                <i class="fas fa-search"></i> Filter
+                            </button>
+                            <a href="{{ url_for('admin.newsletter') }}" class="btn btn-secondary flex-fill">
+                                <i class="fas fa-times"></i> Clear
+                            </a>
                         </div>
                     </div>
-                </div>
+                    <div class="col-12">
+                        <div class="d-flex flex-wrap gap-2">
+                            <a href="{{ url_for('admin.export_newsletter') }}" class="btn btn-success">
+                                <i class="fas fa-download"></i> Export Subscribers
+                            </a>
+                            <a href="{{ newsletter_send_url }}" class="btn btn-primary">
+                                <i class="fas fa-paper-plane"></i> Send Newsletter
+                            </a>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
 
@@ -138,17 +121,17 @@
         <!-- Subscribers List -->
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Subscribers ({{ subscribers|length }})</h3>
-                <div class="card-tools">
-                    <div class="btn-group">
+                <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2">
+                    <h3 class="card-title mb-0">Subscribers ({{ subscribers|length }})</h3>
+                    <div class="d-flex flex-wrap gap-2">
                         <button type="button" class="btn btn-sm btn-success" onclick="activateSelected()">
-                            <i class="fas fa-check"></i> Activate Selected
+                            <i class="fas fa-check"></i> Activate
                         </button>
                         <button type="button" class="btn btn-sm btn-warning" onclick="deactivateSelected()">
-                            <i class="fas fa-pause"></i> Deactivate Selected
+                            <i class="fas fa-pause"></i> Deactivate
                         </button>
                         <button type="button" class="btn btn-sm btn-danger" onclick="deleteSelected()">
-                            <i class="fas fa-trash"></i> Delete Selected
+                            <i class="fas fa-trash"></i> Delete
                         </button>
                     </div>
                 </div>

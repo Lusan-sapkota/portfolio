@@ -23,24 +23,24 @@ def create_optimal_seo_data():
             page_name='home',
             
             # Optimal title (50-60 characters for best SEO)
-            title='Expert Full Stack Developer with Practical AI/ML Skills',
+            title='Lusan Sapkota | Software Engineer & Full Stack Developer',
             
             # Optimal meta description (150-160 characters)
-            meta_description='Expert Full Stack Developer with Practical AI/ML Skills from Nepal. Specializing in Python, JavaScript, React, Django. 3.5+ years experience building scalable web apps.',
+            meta_description='Software Engineer & Full Stack Developer with 4+ years experience building scalable systems. Python, React, Django, Node.js specialist. Available for hire.',
             
             # Focused keywords
-            meta_keywords='Lusan Sapkota, Full Stack Developer Nepal, Python Developer, AI Engineer, JavaScript Expert, React Developer, Django Developer, Web Development Nepal, React Native Developer, Go, Gin, PostgreSQL, MongoDB, AI, Machine Learning, Freelance Developer, Typescript', 
+            meta_keywords='Lusan Sapkota, Software Developer, Software Engineer, Full Stack Developer, Python Developer, React Developer, Node.js Developer', 
             
             # Open Graph optimization
-            og_title='Lusan Sapkota | Expert Full Stack Developer with Practical AI/ML Skills',
-            og_description='Expert Full Stack Developer with Practical AI/ML Skills from Nepal. Specializing in Python, JavaScript, React, Django. 3.5+ years experience building scalable applications.',
+            og_title='Lusan Sapkota | Software Engineer & Full Stack Developer',
+            og_description='Software Engineer & Full Stack Developer with 4+ years building scalable systems. Expert in Python, React, Node.js, Django. Open to freelance opportunities.',
             og_image='https://www.lusansapkota.com.np/static/assets/images/profile.png',
             og_url='https://www.lusansapkota.com.np/',
             og_type='profile',
             
             # Twitter Card optimization
-            twitter_title='Lusan Sapkota | Expert Full Stack Developer with Practical AI/ML Skills',
-            twitter_description='Expert Full Stack Developer with Practical AI/ML Skills from Nepal. Python, JavaScript, React, Django specialist with 3.5+ years experience.',
+            twitter_title='Lusan Sapkota | Software Engineer & Full Stack Developer',
+            twitter_description='Software Engineer & Full Stack Developer with 4+ years experience. Expert in Python, React, Node.js, Django. Available for freelance and contract work.',
             twitter_image='https://www.lusansapkota.com.np/static/assets/images/profile.png',
             twitter_url='https://www.lusansapkota.com.np/',
             twitter_card='summary_large_image',
@@ -51,10 +51,10 @@ def create_optimal_seo_data():
             hreflang='en',
             
             # Structured data for rich snippets
-            schema_markup='{"@context":"https://schema.org","@type":"Person","name":"Lusan Sapkota","jobTitle":"Full Stack Developer & AI Engineer","url":"https://www.lusansapkota.com.np","sameAs":["https://www.linkedin.com/in/lusan-sapkota-aa087b39b","https://github.com/lusansapkota"],"address":{"@type":"PostalAddress","addressCountry":"Nepal","addressLocality":"Kathmandu"},"knowsAbout":["Python","JavaScript","React","Django","AI","Machine Learning","Web Development"],"alumniOf":"University","worksFor":{"@type":"Organization","name":"Freelance"}}',
+            schema_markup='{"@context":"https://schema.org","@type":"Person","name":"Lusan Sapkota","jobTitle":"Software Engineer | Co-founder at Icepeak Tech | Team Lead at AiGeeks","url":"https://www.lusansapkota.com.np","sameAs":["https://www.linkedin.com/in/lusan-sapkota-aa087b39b","https://github.com/Lusan-sapkota"],"address":{"@type":"PostalAddress","addressCountry":"Nepal","addressLocality":"Kathmandu"},"knowsAbout":["Python","JavaScript","React","Django","Node.js","TypeScript","PostgreSQL","Software Engineering","Full Stack Development"],"worksFor":[{"@type":"Organization","name":"Icepeak Tech"},{"@type":"Organization","name":"AiGeeks"}]}',
             
             # Focus keywords for this page
-            focus_keywords='Full Stack Developer, AI Engineer, Python Developer, JavaScript Expert, React Developer, Django Developer, Web Development Nepal, Freelance Developer',
+            focus_keywords='Lusan Sapkota, Software Developer, Software Engineer, Full Stack Developer, Python Developer, React Developer, Node.js Developer',
             
             # Author and publisher
             meta_author='Lusan Sapkota',
@@ -69,10 +69,10 @@ def create_optimal_seo_data():
         db.session.add(optimal_seo)
         db.session.commit()
         
-        print("✅ Optimal SEO data created successfully!")
-        print(f"✅ Title length: {len(optimal_seo.title)} characters (optimal: 50-60)")
-        print(f"✅ Description length: {len(optimal_seo.meta_description)} characters (optimal: 150-160)")
-        print("✅ All SEO fields optimized for 100/100 score")
+        print("Optimal SEO data created successfully!")
+        print(f"Title length: {len(optimal_seo.title)} characters (optimal: 50-60)")
+        print(f"Description length: {len(optimal_seo.meta_description)} characters (optimal: 150-160)")
+        print("All SEO fields optimized for 100/100 score")
 
 if __name__ == '__main__':
     create_optimal_seo_data()

@@ -5,8 +5,8 @@
 {% block content %}
 <div class="row">
     <div class="col-12">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2><i class="fas fa-search"></i> SEO Settings</h2>
+        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-4 gap-2">
+            <h2 class="mb-0"><i class="fas fa-search"></i> SEO Settings</h2>
             <a href="{{ url_for('admin.seo_create') }}" class="btn btn-primary">
                 <i class="fas fa-plus"></i> Add Page SEO
             </a>
@@ -98,8 +98,8 @@
                 <h5 class="mb-0"><i class="fas fa-lightbulb"></i> SEO Best Practices</h5>
             </div>
             <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6">
+                <div class="row g-3">
+                    <div class="col-sm-6">
                         <h6>Title Tags</h6>
                         <ul class="small">
                             <li>Keep under 60 characters</li>
@@ -108,7 +108,7 @@
                             <li>Front-load important keywords</li>
                         </ul>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-sm-6">
                         <h6>Meta Descriptions</h6>
                         <ul class="small">
                             <li>Keep between 150-160 characters</li>
@@ -117,9 +117,7 @@
                             <li>Use active voice</li>
                         </ul>
                     </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-md-6">
+                    <div class="col-sm-6">
                         <h6>Open Graph</h6>
                         <ul class="small">
                             <li>Use compelling OG titles</li>
@@ -128,7 +126,7 @@
                             <li>Test social media previews</li>
                         </ul>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-sm-6">
                         <h6>Schema Markup</h6>
                         <ul class="small">
                             <li>Use structured data for rich results</li>

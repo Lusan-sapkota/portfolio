@@ -2962,9 +2962,10 @@ section {
   }
 
   .header-text a {
-    display: block;
-    margin: 10px auto;
-    max-width: 250px;
+    display: inline-block;
+    margin: 8px 6px;
+    padding: 12px 24px;
+    font-size: 0.95rem;
   }
 
   .subdomain-grid {
@@ -3041,9 +3042,10 @@ section {
   }
 
   .header-text a {
-    margin: 8px 5px;
-    padding: 12px 20px;
-    font-size: 0.9rem;
+    display: inline-block;
+    margin: 6px 4px;
+    padding: 10px 18px;
+    font-size: 0.85rem;
   }
 
   .subdomain-title h2 {

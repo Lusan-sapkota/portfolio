@@ -3,8 +3,8 @@
 {% block title %}Payment Methods{% endblock %}
 
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2><i class="fas fa-credit-card"></i> Payment Methods</h2>
+<div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-4 gap-2">
+    <h2 class="mb-0"><i class="fas fa-credit-card"></i> Payment Methods</h2>
     <a href="{{ url_for('admin.payment_methods_create') }}" class="btn btn-primary">
         <i class="fas fa-plus"></i> Add Payment Method
     </a>
@@ -14,7 +14,7 @@
 <div class="card mb-4">
     <div class="card-body">
         <form method="GET" class="row g-3">
-            <div class="col-md-4">
+            <div class="col-6 col-md-4">
                 <label class="form-label">Currency</label>
                 <select name="currency" class="form-control">
                     <option value="">All Currencies</option>
@@ -22,9 +22,9 @@
                     <option value="USD" {% if current_currency == 'USD' %}selected{% endif %}>USD</option>
                 </select>
             </div>
-            <div class="col-md-4">
-                <label class="form-label">&nbsp;</label>
-                <div>
+            <div class="col-6 col-md-4">
+                <label class="form-label d-none d-md-block">&nbsp;</label>
+                <div class="d-flex gap-2">
                     <button type="submit" class="btn btn-primary">
                         <i class="fas fa-filter"></i> Filter
                     </button>
@@ -40,14 +40,14 @@
 <!-- Payment Methods -->
 <div class="row">
     {% for method in methods %}
-    <div class="col-lg-6 mb-4">
+    <div class="col-sm-6 mb-4">
         <div class="card {{ 'border-success' if method.is_active else 'border-danger' }}">
-            <div class="card-header d-flex justify-content-between align-items-center">
+            <div class="card-header d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2">
                 <h5 class="mb-0">
                     <span class="badge bg-{{ 'primary' if method.currency == 'NPR' else 'info' }}">{{ method.currency }}</span>
                     {{ method.display_name }}
                 </h5>
-                <div class="btn-group btn-group-sm">
+                <div class="btn-group btn-group-sm flex-shrink-0">
                     <a href="{{ url_for('admin.payment_methods_edit', id=method.id) }}" class="btn btn-outline-warning">
                         <i class="fas fa-edit"></i>
                     </a>
