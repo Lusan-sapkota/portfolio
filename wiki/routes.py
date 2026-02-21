@@ -31,7 +31,7 @@ def index():
                           current_year=datetime.now().year,
                           seo=seo,
                           page_title=seo.title if seo else "Lusan's Wiki | Technical Knowledge Base",
-                          page_description=seo.meta_description if seo else "Comprehensive technical documentation and programming tutorials")
+                          page_description=seo.meta_description if seo else "Comprehensive technical wiki and knowledge base covering software development, AI/ML, web technologies, and programming tutorials by Lusan Sapkota.")
 
 @wiki_bp.route('/search')
 def search():

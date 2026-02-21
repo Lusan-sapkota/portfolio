@@ -354,8 +354,23 @@ def handle_subdomain_routing():
     print("DEBUG: No subdomain routing applied, continuing to normal Flask routing")
     return None
 
-# Manual subdomain routes (since Flask subdomain routing isn't working properly)
-# REMOVED: All manual subdomain routes have been removed to avoid conflicts with @app.before_request handler
+# Security headers for all responses
+@app.after_request
+def add_security_headers(response):
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    response.headers['X-Frame-Options'] = 'SAMEORIGIN'
+    response.headers['X-XSS-Protection'] = '1; mode=block'
+    response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
+    response.headers['Content-Security-Policy'] = (
+        "default-src 'self'; "
+        "script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; "
+        "style-src 'self' 'unsafe-inline' https:; "
+        "img-src 'self' data: https:; "
+        "font-src 'self' https: data:; "
+        "connect-src 'self' https:; "
+        "frame-ancestors 'self'"
+    )
+    return response
 
 # Main routes
 @app.route('/')
@@ -909,6 +924,16 @@ def manifest():
     try:
         from flask import send_from_directory
         return send_from_directory(app.static_folder, 'manifest.json')
+    except FileNotFoundError:
+        abort(404)
+
+@app.route('/.well-known/security.txt')
+@app.route('/security.txt')
+def security_txt():
+    """Serve security.txt"""
+    try:
+        from flask import send_from_directory
+        return send_from_directory(os.path.join(app.static_folder, '.well-known'), 'security.txt', mimetype='text/plain')
     except FileNotFoundError:
         abort(404)
 

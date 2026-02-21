@@ -1,6 +1,6 @@
 {% extends 'git/base.html' %}
 
-{% block title %}Lusan's Projects - Repository{% endblock %}
+{% block title %}Lusan's Projects - Open Source Code Repository{% endblock %}
 
 {% block content %}
 <div class="projects-hero">
@@ -73,7 +73,7 @@
     <!-- Filter Sidebar -->
     <div class="filter-sidebar" id="filterSidebar">
       <div class="filter-section">
-        <h3><i class="fas fa-layer-group"></i> Categories</h3>
+        <h2 class="h5"><i class="fas fa-layer-group"></i> Categories</h2>
         <div class="filter-group">
           <div class="filter-item {{ 'active' if not current_category }}">
             <input type="radio" name="category" value="" id="cat-all" {{ 'checked' if not current_category }}>
@@ -97,7 +97,7 @@
       </div>
       
       <div class="filter-section">
-        <h3><i class="fas fa-code-branch"></i> Project Type</h3>
+        <h2 class="h5"><i class="fas fa-code-branch"></i> Project Type</h2>
         <div class="filter-group">
           <div class="filter-item {{ 'active' if not current_type }}">
             <input type="radio" name="type" value="" id="type-all" {{ 'checked' if not current_type }}>
@@ -126,7 +126,7 @@
       </div>
       
       <div class="filter-section">
-        <h3><i class="fas fa-tasks"></i> Status</h3>
+        <h2 class="h5"><i class="fas fa-tasks"></i> Status</h2>
         <div class="filter-group">
           <div class="filter-item {{ 'active' if not current_status }}">
             <input type="radio" name="status" value="" id="status-all" {{ 'checked' if not current_status }}>
@@ -226,17 +226,17 @@
               <div class="project-overlay">
                 <div class="project-actions">
                   {% if project.github_url %}
-                  <a href="{{ project.github_url }}" target="_blank" class="action-btn" title="View Source">
+                  <a href="{{ project.github_url }}" target="_blank" rel="noopener noreferrer" class="action-btn" title="View Source">
                     <i class="fab fa-github"></i>
                   </a>
                   {% endif %}
                   {% if project.live_url %}
-                  <a href="{{ project.live_url }}" target="_blank" class="action-btn" title="Live Demo">
+                  <a href="{{ project.live_url }}" target="_blank" rel="noopener noreferrer" class="action-btn" title="Live Demo">
                     <i class="fas fa-external-link-alt"></i>
                   </a>
                   {% endif %}
                   {% if project.commercial_url %}
-                  <a href="{{ project.commercial_url }}" target="_blank" class="action-btn" title="Commercial Product">
+                  <a href="{{ project.commercial_url }}" target="_blank" rel="noopener noreferrer" class="action-btn" title="Commercial Product">
                     <i class="fas fa-shopping-cart"></i>
                   </a>
                   {% endif %}
@@ -327,21 +327,21 @@
               
               <div class="project-links">
                 {% if project.github_url %}
-                <a href="{{ project.github_url }}" target="_blank" class="btn btn-sm btn-outline-success">
+                <a href="{{ project.github_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-success">
                   <i class="fab fa-github"></i>
                   Code
                 </a>
                 {% endif %}
                 
                 {% if project.live_url %}
-                <a href="{{ project.live_url }}" target="_blank" class="btn btn-sm btn-primary">
+                <a href="{{ project.live_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-primary">
                   <i class="fas fa-external-link-alt"></i>
                   Demo
                 </a>
                 {% endif %}
                 
                 {% if project.commercial_url %}
-                <a href="{{ project.commercial_url }}" target="_blank" class="btn btn-sm btn-warning">
+                <a href="{{ project.commercial_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-warning">
                   <i class="fas fa-shopping-cart"></i>
                   Buy
                 </a>

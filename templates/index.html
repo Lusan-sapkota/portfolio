@@ -299,7 +299,7 @@
 		  "@type": "ProfessionalService",
 		  "@id": "https://www.lusansapkota.com.np/#service",
 		  "name": "Software Engineering & Full Stack Development Services",
-		  "description": "Professional software engineering services including web applications, backend systems, API development, and technical consulting."
+		  "description": "Professional software engineering services including web applications, backend systems, API development, and technical consulting.",
 		  "provider": {
 			"@id": "https://www.lusansapkota.com.np/#person"
 		  },
@@ -356,44 +356,59 @@
 	  "@type": "ItemList",
 	  "itemListElement": [
 		{
-		  "@type": "SoftwareSourceCode",
+		  "@type": "ListItem",
 		  "position": 1,
-		  "name": "Ambulance Tracking System",
-		  "url": "https://github.com/Lusan-sapkota/Ambulance-tracking-system",
-		  "programmingLanguage": ["Python", "JavaScript"],
-		  "description": "Real-time ambulance tracking system to optimize emergency response"
+		  "item": {
+			"@type": "SoftwareSourceCode",
+			"name": "Ambulance Tracking System",
+			"url": "https://github.com/Lusan-sapkota/Ambulance-tracking-system",
+			"programmingLanguage": ["Python", "JavaScript"],
+			"description": "Real-time ambulance tracking system to optimize emergency response"
+		  }
 		},
 		{
-		  "@type": "SoftwareSourceCode",
+		  "@type": "ListItem",
 		  "position": 2,
-		  "name": "Face Recognition Based Attendance System",
-		  "url": "https://github.com/Lusan-sapkota/Face-Recognition-Based-Attendance-System",
-		  "programmingLanguage": ["Python", "OpenCV"],
-		  "description": "Automated attendance tracking using facial recognition technology"
+		  "item": {
+			"@type": "SoftwareSourceCode",
+			"name": "Face Recognition Based Attendance System",
+			"url": "https://github.com/Lusan-sapkota/Face-Recognition-Based-Attendance-System",
+			"programmingLanguage": ["Python", "OpenCV"],
+			"description": "Automated attendance tracking using facial recognition technology"
+		  }
 		},
 		{
-		  "@type": "SoftwareSourceCode",
+		  "@type": "ListItem",
 		  "position": 3,
-		  "name": "Task Master",
-		  "url": "https://github.com/Lusan-sapkota/Task-Master",
-		  "programmingLanguage": ["JavaScript", "HTML", "CSS"],
-		  "description": "Productivity application for task management and organization"
+		  "item": {
+			"@type": "SoftwareSourceCode",
+			"name": "Task Master",
+			"url": "https://github.com/Lusan-sapkota/Task-Master",
+			"programmingLanguage": ["JavaScript", "HTML", "CSS"],
+			"description": "Productivity application for task management and organization"
+		  }
 		},
 		{
-		  "@type": "SoftwareSourceCode",
+		  "@type": "ListItem",
 		  "position": 4,
-		  "name": "Jarvis",
-		  "url": "https://github.com/Lusan-sapkota/Jarvis",
-		  "programmingLanguage": ["Python"],
-		  "description": "Personal AI assistant with voice recognition capabilities"
+		  "item": {
+			"@type": "SoftwareSourceCode",
+			"name": "Jarvis",
+			"url": "https://github.com/Lusan-sapkota/Jarvis",
+			"programmingLanguage": ["Python"],
+			"description": "Personal AI assistant with voice recognition capabilities"
+		  }
 		},
 		{
-		  "@type": "SoftwareSourceCode",
+		  "@type": "ListItem",
 		  "position": 5,
-		  "name": "Chat History Master",
-		  "url": "https://github.com/Lusan-sapkota/Chat-History_Master",
-		  "programmingLanguage": ["Python", "JavaScript"],
-		  "description": "Tool for analyzing and organizing chat histories from various platforms"
+		  "item": {
+			"@type": "SoftwareSourceCode",
+			"name": "Chat History Master",
+			"url": "https://github.com/Lusan-sapkota/Chat-History_Master",
+			"programmingLanguage": ["Python", "JavaScript"],
+			"description": "Tool for analyzing and organizing chat histories from various platforms"
+		  }
 		}
 	  ]
 	}
@@ -1286,19 +1301,19 @@
 								<div class="about-list-icon">
 									<ul>
 										<li>
-											<a href="https://github.com/Lusan-sapkota">
+											<a href="https://github.com/Lusan-sapkota" target="_blank" rel="noopener noreferrer">
 												<i  class="fab fa-github" aria-hidden="true"></i>
 											</a>
-											
+
 										</li><!-- / li -->
 										<li>
-											<a href="https://x.com/LusanSapkota">
+											<a href="https://x.com/LusanSapkota" target="_blank" rel="noopener noreferrer">
 												<i  class="fab fa-x-twitter" aria-hidden="true"></i>
 											</a>
-											
+
 										</li><!-- / li -->
 										<li>
-											<a href="https://www.linkedin.com/in/lusan-sapkota-aa087b39b">
+											<a href="https://www.linkedin.com/in/lusan-sapkota-aa087b39b" target="_blank" rel="noopener noreferrer">
 												<i  class="fab fa-linkedin" aria-hidden="true"></i>
 											</a>
 										</li><!-- / li -->
@@ -1469,17 +1484,17 @@
 								<div class="portfolio-overlay">
 									<div class="portfolio-links">
 										{% if project.github_url %}
-										<a href="{{ project.github_url }}" target="_blank" class="btn-portfolio btn-github">
+										<a href="{{ project.github_url }}" target="_blank" rel="noopener noreferrer" class="btn-portfolio btn-github">
 											<i class="fab fa-github"></i>
 										</a>
 										{% endif %}
 										{% if project.live_url %}
-										<a href="{{ project.live_url }}" target="_blank" class="btn-portfolio btn-preview">
+										<a href="{{ project.live_url }}" target="_blank" rel="noopener noreferrer" class="btn-portfolio btn-preview">
 											<i class="fas fa-external-link-alt"></i>
 										</a>
 										{% endif %}
 										{% if project.commercial_url %}
-										<a href="{{ project.commercial_url }}" target="_blank" class="btn-portfolio btn-commercial">
+										<a href="{{ project.commercial_url }}" target="_blank" rel="noopener noreferrer" class="btn-portfolio btn-commercial">
 											<i class="fas fa-shopping-cart"></i>
 										</a>
 										{% endif %}
@@ -1542,7 +1557,7 @@
 								<img src="{{ url_for('static', filename='assets/images/portfolio/placeholder.svg')}}" alt="Sample Project Screenshot" loading="lazy" />
 								<div class="portfolio-overlay">
 									<div class="portfolio-links">
-										<a href="https://github.com/Lusan-sapkota" target="_blank" class="btn-portfolio btn-github">
+										<a href="https://github.com/Lusan-sapkota" target="_blank" rel="noopener noreferrer" class="btn-portfolio btn-github">
 											<i class="fab fa-github"></i>
 										</a>
 									</div>
@@ -1903,7 +1918,7 @@
 										</div>
 										<div class="single-contact-add-info">
 											<h3>website</h3>
-											<p><a href="https://www.lusansapkota.com.np/">www.lusansapkota.com.np</a></p>
+											<p><a href="https://www.lusansapkota.com.np/" rel="noopener noreferrer">www.lusansapkota.com.np</a></p>
 										</div>
 									</div>
 								</div><!--/.contact-adress-->
@@ -2150,19 +2165,19 @@
 		  <a href="https://github.com/Lusan-sapkota" target="_blank" rel="noopener noreferrer" class="social-link" title="GitHub">
 			<i class="fab fa-github"></i>
 		  </a>
-		  <a href="https://www.linkedin.com/in/lusan-sapkota-aa087b39b" target="_blank" class="social-link" title="LinkedIn">
+		  <a href="https://www.linkedin.com/in/lusan-sapkota-aa087b39b" target="_blank" rel="noopener noreferrer" class="social-link" title="LinkedIn">
 			<i class="fab fa-linkedin-in"></i>
 		  </a>
-		  <a href="https://x.com/LusanSapkota" target="_blank" class="social-link" title="X(Twitter)">
+		  <a href="https://x.com/LusanSapkota" target="_blank" rel="noopener noreferrer" class="social-link" title="X(Twitter)">
 			<i class="fab fa-x-twitter"></i>
 		  </a>
-		  <a href="https://www.instagram.com/sapkotalusan/" target="_blank" class="social-link" title="Instagram">
+		  <a href="https://www.instagram.com/sapkotalusan/" target="_blank" rel="noopener noreferrer" class="social-link" title="Instagram">
 			<i class="fab fa-instagram"></i>
 		  </a>
-		  <a href="https://www.youtube.com/@learn_with_lusan" target="_blank" class="social-link" title="YouTube">
+		  <a href="https://www.youtube.com/@learn_with_lusan" target="_blank" rel="noopener noreferrer" class="social-link" title="YouTube">
 			<i class="fab fa-youtube"></i>
 		  </a>
-		  <a href="https://discord.gg/X9JzzRug" target="_blank" class="social-link" title="Discord">
+		  <a href="https://discord.gg/X9JzzRug" target="_blank" rel="noopener noreferrer" class="social-link" title="Discord">
 			<i class="fab fa-discord"></i>
 		  </a>
 		</div>
@@ -2190,7 +2205,7 @@
   <div class="footer-copyright">
 	<div class="container">
 	  <div class="footer-copyright-content"></div>
-		<p>&copy; {{ current_year }}  <a href="https://lusansapkota.com.np">Lusan Sapkota</a>. All rights reserved. | Crafted with <i class="fas fa-heart" style="color: #e74c3c;"></i> in Nepal</p>
+		<p>&copy; {{ current_year }}  <a href="https://lusansapkota.com.np" rel="noopener noreferrer">Lusan Sapkota</a>. All rights reserved. | Crafted with <i class="fas fa-heart" style="color: #e74c3c;"></i> in Nepal</p>
 		<div class="footer-back-top">
 		  <span class="back-to-top-text">Back to Top</span>
 		  <a href="#welcome-hero" class="back-to-top-footer smooth-menu">
