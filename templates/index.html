@@ -1342,8 +1342,8 @@
 				</div>
 				
 				<div class="experience-timeline">
-					<div class="row justify-content-center">
-						<div class="col-lg-10">
+					<div class="row">
+						<div class="col-lg-12">
 							<!-- Icepeak Tech - Co-founder & Lead Engineer -->
 							<div class="timeline-item card-base">
 								<div class="timeline-content">
@@ -1850,64 +1850,35 @@
 			<div class="container">
 				<div class="contact-content">
 					<div class="row">
-						<div class="col-md-5 col-sm-6">
-							<div class="single-contact-box">
-								<!-- Contact Form (hidden after submit) -->
-								<div class="contact-form" id="contact-form-wrapper">
+						<div class="col-md-6 col-sm-6">
+							<div class="single-contact-box contact-box-switchable">
+
+								<!-- Contact Form panel -->
+								<div class="contact-panel contact-form" id="contact-form-wrapper">
 									<div class="contact-form-head">
 										<h3>Send a Message</h3>
 									</div>
 									<form action="/contact/submit" method="POST" id="contact-form">
-										<div class="row">
-											<div class="col-sm-12">
-												<div class="form-group">
-													<input type="text" class="form-control" id="name" placeholder="Name*" name="name" required>
-												</div><!--/.form-group-->
-											</div><!--/.col-->
-											<div class="col-sm-12">
-												<div class="form-group">
-													<input type="email" class="form-control" id="email" placeholder="Email*" name="email" required>
-												</div><!--/.form-group-->
-											</div><!--/.col-->
-										</div><!--/.row-->
-										<div class="row">
-											<div class="col-sm-12">
-												<div class="form-group">
-													<input type="text" class="form-control" id="subject" placeholder="Subject" name="subject">
-												</div><!--/.form-group-->
-											</div><!--/.col-->
-										</div><!--/.row-->
-										<div class="row">
-											<div class="col-sm-12">
-												<div class="form-group">
-													<!-- Honeypot field for bot detection (hidden from users) -->
-													<input type="checkbox" name="botcheck" class="hidden" style="display: none;" tabindex="-1">
-												</div><!--/.form-group-->
-											</div><!--/.col-->
-										</div><!--/.row-->
-										<div class="row">
-											<div class="col-sm-12">
-												<div class="form-group">
-													<textarea class="form-control" rows="8" id="comment" placeholder="Message*" name="message" required></textarea>
-												</div><!--/.form-group-->
-											</div><!--/.col-->
-										</div><!--/.row-->
-										<div class="row">
-											<div class="col-sm-12">
-												<div class="single-contact-btn">
-													<button type="submit" class="contact-btn">Submit</button>
-												</div><!--/.single-contact-btn-->
-											</div><!--/.col-->
-										</div><!--/.row-->
+										<div class="form-group">
+											<input type="text" class="form-control" id="name" placeholder="Name*" name="name" required>
+										</div>
+										<div class="form-group">
+											<input type="email" class="form-control" id="email" placeholder="Email*" name="email" required>
+										</div>
+										<div class="form-group">
+											<input type="text" class="form-control" id="subject" placeholder="Subject" name="subject">
+										</div>
+										<input type="checkbox" name="botcheck" class="hidden" style="display: none;" tabindex="-1">
+										<div class="form-group">
+											<textarea class="form-control" rows="6" id="comment" placeholder="Message*" name="message" required></textarea>
+										</div>
+										<button type="submit" class="contact-btn">Submit</button>
 									</form>
-
-									<!-- Contact form response message -->
 									<div id="contact-message" style="margin-top: 15px; display: none;"></div>
+								</div><!--/.contact-panel form-->
 
-								</div><!--/.contact-form-->
-
-								<!-- Thank-you card (shown after successful submit) -->
-								<div class="contact-thankyou" id="contact-thankyou" style="display: none;">
+								<!-- Thank-you panel -->
+								<div class="contact-panel contact-thankyou" id="contact-thankyou" style="display:none;">
 									<div class="thankyou-icon">
 										<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 											<circle cx="12" cy="12" r="11" stroke="#f39c12" stroke-width="2"/>
@@ -1916,14 +1887,14 @@
 									</div>
 									<h3 class="thankyou-title">Message Sent!</h3>
 									<p class="thankyou-sub">Thanks, <strong id="thankyou-name"></strong>. Your message is on its way.</p>
-									<p class="thankyou-email-note">A confirmation copy is heading to <strong id="thankyou-email"></strong> — should arrive within a minute.</p>
+									<p class="thankyou-email-note">A confirmation copy is heading to <strong id="thankyou-email"></strong> should arrive within a minute.</p>
 									<p class="thankyou-response">I typically respond within 24–48 hours.</p>
 									<button class="contact-btn thankyou-back-btn" id="contact-send-another">Send another message</button>
-								</div><!--/.contact-thankyou-->
+								</div><!--/.contact-panel thankyou-->
 
 							</div><!--/.single-contact-box-->
 						</div><!--/.col-->
-						<div class="col-md-5 col-sm-6">
+						<div class="col-md-6 col-sm-6">
 							<div class="single-contact-box">
 								<div class="contact-adress">
 									<div class="contact-add-head">

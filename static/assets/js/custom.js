@@ -214,13 +214,13 @@ $(document).ready(function(){
         const contactMessageDiv = $('#contact-message');
         const formWrapper = $('#contact-form-wrapper');
         const thankYouCard = $('#contact-thankyou');
+        const box = formWrapper.closest('.single-contact-box');
 
         if (contactForm.length) {
             contactForm.on('submit', function (e) {
                 e.preventDefault();
 
                 const submitBtn = contactForm.find('.contact-btn');
-                const originalText = submitBtn.text();
                 const formData = new FormData(this);
 
                 submitBtn.text('Sending...').prop('disabled', true);
@@ -234,44 +234,64 @@ $(document).ready(function(){
                     contentType: false,
                     success: function (response) {
                         if (response.status === 'success') {
-                            // Populate thank-you card with sender's details
                             $('#thankyou-name').text(response.name || 'there');
                             $('#thankyou-email').text(response.email || 'your inbox');
 
-                            // Swap form for thank-you card
-                            formWrapper.fadeOut(250, function () {
-                                thankYouCard.fadeIn(350);
-                            });
+                            // Lock box height so no layout jump during crossfade
+                            box.css('min-height', box.outerHeight() + 'px');
+
+                            // Step 1: fade form out
+                            formWrapper.addClass('panel-hide');
+
+                            // Step 2: after fade, swap panels
+                            setTimeout(function () {
+                                formWrapper.css('display', 'none');
+                                thankYouCard.css('display', 'flex');
+                                // Force reflow before adding transition class
+                                thankYouCard[0].offsetHeight;
+                                thankYouCard.addClass('panel-show');
+                                // Release height lock once thank-you is settled
+                                setTimeout(function () {
+                                    box.css('min-height', '');
+                                }, 420);
+                            }, 400);
+
                             contactForm[0].reset();
                         } else {
+                            submitBtn.text('Submit').prop('disabled', false);
                             contactMessageDiv
                                 .removeClass('alert-success alert-info')
                                 .addClass('alert alert-' + (response.status === 'info' ? 'info' : 'danger'))
                                 .text(response.message)
                                 .show();
-                            submitBtn.text(originalText).prop('disabled', false);
                             setTimeout(function () { contactMessageDiv.fadeOut(); }, 8000);
                         }
                     },
                     error: function () {
+                        submitBtn.text('Submit').prop('disabled', false);
                         contactMessageDiv
                             .removeClass('alert-success alert-info')
                             .addClass('alert alert-danger')
                             .text('An error occurred while sending your message. Please try again.')
                             .show();
-                        submitBtn.text(originalText).prop('disabled', false);
                         setTimeout(function () { contactMessageDiv.fadeOut(); }, 8000);
                     }
                 });
             });
 
-            // "Send another message" resets everything
+            // "Send another message" — reverse transition
             $('#contact-send-another').on('click', function () {
-                thankYouCard.fadeOut(200, function () {
-                    formWrapper.fadeIn(300);
+                box.css('min-height', box.outerHeight() + 'px');
+
+                thankYouCard.removeClass('panel-show');
+
+                setTimeout(function () {
+                    thankYouCard.css('display', 'none');
+                    formWrapper.css('display', '').removeClass('panel-hide');
                     contactForm[0].reset();
                     contactForm.find('.contact-btn').text('Submit').prop('disabled', false);
-                });
+                    setTimeout(function () { box.css('min-height', ''); }, 420);
+                }, 400);
             });
         }
     }
