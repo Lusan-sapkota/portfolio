@@ -667,7 +667,7 @@ def contact_submit():
         
         # Check for suspicious patterns and spam
         suspicious_patterns = [
-            r'viagra|cialis|pharmacy|casino|lottery|winner|congratulations',
+            r'viagra|cialis|pharmacy|casino|lottery|winner',
             r'crypto|bitcoin|investment|loan|mortgage',
             r'click here|visit now|act now|limited time',
             r'free money|make money|earn \$|guaranteed'
@@ -731,10 +731,11 @@ def contact_submit():
         })
         
     except Exception as e:
-        print(f"Contact form submission error: {e}")
+        import logging, traceback
+        logging.getLogger(__name__).error(f"Contact form error: {e}\n{traceback.format_exc()}")
         if "rate limit exceeded" in str(e).lower():
             return jsonify({'status': 'error', 'message': 'Too many requests. Please try again in a few minutes.'})
-        return jsonify({'status': 'error', 'message': 'An error occurred while sending your message. Please try again.'})
+        return jsonify({'status': 'error', 'message': f'Server error: {str(e)}'})
 
 @app.route('/newsletter/unsubscribe')
 def newsletter_unsubscribe_page():
