@@ -426,7 +426,7 @@ Kathmandu, Nepal"""
                     
                     <div style="background: #fff3cd; border: 1px solid #ffeaa7; padding: 15px; border-radius: 8px; margin: 20px 0;">
                         <p style="margin: 0; color: #856404;">
-                            <strong>📧 Urgent inquiries:</strong> Feel free to reach out directly at 
+                            <strong>Urgent inquiries:</strong> Feel free to reach out directly at 
                             <a href="mailto:contact@lusansapkota.com.np" style="color: #f39c12;">contact@lusansapkota.com.np</a>
                         </p>
                     </div>

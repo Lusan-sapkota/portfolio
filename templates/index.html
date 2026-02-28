@@ -1852,7 +1852,8 @@
 					<div class="row">
 						<div class="col-md-5 col-sm-6">
 							<div class="single-contact-box">
-								<div class="contact-form">
+								<!-- Contact Form (hidden after submit) -->
+								<div class="contact-form" id="contact-form-wrapper">
 									<div class="contact-form-head">
 										<h3>Send a Message</h3>
 									</div>
@@ -1899,11 +1900,27 @@
 											</div><!--/.col-->
 										</div><!--/.row-->
 									</form>
-									
+
 									<!-- Contact form response message -->
 									<div id="contact-message" style="margin-top: 15px; display: none;"></div>
-									
+
 								</div><!--/.contact-form-->
+
+								<!-- Thank-you card (shown after successful submit) -->
+								<div class="contact-thankyou" id="contact-thankyou" style="display: none;">
+									<div class="thankyou-icon">
+										<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<circle cx="12" cy="12" r="11" stroke="#f39c12" stroke-width="2"/>
+											<path d="M7 12.5l3.5 3.5 6.5-7" stroke="#f39c12" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+										</svg>
+									</div>
+									<h3 class="thankyou-title">Message Sent!</h3>
+									<p class="thankyou-sub">Thanks, <strong id="thankyou-name"></strong>. Your message is on its way.</p>
+									<p class="thankyou-email-note">A confirmation copy is heading to <strong id="thankyou-email"></strong> — should arrive within a minute.</p>
+									<p class="thankyou-response">I typically respond within 24–48 hours.</p>
+									<button class="contact-btn thankyou-back-btn" id="contact-send-another">Send another message</button>
+								</div><!--/.contact-thankyou-->
+
 							</div><!--/.single-contact-box-->
 						</div><!--/.col-->
 						<div class="col-md-5 col-sm-6">

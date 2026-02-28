@@ -212,6 +212,8 @@ $(document).ready(function(){
     function initializeContactForm() {
         const contactForm = $('#contact-form');
         const contactMessageDiv = $('#contact-message');
+        const formWrapper = $('#contact-form-wrapper');
+        const thankYouCard = $('#contact-thankyou');
 
         if (contactForm.length) {
             contactForm.on('submit', function (e) {
@@ -231,14 +233,24 @@ $(document).ready(function(){
                     processData: false,
                     contentType: false,
                     success: function (response) {
-                        contactMessageDiv
-                            .removeClass('alert-success alert-danger alert-info')
-                            .addClass('alert alert-' + (response.status === 'error' ? 'danger' : response.status === 'info' ? 'info' : 'success'))
-                            .text(response.message)
-                            .show();
-
                         if (response.status === 'success') {
+                            // Populate thank-you card with sender's details
+                            $('#thankyou-name').text(response.name || 'there');
+                            $('#thankyou-email').text(response.email || 'your inbox');
+
+                            // Swap form for thank-you card
+                            formWrapper.fadeOut(250, function () {
+                                thankYouCard.fadeIn(350);
+                            });
                             contactForm[0].reset();
+                        } else {
+                            contactMessageDiv
+                                .removeClass('alert-success alert-info')
+                                .addClass('alert alert-' + (response.status === 'info' ? 'info' : 'danger'))
+                                .text(response.message)
+                                .show();
+                            submitBtn.text(originalText).prop('disabled', false);
+                            setTimeout(function () { contactMessageDiv.fadeOut(); }, 8000);
                         }
                     },
                     error: function () {
@@ -247,13 +259,18 @@ $(document).ready(function(){
                             .addClass('alert alert-danger')
                             .text('An error occurred while sending your message. Please try again.')
                             .show();
-                    },
-                    complete: function () {
                         submitBtn.text(originalText).prop('disabled', false);
-                        setTimeout(function () {
-                            contactMessageDiv.fadeOut();
-                        }, 8000);
+                        setTimeout(function () { contactMessageDiv.fadeOut(); }, 8000);
                     }
+                });
+            });
+
+            // "Send another message" resets everything
+            $('#contact-send-another').on('click', function () {
+                thankYouCard.fadeOut(200, function () {
+                    formWrapper.fadeIn(300);
+                    contactForm[0].reset();
+                    contactForm.find('.contact-btn').text('Submit').prop('disabled', false);
                 });
             });
         }

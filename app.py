@@ -633,60 +633,57 @@ def handle_exception(e):
 @app.route('/contact/submit', methods=['POST'])
 @limiter.limit("3 per minute")  # Rate limit: 3 contact form submissions per minute per IP
 def contact_submit():
-    """Handle contact form submission with auto-reply"""
+    """Handle contact form submission — saves to DB instantly, emails fire in background thread."""
+    import logging, traceback, threading
+    contact_logger = logging.getLogger(__name__)
+
     try:
         from models import ContactSubmission
         from email_service import email_service
-        
+
         # Get form data
         name = request.form.get('name', '').strip()
         email = request.form.get('email', '').strip().lower()
         subject = request.form.get('subject', '').strip()
         message = request.form.get('message', '').strip()
-        
+
         # Bot verification - check for honeypot field
         honeypot = request.form.get('botcheck', '')
         if honeypot:
-            # Bot detected - pretend success but don't actually process
             return jsonify({'status': 'success', 'message': 'Thank you for your message. I will get back to you soon!'})
-        
+
         # Enhanced validation
         if not name or len(name) < 2:
             return jsonify({'status': 'error', 'message': 'Please provide a valid name.'})
-        
         if not email:
             return jsonify({'status': 'error', 'message': 'Please provide a valid email address.'})
-        
         if not message or len(message) < 10:
             return jsonify({'status': 'error', 'message': 'Please provide a message with at least 10 characters.'})
-        
-        # Email validation regex
+
         email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
         if not re.match(email_pattern, email):
             return jsonify({'status': 'error', 'message': 'Please provide a valid email address.'})
-        
-        # Check for suspicious patterns and spam
+
+        # Spam check
         suspicious_patterns = [
             r'viagra|cialis|pharmacy|casino|lottery|winner',
             r'crypto|bitcoin|investment|loan|mortgage',
             r'click here|visit now|act now|limited time',
             r'free money|make money|earn \$|guaranteed'
         ]
-        
         is_spam = False
         combined_text = f"{name} {email} {subject} {message}".lower()
-        
         for pattern in suspicious_patterns:
             if re.search(pattern, combined_text, re.IGNORECASE):
                 is_spam = True
                 break
-        
-        # Get client info - take only the first IP from X-Forwarded-For (Cloudflare appends its own)
+
+        # Get client info - first IP only (Cloudflare appends its own)
         forwarded_for = request.environ.get('HTTP_X_FORWARDED_FOR', request.remote_addr)
         ip_address = forwarded_for.split(',')[0].strip()[:45]
         user_agent = request.headers.get('User-Agent', '')
-        
-        # Save to database
+
+        # Save to DB synchronously
         contact_submission = ContactSubmission(
             name=name,
             email=email,
@@ -696,44 +693,41 @@ def contact_submit():
             user_agent=user_agent,
             is_spam=is_spam
         )
-        
         db.session.add(contact_submission)
         db.session.commit()
-        
-        # Send emails only if not spam
-        if not is_spam:
-            try:
-                import logging
-                contact_logger = logging.getLogger(__name__)
+        submission_id = contact_submission.id
 
-                # Send notification to admin
-                admin_sent = email_service.send_contact_notification(name, email, subject, message)
-                if not admin_sent:
-                    contact_logger.error(f"Contact admin notification FAILED for submission from {email}")
-                
-                # Send auto-reply to user
-                reply_sent = email_service.send_contact_auto_reply(name, email, subject)
-                if not reply_sent:
-                    contact_logger.error(f"Contact auto-reply FAILED for {email}")
-                
-                # Mark as replied only if emails actually sent
-                if admin_sent:
-                    contact_submission.is_replied = True
-                    contact_submission.replied_at = datetime.now()
-                    db.session.commit()
-                
-            except Exception as e:
-                import logging
-                logging.getLogger(__name__).error(f"Failed to send contact emails: {e}", exc_info=True)
-        
-        return jsonify({
-            'status': 'success', 
-            'message': 'Thank you for your message! I will get back to you within 24-48 hours.'
-        })
-        
+        # Fire emails in background — user gets instant response
+        if not is_spam:
+            def send_emails_background():
+                try:
+                    admin_sent = email_service.send_contact_notification(name, email, subject, message)
+                    if not admin_sent:
+                        contact_logger.error(f"Contact admin notification FAILED for submission #{submission_id} from {email}")
+
+                    reply_sent = email_service.send_contact_auto_reply(name, email, subject)
+                    if not reply_sent:
+                        contact_logger.error(f"Contact auto-reply FAILED for {email} (submission #{submission_id})")
+
+                    if admin_sent:
+                        # Use a fresh app context for DB write from background thread
+                        with app.app_context():
+                            from models import ContactSubmission as CS
+                            sub = CS.query.get(submission_id)
+                            if sub:
+                                sub.is_replied = True
+                                sub.replied_at = datetime.now()
+                                db.session.commit()
+                except Exception as e:
+                    contact_logger.error(f"Background email error for submission #{submission_id}: {e}", exc_info=True)
+
+            t = threading.Thread(target=send_emails_background, daemon=True)
+            t.start()
+
+        return jsonify({'status': 'success', 'name': name, 'email': email})
+
     except Exception as e:
-        import logging, traceback
-        logging.getLogger(__name__).error(f"Contact form error: {e}\n{traceback.format_exc()}")
+        contact_logger.error(f"Contact form error: {e}\n{traceback.format_exc()}")
         if "rate limit exceeded" in str(e).lower():
             return jsonify({'status': 'error', 'message': 'Too many requests. Please try again in a few minutes.'})
         return jsonify({'status': 'error', 'message': 'An error occurred while sending your message. Please try again.'})
