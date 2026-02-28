@@ -735,7 +735,7 @@ def contact_submit():
         logging.getLogger(__name__).error(f"Contact form error: {e}\n{traceback.format_exc()}")
         if "rate limit exceeded" in str(e).lower():
             return jsonify({'status': 'error', 'message': 'Too many requests. Please try again in a few minutes.'})
-        return jsonify({'status': 'error', 'message': f'Server error: {str(e)}'})
+        return jsonify({'status': 'error', 'message': 'An error occurred while sending your message. Please try again.'})
 
 @app.route('/newsletter/unsubscribe')
 def newsletter_unsubscribe_page():

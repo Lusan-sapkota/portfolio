@@ -6,7 +6,6 @@ Create Date: 2024-12-23 10:00:00.000000
 
 """
 from alembic import op
-import sqlalchemy as sa
 
 # revision identifiers
 revision = 'seo_enhancement_001'
@@ -15,44 +14,36 @@ branch_labels = None
 depends_on = None
 
 def upgrade():
-    # Add new columns to seo_settings table
-    try:
-        # Twitter fields
-        op.add_column('seo_settings', sa.Column('twitter_title', sa.String(200), nullable=True))
-        op.add_column('seo_settings', sa.Column('twitter_description', sa.Text(), nullable=True))
-        op.add_column('seo_settings', sa.Column('twitter_image', sa.String(255), nullable=True))
-        op.add_column('seo_settings', sa.Column('twitter_url', sa.String(255), nullable=True))
-        op.add_column('seo_settings', sa.Column('twitter_card', sa.String(50), nullable=True, server_default='summary_large_image'))
-        
-        # Enhanced Open Graph fields
-        op.add_column('seo_settings', sa.Column('og_url', sa.String(255), nullable=True))
-        op.add_column('seo_settings', sa.Column('og_type', sa.String(50), nullable=True, server_default='website'))
-        
-        # Additional SEO fields
-        op.add_column('seo_settings', sa.Column('hreflang', sa.String(10), nullable=True, server_default='en'))
-        op.add_column('seo_settings', sa.Column('focus_keywords', sa.Text(), nullable=True))
-        op.add_column('seo_settings', sa.Column('meta_author', sa.String(100), nullable=True))
-        op.add_column('seo_settings', sa.Column('meta_publisher', sa.String(100), nullable=True))
-        op.add_column('seo_settings', sa.Column('article_section', sa.String(100), nullable=True))
-        op.add_column('seo_settings', sa.Column('article_tags', sa.Text(), nullable=True))
-        
-        # Technical SEO
-        op.add_column('seo_settings', sa.Column('page_priority', sa.Float(), nullable=True, server_default='0.5'))
-        op.add_column('seo_settings', sa.Column('update_frequency', sa.String(20), nullable=True, server_default='weekly'))
-        op.add_column('seo_settings', sa.Column('noindex', sa.Boolean(), nullable=True, server_default='false'))
-        op.add_column('seo_settings', sa.Column('nofollow', sa.Boolean(), nullable=True, server_default='false'))
-        op.add_column('seo_settings', sa.Column('noarchive', sa.Boolean(), nullable=True, server_default='false'))
-        op.add_column('seo_settings', sa.Column('nosnippet', sa.Boolean(), nullable=True, server_default='false'))
-        
-        # Analytics
-        op.add_column('seo_settings', sa.Column('google_analytics_id', sa.String(50), nullable=True))
-        op.add_column('seo_settings', sa.Column('google_tag_manager_id', sa.String(50), nullable=True))
-        op.add_column('seo_settings', sa.Column('facebook_pixel_id', sa.String(50), nullable=True))
-        
-    except Exception as e:
-        print(f"Migration warning: {e}")
-        # Some columns might already exist, continue anyway
-        pass
+    # Use IF NOT EXISTS to safely add columns that may already exist.
+    # op.add_column aborts the whole PostgreSQL transaction on duplicates,
+    # so we use raw DDL instead.
+    op.execute("ALTER TABLE seo_settings ADD COLUMN IF NOT EXISTS twitter_title VARCHAR(200)")
+    op.execute("ALTER TABLE seo_settings ADD COLUMN IF NOT EXISTS twitter_description TEXT")
+    op.execute("ALTER TABLE seo_settings ADD COLUMN IF NOT EXISTS twitter_image VARCHAR(255)")
+    op.execute("ALTER TABLE seo_settings ADD COLUMN IF NOT EXISTS twitter_url VARCHAR(255)")
+    op.execute("ALTER TABLE seo_settings ADD COLUMN IF NOT EXISTS twitter_card VARCHAR(50) DEFAULT 'summary_large_image'")
+    op.execute("ALTER TABLE seo_settings ADD COLUMN IF NOT EXISTS og_url VARCHAR(255)")
+    op.execute("ALTER TABLE seo_settings ADD COLUMN IF NOT EXISTS og_type VARCHAR(50) DEFAULT 'website'")
+    op.execute("ALTER TABLE seo_settings ADD COLUMN IF NOT EXISTS hreflang VARCHAR(10) DEFAULT 'en'")
+    op.execute("ALTER TABLE seo_settings ADD COLUMN IF NOT EXISTS focus_keywords TEXT")
+    op.execute("ALTER TABLE seo_settings ADD COLUMN IF NOT EXISTS meta_author VARCHAR(100)")
+    op.execute("ALTER TABLE seo_settings ADD COLUMN IF NOT EXISTS meta_publisher VARCHAR(100)")
+    op.execute("ALTER TABLE seo_settings ADD COLUMN IF NOT EXISTS article_section VARCHAR(100)")
+    op.execute("ALTER TABLE seo_settings ADD COLUMN IF NOT EXISTS article_tags TEXT")
+    op.execute("ALTER TABLE seo_settings ADD COLUMN IF NOT EXISTS page_priority FLOAT DEFAULT 0.5")
+    op.execute("ALTER TABLE seo_settings ADD COLUMN IF NOT EXISTS update_frequency VARCHAR(20) DEFAULT 'weekly'")
+    op.execute("ALTER TABLE seo_settings ADD COLUMN IF NOT EXISTS noindex BOOLEAN DEFAULT false")
+    op.execute("ALTER TABLE seo_settings ADD COLUMN IF NOT EXISTS nofollow BOOLEAN DEFAULT false")
+    op.execute("ALTER TABLE seo_settings ADD COLUMN IF NOT EXISTS noarchive BOOLEAN DEFAULT false")
+    op.execute("ALTER TABLE seo_settings ADD COLUMN IF NOT EXISTS nosnippet BOOLEAN DEFAULT false")
+    op.execute("ALTER TABLE seo_settings ADD COLUMN IF NOT EXISTS google_analytics_id VARCHAR(50)")
+    op.execute("ALTER TABLE seo_settings ADD COLUMN IF NOT EXISTS google_tag_manager_id VARCHAR(50)")
+    op.execute("ALTER TABLE seo_settings ADD COLUMN IF NOT EXISTS facebook_pixel_id VARCHAR(50)")
+    # contact_submission columns (may be missing on older deployments)
+    op.execute("ALTER TABLE contact_submission ADD COLUMN IF NOT EXISTS user_agent VARCHAR(500)")
+    op.execute("ALTER TABLE contact_submission ADD COLUMN IF NOT EXISTS is_spam BOOLEAN DEFAULT false")
+    op.execute("ALTER TABLE contact_submission ADD COLUMN IF NOT EXISTS is_replied BOOLEAN DEFAULT false")
+    op.execute("ALTER TABLE contact_submission ADD COLUMN IF NOT EXISTS replied_at TIMESTAMP")
 
 def downgrade():
     # Remove the added columns
