@@ -681,8 +681,9 @@ def contact_submit():
                 is_spam = True
                 break
         
-        # Get client info
-        ip_address = request.environ.get('HTTP_X_FORWARDED_FOR', request.remote_addr)
+        # Get client info - take only the first IP from X-Forwarded-For (Cloudflare appends its own)
+        forwarded_for = request.environ.get('HTTP_X_FORWARDED_FOR', request.remote_addr)
+        ip_address = forwarded_for.split(',')[0].strip()[:45]
         user_agent = request.headers.get('User-Agent', '')
         
         # Save to database

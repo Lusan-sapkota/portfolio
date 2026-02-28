@@ -339,7 +339,7 @@ class ContactSubmission(db.Model):
     email = db.Column(db.String(120), nullable=False)
     subject = db.Column(db.String(200))
     message = db.Column(db.Text, nullable=False)
-    ip_address = db.Column(db.String(45))  # IPv6 compatible
+    ip_address = db.Column(db.String(100))  # wide enough for IPv6 + port
     user_agent = db.Column(db.String(500))
     is_spam = db.Column(db.Boolean, default=False)
     is_replied = db.Column(db.Boolean, default=False)
