@@ -522,7 +522,7 @@
 	
 	<!-- Prefetch for common resources -->
 	<link rel="prefetch" href="{{ url_for('static', filename='assets/download/Lusan_Sapkota_Resume.txt') }}">
-	<link rel="prefetch" href="{{ url_for('static', filename='assets/images/profile.png') }}">
+	<link rel="prefetch" href="{{ url_for('static', filename='assets/images/profile.webp') }}">
 
 	<!-- Google Tag Manager and toggle -->
 	<script>
@@ -1096,7 +1096,7 @@
 	<script>
 		if ('serviceWorker' in navigator) {
 			window.addEventListener('load', function() {
-				navigator.serviceWorker.register('/sw.js')
+				navigator.serviceWorker.register('/static/sw.js')
 					.then(function(registration) {
 						console.log('ServiceWorker registration successful');
 					})
@@ -1297,7 +1297,10 @@
 						</div>
 						<div class="col-sm-5 offset-sm-1">
 							<div class="single-about-img">
-								<img src="{{ url_for('static', filename='assets/images/profile.png') }}" alt="Lusan Sapkota - Full Stack Developer Profile Photo" loading="lazy">
+								<picture>
+									<source srcset="{{ url_for('static', filename='assets/images/profile.webp') }}" type="image/webp">
+									<img src="{{ url_for('static', filename='assets/images/profile.png') }}" alt="Lusan Sapkota - Full Stack Developer Profile Photo" loading="lazy">
+								</picture>
 								<div class="about-list-icon">
 									<ul>
 										<li>

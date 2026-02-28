@@ -702,19 +702,28 @@ def contact_submit():
         # Send emails only if not spam
         if not is_spam:
             try:
+                import logging
+                contact_logger = logging.getLogger(__name__)
+
                 # Send notification to admin
-                email_service.send_contact_notification(name, email, subject, message)
+                admin_sent = email_service.send_contact_notification(name, email, subject, message)
+                if not admin_sent:
+                    contact_logger.error(f"Contact admin notification FAILED for submission from {email}")
                 
                 # Send auto-reply to user
-                email_service.send_contact_auto_reply(name, email, subject)
+                reply_sent = email_service.send_contact_auto_reply(name, email, subject)
+                if not reply_sent:
+                    contact_logger.error(f"Contact auto-reply FAILED for {email}")
                 
-                # Mark as replied
-                contact_submission.is_replied = True
-                contact_submission.replied_at = datetime.now()
-                db.session.commit()
+                # Mark as replied only if emails actually sent
+                if admin_sent:
+                    contact_submission.is_replied = True
+                    contact_submission.replied_at = datetime.now()
+                    db.session.commit()
                 
             except Exception as e:
-                print(f"Failed to send contact emails: {e}")
+                import logging
+                logging.getLogger(__name__).error(f"Failed to send contact emails: {e}", exc_info=True)
         
         return jsonify({
             'status': 'success', 

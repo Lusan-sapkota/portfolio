@@ -37,9 +37,9 @@
   ],
   "screenshots": [
     {
-      "src": "/static/assets/images/portfolio-screenshot.png",
+      "src": "/static/assets/images/portfolio-screenshot.webp",
       "sizes": "1280x720",
-      "type": "image/png",
+      "type": "image/webp",
       "label": "Portfolio Homepage",
       "form_factor": "wide"
     }

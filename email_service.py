@@ -69,16 +69,20 @@ class EmailService:
         self.email_user = os.getenv('MAIL_USERNAME')
         self.email_password = os.getenv('MAIL_PASSWORD')
         self.from_name = os.getenv('FROM_NAME', "Lusan's Portfolio")
+        # MAIL_FROM allows sending via a Gmail alias (e.g. contact@lusansapkota.com.np)
+        # Must be configured as a "Send mail as" alias in Gmail settings
+        self.from_email = os.getenv('MAIL_FROM', self.email_user)
         
     def send_email(self, to_emails: List[str], subject: str, body: str, 
-                   html_body: Optional[str] = None, attachments: Optional[List[str]] = None) -> bool:
+                   html_body: Optional[str] = None, attachments: Optional[List[str]] = None,
+                   reply_to: Optional[str] = None) -> bool:
         """
         Send email to one or more recipients
         """
         try:
             msg = MIMEMultipart('alternative')
-            msg['From'] = f"{self.from_name} <contact@lusansapkota.com.np>"
-            msg.add_header('Reply-To', 'contact@lusansapkota.com.np')
+            msg['From'] = f"{self.from_name} <{self.from_email}>"
+            msg.add_header('Reply-To', reply_to if reply_to else self.from_email)
             msg['To'] = ', '.join(to_emails)
             msg['Subject'] = subject
             
@@ -117,8 +121,14 @@ class EmailService:
             logger.info(f"Email sent successfully to {to_emails}")
             return True
             
+        except smtplib.SMTPAuthenticationError as e:
+            logger.error(f"SMTP Authentication failed. Check MAIL_USERNAME/MAIL_PASSWORD. Error: {str(e)}")
+            return False
+        except smtplib.SMTPException as e:
+            logger.error(f"SMTP error while sending email to {to_emails}: {str(e)}")
+            return False
         except Exception as e:
-            logger.error(f"Failed to send email: {str(e)}")
+            logger.error(f"Failed to send email to {to_emails}: {str(e)}")
             return False
     
     def send_donation_confirmation(self, donor_email: str, donor_name: str, 
@@ -330,7 +340,7 @@ Kathmandu, Nepal"""
         """
         Send contact form notification to admin
         """
-        admin_email = "contact@lusansapkota.com.np"
+        admin_email = os.getenv('ADMIN_EMAIL', self.email_user)
         notification_subject = f"New Contact Form Submission - {subject or 'No Subject'}"
         
         text_body = f"""
@@ -376,7 +386,8 @@ Kathmandu, Nepal"""
         </html>
         """
         
-        return self.send_email([admin_email], notification_subject, text_body, html_body)
+        # Reply-To is set to the submitter's email so replying goes directly to them
+        return self.send_email([admin_email], notification_subject, text_body, html_body, reply_to=email)
     
     def send_contact_auto_reply(self, name: str, email: str, subject: str) -> bool:
         """
