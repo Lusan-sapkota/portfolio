@@ -54,9 +54,15 @@ def create_sitemap(base_url="https://www.lusansapkota.com.np", output_file="stat
             'lastmod': now
         },
         {
-            'url': 'https://donation.lusansapkota.com.np/',
-            'priority': '0.5',
+            'url': 'https://store.lusansapkota.com.np/',
+            'priority': '0.6',
             'changefreq': 'monthly',
+            'lastmod': now
+        },
+        {
+            'url': 'https://lcore.lusansapkota.com.np/',
+            'priority': '0.8',
+            'changefreq': 'weekly',
             'lastmod': now
         }
     ]
@@ -149,10 +155,11 @@ Disallow: /cache/
 Crawl-delay: 1
 
 # Sitemaps
-Sitemap: {base_url}/static/sitemap.xml
+Sitemap: {base_url}/sitemap.xml
 Sitemap: https://wiki.lusansapkota.com.np/sitemap.xml
 Sitemap: https://git.lusansapkota.com.np/sitemap.xml
-Sitemap: https://donation.lusansapkota.com.np/sitemap.xml
+Sitemap: https://store.lusansapkota.com.np/sitemap.xml
+Sitemap: https://lcore.lusansapkota.com.np/sitemap.xml
 
 # Google specific directives
 User-agent: Googlebot

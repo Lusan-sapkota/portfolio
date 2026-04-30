@@ -846,10 +846,16 @@ def sitemap():
                 'priority': '0.8'
             },
             {
-                'url': 'https://donation.lusansapkota.com.np/',
+                'url': 'https://store.lusansapkota.com.np/',
                 'lastmod': datetime.now().strftime('%Y-%m-%d'),
                 'changefreq': 'monthly',
-                'priority': '0.5'
+                'priority': '0.6'
+            },
+            {
+                'url': 'https://lcore.lusansapkota.com.np/',
+                'lastmod': datetime.now().strftime('%Y-%m-%d'),
+                'changefreq': 'weekly',
+                'priority': '0.8'
             }
         ]
         

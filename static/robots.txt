@@ -35,10 +35,11 @@ Disallow: /cache/
 Crawl-delay: 1
 
 # Sitemaps
-Sitemap: https://www.lusansapkota.com.np/static/sitemap.xml
+Sitemap: https://www.lusansapkota.com.np/sitemap.xml
 Sitemap: https://wiki.lusansapkota.com.np/sitemap.xml
 Sitemap: https://git.lusansapkota.com.np/sitemap.xml
-Sitemap: https://donation.lusansapkota.com.np/sitemap.xml
+Sitemap: https://store.lusansapkota.com.np/sitemap.xml
+Sitemap: https://lcore.lusansapkota.com.np/sitemap.xml
 
 # Google specific directives
 User-agent: Googlebot
