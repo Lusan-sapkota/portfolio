@@ -9,7 +9,7 @@ from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
-from config import SUBDOMAINS, THEME_CONFIG, SEO_CONFIG, CONTACT_INFO, FEATURES
+from config import SUBDOMAINS, THEME_CONFIG, SEO_CONFIG, CONTACT_INFO, FEATURES, VERSION
 from datetime import datetime
 from github_service import github_service
 import traceback
@@ -402,7 +402,8 @@ def index():
             'skills': skills,
             'experience': experience,
             'education': education,
-            'testimonials': testimonials
+            'testimonials': testimonials,
+            'version': VERSION
         }
         return render_template('index.html', **template_data, current_year=datetime.now().year)
     except Exception as e:
@@ -415,7 +416,8 @@ def index():
             'contact_info': CONTACT_INFO,
             'features': FEATURES,
             'portfolio_projects': [],
-            'project_categories': []
+            'project_categories': [],
+            'version': VERSION
         }
         return render_template('index.html', **template_data, current_year=datetime.now().year)
 
@@ -802,45 +804,13 @@ def sitemap():
                 'priority': '1.0'
             },
             {
-                'url': base_url + '/#about',
+                'url': base_url + '/privacy',
                 'lastmod': datetime.now().strftime('%Y-%m-%d'),
                 'changefreq': 'monthly',
-                'priority': '0.8'
-            },
-            {
-                'url': base_url + '/#projects',
-                'lastmod': datetime.now().strftime('%Y-%m-%d'),
-                'changefreq': 'weekly',
-                'priority': '0.9'
-            },
-            {
-                'url': base_url + '/#skills',
-                'lastmod': datetime.now().strftime('%Y-%m-%d'),
-                'changefreq': 'monthly',
-                'priority': '0.7'
-            },
-            {
-                'url': base_url + '/#contact',
-                'lastmod': datetime.now().strftime('%Y-%m-%d'),
-                'changefreq': 'monthly',
-                'priority': '0.6'
+                'priority': '0.3'
             }
         ]
         
-        # Add projects (if available)
-        try:
-            projects = Project.query.filter_by(is_active=True).all()
-            for project in projects:
-                if project.live_url:
-                    pages.append({
-                        'url': project.live_url,
-                        'lastmod': project.updated_at.strftime('%Y-%m-%d') if project.updated_at else datetime.now().strftime('%Y-%m-%d'),
-                        'changefreq': 'monthly',
-                        'priority': '0.6'
-                    })
-        except:
-            pass  # Projects table might not exist yet
-            
         # Add subdomain links
         subdomain_pages = [
             {

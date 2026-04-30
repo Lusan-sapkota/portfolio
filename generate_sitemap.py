@@ -32,42 +32,6 @@ def create_sitemap(base_url="https://www.lusansapkota.com.np", output_file="stat
             'lastmod': now
         },
         {
-            'url': '/#about',
-            'priority': '0.9',
-            'changefreq': 'monthly',
-            'lastmod': now
-        },
-        {
-            'url': '/#skills',
-            'priority': '0.8',
-            'changefreq': 'monthly',
-            'lastmod': now
-        },
-        {
-            'url': '/#portfolio',
-            'priority': '0.9',
-            'changefreq': 'weekly',
-            'lastmod': now
-        },
-        {
-            'url': '/#services',
-            'priority': '0.8',
-            'changefreq': 'monthly',
-            'lastmod': now
-        },
-        {
-            'url': '/#testimonials',
-            'priority': '0.7',
-            'changefreq': 'monthly',
-            'lastmod': now
-        },
-        {
-            'url': '/#contact',
-            'priority': '0.8',
-            'changefreq': 'monthly',
-            'lastmod': now
-        },
-        {
             'url': '/privacy',
             'priority': '0.3',
             'changefreq': 'yearly',

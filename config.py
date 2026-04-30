@@ -1,4 +1,5 @@
 # Enhanced Portfolio Configuration
+VERSION = '1.2.0'
 
 # Subdomain Configuration
 SUBDOMAINS = {
@@ -95,5 +96,5 @@ FEATURES = {
     'loading_animations': True,
     'responsive_design': True,
     'accessibility_features': True,
-    'progressive_web_app': False  # Set to True when PWA features are implemented
+    'progressive_web_app': True  # Enabled PWA features
 }
