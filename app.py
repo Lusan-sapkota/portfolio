@@ -9,7 +9,7 @@ from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
-from config import SUBDOMAINS, THEME_CONFIG, SEO_CONFIG, CONTACT_INFO, FEATURES
+from config import SUBDOMAINS, THEME_CONFIG, SEO_CONFIG, CONTACT_INFO, FEATURES, VERSION
 from datetime import datetime
 from github_service import github_service
 import traceback
@@ -53,7 +53,7 @@ def markdown_filter(text):
         }
     })
     return Markup(md.convert(text))
-
+  
 # Configure rate limiting based on environment
 debug_mode = os.getenv('DEBUG', 'False').lower() == 'true'
 redis_url = os.getenv('REDIS_URL')
@@ -122,16 +122,13 @@ login_manager.login_view = 'admin.login'
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-debug_mode = os.getenv('DEBUG', 'False').lower() == 'true'
-print(f"DEBUG env var: {os.getenv('DEBUG')}") 
-print(f"debug_mode value: {debug_mode}")
-
 # Import blueprints - AFTER app creation and extension initialization
 from admin import admin_bp
 from wiki import wiki_bp
 from git import git_bp
 from donation import donation_bp
 from store import store_bp
+from notespark import notespark_bp
 
 # Register blueprints
 app.register_blueprint(admin_bp) # url_prefix is set in admin_bp definition
@@ -146,6 +143,7 @@ if server_name_env:
     app.register_blueprint(git_bp, subdomain='git')
     app.register_blueprint(donation_bp, subdomain='donation')
     app.register_blueprint(store_bp, subdomain='store')
+    app.register_blueprint(notespark_bp, subdomain='notespark')
     
     # Debug: Print all registered routes
     print("DEBUG: Registered routes after subdomain setup:")
@@ -157,6 +155,7 @@ else:
     app.register_blueprint(git_bp, url_prefix='/git')
     app.register_blueprint(donation_bp, url_prefix='/donation')
     app.register_blueprint(store_bp, url_prefix='/store')
+    app.register_blueprint(notespark_bp, url_prefix='/notespark')
 
 # Import models here (after db initialization)
 from models import *
@@ -418,7 +417,8 @@ def index():
             'skills': skills,
             'experience': experience,
             'education': education,
-            'testimonials': testimonials
+            'testimonials': testimonials,
+            'version': VERSION
         }
         return render_template('index.html', **template_data, current_year=datetime.now().year)
     except Exception as e:
@@ -431,7 +431,8 @@ def index():
             'contact_info': CONTACT_INFO,
             'features': FEATURES,
             'portfolio_projects': [],
-            'project_categories': []
+            'project_categories': [],
+            'version': VERSION
         }
         return render_template('index.html', **template_data, current_year=datetime.now().year)
 
@@ -823,45 +824,13 @@ def sitemap():
                 'priority': '1.0'
             },
             {
-                'url': base_url + '/#about',
+                'url': base_url + '/privacy',
                 'lastmod': datetime.now().strftime('%Y-%m-%d'),
                 'changefreq': 'monthly',
-                'priority': '0.8'
-            },
-            {
-                'url': base_url + '/#projects',
-                'lastmod': datetime.now().strftime('%Y-%m-%d'),
-                'changefreq': 'weekly',
-                'priority': '0.9'
-            },
-            {
-                'url': base_url + '/#skills',
-                'lastmod': datetime.now().strftime('%Y-%m-%d'),
-                'changefreq': 'monthly',
-                'priority': '0.7'
-            },
-            {
-                'url': base_url + '/#contact',
-                'lastmod': datetime.now().strftime('%Y-%m-%d'),
-                'changefreq': 'monthly',
-                'priority': '0.6'
+                'priority': '0.3'
             }
         ]
         
-        # Add projects (if available)
-        try:
-            projects = Project.query.filter_by(is_active=True).all()
-            for project in projects:
-                if project.live_url:
-                    pages.append({
-                        'url': project.live_url,
-                        'lastmod': project.updated_at.strftime('%Y-%m-%d') if project.updated_at else datetime.now().strftime('%Y-%m-%d'),
-                        'changefreq': 'monthly',
-                        'priority': '0.6'
-                    })
-        except:
-            pass  # Projects table might not exist yet
-            
         # Add subdomain links
         subdomain_pages = [
             {

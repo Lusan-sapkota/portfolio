@@ -1,0 +1,35 @@
+
+{% extends 'notespark/base.html' %}
+{% block title %}Download - NoteSpark{% endblock %}
+{% block description %}Download NoteSpark, the open-source Markdown note app. GPLv3.{% endblock %}
+{% block canonical %}/download{% endblock %}
+{% block header %}
+<section class="container py-5 text-center">
+  <h1 class="display-4 fw-bold mb-3">Download NoteSpark</h1>
+  <p class="lead text-muted">Get the latest version for your platform. Fast, direct downloads. No ads, no tracking.</p>
+</section>
+{% endblock %}
+{% block content %}
+<section class="row justify-content-center mb-5">
+  <div class="col-lg-8">
+    <div class="card glass shadow-lg border-0 p-4">
+      <div class="card-body">
+        <h2 class="card-title fw-bold mb-3">Downloads</h2>
+        <ul class="list-group list-group-flush mb-3">
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span>Windows/macOS/Linux <span class="badge bg-primary ms-2">v1.0.0</span></span>
+            <a href="/static/notespark-v1.0.0.zip" class="btn btn-outline-primary">Download</a>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span>Windows/macOS/Linux <span class="badge bg-success ms-2">v1.1.0</span></span>
+            <a href="/static/notespark-v1.1.0.zip" class="btn btn-outline-success">Download</a>
+          </li>
+        </ul>
+        <div class="alert alert-warning mt-3" role="alert">
+          <strong>Secure Vault version coming soon!</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

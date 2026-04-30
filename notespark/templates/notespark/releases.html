@@ -1,0 +1,56 @@
+
+{% extends 'notespark/base.html' %}
+{% block title %}Releases & Changelog - NoteSpark{% endblock %}
+{% block description %}Version history and changelog for NoteSpark, the open-source Markdown note app. GPLv3.{% endblock %}
+{% block canonical %}/releases{% endblock %}
+{% block header %}
+<section class="container py-5 text-center">
+  <h1 class="display-4 fw-bold mb-3">NoteSpark Releases & Changelog</h1>
+  <p class="lead text-muted">Version history and changelog for NoteSpark.</p>
+</section>
+{% endblock %}
+{% block content %}
+<section class="row justify-content-center mb-5">
+  <div class="col-lg-8">
+    <div class="card glass shadow-lg border-0 p-4">
+      <div class="card-body">
+        <h2 class="card-title fw-bold mb-3">Release History</h2>
+        <ul class="list-group list-group-flush mb-3">
+          <li class="list-group-item">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <strong class="fs-5">v1.1.0</strong> <span class="badge bg-primary ms-2">2025-07-01</span>
+                <div class="text-muted small">Minor bug fixes, performance improvements</div>
+              </div>
+              <div>
+                <a href="/static/notespark-v1.1.0.apk" class="btn btn-outline-primary btn-sm me-2">Download APK</a>
+                <a href="/static/notespark-v1.1.0.zip" class="btn btn-outline-success btn-sm">Download Desktop</a>
+              </div>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <strong class="fs-5">v1.0.0</strong> <span class="badge bg-success ms-2">2025-06-01</span>
+                <div class="text-muted small">Initial release: Markdown, offline-first, JSON import/export</div>
+              </div>
+              <div>
+                <a href="/static/notespark-v1.0.0.apk" class="btn btn-outline-primary btn-sm me-2">Download APK</a>
+                <a href="/static/notespark-v1.0.0.zip" class="btn btn-outline-success btn-sm">Download Desktop</a>
+              </div>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <strong class="fs-5">vNext</strong> <span class="badge bg-warning text-dark ms-2">coming soon</span>
+                <div class="text-muted small">Secure Vault feature will be available in the next version!</div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

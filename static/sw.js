@@ -1,9 +1,9 @@
 // Service Worker for Lusan Sapkota Portfolio PWA
 // Version 1.1.0 - Fixed POST request caching issue
 
-const CACHE_NAME = 'lusan-portfolio-v1.1.0';
-const STATIC_CACHE = 'lusan-static-v1.1.0';
-const DYNAMIC_CACHE = 'lusan-dynamic-v1.1.0';
+const CACHE_NAME = 'lusan-portfolio-v1.2.0';
+const STATIC_CACHE = 'lusan-static-v1.2.0';
+const DYNAMIC_CACHE = 'lusan-dynamic-v1.2.0';
 
 // Resources to cache
 const STATIC_ASSETS = [
@@ -95,8 +95,11 @@ self.addEventListener('fetch', event => {
     } else if (request.url.includes('/admin/')) {
         // Admin routes - Always go to network, don't cache
         event.respondWith(fetch(request));
+    } else if (request.url.includes('/static/assets/css/') || request.url.includes('/static/assets/js/')) {
+        // Critical assets - Network first with cache fallback
+        event.respondWith(handleNetworkFirstRequest(request));
     } else {
-        // Static assets - Cache first
+        // Other static assets - Cache first
         event.respondWith(handleStaticRequest(request));
     }
 });
@@ -166,6 +169,21 @@ async function handleApiRequest(request) {
             status: 503,
             headers: { 'Content-Type': 'application/json' }
         });
+    }
+}
+
+// Handle network first requests (for CSS/JS that change frequently)
+async function handleNetworkFirstRequest(request) {
+    try {
+        const networkResponse = await fetch(request);
+        if (networkResponse.ok) {
+            const cache = await caches.open(STATIC_CACHE);
+            cache.put(request, networkResponse.clone());
+        }
+        return networkResponse;
+    } catch (error) {
+        const cachedResponse = await caches.match(request);
+        return cachedResponse || new Response('Offline', { status: 503 });
     }
 }
 

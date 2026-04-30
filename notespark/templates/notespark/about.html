@@ -1,0 +1,25 @@
+
+{% extends 'notespark/base.html' %}
+{% block title %}About - NoteSpark{% endblock %}
+{% block description %}Learn about NoteSpark, the open-source Markdown note app. GPLv3.{% endblock %}
+{% block canonical %}/about{% endblock %}
+{% block header %}
+<section class="container py-5 text-center">
+  <h1 class="display-4 fw-bold mb-3">About NoteSpark</h1>
+  <p class="lead text-muted">Open-source, privacy-first, and built for speed.</p>
+</section>
+{% endblock %}
+{% block content %}
+<section class="row justify-content-center mb-5">
+  <div class="col-lg-8">
+    <div class="card glass shadow-lg border-0 p-4">
+      <div class="card-body">
+        <h2 class="card-title fw-bold mb-3">What is NoteSpark?</h2>
+        <p class="card-text">NoteSpark is a modern, open-source note-taking app built for privacy, speed, and flexibility. It supports Markdown, works offline, and will soon feature a secure vault for sensitive notes. Licensed under <span class="badge bg-warning text-dark">GPLv3</span>.</p>
+        <hr>
+        <p class="mb-0">Created by <strong>Lusan Sapkota</strong>. <a href="https://github.com/Lusan-sapkota/notespark" target="_blank" class="text-decoration-none">Contributions welcome!</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
